@@ -1,7 +1,7 @@
 ====================================================================================================
 HOSPITAL MANAGEMENT SYSTEM - SPRING BOOT, REACT, MYSQL CODE
 Project Path: C:\Users\saket\OneDrive\Desktop\ePathshala\Backend_SpringBoot\ePathshala
-Generated on: 2025-07-25 14:15:19
+Generated on: 2025-07-25 15:56:23
 ====================================================================================================
 
 
@@ -129,6 +129,13 @@ public class SwaggerConfig {
 		};
 	}
 }
+
+====================================================================================================
+// File: src\main\java\com\ePathshala\controller\AdminController.java
+====================================================================================================
+
+package com.ePathshala.controller;
+
 
 ====================================================================================================
 // File: src\main\java\com\ePathshala\controller\AuthController.java
@@ -1942,6 +1949,51 @@ public class JwtService {
 }
 
 ====================================================================================================
+// File: src\main\java\com\ePathshala\security\KeyGenerator.java
+====================================================================================================
+
+package com.ePathshala.security;
+
+public class KeyGenerator {
+//    public static void main(String[] args) {
+//        String base64Key = Base64.getEncoder().encodeToString(Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded());
+//        System.out.println("Generated Base64 Key: " + base64Key);
+//    }
+}
+
+
+====================================================================================================
+// File: src\main\java\com\ePathshala\security\SecurityUtil.java
+====================================================================================================
+
+package com.ePathshala.security;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SecurityUtil {
+
+	private final JwtService jwtService;
+
+	public SecurityUtil(JwtService jwtService) {
+		this.jwtService = jwtService;
+	}
+
+	public String extractEmailFromToken(String token) {
+		if (token != null && token.startsWith("Bearer ")) {
+			token = token.substring(7);
+		}
+		return jwtService.extractUsername(token);
+	}
+
+	public boolean isAdmin(Authentication authentication) {
+		return authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+	}
+}
+
+====================================================================================================
 // File: src\main\java\com\ePathshala\security\UserDetailsServiceImpl.java
 ====================================================================================================
 
@@ -2097,7 +2149,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 package com.ePathshala.serviceImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -2108,6 +2162,7 @@ import com.ePathshala.dto.LoginResponse;
 import com.ePathshala.dto.RegisterUserRequest;
 import com.ePathshala.dto.UserDTO;
 import com.ePathshala.entity.User;
+import com.ePathshala.mapper.UserMapper;
 import com.ePathshala.repository.UserRepository;
 import com.ePathshala.security.JwtService;
 import com.ePathshala.service.AuthService;
@@ -2118,11 +2173,14 @@ public class AuthServiceImpl implements AuthService {
 	private final UserRepository userRepository;
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
+	private final UserMapper userMapper;
 
-	public AuthServiceImpl(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
+	public AuthServiceImpl(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder,
+			UserMapper userMapper) {
 		this.userRepository = userRepository;
 		this.jwtService = jwtService;
 		this.passwordEncoder = passwordEncoder;
+		this.userMapper = userMapper;
 	}
 
 	@Override
@@ -2152,8 +2210,17 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public UserDTO register(RegisterUserRequest request) {
-		// Registration logic
-		return null;
+		if (userRepository.existsByEmail(request.getEmail())) {
+			throw new RuntimeException("Email already in use");
+		}
+
+		User user = User.builder().name(request.getName()).email(request.getEmail())
+				.passwordHash(passwordEncoder.encode(request.getPassword())).role(request.getRole())
+				.accountNumber(UUID.randomUUID().toString().substring(0, 10)) // optional
+				.createdAt(LocalDateTime.now()).build();
+
+		User savedUser = userRepository.save(user);
+		return userMapper.toDTO(savedUser);
 	}
 }
 

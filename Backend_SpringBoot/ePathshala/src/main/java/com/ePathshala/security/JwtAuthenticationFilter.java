@@ -32,6 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String token;
 		final String email;
 
+		String path = request.getRequestURI();
+		if (path.startsWith("/api/auth/") || path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
+			filterChain.doFilter(request, response); // skip JWT validation
+			return;
+		}
+
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;

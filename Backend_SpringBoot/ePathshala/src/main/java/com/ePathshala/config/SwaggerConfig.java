@@ -35,6 +35,27 @@ public class SwaggerConfig {
 	public OpenApiCustomizer customizer() {
 		return openApi -> {
 			// Additional customization logic if needed
+
 		};
+	}
+
+	@Bean
+	public GroupedOpenApi adminApi() {
+		return GroupedOpenApi.builder().group("Admin APIs").pathsToMatch("/api/admin/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi teacherApi() {
+		return GroupedOpenApi.builder().group("Teacher APIs").pathsToMatch("/api/teacher/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi studentApi() {
+		return GroupedOpenApi.builder().group("Student APIs").pathsToMatch("/api/student/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi parentApi() {
+		return GroupedOpenApi.builder().group("Parent APIs").pathsToMatch("/api/parent/**").build();
 	}
 }

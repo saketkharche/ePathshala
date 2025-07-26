@@ -1,7 +1,7 @@
 ====================================================================================================
 HOSPITAL MANAGEMENT SYSTEM - SPRING BOOT, REACT, MYSQL CODE
 Project Path: C:\Users\saket\OneDrive\Desktop\ePathshala\Backend_SpringBoot\ePathshala
-Generated on: 2025-07-25 15:56:23
+Generated on: 2025-07-26 18:14:55
 ====================================================================================================
 
 
@@ -60,6 +60,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 		return http.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
@@ -126,7 +127,28 @@ public class SwaggerConfig {
 	public OpenApiCustomizer customizer() {
 		return openApi -> {
 			// Additional customization logic if needed
+
 		};
+	}
+
+	@Bean
+	public GroupedOpenApi adminApi() {
+		return GroupedOpenApi.builder().group("Admin APIs").pathsToMatch("/api/admin/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi teacherApi() {
+		return GroupedOpenApi.builder().group("Teacher APIs").pathsToMatch("/api/teacher/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi studentApi() {
+		return GroupedOpenApi.builder().group("Student APIs").pathsToMatch("/api/student/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi parentApi() {
+		return GroupedOpenApi.builder().group("Parent APIs").pathsToMatch("/api/parent/**").build();
 	}
 }
 
@@ -136,6 +158,101 @@ public class SwaggerConfig {
 
 package com.ePathshala.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ePathshala.dto.AcademicEventDTO;
+import com.ePathshala.dto.ParentDTO;
+import com.ePathshala.dto.StudentDTO;
+import com.ePathshala.dto.TeacherAssignmentDTO;
+import com.ePathshala.dto.TeacherDTO;
+import com.ePathshala.dto.UserDTO;
+import com.ePathshala.enums.Role;
+import com.ePathshala.service.AcademicEventService;
+import com.ePathshala.service.ParentService;
+import com.ePathshala.service.StudentService;
+import com.ePathshala.service.TeacherAssignmentService;
+import com.ePathshala.service.TeacherService;
+import com.ePathshala.service.UserService;
+
+@RestController
+@RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
+public class AdminController {
+
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private ParentService parentService;
+	@Autowired
+	private TeacherAssignmentService teacherAssignmentService;
+	@Autowired
+	private AcademicEventService academicEventService;
+
+	// 🔐 Register a new student
+	@PostMapping("/add-student")
+	public ResponseEntity<StudentDTO> addStudent(@RequestBody StudentDTO dto) {
+		StudentDTO student = studentService.createStudent(dto);
+		return ResponseEntity.ok(student);
+	}
+
+	// 🔐 Register a new teacher
+	@PostMapping("/add-teacher")
+	public ResponseEntity<TeacherDTO> addTeacher(@RequestBody TeacherDTO dto) {
+		TeacherDTO teacher = teacherService.registerTeacher(dto);
+		return ResponseEntity.ok(teacher);
+	}
+
+	// 🔐 Register a new parent
+	@PostMapping("/add-parent")
+	public ResponseEntity<ParentDTO> addParent(@RequestBody ParentDTO dto) {
+		ParentDTO parent = parentService.registerParent(dto);
+		return ResponseEntity.ok(parent);
+	}
+
+	// 📚 Assign teacher to class and subject
+	@PostMapping("/assign-teacher")
+	public ResponseEntity<TeacherAssignmentDTO> assignTeacher(@RequestBody TeacherAssignmentDTO dto) {
+		TeacherAssignmentDTO result = teacherAssignmentService.assignTeacherToSubject(dto);
+		return ResponseEntity.ok(result);
+	}
+
+	// 📅 Add academic calendar event
+	@PostMapping("/add-event")
+	public ResponseEntity<AcademicEventDTO> addEvent(@RequestBody AcademicEventDTO dto) {
+		AcademicEventDTO saved = academicEventService.createEvent(dto);
+		return ResponseEntity.ok(saved);
+	}
+
+	// 👥 Get users by role
+	@GetMapping("/users")
+	public ResponseEntity<List<UserDTO>> getUsersByRole(@RequestParam Role role) {
+		List<UserDTO> filtered = userService.getAllUsers().stream().filter(u -> u.getRole() == role).toList();
+		return ResponseEntity.ok(filtered);
+	}
+
+	// 🧹 Delete any user
+	@DeleteMapping("/delete-user/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+		return ResponseEntity.noContent().build();
+	}
+}
 
 ====================================================================================================
 // File: src\main\java\com\ePathshala\controller\AuthController.java
@@ -778,17 +895,29 @@ public class TimetableDTO {
 
 package com.ePathshala.dto;
 
+import com.ePathshala.entity.User;
 import com.ePathshala.enums.Role;
 
 import lombok.Data;
 
 @Data
 public class UserDTO {
-    private Integer userId;
-    private String name;
-    private String email;
-    private String accountNumber;
-    private Role role;
+	private Integer userId;
+	private String name;
+	private String email;
+	private String accountNumber;
+	private Role role;
+
+	public static UserDTO fromEntity(User user) {
+		UserDTO dto = new UserDTO();
+		dto.setUserId(user.getUserId()); // assuming getId() matches userId
+		dto.setName(user.getName());
+		dto.setEmail(user.getEmail());
+		dto.setAccountNumber(user.getAccountNumber());
+		dto.setRole(user.getRole());
+		return dto;
+	}
+
 }
 
 ====================================================================================================
@@ -1505,7 +1634,7 @@ public enum LeaveRequester {
 package com.ePathshala.enums;
 
 public enum Role {
-    Admin, Student, Teacher, Parent
+	Admin, Student, Teacher, Parent
 }
 
 
@@ -1873,6 +2002,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String token;
 		final String email;
 
+		String path = request.getRequestURI();
+		if (path.startsWith("/api/auth/") || path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
+			filterChain.doFilter(request, response); // skip JWT validation
+			return;
+		}
+
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
@@ -2025,7 +2160,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswordHash(),
-				List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+				List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name().toUpperCase())));
 	}
 }
 
@@ -2061,6 +2196,85 @@ public class AcademicEventServiceImpl implements AcademicEventService {
 	@Override
 	public List<AcademicEventDTO> getEventsBetween(LocalDate start, LocalDate end) {
 		return null;
+	}
+}
+
+====================================================================================================
+// File: src\main\java\com\ePathshala\serviceImpl\AdminServiceImpl.java
+====================================================================================================
+
+package com.ePathshala.serviceImpl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ePathshala.dto.AcademicEventDTO;
+import com.ePathshala.dto.ParentDTO;
+import com.ePathshala.dto.StudentDTO;
+import com.ePathshala.dto.TeacherAssignmentDTO;
+import com.ePathshala.dto.TeacherDTO;
+import com.ePathshala.dto.UserDTO;
+import com.ePathshala.enums.Role;
+import com.ePathshala.repository.UserRepository;
+import com.ePathshala.service.AcademicEventService;
+import com.ePathshala.service.AdminService;
+import com.ePathshala.service.ParentService;
+import com.ePathshala.service.StudentService;
+import com.ePathshala.service.TeacherAssignmentService;
+import com.ePathshala.service.TeacherService;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private ParentService parentService;
+	@Autowired
+	private TeacherAssignmentService teacherAssignmentService;
+	@Autowired
+	private AcademicEventService academicEventService;
+
+	@Override
+	public StudentDTO createStudent(StudentDTO dto) {
+		return studentService.createStudent(dto);
+	}
+
+	@Override
+	public TeacherDTO registerTeacher(TeacherDTO dto) {
+		return teacherService.registerTeacher(dto);
+	}
+
+	@Override
+	public ParentDTO registerParent(ParentDTO dto) {
+		return parentService.registerParent(dto);
+	}
+
+	@Override
+	public TeacherAssignmentDTO assignTeacherToSubject(TeacherAssignmentDTO dto) {
+		return teacherAssignmentService.assignTeacherToSubject(dto);
+	}
+
+	@Override
+	public AcademicEventDTO createEvent(AcademicEventDTO dto) {
+		return academicEventService.createEvent(dto);
+	}
+
+	@Override
+	public List<UserDTO> getUsersByRole(String role) {
+		Role r = Role.valueOf(role.toUpperCase());
+		return userRepository.findAll().stream().filter(u -> u.getRole() == r).map(UserDTO::fromEntity).toList();
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id.intValue());
 	}
 }
 
@@ -2636,6 +2850,91 @@ public class SubjectServiceImpl implements SubjectService {
 }
 
 ====================================================================================================
+// File: src\main\java\com\ePathshala\serviceImpl\TeacherAssignmentServiceImpl.java
+====================================================================================================
+
+package com.ePathshala.serviceImpl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.ePathshala.dto.TeacherAssignmentDTO;
+import com.ePathshala.entity.ClassEntity;
+import com.ePathshala.entity.Subject;
+import com.ePathshala.entity.Teacher;
+import com.ePathshala.entity.TeacherAssignment;
+import com.ePathshala.repository.ClassRepository;
+import com.ePathshala.repository.SubjectRepository;
+import com.ePathshala.repository.TeacherAssignmentRepository;
+import com.ePathshala.repository.TeacherRepository;
+import com.ePathshala.service.TeacherAssignmentService;
+
+@Service
+public class TeacherAssignmentServiceImpl implements TeacherAssignmentService {
+
+	private final TeacherAssignmentRepository assignmentRepository;
+	private final TeacherRepository teacherRepository;
+	private final ClassRepository classRepository;
+	private final SubjectRepository subjectRepository;
+
+	public TeacherAssignmentServiceImpl(TeacherAssignmentRepository assignmentRepository,
+			TeacherRepository teacherRepository, ClassRepository classRepository, SubjectRepository subjectRepository) {
+
+		this.assignmentRepository = assignmentRepository;
+		this.teacherRepository = teacherRepository;
+		this.classRepository = classRepository;
+		this.subjectRepository = subjectRepository;
+	}
+
+	@Override
+	public TeacherAssignmentDTO assignTeacherToSubject(TeacherAssignmentDTO dto) {
+		Teacher teacher = teacherRepository.findById(dto.getTeacherId())
+				.orElseThrow(() -> new RuntimeException("Teacher not found"));
+		ClassEntity classEntity = classRepository.findById(dto.getClassId())
+				.orElseThrow(() -> new RuntimeException("Class not found"));
+		Subject subject = subjectRepository.findById(dto.getSubjectId())
+				.orElseThrow(() -> new RuntimeException("Subject not found"));
+
+		TeacherAssignment assignment = new TeacherAssignment();
+		assignment.setTeacher(teacher);
+		assignment.setClassEntity(classEntity);
+		assignment.setSubject(subject);
+
+		TeacherAssignment saved = assignmentRepository.save(assignment);
+
+		TeacherAssignmentDTO response = new TeacherAssignmentDTO();
+		response.setAssignmentId(saved.getAssignmentId());
+		response.setTeacherId(saved.getTeacher().getTeacherId());
+		response.setClassId(saved.getClassEntity().getClassId());
+		response.setSubjectId(saved.getSubject().getSubjectId());
+
+		return response;
+	}
+
+	@Override
+	public List<TeacherAssignmentDTO> getAssignmentsByTeacherId(Integer teacherId) {
+		List<TeacherAssignment> assignments = assignmentRepository.findByTeacher_TeacherId(teacherId);
+
+		return assignments.stream().map(assignment -> {
+			TeacherAssignmentDTO dto = new TeacherAssignmentDTO();
+			dto.setAssignmentId(assignment.getAssignmentId());
+			dto.setTeacherId(assignment.getTeacher().getTeacherId());
+			dto.setClassId(assignment.getClassEntity().getClassId());
+			dto.setSubjectId(assignment.getSubject().getSubjectId());
+			return dto;
+		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<TeacherAssignment> findByTeacherId(Integer teacherId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
+
+====================================================================================================
 // File: src\main\java\com\ePathshala\serviceImpl\TeacherServiceImpl.java
 ====================================================================================================
 
@@ -2819,6 +3118,38 @@ public interface AcademicEventService {
 	AcademicEventDTO createEvent(AcademicEventDTO dto);
 
 	List<AcademicEventDTO> getEventsBetween(LocalDate start, LocalDate end);
+}
+
+====================================================================================================
+// File: src\main\java\com\ePathshala\service\AdminService.java
+====================================================================================================
+
+package com.ePathshala.service;
+
+import java.util.List;
+
+import com.ePathshala.dto.AcademicEventDTO;
+import com.ePathshala.dto.ParentDTO;
+import com.ePathshala.dto.StudentDTO;
+import com.ePathshala.dto.TeacherAssignmentDTO;
+import com.ePathshala.dto.TeacherDTO;
+import com.ePathshala.dto.UserDTO;
+
+public interface AdminService {
+
+	StudentDTO createStudent(StudentDTO dto);
+
+	TeacherDTO registerTeacher(TeacherDTO dto);
+
+	ParentDTO registerParent(ParentDTO dto);
+
+	TeacherAssignmentDTO assignTeacherToSubject(TeacherAssignmentDTO dto);
+
+	AcademicEventDTO createEvent(AcademicEventDTO dto);
+
+	List<UserDTO> getUsersByRole(String role);
+
+	void deleteUser(Long id);
 }
 
 ====================================================================================================
@@ -3062,11 +3393,15 @@ package com.ePathshala.service;
 import java.util.List;
 
 import com.ePathshala.dto.TeacherAssignmentDTO;
+import com.ePathshala.entity.TeacherAssignment;
 
 public interface TeacherAssignmentService {
 	TeacherAssignmentDTO assignTeacherToSubject(TeacherAssignmentDTO dto);
 
 	List<TeacherAssignmentDTO> getAssignmentsByTeacherId(Integer teacherId);
+
+	List<TeacherAssignment> findByTeacherId(Integer teacherId); // 🔍 Custom method
+
 }
 
 ====================================================================================================

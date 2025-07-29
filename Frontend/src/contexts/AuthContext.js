@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, role) => {
     try {
-      const response = await axios.post('http://localhost:5129/api/auth/login', {
+      const response = await axios.post('http://localhost:8080/ePathshala/api/auth/login', {
         email,
         password,
         role

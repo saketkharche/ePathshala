@@ -36,7 +36,7 @@ const Parents = () => {
 
   const fetchParents = async () => {
     try {
-      const response = await axios.get('http://localhost:5129/api/parents');
+      const response = await axios.get('http://localhost:8080/ePathshala/api/parents');
       setParents(response.data);
     } catch (error) {
       console.error('Error fetching parents:', error);
@@ -52,9 +52,9 @@ const Parents = () => {
       };
       
       if (editingParent) {
-        await axios.put(`http://localhost:5129/api/parents/${editingParent.id}`, parentData);
+        await axios.put(`http://localhost:8080/ePathshala/api/parents/${editingParent.id}`, parentData);
       } else {
-        await axios.post('http://localhost:5129/api/parents', parentData);
+        await axios.post('http://localhost:8080/ePathshala/api/parents', parentData);
       }
       fetchParents();
       handleClose();
@@ -65,7 +65,7 @@ const Parents = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5129/api/parents/${id}`);
+      await axios.delete(`http://localhost:8080/ePathshala/api/parents/${id}`);
       fetchParents();
     } catch (error) {
       console.error('Error deleting parent:', error);

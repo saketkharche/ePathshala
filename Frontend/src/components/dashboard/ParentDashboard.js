@@ -39,7 +39,7 @@ const ParentDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const childrenRes = await axios.get('http://localhost:5129/api/parents/children');
+      const childrenRes = await axios.get('http://localhost:8080/ePathshala/api/parents/children');
       setChildren(childrenRes.data);
       setStats({
         children: childrenRes.data.length,

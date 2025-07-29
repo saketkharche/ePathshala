@@ -36,7 +36,7 @@ const Teachers = () => {
 
   const fetchTeachers = async () => {
     try {
-      const response = await axios.get('http://localhost:5129/api/teacher');
+      const response = await axios.get('http://localhost:8080/ePathshala/api/teacher');
       setTeachers(response.data);
     } catch (error) {
       console.error('Error fetching teachers:', error);
@@ -52,9 +52,9 @@ const Teachers = () => {
       };
       
       if (editingTeacher) {
-        await axios.put(`http://localhost:5129/api/teacher/${editingTeacher.id}`, teacherData);
+        await axios.put(`http://localhost:8080/ePathshala/api/teacher/${editingTeacher.id}`, teacherData);
       } else {
-        await axios.post('http://localhost:5129/api/teacher', teacherData);
+        await axios.post('http://localhost:8080/ePathshala/api/teacher', teacherData);
       }
       fetchTeachers();
       handleClose();
@@ -65,7 +65,7 @@ const Teachers = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5129/api/teacher/${id}`);
+      await axios.delete(`http://localhost:8080/ePathshala/api/teacher/${id}`);
       fetchTeachers();
     } catch (error) {
       console.error('Error deleting teacher:', error);

@@ -38,9 +38,9 @@ const StudentDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [assignmentsRes, gradesRes, leavesRes] = await Promise.all([
-        axios.get('http://localhost:5129/api/assignments'),
-        axios.get('http://localhost:5129/api/grades'),
-        axios.get('http://localhost:5129/api/leaveapplications')
+        axios.get('http://localhost:8080/ePathshala/api/assignments'),
+        axios.get('http://localhost:8080/ePathshala/api/grades'),
+        axios.get('http://localhost:8080/ePathshala/api/leaveapplications')
       ]);
 
       setStats({

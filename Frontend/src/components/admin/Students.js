@@ -44,7 +44,7 @@ const Students = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:5129/api/students');
+      const response = await axios.get('http://localhost:8080/ePathshala/api/students');
       setStudents(response.data);
     } catch (error) {
       console.error('Error fetching students:', error);
@@ -53,7 +53,7 @@ const Students = () => {
 
   const fetchParents = async () => {
     try {
-      const response = await axios.get('http://localhost:5129/api/parents');
+      const response = await axios.get('http://localhost:8080/ePathshala/api/parents');
       setParents(response.data);
     } catch (error) {
       console.error('Error fetching parents:', error);
@@ -70,9 +70,9 @@ const Students = () => {
       if (editingStudent) {
         // Do not send password when editing
         delete studentData.password;
-        await axios.put(`http://localhost:5129/api/students/${editingStudent.id}`, studentData);
+        await axios.put(`http://localhost:8080/ePathshala/api/students/${editingStudent.id}`, studentData);
       } else {
-        await axios.post('http://localhost:5129/api/students', studentData);
+        await axios.post('http://localhost:8080/ePathshala/api/students', studentData);
       }
       fetchStudents();
       handleClose();
@@ -83,7 +83,7 @@ const Students = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5129/api/students/${id}`);
+      await axios.delete(`http://localhost:8080/ePathshala/api/students/${id}`);
       fetchStudents();
     } catch (error) {
       console.error('Error deleting student:', error);

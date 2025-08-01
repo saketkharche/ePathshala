@@ -41,7 +41,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .antMatchers("/api/auth/**").permitAll()
+            .antMatchers("/api/auth/login").permitAll()
+            .antMatchers("/api/auth/forgot-password", "/api/auth/reset-password").hasRole("ADMIN")
             .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
             .antMatchers("/api/admin/**").hasRole("ADMIN")
             .antMatchers("/api/teacher/**").hasRole("TEACHER")

@@ -40,7 +40,7 @@ function TeacherDashboard() {
 
   // Leave approval state
   const [selectedLeaveId, setSelectedLeaveId] = useState('');
-  const [approvalStatus, setApprovalStatus] = useState('APPROVED');
+  const [approvalStatus, setApprovalStatus] = useState('Approved');
 
   useEffect(() => {
     if (user) {
@@ -136,10 +136,11 @@ function TeacherDashboard() {
     try {
       await approveLeaveAsTeacher({
         leaveId: selectedLeaveId,
-        status: approvalStatus
+        approverRole: 'TEACHER',
+        approvalStatus: approvalStatus
       });
       setSelectedLeaveId('');
-      setApprovalStatus('APPROVED');
+      setApprovalStatus('Approved');
       alert('Leave request processed successfully!');
       loadData();
     } catch (error) {
@@ -388,9 +389,9 @@ function TeacherDashboard() {
                   onChange={(e) => setApprovalStatus(e.target.value)}
                   label="Approval Status"
                 >
-                  <MenuItem value="APPROVED">Approve</MenuItem>
-                  <MenuItem value="REJECTED">Reject</MenuItem>
-                  <MenuItem value="PENDING">Pending</MenuItem>
+                  <MenuItem value="Approved">Approve</MenuItem>
+                  <MenuItem value="Rejected">Reject</MenuItem>
+                  <MenuItem value="Pending">Pending</MenuItem>
                 </Select>
               </FormControl>
               

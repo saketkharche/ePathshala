@@ -23,13 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    @Operation(summary = "Forgot Password", description = "Request password reset for the given email")
+    @Operation(summary = "Forgot Password", description = "Request password reset for the given email (Admin Only)")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
         return ResponseEntity.ok(authService.forgotPassword(email));
     }
 
     @PostMapping("/reset-password")
-    @Operation(summary = "Reset Password", description = "Reset password for the given email with new password")
+    @Operation(summary = "Reset Password", description = "Reset password for the given email with new password (Admin Only)")
     public ResponseEntity<?> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
         return ResponseEntity.ok(authService.resetPassword(email, newPassword));
     }

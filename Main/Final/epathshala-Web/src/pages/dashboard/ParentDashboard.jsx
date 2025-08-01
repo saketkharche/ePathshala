@@ -111,7 +111,7 @@ function ParentDashboard() {
                     <ListItem key={a.id}>
                       <ListItemText
                         primary={`${a.date}: ${a.status}`}
-                        secondary={`Class: ${a.student?.className || 'N/A'}`}
+                        secondary={`Student: ${a.studentName} | Class: ${a.className || 'N/A'}`}
                       />
                       <Chip 
                         label={a.status} 
@@ -143,7 +143,7 @@ function ParentDashboard() {
                     <ListItem key={g.id}>
                       <ListItemText
                         primary={`${g.subject}: ${g.marks}`}
-                        secondary={`Teacher: ${g.teacher?.user?.name || 'N/A'}`}
+                        secondary={`Student: ${g.studentName} | Teacher: ${g.teacherName || 'N/A'}`}
                       />
                       <Chip 
                         label={`${g.marks}%`} 
@@ -170,13 +170,27 @@ function ParentDashboard() {
                 Approve Leave Requests
               </Typography>
               <Box component="form" onSubmit={handleApproveLeave} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextField
-                  placeholder="Leave ID"
-                  value={leaveApproval.leaveId}
-                  onChange={(e) => setLeaveApproval({ ...leaveApproval, leaveId: e.target.value })}
-                  size="small"
-                  required
-                />
+                <FormControl fullWidth size="small">
+                  <InputLabel>Select Leave Request</InputLabel>
+                  <Select
+                    value={leaveApproval.leaveId}
+                    onChange={(e) => setLeaveApproval({ ...leaveApproval, leaveId: e.target.value })}
+                    label="Select Leave Request"
+                    required
+                  >
+                    {leaveStatus && leaveStatus.length > 0 ? (
+                      leaveStatus.map((leave) => (
+                        <MenuItem key={leave.id} value={leave.id}>
+                          ID: {leave.id} | {leave.studentName} - {leave.reason}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem value="" disabled>
+                        No leave requests available
+                      </MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
                 <FormControl size="small">
                   <InputLabel>Status</InputLabel>
                   <Select
@@ -208,8 +222,8 @@ function ParentDashboard() {
                   {leaveStatus.map((l) => (
                     <ListItem key={l.id}>
                       <ListItemText
-                        primary={l.reason}
-                        secondary={`From: ${l.fromDate} To: ${l.toDate}`}
+                        primary={`ID: ${l.id} | ${l.reason}`}
+                        secondary={`Student: ${l.studentName} | From: ${l.fromDate} To: ${l.toDate}`}
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Chip 

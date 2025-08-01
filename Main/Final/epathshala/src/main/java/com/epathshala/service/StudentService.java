@@ -147,16 +147,16 @@ public class StudentService {
                 return Map.of("error", "Student not found");
             }
             
-            LeaveRequest leave = new LeaveRequest();
+        LeaveRequest leave = new LeaveRequest();
             leave.setStudent(student);
-            leave.setReason(dto.getReason());
-            leave.setFromDate(dto.getFromDate());
-            leave.setToDate(dto.getToDate());
-            leave.setTeacherApproval("Pending");
-            leave.setParentApproval("Pending");
-            leave.setStatus("Pending");
-            leaveRequestRepository.save(leave);
-            return Map.of("leaveId", leave.getId());
+        leave.setReason(dto.getReason());
+        leave.setFromDate(dto.getFromDate());
+        leave.setToDate(dto.getToDate());
+        leave.setTeacherApproval("Pending");
+        leave.setParentApproval("Pending");
+        leave.setStatus("Pending");
+        leaveRequestRepository.save(leave);
+        return Map.of("leaveId", leave.getId());
         } catch (Exception e) {
             System.out.println("❌ Error in submitLeave: " + e.getMessage());
             e.printStackTrace();

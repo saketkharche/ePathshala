@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/teacher")
@@ -25,32 +26,68 @@ public class TeacherController {
 
     @GetMapping("/students/{className}")
     public ResponseEntity<?> getStudentsByClass(@PathVariable String className) {
-        return ResponseEntity.ok(teacherService.getStudentsByClass(className));
+        try {
+            return ResponseEntity.ok(teacherService.getStudentsByClass(className));
+        } catch (Exception e) {
+            System.out.println("Error in getStudentsByClass controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error fetching students"));
+        }
     }
 
     @PostMapping("/attendance")
     public ResponseEntity<?> markAttendance(@RequestBody AttendanceDTO dto) {
-        return ResponseEntity.ok(teacherService.markAttendance(dto));
+        try {
+            return ResponseEntity.ok(teacherService.markAttendance(dto));
+        } catch (Exception e) {
+            System.out.println("Error in markAttendance controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error marking attendance"));
+        }
     }
 
     @GetMapping("/attendance/{className}")
     public ResponseEntity<?> getAttendanceByClass(@PathVariable String className) {
-        return ResponseEntity.ok(teacherService.getAttendanceByClass(className));
+        try {
+            return ResponseEntity.ok(teacherService.getAttendanceByClass(className));
+        } catch (Exception e) {
+            System.out.println("Error in getAttendanceByClass controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error fetching attendance"));
+        }
     }
 
     @PostMapping("/grades")
     public ResponseEntity<?> enterGrade(@RequestBody GradeDTO dto) {
-        return ResponseEntity.ok(teacherService.enterGrade(dto));
+        try {
+            return ResponseEntity.ok(teacherService.enterGrade(dto));
+        } catch (Exception e) {
+            System.out.println("Error in enterGrade controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error entering grade"));
+        }
     }
 
     @GetMapping("/grades/{className}")
     public ResponseEntity<?> getGradesByClass(@PathVariable String className) {
-        return ResponseEntity.ok(teacherService.getGradesByClass(className));
+        try {
+            return ResponseEntity.ok(teacherService.getGradesByClass(className));
+        } catch (Exception e) {
+            System.out.println("Error in getGradesByClass controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error fetching grades"));
+        }
     }
 
     @PostMapping("/assignments")
     public ResponseEntity<?> uploadAssignment(@RequestBody AssignmentDTO dto) {
-        return ResponseEntity.ok(teacherService.uploadAssignment(dto));
+        try {
+            return ResponseEntity.ok(teacherService.uploadAssignment(dto));
+        } catch (Exception e) {
+            System.out.println("Error in uploadAssignment controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error uploading assignment"));
+        }
     }
 
     @PostMapping("/assignments/upload")
@@ -67,22 +104,42 @@ public class TeacherController {
             String fileUrl = "/" + uploadDir + "/" + fileName;
             return ResponseEntity.ok().body(fileUrl);
         } catch (Exception e) {
+            System.out.println("Error in uploadAssignmentFile controller: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
         }
     }
 
     @GetMapping("/assignments/{className}")
     public ResponseEntity<?> getAssignmentsByClass(@PathVariable String className) {
-        return ResponseEntity.ok(teacherService.getAssignmentsByClass(className));
+        try {
+            return ResponseEntity.ok(teacherService.getAssignmentsByClass(className));
+        } catch (Exception e) {
+            System.out.println("Error in getAssignmentsByClass controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error fetching assignments"));
+        }
     }
 
     @GetMapping("/leaves/{className}")
     public ResponseEntity<?> getLeavesByClass(@PathVariable String className) {
-        return ResponseEntity.ok(teacherService.getLeavesByClass(className));
+        try {
+            return ResponseEntity.ok(teacherService.getLeavesByClass(className));
+        } catch (Exception e) {
+            System.out.println("Error in getLeavesByClass controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error fetching leave requests"));
+        }
     }
 
     @PostMapping("/leave/approve")
     public ResponseEntity<?> approveLeave(@RequestBody LeaveApprovalDTO dto) {
-        return ResponseEntity.ok(teacherService.approveLeave(dto));
+        try {
+            return ResponseEntity.ok(teacherService.approveLeave(dto));
+        } catch (Exception e) {
+            System.out.println("Error in approveLeave controller: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error approving leave"));
+        }
     }
 }

@@ -15,6 +15,11 @@ function AdminDashboard() {
   const [newParent, setNewParent] = useState({ name: '', email: '', password: '' });
   const [assign, setAssign] = useState({ email: '', subject: '', assignedClass: '' });
   const [newEvent, setNewEvent] = useState({ eventName: '', date: '', description: '' });
+  
+  // Password reset state
+  const [resetEmail, setResetEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
 
   useEffect(() => {
     getStudents().then(setStudents);
@@ -52,6 +57,42 @@ function AdminDashboard() {
   const handleDeleteEvent = async id => {
     await deleteEvent(id);
     getEvents().then(setEvents);
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setResetMessage('');
+    
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setResetMessage('Error: No authentication token found. Please login again.');
+      return;
+    }
+    
+    try {
+      console.log('Attempting to reset password for:', resetEmail);
+      console.log('Token available:', !!token);
+      const res = await fetch(`/api/auth/reset-password?email=${resetEmail}&newPassword=${newPassword}`, { 
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      console.log('Response status:', res.status);
+      const data = await res.json();
+      console.log('Response data:', data);
+      if (res.ok) {
+        setResetMessage('Password reset successfully!');
+        setResetEmail('');
+        setNewPassword('');
+      } else {
+        setResetMessage(data.error || data.message || 'Password reset failed');
+      }
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      setResetMessage('Error resetting password: ' + error.message);
+    }
   };
 
   return (
@@ -95,6 +136,36 @@ function AdminDashboard() {
         <input placeholder="Assigned Class" value={assign.assignedClass} onChange={e => setAssign({ ...assign, assignedClass: e.target.value })} />
         <button type="submit">Assign</button>
       </form>
+      
+      <h3>Reset User Password</h3>
+      <form onSubmit={handleResetPassword}>
+        <input 
+          placeholder="User Email" 
+          value={resetEmail} 
+          onChange={e => setResetEmail(e.target.value)} 
+          required 
+        />
+        <input 
+          type="password" 
+          placeholder="New Password" 
+          value={newPassword} 
+          onChange={e => setNewPassword(e.target.value)} 
+          required 
+        />
+        <button type="submit">Reset Password</button>
+      </form>
+      {resetMessage && (
+        <div style={{ 
+          color: resetMessage.includes('successfully') ? 'green' : 'red',
+          marginTop: '10px',
+          padding: '10px',
+          border: '1px solid',
+          borderRadius: '4px'
+        }}>
+          {resetMessage}
+        </div>
+      )}
+      
       <h3>Academic Calendar</h3>
       <form onSubmit={handleAddEvent}>
         <input placeholder="Event Name" value={newEvent.eventName} onChange={e => setNewEvent({ ...newEvent, eventName: e.target.value })} />

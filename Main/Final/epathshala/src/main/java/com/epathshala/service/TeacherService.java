@@ -74,36 +74,48 @@ public class TeacherService {
     }
 
     public List<TeacherDashboardDTO.StudentResponseDTO> getStudentsByClass(String className) {
-        return studentRepository.findAll().stream()
-            .filter(s -> className.equals(s.getStudentClass()))
-            .map(student -> new TeacherDashboardDTO.StudentResponseDTO(
-                student.getId(),
-                student.getUser().getName(),
-                student.getUser().getEmail(),
-                student.getStudentClass()
-            ))
-            .collect(Collectors.toList());
+        try {
+            return studentRepository.findAll().stream()
+                .filter(s -> className != null && className.equals(s.getStudentClass()))
+                .map(student -> new TeacherDashboardDTO.StudentResponseDTO(
+                    student.getId(),
+                    student.getUser() != null ? student.getUser().getName() : "Unknown",
+                    student.getUser() != null ? student.getUser().getEmail() : "unknown@email.com",
+                    student.getStudentClass()
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println("Error in getStudentsByClass: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public List<TeacherDashboardDTO.AttendanceResponseDTO> getAttendanceByClass(String className) {
-        // Fetch all students in the class
-        List<Student> students = studentRepository.findAll();
-        List<Long> studentIds = students.stream()
-            .filter(s -> className.equals(s.getStudentClass()))
-            .map(Student::getId)
-            .toList();
-        // Fetch attendance for these students
-        List<Attendance> attendanceList = attendanceRepository.findAll();
-        return attendanceList.stream()
-            .filter(a -> studentIds.contains(a.getStudent().getId()))
-            .map(attendance -> new TeacherDashboardDTO.AttendanceResponseDTO(
-                attendance.getId(),
-                attendance.getStudent().getId(),
-                attendance.getStudent().getUser().getName(),
-                attendance.getDate(),
-                attendance.getStatus()
-            ))
-            .collect(Collectors.toList());
+        try {
+            // Fetch all students in the class
+            List<Student> students = studentRepository.findAll();
+            List<Long> studentIds = students.stream()
+                .filter(s -> className != null && className.equals(s.getStudentClass()))
+                .map(Student::getId)
+                .toList();
+            // Fetch attendance for these students
+            List<Attendance> attendanceList = attendanceRepository.findAll();
+            return attendanceList.stream()
+                .filter(a -> a.getStudent() != null && studentIds.contains(a.getStudent().getId()))
+                .map(attendance -> new TeacherDashboardDTO.AttendanceResponseDTO(
+                    attendance.getId(),
+                    attendance.getStudent().getId(),
+                    attendance.getStudent().getUser() != null ? attendance.getStudent().getUser().getName() : "Unknown",
+                    attendance.getDate(),
+                    attendance.getStatus()
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println("Error in getAttendanceByClass: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public Map<String, Object> enterGrade(GradeDTO dto) {
@@ -126,23 +138,29 @@ public class TeacherService {
     }
 
     public List<TeacherDashboardDTO.GradeResponseDTO> getGradesByClass(String className) {
-        List<Student> students = studentRepository.findAll();
-        List<Long> studentIds = students.stream()
-            .filter(s -> className.equals(s.getStudentClass()))
-            .map(Student::getId)
-            .toList();
-        List<Grade> grades = gradeRepository.findAll();
-        return grades.stream()
-            .filter(g -> studentIds.contains(g.getStudent().getId()))
-            .map(grade -> new TeacherDashboardDTO.GradeResponseDTO(
-                grade.getId(),
-                grade.getStudent().getId(),
-                grade.getStudent().getUser().getName(),
-                grade.getSubject(),
-                grade.getMarks(),
-                null // remarks field not in entity
-            ))
-            .collect(Collectors.toList());
+        try {
+            List<Student> students = studentRepository.findAll();
+            List<Long> studentIds = students.stream()
+                .filter(s -> className != null && className.equals(s.getStudentClass()))
+                .map(Student::getId)
+                .toList();
+            List<Grade> grades = gradeRepository.findAll();
+            return grades.stream()
+                .filter(g -> g.getStudent() != null && studentIds.contains(g.getStudent().getId()))
+                .map(grade -> new TeacherDashboardDTO.GradeResponseDTO(
+                    grade.getId(),
+                    grade.getStudent().getId(),
+                    grade.getStudent().getUser() != null ? grade.getStudent().getUser().getName() : "Unknown",
+                    grade.getSubject(),
+                    grade.getMarks(),
+                    null // remarks field not in entity
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println("Error in getGradesByClass: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public Map<String, Object> uploadAssignment(AssignmentDTO dto) {
@@ -164,61 +182,99 @@ public class TeacherService {
     }
 
     public List<TeacherDashboardDTO.AssignmentResponseDTO> getAssignmentsByClass(String className) {
-        return assignmentRepository.findAll().stream()
-            .filter(a -> className.equals(a.getClassName()))
-            .map(assignment -> new TeacherDashboardDTO.AssignmentResponseDTO(
-                assignment.getId(),
-                assignment.getTitle(),
-                assignment.getFileUrl(),
-                assignment.getDueDate(),
-                assignment.getSubject(),
-                assignment.getClassName()
-            ))
-            .collect(Collectors.toList());
+        try {
+            return assignmentRepository.findAll().stream()
+                .filter(a -> className != null && className.equals(a.getClassName()))
+                .map(assignment -> new TeacherDashboardDTO.AssignmentResponseDTO(
+                    assignment.getId(),
+                    assignment.getTitle(),
+                    assignment.getFileUrl(),
+                    assignment.getDueDate(),
+                    assignment.getSubject(),
+                    assignment.getClassName()
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println("Error in getAssignmentsByClass: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public List<TeacherDashboardDTO.LeaveRequestResponseDTO> getLeavesByClass(String className) {
-        List<Student> students = studentRepository.findAll();
-        List<Long> studentIds = students.stream()
-            .filter(s -> className.equals(s.getStudentClass()))
-            .map(Student::getId)
-            .toList();
-        return leaveRequestRepository.findAll().stream()
-            .filter(l -> studentIds.contains(l.getStudent().getId()))
-            .map(leave -> new TeacherDashboardDTO.LeaveRequestResponseDTO(
-                leave.getId(),
-                leave.getStudent().getId(),
-                leave.getStudent().getUser().getName(),
-                leave.getReason(),
-                leave.getFromDate(),
-                leave.getToDate(),
-                leave.getTeacherApproval(),
-                leave.getParentApproval(),
-                leave.getStatus()
-            ))
-            .collect(Collectors.toList());
+        try {
+            List<Student> students = studentRepository.findAll();
+            List<Long> studentIds = students.stream()
+                .filter(s -> className != null && className.equals(s.getStudentClass()))
+                .map(Student::getId)
+                .toList();
+            return leaveRequestRepository.findAll().stream()
+                .filter(l -> l.getStudent() != null && studentIds.contains(l.getStudent().getId()))
+                .map(leave -> new TeacherDashboardDTO.LeaveRequestResponseDTO(
+                    leave.getId(),
+                    leave.getStudent().getId(),
+                    leave.getStudent().getUser() != null ? leave.getStudent().getUser().getName() : "Unknown",
+                    leave.getReason(),
+                    leave.getFromDate(),
+                    leave.getToDate(),
+                    leave.getTeacherApproval(),
+                    leave.getParentApproval(),
+                    leave.getStatus()
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println("Error in getLeavesByClass: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public Map<String, Object> approveLeave(LeaveApprovalDTO dto) {
-        LeaveRequest leave = leaveRequestRepository.findById(dto.getLeaveId()).orElse(null);
-        if (leave == null) {
-            return Map.of("error", "Leave request not found");
+        try {
+            System.out.println("=== TeacherService.approveLeave called ===");
+            System.out.println("Leave ID: " + dto.getLeaveId());
+            System.out.println("Approver Role: " + dto.getApproverRole());
+            System.out.println("Approval Status: " + dto.getApprovalStatus());
+            
+            LeaveRequest leave = leaveRequestRepository.findById(dto.getLeaveId()).orElse(null);
+            if (leave == null) {
+                System.out.println("ERROR: Leave request not found for ID: " + dto.getLeaveId());
+                return Map.of("error", "Leave request not found");
+            }
+            
+            System.out.println("Found leave request: " + leave.getId());
+            System.out.println("Current teacher approval: " + leave.getTeacherApproval());
+            System.out.println("Current parent approval: " + leave.getParentApproval());
+            System.out.println("Current status: " + leave.getStatus());
+            
+            if ("TEACHER".equalsIgnoreCase(dto.getApproverRole())) {
+                leave.setTeacherApproval(dto.getApprovalStatus());
+                System.out.println("Updated teacher approval to: " + dto.getApprovalStatus());
+            } else if ("PARENT".equalsIgnoreCase(dto.getApproverRole())) {
+                leave.setParentApproval(dto.getApprovalStatus());
+                System.out.println("Updated parent approval to: " + dto.getApprovalStatus());
+            }
+            
+            // Final status logic
+            if ("Approved".equalsIgnoreCase(leave.getTeacherApproval()) && "Approved".equalsIgnoreCase(leave.getParentApproval())) {
+                leave.setStatus("Approved");
+            } else if ("Rejected".equalsIgnoreCase(leave.getTeacherApproval()) || "Rejected".equalsIgnoreCase(leave.getParentApproval())) {
+                leave.setStatus("Rejected");
+            } else {
+                leave.setStatus("Pending");
+            }
+            
+            System.out.println("Final status set to: " + leave.getStatus());
+            
+            leaveRequestRepository.save(leave);
+            System.out.println("Leave request saved successfully");
+            
+            notifyLeaveApproval(leave.getStatus());
+            return Map.of("leaveId", leave.getId(), "status", leave.getStatus());
+        } catch (Exception e) {
+            System.out.println("ERROR in approveLeave: " + e.getMessage());
+            e.printStackTrace();
+            return Map.of("error", "Error approving leave request: " + e.getMessage());
         }
-        if ("TEACHER".equalsIgnoreCase(dto.getApproverRole())) {
-            leave.setTeacherApproval(dto.getApprovalStatus());
-        } else if ("PARENT".equalsIgnoreCase(dto.getApproverRole())) {
-            leave.setParentApproval(dto.getApprovalStatus());
-        }
-        // Final status logic
-        if ("Approved".equalsIgnoreCase(leave.getTeacherApproval()) && "Approved".equalsIgnoreCase(leave.getParentApproval())) {
-            leave.setStatus("Approved");
-        } else if ("Rejected".equalsIgnoreCase(leave.getTeacherApproval()) || "Rejected".equalsIgnoreCase(leave.getParentApproval())) {
-            leave.setStatus("Rejected");
-        } else {
-            leave.setStatus("Pending");
-        }
-        leaveRequestRepository.save(leave);
-        notifyLeaveApproval(leave.getStatus());
-        return Map.of("leaveId", leave.getId(), "status", leave.getStatus());
     }
 }

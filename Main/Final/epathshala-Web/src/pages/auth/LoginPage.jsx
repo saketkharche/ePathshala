@@ -8,12 +8,6 @@ function LoginPage() {
   const [role, setRole] = useState("ADMIN");
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [showForgot, setShowForgot] = useState(false);
-  const [forgotEmail, setForgotEmail] = useState("");
-  const [resetEmail, setResetEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [resetMsg, setResetMsg] = useState("");
-  const [forgotMsg, setForgotMsg] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,22 +25,6 @@ function LoginPage() {
     }
   };
 
-  const handleForgot = async (e) => {
-    e.preventDefault();
-    setForgotMsg("");
-    const res = await fetch(`/api/auth/forgot-password?email=${forgotEmail}`, { method: "POST" });
-    const data = await res.json();
-    setForgotMsg(data.message || data.error);
-  };
-
-  const handleReset = async (e) => {
-    e.preventDefault();
-    setResetMsg("");
-    const res = await fetch(`/api/auth/reset-password?email=${resetEmail}&newPassword=${newPassword}`, { method: "POST" });
-    const data = await res.json();
-    setResetMsg(data.message || data.error);
-  };
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -60,25 +38,6 @@ function LoginPage() {
         </select>
         <button type="submit">Login</button>
       </form>
-      <button style={{ marginTop: 10 }} onClick={() => setShowForgot(true)}>Forgot Password?</button>
-      {showForgot && (
-        <div style={{ border: '1px solid #ccc', padding: 20, marginTop: 20, maxWidth: 400 }}>
-          <h3>Forgot Password</h3>
-          <form onSubmit={handleForgot}>
-            <input placeholder="Email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)} required />
-            <button type="submit">Request Reset</button>
-          </form>
-          {forgotMsg && <div style={{ color: forgotMsg.includes('error') ? 'red' : 'green' }}>{forgotMsg}</div>}
-          <h4>Reset Password</h4>
-          <form onSubmit={handleReset}>
-            <input placeholder="Email" value={resetEmail} onChange={e => setResetEmail(e.target.value)} required />
-            <input type="password" placeholder="New Password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
-            <button type="submit">Reset Password</button>
-          </form>
-          {resetMsg && <div style={{ color: resetMsg.includes('error') ? 'red' : 'green' }}>{resetMsg}</div>}
-          <button onClick={() => setShowForgot(false)} style={{ marginTop: 10 }}>Close</button>
-        </div>
-      )}
     </div>
   );
 }

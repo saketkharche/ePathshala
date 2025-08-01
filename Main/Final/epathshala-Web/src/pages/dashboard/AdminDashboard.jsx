@@ -109,15 +109,15 @@ function AdminDashboard() {
       </ul>
       <h3>Student List</h3>
       <ul>
-        {students.map(s => <li key={s.id}>{s.user?.name || s.name} ({s.studentClass})</li>)}
+        {students.map(s => <li key={s.id}>{s.name} ({s.studentClass})</li>)}
       </ul>
       <h3>Teacher List</h3>
       <ul>
-        {teachers.map(t => <li key={t.id}>{t.user?.name || t.name} ({t.subject}, {t.assignedClass})</li>)}
+        {teachers.map(t => <li key={t.id}>{t.name} ({t.subject}, {t.assignedClass})</li>)}
       </ul>
       <h3>Parent List</h3>
       <ul>
-        {parents.map(p => <li key={p.id}>{p.user?.name || p.name}</li>)}
+        {parents.map(p => <li key={p.id}>{p.name}</li>)}
       </ul>
     </div>
   );

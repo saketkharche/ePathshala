@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../utils/auth';
-import { markAttendance, getAttendanceByClass } from '../../api/attendance';
+import { markAttendance, getAttendanceByClass, getStudentsByClass } from '../../api/attendance';
 import { enterGrade, getGradesByClass } from '../../api/grades';
 import { uploadAssignment, getAssignmentsByClass, uploadAssignmentFile } from '../../api/assignments';
 import { getLeavesByClass, approveLeaveAsTeacher } from '../../api/leave';
@@ -12,6 +12,7 @@ function TeacherDashboard() {
   const [grades, setGrades] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([]);
+  const [students, setStudents] = useState([]);
   
   // Attendance form state
   const [attendanceForm, setAttendanceForm] = useState({
@@ -49,18 +50,22 @@ function TeacherDashboard() {
 
   const loadData = async () => {
     try {
-      const [attendanceData, gradesData, assignmentsData, leavesData] = await Promise.all([
+      const [attendanceData, gradesData, assignmentsData, leavesData, studentsData] = await Promise.all([
         getAttendanceByClass('Class 10A'),
         getGradesByClass('Class 10A'),
         getAssignmentsByClass('Class 10A'),
-        getLeavesByClass('Class 10A')
+        getLeavesByClass('Class 10A'),
+        getStudentsByClass('Class 10A')
       ]);
+      
+      console.log('Leave requests data:', leavesData);
       
       // Ensure data is always an array
       setAttendance(Array.isArray(attendanceData) ? attendanceData : []);
       setGrades(Array.isArray(gradesData) ? gradesData : []);
       setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
       setLeaveRequests(Array.isArray(leavesData) ? leavesData : []);
+      setStudents(Array.isArray(studentsData) ? studentsData : []);
     } catch (error) {
       console.error('Error loading data:', error);
       // Set empty arrays on error
@@ -68,6 +73,7 @@ function TeacherDashboard() {
       setGrades([]);
       setAssignments([]);
       setLeaveRequests([]);
+      setStudents([]);
     }
   };
 
@@ -160,14 +166,21 @@ function TeacherDashboard() {
                 Mark Attendance
               </Typography>
               <form onSubmit={handleMarkAttendance}>
-                <TextField
-                  fullWidth
-                  label="Student ID"
-                  value={attendanceForm.studentId}
-                  onChange={(e) => setAttendanceForm({ ...attendanceForm, studentId: e.target.value })}
-                  margin="normal"
-                  required
-                />
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Student</InputLabel>
+                  <Select
+                    value={attendanceForm.studentId}
+                    onChange={(e) => setAttendanceForm({ ...attendanceForm, studentId: e.target.value })}
+                    label="Student"
+                    required
+                  >
+                    {students.map((student) => (
+                      <MenuItem key={student.id} value={student.id}>
+                        {student.name} ({student.studentClass})
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <TextField
                   fullWidth
                   type="date"
@@ -211,14 +224,21 @@ function TeacherDashboard() {
                 Enter Grades
               </Typography>
               <form onSubmit={handleEnterGrade}>
-                <TextField
-                  fullWidth
-                  label="Student ID"
-                  value={gradeForm.studentId}
-                  onChange={(e) => setGradeForm({ ...gradeForm, studentId: e.target.value })}
-                  margin="normal"
-                  required
-                />
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Student</InputLabel>
+                  <Select
+                    value={gradeForm.studentId}
+                    onChange={(e) => setGradeForm({ ...gradeForm, studentId: e.target.value })}
+                    label="Student"
+                    required
+                  >
+                    {students.map((student) => (
+                      <MenuItem key={student.id} value={student.id}>
+                        {student.name} ({student.studentClass})
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <TextField
                   fullWidth
                   label="Subject"

@@ -23,6 +23,11 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+    @GetMapping("/students/{className}")
+    public ResponseEntity<?> getStudentsByClass(@PathVariable String className) {
+        return ResponseEntity.ok(teacherService.getStudentsByClass(className));
+    }
+
     @PostMapping("/attendance")
     public ResponseEntity<?> markAttendance(@RequestBody AttendanceDTO dto) {
         return ResponseEntity.ok(teacherService.markAttendance(dto));

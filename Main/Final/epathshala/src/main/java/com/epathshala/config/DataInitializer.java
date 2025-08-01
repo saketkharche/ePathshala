@@ -7,6 +7,7 @@ import com.epathshala.entity.Parent;
 import com.epathshala.entity.Attendance;
 import com.epathshala.entity.Grade;
 import com.epathshala.entity.Assignment;
+import com.epathshala.entity.LeaveRequest;
 import com.epathshala.repository.UserRepository;
 import com.epathshala.repository.StudentRepository;
 import com.epathshala.repository.TeacherRepository;
@@ -14,6 +15,7 @@ import com.epathshala.repository.ParentRepository;
 import com.epathshala.repository.AttendanceRepository;
 import com.epathshala.repository.GradeRepository;
 import com.epathshala.repository.AssignmentRepository;
+import com.epathshala.repository.LeaveRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +40,8 @@ public class DataInitializer implements CommandLineRunner {
     private GradeRepository gradeRepository;
     @Autowired
     private AssignmentRepository assignmentRepository;
+    @Autowired
+    private LeaveRequestRepository leaveRequestRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -171,6 +175,23 @@ public class DataInitializer implements CommandLineRunner {
                     assignmentRepository.save(assignment);
                 }
                 System.out.println("✅ Sample assignments created!");
+            }
+
+            // Create sample leave requests
+            if (leaveRequestRepository.findAll().isEmpty()) {
+                String[] reasons = {"Medical appointment", "Family function", "Personal emergency", "Sports tournament"};
+                for (int i = 0; i < reasons.length; i++) {
+                    LeaveRequest leaveRequest = new LeaveRequest();
+                    leaveRequest.setStudent(student);
+                    leaveRequest.setReason(reasons[i]);
+                    leaveRequest.setFromDate(LocalDate.now().plusDays(i + 1));
+                    leaveRequest.setToDate(LocalDate.now().plusDays(i + 2));
+                    leaveRequest.setTeacherApproval("Pending");
+                    leaveRequest.setParentApproval("Pending");
+                    leaveRequest.setStatus("Pending");
+                    leaveRequestRepository.save(leaveRequest);
+                }
+                System.out.println("✅ Sample leave requests created!");
             }
         }
     }

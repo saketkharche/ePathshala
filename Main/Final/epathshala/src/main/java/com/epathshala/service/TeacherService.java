@@ -1,6 +1,7 @@
 package com.epathshala.service;
 
 import com.epathshala.dto.AttendanceDTO;
+import com.epathshala.dto.TeacherDashboardDTO;
 import com.epathshala.entity.Attendance;
 import com.epathshala.entity.Student;
 import com.epathshala.entity.Teacher;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -71,7 +73,19 @@ public class TeacherService {
         return Map.of("attendanceId", attendance.getId());
     }
 
-    public List<Attendance> getAttendanceByClass(String className) {
+    public List<TeacherDashboardDTO.StudentResponseDTO> getStudentsByClass(String className) {
+        return studentRepository.findAll().stream()
+            .filter(s -> className.equals(s.getStudentClass()))
+            .map(student -> new TeacherDashboardDTO.StudentResponseDTO(
+                student.getId(),
+                student.getUser().getName(),
+                student.getUser().getEmail(),
+                student.getStudentClass()
+            ))
+            .collect(Collectors.toList());
+    }
+
+    public List<TeacherDashboardDTO.AttendanceResponseDTO> getAttendanceByClass(String className) {
         // Fetch all students in the class
         List<Student> students = studentRepository.findAll();
         List<Long> studentIds = students.stream()
@@ -82,7 +96,14 @@ public class TeacherService {
         List<Attendance> attendanceList = attendanceRepository.findAll();
         return attendanceList.stream()
             .filter(a -> studentIds.contains(a.getStudent().getId()))
-            .toList();
+            .map(attendance -> new TeacherDashboardDTO.AttendanceResponseDTO(
+                attendance.getId(),
+                attendance.getStudent().getId(),
+                attendance.getStudent().getUser().getName(),
+                attendance.getDate(),
+                attendance.getStatus()
+            ))
+            .collect(Collectors.toList());
     }
 
     public Map<String, Object> enterGrade(GradeDTO dto) {
@@ -104,7 +125,7 @@ public class TeacherService {
         return Map.of("gradeId", grade.getId());
     }
 
-    public List<Grade> getGradesByClass(String className) {
+    public List<TeacherDashboardDTO.GradeResponseDTO> getGradesByClass(String className) {
         List<Student> students = studentRepository.findAll();
         List<Long> studentIds = students.stream()
             .filter(s -> className.equals(s.getStudentClass()))
@@ -113,7 +134,15 @@ public class TeacherService {
         List<Grade> grades = gradeRepository.findAll();
         return grades.stream()
             .filter(g -> studentIds.contains(g.getStudent().getId()))
-            .toList();
+            .map(grade -> new TeacherDashboardDTO.GradeResponseDTO(
+                grade.getId(),
+                grade.getStudent().getId(),
+                grade.getStudent().getUser().getName(),
+                grade.getSubject(),
+                grade.getMarks(),
+                null // remarks field not in entity
+            ))
+            .collect(Collectors.toList());
     }
 
     public Map<String, Object> uploadAssignment(AssignmentDTO dto) {
@@ -134,13 +163,21 @@ public class TeacherService {
         return Map.of("assignmentId", assignment.getId());
     }
 
-    public List<Assignment> getAssignmentsByClass(String className) {
+    public List<TeacherDashboardDTO.AssignmentResponseDTO> getAssignmentsByClass(String className) {
         return assignmentRepository.findAll().stream()
             .filter(a -> className.equals(a.getClassName()))
-            .toList();
+            .map(assignment -> new TeacherDashboardDTO.AssignmentResponseDTO(
+                assignment.getId(),
+                assignment.getTitle(),
+                assignment.getFileUrl(),
+                assignment.getDueDate(),
+                assignment.getSubject(),
+                assignment.getClassName()
+            ))
+            .collect(Collectors.toList());
     }
 
-    public List<LeaveRequest> getLeavesByClass(String className) {
+    public List<TeacherDashboardDTO.LeaveRequestResponseDTO> getLeavesByClass(String className) {
         List<Student> students = studentRepository.findAll();
         List<Long> studentIds = students.stream()
             .filter(s -> className.equals(s.getStudentClass()))
@@ -148,7 +185,18 @@ public class TeacherService {
             .toList();
         return leaveRequestRepository.findAll().stream()
             .filter(l -> studentIds.contains(l.getStudent().getId()))
-            .toList();
+            .map(leave -> new TeacherDashboardDTO.LeaveRequestResponseDTO(
+                leave.getId(),
+                leave.getStudent().getId(),
+                leave.getStudent().getUser().getName(),
+                leave.getReason(),
+                leave.getFromDate(),
+                leave.getToDate(),
+                leave.getTeacherApproval(),
+                leave.getParentApproval(),
+                leave.getStatus()
+            ))
+            .collect(Collectors.toList());
     }
 
     public Map<String, Object> approveLeave(LeaveApprovalDTO dto) {

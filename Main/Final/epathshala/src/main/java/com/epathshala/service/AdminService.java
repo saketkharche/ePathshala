@@ -1,6 +1,7 @@
 package com.epathshala.service;
 
 import com.epathshala.dto.UserDTO;
+import com.epathshala.dto.UserListDTO;
 import com.epathshala.entity.User;
 import com.epathshala.entity.Student;
 import com.epathshala.entity.Parent;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import com.epathshala.repository.TeacherRepository;
 import com.epathshala.dto.AcademicCalendarDTO;
 import com.epathshala.entity.AcademicCalendar;
@@ -121,17 +123,46 @@ public class AdminService {
 
         return Map.of("parentId", parent.getId(), "studentId", student != null ? student.getId() : null);
     }
-    public List<Object> getAllStudents() {
-        // TODO: Return all students
-        return List.of();
+    public List<UserListDTO> getAllStudents() {
+        return studentRepository.findAll().stream()
+            .map(student -> new UserListDTO(
+                student.getId(),
+                student.getUser().getName(),
+                student.getUser().getEmail(),
+                student.getUser().getRole(),
+                student.getStudentClass(),
+                null,
+                null
+            ))
+            .collect(Collectors.toList());
     }
-    public List<Object> getAllTeachers() {
-        // TODO: Return all teachers
-        return List.of();
+    
+    public List<UserListDTO> getAllTeachers() {
+        return teacherRepository.findAll().stream()
+            .map(teacher -> new UserListDTO(
+                teacher.getId(),
+                teacher.getUser().getName(),
+                teacher.getUser().getEmail(),
+                teacher.getUser().getRole(),
+                null,
+                teacher.getSubject(),
+                teacher.getAssignedClass()
+            ))
+            .collect(Collectors.toList());
     }
-    public List<Object> getAllParents() {
-        // TODO: Return all parents
-        return List.of();
+    
+    public List<UserListDTO> getAllParents() {
+        return parentRepository.findAll().stream()
+            .map(parent -> new UserListDTO(
+                parent.getId(),
+                parent.getUser().getName(),
+                parent.getUser().getEmail(),
+                parent.getUser().getRole(),
+                null,
+                null,
+                null
+            ))
+            .collect(Collectors.toList());
     }
     public void deleteUser(Long id) {
         // TODO: Delete user by id

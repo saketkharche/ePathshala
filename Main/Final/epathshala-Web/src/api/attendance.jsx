@@ -4,6 +4,11 @@ function authHeader() {
   return { Authorization: `Bearer ${getToken()}` };
 }
 
+export async function getStudentsByClass(className) {
+  const res = await fetch(`/api/teacher/students/${className}`, { headers: authHeader() });
+  return res.json();
+}
+
 export async function markAttendance(data) {
   const res = await fetch('/api/teacher/attendance', {
     method: 'POST',

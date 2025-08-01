@@ -4,6 +4,26 @@ function authHeader() {
   return { Authorization: `Bearer ${getToken()}` };
 }
 
+export async function testDatabase() {
+  const res = await fetch(`/api/student/test-db`, { headers: authHeader() });
+  return res.json();
+}
+
+export async function testAuth() {
+  const res = await fetch(`/api/student/test-auth`, { headers: authHeader() });
+  return res.json();
+}
+
+export async function debugDatabase() {
+  const res = await fetch(`/api/student/debug/database`, { headers: authHeader() });
+  return res.json();
+}
+
+export async function getStudentDetails(studentId) {
+  const res = await fetch(`/api/student/details/${studentId}`, { headers: authHeader() });
+  return res.json();
+}
+
 export async function getStudentsByClass(className) {
   const res = await fetch(`/api/teacher/students/${className}`, { headers: authHeader() });
   return res.json();

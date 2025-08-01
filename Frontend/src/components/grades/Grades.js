@@ -45,7 +45,7 @@ const Grades = () => {
 
   const fetchGrades = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/ePathshala/api/grades');
+      const response = await axios.get('http://localhost:5129/api/grades');
       setGrades(response.data);
     } catch (error) {
       console.error('Error fetching grades:', error);
@@ -54,7 +54,7 @@ const Grades = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/ePathshala/api/students');
+      const response = await axios.get('http://localhost:5129/api/students');
       setStudents(response.data);
     } catch (error) {
       console.error('Error fetching students:', error);
@@ -65,9 +65,9 @@ const Grades = () => {
     e.preventDefault();
     try {
       if (editingGrade) {
-        await axios.put(`http://localhost:8080/ePathshala/api/grades/${editingGrade.id}`, formData);
+        await axios.put(`http://localhost:5129/api/grades/${editingGrade.id}`, formData);
       } else {
-        await axios.post('http://localhost:8080/ePathshala/api/grades', formData);
+        await axios.post('http://localhost:5129/api/grades', formData);
       }
       fetchGrades();
       handleClose();
@@ -78,7 +78,7 @@ const Grades = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/ePathshala/api/grades/${id}`);
+      await axios.delete(`http://localhost:5129/api/grades/${id}`);
       fetchGrades();
     } catch (error) {
       console.error('Error deleting grade:', error);

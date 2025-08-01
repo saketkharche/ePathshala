@@ -28,20 +28,21 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, role) => {
     try {
-      const response = await axios.post('http://localhost:8080/ePathshala/api/auth/login', {
+      const response = await axios.post('http://localhost:5129/ePathshala/api/auth/login', {
         email,
         password,
         role
       });
 
-      const { token: newToken, user: userData } = response.data;
+      const { jwtToken: newToken, role: userRole, name: userName } = response.data;
+
       
       localStorage.setItem('token', newToken);
       setToken(newToken);
-      setUser(userData);
+      setUser({ name: userName, role: userRole });
       setIsAuthenticated(true);
-      
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      console.log("Login token:", newToken);
       
       return { success: true };
     } catch (error) {

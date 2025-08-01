@@ -39,9 +39,9 @@ const TeacherDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [assignmentsRes, gradesRes, attendanceRes] = await Promise.all([
-        axios.get('http://localhost:8080/ePathshala/api/assignments'),
-        axios.get('http://localhost:8080/ePathshala/api/grades'),
-        axios.get('http://localhost:8080/ePathshala/api/attendance')
+        axios.get('http://localhost:5129/api/assignments'),
+        axios.get('http://localhost:5129/api/grades'),
+        axios.get('http://localhost:5129/api/attendance')
       ]);
 
       setStats({

@@ -44,6 +44,13 @@ public class JwtService {
 	}
 
 	private Claims extractAllClaims(String token) {
-		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+	    if (token == null || token.isBlank() || !token.contains(".")) {
+	        throw new IllegalArgumentException("Invalid JWT format: token=" + token);
+	    }
+
+	    return Jwts.parser()
+	        .setSigningKey(SECRET_KEY)
+	        .parseClaimsJws(token)
+	        .getBody();
 	}
 }

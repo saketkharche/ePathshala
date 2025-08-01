@@ -42,7 +42,7 @@ const Assignments = () => {
 
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/ePathshala/api/assignments');
+      const response = await axios.get('http://localhost:5129/api/assignments');
       setAssignments(response.data);
     } catch (error) {
       console.error('Error fetching assignments:', error);
@@ -53,9 +53,9 @@ const Assignments = () => {
     e.preventDefault();
     try {
       if (editingAssignment) {
-        await axios.put(`http://localhost:8080/ePathshala/api/assignments/${editingAssignment.id}`, formData);
+        await axios.put(`http://localhost:5129/api/assignments/${editingAssignment.id}`, formData);
       } else {
-        await axios.post('http://localhost:8080/ePathshala/api/assignments', formData);
+        await axios.post('http://localhost:5129/api/assignments', formData);
       }
       fetchAssignments();
       handleClose();
@@ -66,7 +66,7 @@ const Assignments = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/ePathshala/api/assignments/${id}`);
+      await axios.delete(`http://localhost:5129/api/assignments/${id}`);
       fetchAssignments();
     } catch (error) {
       console.error('Error deleting assignment:', error);

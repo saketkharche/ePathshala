@@ -56,5 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 		}
 		filterChain.doFilter(request, response);
+		System.out.println("Raw Authorization header: " + authHeader);
 	}
+	
 }

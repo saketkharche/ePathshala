@@ -43,10 +43,10 @@ const AdminDashboard = () => {
     try {
       // Fetch statistics
       const [studentsRes, teachersRes, parentsRes, assignmentsRes] = await Promise.all([
-        axios.get('http://localhost:8080/ePathshala/api/students'),
-        axios.get('http://localhost:8080/ePathshala/api/teachers'),
-        axios.get('http://localhost:8080/ePathshala/api/parents'),
-        axios.get('http://localhost:8080/ePathshala/api/assignments')
+        axios.get('http://localhost:5129/ePathshala/api/students'),
+        axios.get('http://localhost:5129/ePathshala/api/teachers'),
+        axios.get('http://localhost:5129/ePathshala/api/parents'),
+        axios.get('http://localhost:5129/ePathshala/api/assignments')
       ]);
 
       setStats({

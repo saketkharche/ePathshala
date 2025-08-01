@@ -2,7 +2,11 @@ package com.ePathshala.dto;
 
 import com.ePathshala.enums.Role;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Data
 public class LoginResponse {

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Student Endpoints</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        pre { background-color: #f8f9fa; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Testing Student Endpoints</h1>
+    <button onclick="runAllTests()">Run All Tests</button>
+    <div id="results"></div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8081';
+        const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MUBlcGF0aHNoYWxhLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiZXhwIjoxNzU0MDc2ODI0LCJpYXQiOjE3NTQwNDA4MjR9.8UUu9hG9jXcDcTDVcNK9Mg1_F4OKD2RiMsYHi7O53fg';
+
+        const headers = {
+            'Authorization': `Bearer ${BEARER_TOKEN}`,
+            'Content-Type': 'application/json'
+        };
+
+        async function testEndpoint(endpoint, description) {
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.innerHTML = `<h3>${description}</h3><p>Testing: ${BASE_URL}${endpoint}</p>`;
+            document.getElementById('results').appendChild(div);
+
+            try {
+                const response = await fetch(`${BASE_URL}${endpoint}`, { headers });
+                const data = await response.json();
+                
+                div.innerHTML += `
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Response:</strong></p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+                if (response.ok) {
+                    div.className += ' success';
+                    div.innerHTML += '<p><strong>✅ SUCCESS</strong></p>';
+                } else {
+                    div.className += ' error';
+                    div.innerHTML += '<p><strong>❌ FAILED</strong></p>';
+                }
+            } catch (error) {
+                div.className += ' error';
+                div.innerHTML += `<p><strong>❌ ERROR:</strong> ${error.message}</p>`;
+            }
+        }
+
+        async function runAllTests() {
+            document.getElementById('results').innerHTML = '';
+            
+            console.log('🚀 Testing Student Endpoints with Bearer Token');
+            
+            // Test basic endpoints
+            await testEndpoint('/api/student/test-db', 'Database Test');
+            await testEndpoint('/api/student/test-auth', 'Authentication Test');
+            await testEndpoint('/api/student/debug/database', 'Debug Database');
+            
+            // Test data endpoints
+            await testEndpoint('/api/student/attendance/1', 'Get Attendance (User ID 1)');
+            await testEndpoint('/api/student/grades/1', 'Get Grades (User ID 1)');
+            await testEndpoint('/api/student/assignments/Class%2010A', 'Get Assignments (Class 10A)');
+            await testEndpoint('/api/student/leave/1', 'Get Leave Status (User ID 1)');
+            
+            console.log('🎯 Tests completed!');
+        }
+    </script>
+</body>
+</html> 

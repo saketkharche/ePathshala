@@ -186,12 +186,18 @@ public class DataInitializer implements CommandLineRunner {
         
         // Create sample assignments
         String[] assignmentTitles = {"Math Homework", "Science Project", "English Essay"};
+        String[] fileUrls = {
+            "/api/files/assignments/1753983287395_database.pdf",
+            "/api/files/assignments/1754043875194_database.pdf", 
+            "/api/files/assignments/1753983287395_database.pdf"
+        };
         for (int i = 0; i < assignmentTitles.length; i++) {
             Assignment assignment = new Assignment();
             assignment.setTitle(assignmentTitles[i]);
             assignment.setSubject(subjects[i]);
             assignment.setClassName(className);
             assignment.setDueDate(LocalDate.now().plusDays(7));
+            assignment.setFileUrl(fileUrls[i]);
             assignment.setTeacher(teacher);
             assignmentRepository.save(assignment);
         }

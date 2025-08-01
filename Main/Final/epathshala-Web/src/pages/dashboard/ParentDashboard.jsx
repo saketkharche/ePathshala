@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../utils/auth';
 import { getParentChildAttendance } from '../../api/attendance';
 import { getParentChildGrades } from '../../api/grades';
-import { getStudentAssignments } from '../../api/assignments';
 import { getParentChildLeaveStatus, approveLeaveAsParent } from '../../api/leave';
 import {
   Container,
@@ -28,9 +27,7 @@ function ParentDashboard() {
   const { user } = useAuth();
   const [attendance, setAttendance] = useState([]);
   const [grades, setGrades] = useState([]);
-  const [assignments, setAssignments] = useState([]);
   const [leaveStatus, setLeaveStatus] = useState([]);
-  const [className, setClassName] = useState('');
   const [leaveApproval, setLeaveApproval] = useState({ leaveId: '', approverRole: 'PARENT', approvalStatus: 'Approved' });
   const [message, setMessage] = useState('');
 
@@ -65,18 +62,6 @@ function ParentDashboard() {
   useEffect(() => {
     loadData();
   }, [loadData]);
-
-  const handleGetAssignments = async () => {
-    if (className) {
-      try {
-        const data = await getStudentAssignments(className);
-        setAssignments(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error('Error loading assignments:', error);
-        setAssignments([]);
-      }
-    }
-  };
 
   const handleApproveLeave = async (e) => {
     e.preventDefault();
@@ -171,55 +156,6 @@ function ParentDashboard() {
               ) : (
                 <Typography variant="body2" color="text.secondary">
                   No grades found
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Assignments */}
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Assignments
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <TextField
-                  placeholder="Class Name"
-                  value={className}
-                  onChange={(e) => setClassName(e.target.value)}
-                  size="small"
-                />
-                <Button variant="contained" onClick={handleGetAssignments}>
-                  Get Assignments
-                </Button>
-              </Box>
-              {assignments && assignments.length > 0 ? (
-                <List>
-                  {assignments.map((a) => (
-                    <ListItem key={a.id}>
-                      <ListItemText
-                        primary={a.title}
-                        secondary={`Due: ${a.dueDate} | Subject: ${a.subject}`}
-                      />
-                      {a.fileUrl && (
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          href={a.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Download
-                        </Button>
-                      )}
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  No assignments found
                 </Typography>
               )}
             </CardContent>

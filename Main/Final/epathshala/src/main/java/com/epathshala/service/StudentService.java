@@ -13,10 +13,12 @@ import com.epathshala.entity.Student;
 import com.epathshala.repository.StudentRepository;
 import com.epathshala.entity.User;
 import com.epathshala.repository.UserRepository;
+import com.epathshala.dto.StudentDashboardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -34,111 +36,161 @@ public class StudentService {
     private UserRepository userRepository;
 
     private Student findStudentByUserId(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            System.out.println("❌ User not found for ID: " + userId);
-            return null;
-        }
-        
-        Student student = studentRepository.findAll().stream()
-            .filter(s -> s.getUser().getId().equals(userId))
-            .findFirst()
-            .orElse(null);
+        try {
+            User user = userRepository.findById(userId).orElse(null);
+            if (user == null) {
+                System.out.println("❌ User not found for ID: " + userId);
+                return null;
+            }
             
-        if (student == null) {
-            System.out.println("❌ Student not found for User ID: " + userId);
+            List<Student> allStudents = studentRepository.findAll();
+            Student student = allStudents.stream()
+                .filter(s -> s.getUser() != null && s.getUser().getId().equals(userId))
+                .findFirst()
+                .orElse(null);
+                
+            if (student == null) {
+                System.out.println("❌ Student not found for User ID: " + userId);
+                return null;
+            }
+            
+            System.out.println("✅ Found student: " + student.getUser().getName() + " for User ID: " + userId);
+            return student;
+        } catch (Exception e) {
+            System.out.println("❌ Error in findStudentByUserId: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
-        
-        System.out.println("✅ Found student: " + student.getUser().getName() + " (ID: " + student.getId() + ") for User ID: " + userId);
-        return student;
     }
 
-    public List<Attendance> getAttendance(Long userId) {
-        System.out.println("🔍 Getting attendance for user ID: " + userId);
-        Student student = findStudentByUserId(userId);
-        if (student == null) {
-            System.out.println("❌ No student found for user ID: " + userId);
+    public List<StudentDashboardDTO.AttendanceResponseDTO> getAttendance(Long userId) {
+        try {
+            Student student = findStudentByUserId(userId);
+            if (student == null) {
+                return List.of();
+            }
+            
+            List<Attendance> allAttendance = attendanceRepository.findAll();
+            List<StudentDashboardDTO.AttendanceResponseDTO> studentAttendance = allAttendance.stream()
+                .filter(a -> a.getStudent() != null && a.getStudent().getId().equals(student.getId()))
+                .map(a -> new StudentDashboardDTO.AttendanceResponseDTO(
+                    a.getId(),
+                    a.getDate(),
+                    a.getStatus(),
+                    a.getMarkedBy() != null ? a.getMarkedBy().getUser().getName() : "Unknown"
+                ))
+                .collect(Collectors.toList());
+            
+            System.out.println("✅ Found " + studentAttendance.size() + " attendance records for student " + student.getId());
+            return studentAttendance;
+        } catch (Exception e) {
+            System.out.println("❌ Error in getAttendance: " + e.getMessage());
+            e.printStackTrace();
             return List.of();
         }
-        
-        List<Attendance> allAttendance = attendanceRepository.findAll();
-        System.out.println("📊 Total attendance records in DB: " + allAttendance.size());
-        
-        List<Attendance> studentAttendance = allAttendance.stream()
-            .filter(a -> a.getStudent().getId().equals(student.getId()))
-            .toList();
-        
-        System.out.println("✅ Found " + studentAttendance.size() + " attendance records for student " + student.getId());
-        return studentAttendance;
     }
 
-    public List<Grade> getGrades(Long userId) {
-        System.out.println("🔍 Getting grades for user ID: " + userId);
-        Student student = findStudentByUserId(userId);
-        if (student == null) {
-            System.out.println("❌ No student found for user ID: " + userId);
+    public List<StudentDashboardDTO.GradeResponseDTO> getGrades(Long userId) {
+        try {
+            Student student = findStudentByUserId(userId);
+            if (student == null) {
+                return List.of();
+            }
+            
+            List<Grade> allGrades = gradeRepository.findAll();
+            List<StudentDashboardDTO.GradeResponseDTO> studentGrades = allGrades.stream()
+                .filter(g -> g.getStudent() != null && g.getStudent().getId().equals(student.getId()))
+                .map(g -> new StudentDashboardDTO.GradeResponseDTO(
+                    g.getId(),
+                    g.getSubject(),
+                    g.getMarks(),
+                    g.getTeacher() != null ? g.getTeacher().getUser().getName() : "Unknown"
+                ))
+                .collect(Collectors.toList());
+            
+            System.out.println("✅ Found " + studentGrades.size() + " grade records for student " + student.getId());
+            return studentGrades;
+        } catch (Exception e) {
+            System.out.println("❌ Error in getGrades: " + e.getMessage());
+            e.printStackTrace();
             return List.of();
         }
-        
-        List<Grade> allGrades = gradeRepository.findAll();
-        System.out.println("📊 Total grade records in DB: " + allGrades.size());
-        
-        List<Grade> studentGrades = allGrades.stream()
-            .filter(g -> g.getStudent().getId().equals(student.getId()))
-            .toList();
-        
-        System.out.println("✅ Found " + studentGrades.size() + " grade records for student " + student.getId());
-        return studentGrades;
     }
 
-    public List<Assignment> getAssignmentsByClass(String className) {
-        System.out.println("🔍 Getting assignments for class: " + className);
-        List<Assignment> allAssignments = assignmentRepository.findAll();
-        System.out.println("📊 Total assignment records in DB: " + allAssignments.size());
-        
-        List<Assignment> classAssignments = allAssignments.stream()
-            .filter(a -> className.equals(a.getClassName()))
-            .toList();
-        
-        System.out.println("✅ Found " + classAssignments.size() + " assignment records for class " + className);
-        return classAssignments;
+    public List<StudentDashboardDTO.AssignmentResponseDTO> getAssignmentsByClass(String className) {
+        try {
+            List<Assignment> allAssignments = assignmentRepository.findAll();
+            List<StudentDashboardDTO.AssignmentResponseDTO> classAssignments = allAssignments.stream()
+                .filter(a -> className != null && className.equals(a.getClassName()))
+                .map(a -> new StudentDashboardDTO.AssignmentResponseDTO(
+                    a.getId(),
+                    a.getTitle(),
+                    a.getSubject(),
+                    a.getDueDate(),
+                    a.getFileUrl()
+                ))
+                .collect(Collectors.toList());
+            
+            System.out.println("✅ Found " + classAssignments.size() + " assignment records for class " + className);
+            return classAssignments;
+        } catch (Exception e) {
+            System.out.println("❌ Error in getAssignmentsByClass: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public Map<String, Object> submitLeave(LeaveRequestDTO dto) {
-        Student student = findStudentByUserId(dto.getStudentId());
-        if (student == null) {
-            return Map.of("error", "Student not found");
+        try {
+            Student student = findStudentByUserId(dto.getStudentId());
+            if (student == null) {
+                return Map.of("error", "Student not found");
+            }
+            
+            LeaveRequest leave = new LeaveRequest();
+            leave.setStudent(student);
+            leave.setReason(dto.getReason());
+            leave.setFromDate(dto.getFromDate());
+            leave.setToDate(dto.getToDate());
+            leave.setTeacherApproval("Pending");
+            leave.setParentApproval("Pending");
+            leave.setStatus("Pending");
+            leaveRequestRepository.save(leave);
+            return Map.of("leaveId", leave.getId());
+        } catch (Exception e) {
+            System.out.println("❌ Error in submitLeave: " + e.getMessage());
+            e.printStackTrace();
+            return Map.of("error", "Failed to submit leave request");
         }
-        
-        LeaveRequest leave = new LeaveRequest();
-        leave.setStudent(student);
-        leave.setReason(dto.getReason());
-        leave.setFromDate(dto.getFromDate());
-        leave.setToDate(dto.getToDate());
-        leave.setTeacherApproval("Pending");
-        leave.setParentApproval("Pending");
-        leave.setStatus("Pending");
-        leaveRequestRepository.save(leave);
-        return Map.of("leaveId", leave.getId());
     }
 
-    public List<LeaveRequest> getLeaveStatus(Long userId) {
-        System.out.println("🔍 Getting leave status for user ID: " + userId);
-        Student student = findStudentByUserId(userId);
-        if (student == null) {
-            System.out.println("❌ No student found for user ID: " + userId);
+    public List<StudentDashboardDTO.LeaveRequestResponseDTO> getLeaveStatus(Long userId) {
+        try {
+            Student student = findStudentByUserId(userId);
+            if (student == null) {
+                return List.of();
+            }
+            
+            List<LeaveRequest> allLeaves = leaveRequestRepository.findAll();
+            List<StudentDashboardDTO.LeaveRequestResponseDTO> studentLeaves = allLeaves.stream()
+                .filter(l -> l.getStudent() != null && l.getStudent().getId().equals(student.getId()))
+                .map(l -> new StudentDashboardDTO.LeaveRequestResponseDTO(
+                    l.getId(),
+                    l.getReason(),
+                    l.getFromDate(),
+                    l.getToDate(),
+                    l.getTeacherApproval(),
+                    l.getParentApproval(),
+                    l.getStatus()
+                ))
+                .collect(Collectors.toList());
+            
+            System.out.println("✅ Found " + studentLeaves.size() + " leave records for student " + student.getId());
+            return studentLeaves;
+        } catch (Exception e) {
+            System.out.println("❌ Error in getLeaveStatus: " + e.getMessage());
+            e.printStackTrace();
             return List.of();
         }
-        
-        List<LeaveRequest> allLeaves = leaveRequestRepository.findAll();
-        System.out.println("📊 Total leave records in DB: " + allLeaves.size());
-        
-        List<LeaveRequest> studentLeaves = allLeaves.stream()
-            .filter(l -> l.getStudent().getId().equals(student.getId()))
-            .toList();
-        
-        System.out.println("✅ Found " + studentLeaves.size() + " leave records for student " + student.getId());
-        return studentLeaves;
     }
 }

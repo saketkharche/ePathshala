@@ -1,52 +1,25 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Box, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, TextField, Button, Alert, Divider } from '@mui/material';
 import { useAuth } from '../../utils/auth';
-import { getStudentAttendance, debugDatabase, testAuth, testDatabase } from '../../api/attendance';
+import { getStudentAttendance, debugDatabase, testAuth, testDatabase, getStudentDetails } from '../../api/attendance';
 import { getStudentGrades } from '../../api/grades';
 import { getStudentAssignments } from '../../api/assignments';
-import { submitLeave, getStudentLeaveStatus } from '../../api/leave';
-import { jsPDF } from 'jspdf';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, Alert } from '@mui/material';
+import { getStudentLeaveStatus, submitLeave } from '../../api/leave';
 
 function StudentDashboard() {
   const { user } = useAuth();
   const [attendance, setAttendance] = useState([]);
   const [grades, setGrades] = useState([]);
   const [assignments, setAssignments] = useState([]);
-  const [leaveStatus, setLeaveStatus] = useState('');
+  const [leaveStatus, setLeaveStatus] = useState([]);
   const [leaveReason, setLeaveReason] = useState('');
   const [leaveFromDate, setLeaveFromDate] = useState('');
   const [leaveToDate, setLeaveToDate] = useState('');
-  const [studentClass, setStudentClass] = useState('Class 10A'); // Default class
-  const [debugInfo, setDebugInfo] = useState(null);
-  const [authTest, setAuthTest] = useState(null);
-  const [dbTest, setDbTest] = useState(null);
   const [errors, setErrors] = useState([]);
-
-  // Simple mapping based on user email to determine class
-  const getStudentClass = (email) => {
-    switch(email) {
-      case 'student1@epathshala.com':
-        return 'Class 10A';
-      case 'student2@epathshala.com':
-        return 'Class 10B';
-      case 'student3@epathshala.com':
-        return 'Class 9A';
-      default:
-        return 'Class 10A'; // Default fallback
-    }
-  };
-
-  const testDatabaseState = useCallback(async () => {
-    try {
-      const dbResult = await testDatabase();
-      console.log('🗄️ Database Test Result:', dbResult);
-      setDbTest(dbResult);
-    } catch (error) {
-      console.error('❌ Database Test Failed:', error);
-      setErrors(prev => [...prev, `Database Test Failed: ${error.message}`]);
-    }
-  }, []);
+  const [authTest, setAuthTest] = useState(null);
+  const [debugInfo, setDebugInfo] = useState(null);
+  const [dbTest, setDbTest] = useState(null);
+  const [studentDetails, setStudentDetails] = useState(null);
 
   const testAuthentication = useCallback(async () => {
     try {
@@ -61,14 +34,38 @@ function StudentDashboard() {
 
   const loadDebugInfo = useCallback(async () => {
     try {
-      const debugData = await debugDatabase();
-      console.log('🔍 Debug Database Info:', debugData);
-      setDebugInfo(debugData);
+      const debugResult = await debugDatabase();
+      console.log('🔍 Debug Info Result:', debugResult);
+      setDebugInfo(debugResult);
     } catch (error) {
-      console.error('❌ Debug Database Failed:', error);
-      setErrors(prev => [...prev, `Debug Database Failed: ${error.message}`]);
+      console.error('❌ Debug Info Failed:', error);
+      setErrors(prev => [...prev, `Debug Info Failed: ${error.message}`]);
     }
   }, []);
+
+  const testDatabaseState = useCallback(async () => {
+    try {
+      const dbResult = await testDatabase();
+      console.log('🗄️ Database Test Result:', dbResult);
+      setDbTest(dbResult);
+    } catch (error) {
+      console.error('❌ Database Test Failed:', error);
+      setErrors(prev => [...prev, `Database Test Failed: ${error.message}`]);
+    }
+  }, []);
+
+  const loadStudentDetails = useCallback(async () => {
+    if (!user?.id) return;
+    
+    try {
+      const details = await getStudentDetails(user.id);
+      console.log('👤 Student Details:', details);
+      setStudentDetails(details);
+    } catch (error) {
+      console.error('❌ Error loading student details:', error);
+      setErrors(prev => [...prev, `Student details failed: ${error.message}`]);
+    }
+  }, [user?.id]);
 
   const loadData = useCallback(async () => {
     if (!user?.id) return;
@@ -79,74 +76,90 @@ function StudentDashboard() {
     // Test authentication
     await testAuthentication();
     
-    // Load debug info
+    // Load debug information
     await loadDebugInfo();
     
-    // Determine class based on user email
-    const userClass = getStudentClass(user.email);
-    setStudentClass(userClass);
+    // Load student details (including class)
+    await loadStudentDetails();
     
     try {
-      console.log('Loading data for user:', user.id);
-      console.log('User email:', user.email);
-      console.log('Using class:', userClass);
+      console.log('📊 Loading data for user ID:', user.id);
       
-      const [attendanceData, gradesData, assignmentsData] = await Promise.all([
-        getStudentAttendance(user.id),
-        getStudentGrades(user.id),
-        getStudentAssignments(userClass) // Use className instead of studentId
-      ]);
+      // Load attendance
+      const attendanceData = await getStudentAttendance(user.id);
+      console.log('📊 Attendance data:', attendanceData);
+      setAttendance(attendanceData);
       
-      console.log('API Response - Attendance:', attendanceData);
-      console.log('API Response - Grades:', gradesData);
-      console.log('API Response - Assignments:', assignmentsData);
+      // Load grades
+      const gradesData = await getStudentGrades(user.id);
+      console.log('📊 Grades data:', gradesData);
+      setGrades(gradesData);
       
-      // Ensure data is always an array
-      setAttendance(Array.isArray(attendanceData) ? attendanceData : []);
-      setGrades(Array.isArray(gradesData) ? gradesData : []);
-      setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
+      // Load leave status
+      const leaveData = await getStudentLeaveStatus(user.id);
+      console.log('📊 Leave data:', leaveData);
+      setLeaveStatus(leaveData);
+      
     } catch (error) {
-      console.error('Error loading data:', error);
-      setErrors(prev => [...prev, `Data Loading Failed: ${error.message}`]);
-      // Set empty arrays on error
-      setAttendance([]);
-      setGrades([]);
-      setAssignments([]);
+      console.error('❌ Error loading data:', error);
+      setErrors(prev => [...prev, `Data loading failed: ${error.message}`]);
     }
-  }, [user?.id, user?.email, testDatabaseState, testAuthentication, loadDebugInfo]);
+  }, [user?.id, user?.email, testDatabaseState, testAuthentication, loadDebugInfo, loadStudentDetails]);
+
+  // Load assignments after student details are available
+  const loadAssignments = useCallback(async () => {
+    if (!studentDetails?.studentClass) return;
+    
+    try {
+      const assignmentsData = await getStudentAssignments(studentDetails.studentClass);
+      console.log('📊 Assignments data for class:', studentDetails.studentClass, assignmentsData);
+      setAssignments(assignmentsData);
+    } catch (error) {
+      console.error('❌ Error loading assignments:', error);
+      setErrors(prev => [...prev, `Assignments loading failed: ${error.message}`]);
+    }
+  }, [studentDetails?.studentClass]);
 
   useEffect(() => {
-    if (user) {
-      loadData();
-    }
-  }, [user, loadData]);
+    loadData();
+  }, [loadData]);
+
+  useEffect(() => {
+    loadAssignments();
+  }, [loadAssignments]);
 
   const handleSubmitLeave = async (e) => {
     e.preventDefault();
     try {
-      await submitLeave({
+      const result = await submitLeave({
         studentId: user.id,
         reason: leaveReason,
         fromDate: leaveFromDate,
         toDate: leaveToDate
       });
-      setLeaveReason('');
-      setLeaveFromDate('');
-      setLeaveToDate('');
-      alert('Leave request submitted successfully!');
+      
+      if (result.error) {
+        setErrors(prev => [...prev, result.error]);
+      } else {
+        // Clear form and reload leave status
+        setLeaveReason('');
+        setLeaveFromDate('');
+        setLeaveToDate('');
+        const updatedLeaveStatus = await getStudentLeaveStatus(user.id);
+        setLeaveStatus(updatedLeaveStatus);
+      }
     } catch (error) {
       console.error('Error submitting leave:', error);
-      alert('Error submitting leave request');
+      setErrors(prev => [...prev, `Leave submission failed: ${error.message}`]);
     }
   };
 
   const handleExportPDF = () => {
+    const { jsPDF } = require('jspdf');
     const doc = new jsPDF();
-    doc.text('Student Grades Report', 10, 10);
-    let y = 20;
-    grades.forEach(g => {
-      doc.text(`${g.subject}: ${g.marks}`, 10, y);
-      y += 10;
+    doc.text('Student Grades Report', 20, 20);
+    grades.forEach((grade, index) => {
+      doc.text(`${grade.subject}: ${grade.marks}`, 20, 40 + (index * 10));
     });
     doc.save('grades.pdf');
   };
@@ -157,6 +170,7 @@ function StudentDashboard() {
       setLeaveStatus(status);
     } catch (error) {
       console.error('Error checking leave status:', error);
+      setErrors(prev => [...prev, `Leave status check failed: ${error.message}`]);
     }
   };
 
@@ -169,7 +183,7 @@ function StudentDashboard() {
         Welcome, {user?.name}!
       </Typography>
       <Typography variant="body2" color="text.secondary" gutterBottom>
-        Class: {studentClass}
+        Class: {studentDetails?.studentClass || 'Loading...'}
       </Typography>
       <Typography variant="body2" color="text.secondary" gutterBottom>
         Email: {user?.email}
@@ -259,8 +273,8 @@ function StudentDashboard() {
                   attendance.map((record, index) => (
                     <ListItem key={index}>
                       <ListItemText
-                        primary={`Date: ${record.date}`}
-                        secondary={`Status: ${record.status}`}
+                        primary={`${record.date} - ${record.status}`}
+                        secondary={`Marked by: ${record.markedByTeacher}`}
                       />
                     </ListItem>
                   ))
@@ -281,21 +295,13 @@ function StudentDashboard() {
               <Typography variant="h6" gutterBottom>
                 Grades
               </Typography>
-              <Button 
-                variant="contained" 
-                color="primary" 
-                onClick={handleExportPDF} 
-                sx={{ mb: 2 }}
-                disabled={!grades || grades.length === 0}
-              >
-                Export Grades to PDF
-              </Button>
               <List>
                 {grades && grades.length > 0 ? (
                   grades.map((grade, index) => (
                     <ListItem key={index}>
                       <ListItemText
                         primary={`${grade.subject}: ${grade.marks}`}
+                        secondary={`Teacher: ${grade.teacherName}`}
                       />
                     </ListItem>
                   ))
@@ -305,24 +311,13 @@ function StudentDashboard() {
                   </ListItem>
                 )}
               </List>
-              
-              {/* Grades Analytics */}
-              {grades && grades.length > 0 && (
-                <>
-                  <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
-                    Grades Analytics
-                  </Typography>
-                  <ResponsiveContainer width="100%" height={250}>
-                    <BarChart data={grades} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="subject" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="marks" fill="#1976d2" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </>
-              )}
+              <Button 
+                variant="outlined" 
+                onClick={handleExportPDF}
+                sx={{ mt: 1 }}
+              >
+                Export PDF
+              </Button>
             </CardContent>
           </Card>
         </Grid>
@@ -342,6 +337,18 @@ function StudentDashboard() {
                         primary={assignment.title}
                         secondary={`Due: ${assignment.dueDate} | Subject: ${assignment.subject}`}
                       />
+                      {assignment.fileUrl && (
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          href={assignment.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{ ml: 1 }}
+                        >
+                          Download
+                        </Button>
+                      )}
                     </ListItem>
                   ))
                 ) : (
@@ -410,9 +417,22 @@ function StudentDashboard() {
               >
                 Check Leave Status
               </Button>
-              {leaveStatus && (
+              
+              {/* Leave Status Display */}
+              {leaveStatus && leaveStatus.length > 0 ? (
+                <List>
+                  {leaveStatus.map((leave, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={`${leave.reason} (${leave.fromDate} to ${leave.toDate})`}
+                        secondary={`Status: ${leave.status} | Teacher: ${leave.teacherApproval} | Parent: ${leave.parentApproval}`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
                 <Typography variant="body2" color="text.secondary">
-                  Leave Status: {leaveStatus}
+                  No leave requests found
                 </Typography>
               )}
             </CardContent>

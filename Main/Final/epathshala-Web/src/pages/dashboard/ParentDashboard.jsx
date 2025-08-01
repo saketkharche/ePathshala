@@ -3,6 +3,7 @@ import { useAuth } from '../../utils/auth';
 import { getParentChildAttendance } from '../../api/attendance';
 import { getParentChildGrades } from '../../api/grades';
 import { getParentChildLeaveStatus, approveLeaveAsParent } from '../../api/leave';
+import { getEvents } from '../../api/calendar';
 import {
   Container,
   Typography,
@@ -28,6 +29,7 @@ function ParentDashboard() {
   const [attendance, setAttendance] = useState([]);
   const [grades, setGrades] = useState([]);
   const [leaveStatus, setLeaveStatus] = useState([]);
+  const [calendarEvents, setCalendarEvents] = useState([]);
   const [leaveApproval, setLeaveApproval] = useState({ leaveId: '', approverRole: 'PARENT', approvalStatus: 'Approved' });
   const [message, setMessage] = useState('');
 
@@ -56,6 +58,14 @@ function ParentDashboard() {
     } catch (error) {
       console.error('Error loading leave status:', error);
       setLeaveStatus([]);
+    }
+
+    try {
+      const calendarData = await getEvents();
+      setCalendarEvents(Array.isArray(calendarData) ? calendarData : []);
+    } catch (error) {
+      console.error('Error loading calendar events:', error);
+      setCalendarEvents([]);
     }
   }, [user?.id]);
 
@@ -243,6 +253,33 @@ function ParentDashboard() {
               ) : (
                 <Typography variant="body2" color="text.secondary">
                   No leave requests found
+                </Typography>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Academic Calendar */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Academic Calendar
+              </Typography>
+              {calendarEvents && calendarEvents.length > 0 ? (
+                <List>
+                  {calendarEvents.map((event, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={event.eventName}
+                        secondary={`${event.date} - ${event.description}`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  No calendar events found
                 </Typography>
               )}
             </CardContent>

@@ -39,6 +39,9 @@ public class DataInitializer implements CommandLineRunner {
     private LeaveRequestRepository leaveRequestRepository;
     
     @Autowired
+    private AcademicCalendarRepository academicCalendarRepository;
+    
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -148,6 +151,9 @@ public class DataInitializer implements CommandLineRunner {
         createSampleDataForStudent(s1, t1, "Class 10A");
         createSampleDataForStudent(s2, t2, "Class 10B");
         createSampleDataForStudent(s3, t3, "Class 9A");
+        
+        // Create sample calendar events
+        createSampleCalendarEvents();
     }
 
     private User createUser(String name, String email, String password, String role) {
@@ -217,5 +223,45 @@ public class DataInitializer implements CommandLineRunner {
         }
         
         System.out.println("✅ Sample data created for " + student.getUser().getName());
+    }
+
+    private void createSampleCalendarEvents() {
+        System.out.println("📅 Creating sample calendar events...");
+        
+        String[] eventNames = {
+            "Annual Sports Day",
+            "Parent-Teacher Meeting",
+            "Science Exhibition",
+            "Annual Day Celebration",
+            "Mid-Term Examinations",
+            "Republic Day Celebration",
+            "Independence Day Celebration",
+            "Teachers' Day",
+            "Children's Day",
+            "Christmas Celebration"
+        };
+        
+        String[] descriptions = {
+            "Annual sports competition for all students",
+            "Meeting between parents and teachers to discuss student progress",
+            "Students showcase their science projects",
+            "Annual cultural and academic celebration",
+            "Mid-term examinations for all classes",
+            "Republic Day celebration with cultural programs",
+            "Independence Day celebration with flag hoisting",
+            "Teachers' Day celebration by students",
+            "Children's Day celebration with fun activities",
+            "Christmas celebration with carols and gifts"
+        };
+        
+        for (int i = 0; i < eventNames.length; i++) {
+            AcademicCalendar event = new AcademicCalendar();
+            event.setEventName(eventNames[i]);
+            event.setDescription(descriptions[i]);
+            event.setDate(LocalDate.now().plusDays(i * 15)); // Spread events over time
+            academicCalendarRepository.save(event);
+        }
+        
+        System.out.println("✅ Sample calendar events created!");
     }
 } 

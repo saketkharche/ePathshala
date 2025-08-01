@@ -491,6 +491,32 @@ function TeacherDashboard() {
             </CardContent>
           </Card>
         </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Academic Calendar
+              </Typography>
+              <List>
+                {calendarEvents && calendarEvents.length > 0 ? (
+                  calendarEvents.map((event, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={event.eventName}
+                        secondary={`${event.date} - ${event.description}`}
+                      />
+                    </ListItem>
+                  ))
+                ) : (
+                  <ListItem>
+                    <ListItemText primary="No calendar events found" />
+                  </ListItem>
+                )}
+              </List>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </Box>
   );

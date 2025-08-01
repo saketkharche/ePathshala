@@ -1,5 +1,6 @@
 package com.epathshala.controller;
 
+import com.epathshala.entity.AcademicCalendar;
 import com.epathshala.repository.AcademicCalendarRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

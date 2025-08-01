@@ -1,13 +1,14 @@
 package com.epathshala.controller;
 
 import com.epathshala.dto.LoginRequest;
+import com.epathshala.dto.ForgotPasswordRequest;
+import com.epathshala.dto.VerifyOtpRequest;
 import com.epathshala.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,15 +23,33 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(req));
     }
 
-    @PostMapping("/forgot-password")
-    @Operation(summary = "Forgot Password", description = "Request password reset for the given email (Admin Only)")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
-        return ResponseEntity.ok(authService.forgotPassword(email));
+    @PostMapping("/logout")
+    @Operation(summary = "User Logout", description = "Logout user and invalidate session")
+    public ResponseEntity<?> logout(@RequestParam String sessionId) {
+        return ResponseEntity.ok(authService.logout(sessionId));
     }
 
-    @PostMapping("/reset-password")
-    @Operation(summary = "Reset Password", description = "Reset password for the given email with new password (Admin Only)")
-    public ResponseEntity<?> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
-        return ResponseEntity.ok(authService.resetPassword(email, newPassword));
+    @GetMapping("/session/{sessionId}")
+    @Operation(summary = "Get Session Info", description = "Get information about a specific session")
+    public ResponseEntity<?> getSessionInfo(@PathVariable String sessionId) {
+        return ResponseEntity.ok(authService.getSessionInfo(sessionId));
+    }
+
+    @GetMapping("/sessions")
+    @Operation(summary = "Get All Active Sessions", description = "Get information about all active sessions (Admin Only)")
+    public ResponseEntity<?> getAllSessions() {
+        return ResponseEntity.ok(authService.getAllActiveSessions());
+    }
+
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Forgot Password", description = "Request OTP for password reset")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        return ResponseEntity.ok(authService.forgotPassword(request.getEmail()));
+    }
+
+    @PostMapping("/verify-otp")
+    @Operation(summary = "Verify OTP and Reset Password", description = "Verify OTP and reset password")
+    public ResponseEntity<?> verifyOtpAndResetPassword(@RequestBody VerifyOtpRequest request) {
+        return ResponseEntity.ok(authService.verifyOtpAndResetPassword(request));
     }
 }

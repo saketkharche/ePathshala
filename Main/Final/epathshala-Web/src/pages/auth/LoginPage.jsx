@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../utils/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -38,6 +38,12 @@ function LoginPage() {
         </select>
         <button type="submit">Login</button>
       </form>
+      
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <Link to="/forgot-password" style={{ color: '#1976d2', textDecoration: 'none' }}>
+          Forgot Password?
+        </Link>
+      </div>
     </div>
   );
 }

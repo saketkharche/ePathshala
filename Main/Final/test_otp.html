@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .step { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        input, button { margin: 10px 0; padding: 10px; width: 100%; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OTP Password Reset Test</h1>
+        
+        <div class="step">
+            <h3>Step 1: Request OTP</h3>
+            <input type="email" id="email" placeholder="Enter email" value="admin@epathshala.com">
+            <button onclick="requestOtp()">Request OTP</button>
+            <div id="otpResult"></div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Verify OTP and Reset Password</h3>
+            <input type="text" id="otp" placeholder="Enter OTP (check terminal)">
+            <input type="password" id="newPassword" placeholder="New Password">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password">
+            <button onclick="verifyOtp()">Reset Password</button>
+            <div id="verifyResult"></div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Test Login with New Password</h3>
+            <button onclick="testLogin()">Test Login</button>
+            <div id="loginResult"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentEmail = '';
+        let currentPassword = '';
+
+        async function requestOtp() {
+            const email = document.getElementById('email').value;
+            currentEmail = email;
+            
+            try {
+                console.log('Requesting OTP for:', email);
+                const response = await fetch('/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                console.log('OTP Response:', data);
+                
+                if (response.ok) {
+                    document.getElementById('otpResult').innerHTML = 
+                        `<div class="success">✅ ${data.message}</div>
+                         <div class="info">📧 Email: ${data.email}</div>
+                         <div class="info">⏰ Expires: ${data.expiresAt}</div>
+                         <div class="info">🔐 Check terminal for OTP code!</div>`;
+                } else {
+                    document.getElementById('otpResult').innerHTML = 
+                        `<div class="error">❌ ${data.error}</div>`;
+                }
+            } catch (error) {
+                console.error('Error requesting OTP:', error);
+                document.getElementById('otpResult').innerHTML = 
+                    `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function verifyOtp() {
+            const otp = document.getElementById('otp').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                document.getElementById('verifyResult').innerHTML = 
+                    `<div class="error">❌ Passwords do not match</div>`;
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                document.getElementById('verifyResult').innerHTML = 
+                    `<div class="error">❌ Password must be at least 6 characters</div>`;
+                return;
+            }
+            
+            try {
+                console.log('Verifying OTP for:', currentEmail);
+                const response = await fetch('/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: currentEmail, 
+                        otp: otp, 
+                        newPassword: newPassword 
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Verify Response:', data);
+                
+                if (response.ok) {
+                    document.getElementById('verifyResult').innerHTML = 
+                        `<div class="success">✅ ${data.message}</div>`;
+                    currentPassword = newPassword;
+                } else {
+                    document.getElementById('verifyResult').innerHTML = 
+                        `<div class="error">❌ ${data.error}</div>`;
+                }
+            } catch (error) {
+                console.error('Error verifying OTP:', error);
+                document.getElementById('verifyResult').innerHTML = 
+                    `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testLogin() {
+            try {
+                console.log('Testing login with new password');
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: currentEmail, 
+                        password: currentPassword, 
+                        role: 'ADMIN' 
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Login Response:', data);
+                
+                if (response.ok) {
+                    document.getElementById('loginResult').innerHTML = 
+                        `<div class="success">✅ Login successful with new password!</div>
+                         <div class="info">Token: ${data.token.substring(0, 20)}...</div>`;
+                } else {
+                    document.getElementById('loginResult').innerHTML = 
+                        `<div class="error">❌ Login failed: ${data.error}</div>`;
+                }
+            } catch (error) {
+                console.error('Error testing login:', error);
+                document.getElementById('loginResult').innerHTML = 
+                    `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html> 

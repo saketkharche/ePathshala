@@ -1,10 +1,26 @@
 import { getToken } from '../utils/auth';
 
 function authHeader() {
-  return { Authorization: `Bearer ${getToken()}` };
+  const token = localStorage.getItem('token');
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
 }
 
 export async function getEvents() {
-  const res = await fetch('/api/admin/calendar', { headers: authHeader() });
-  return res.json();
+  const response = await fetch('/api/calendar/events', {
+    headers: {
+      'Content-Type': 'application/json',
+      ...authHeader()
+    }
+  });
+  return response.json();
+}
+
+export async function getUpcomingEvents() {
+  const response = await fetch('/api/calendar/events/upcoming', {
+    headers: {
+      'Content-Type': 'application/json',
+      ...authHeader()
+    }
+  });
+  return response.json();
 }

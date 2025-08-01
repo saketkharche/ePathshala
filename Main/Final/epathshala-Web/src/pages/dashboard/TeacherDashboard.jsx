@@ -4,6 +4,7 @@ import { markAttendance, getAttendanceByClass, getStudentsByClass } from '../../
 import { enterGrade, getGradesByClass } from '../../api/grades';
 import { uploadAssignment, getAssignmentsByClass, uploadAssignmentFile } from '../../api/assignments';
 import { getLeavesByClass, approveLeaveAsTeacher } from '../../api/leave';
+import { getEvents } from '../../api/calendar';
 import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 function TeacherDashboard() {
@@ -13,6 +14,7 @@ function TeacherDashboard() {
   const [assignments, setAssignments] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [students, setStudents] = useState([]);
+  const [calendarEvents, setCalendarEvents] = useState([]);
   
   // Attendance form state
   const [attendanceForm, setAttendanceForm] = useState({
@@ -50,12 +52,13 @@ function TeacherDashboard() {
 
   const loadData = async () => {
     try {
-      const [attendanceData, gradesData, assignmentsData, leavesData, studentsData] = await Promise.all([
+      const [attendanceData, gradesData, assignmentsData, leavesData, studentsData, calendarData] = await Promise.all([
         getAttendanceByClass('Class 10A'),
         getGradesByClass('Class 10A'),
         getAssignmentsByClass('Class 10A'),
         getLeavesByClass('Class 10A'),
-        getStudentsByClass('Class 10A')
+        getStudentsByClass('Class 10A'),
+        getEvents()
       ]);
       
       console.log('Leave requests data:', leavesData);
@@ -66,6 +69,7 @@ function TeacherDashboard() {
       setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
       setLeaveRequests(Array.isArray(leavesData) ? leavesData : []);
       setStudents(Array.isArray(studentsData) ? studentsData : []);
+      setCalendarEvents(Array.isArray(calendarData) ? calendarData : []);
     } catch (error) {
       console.error('Error loading data:', error);
       // Set empty arrays on error
@@ -74,6 +78,7 @@ function TeacherDashboard() {
       setAssignments([]);
       setLeaveRequests([]);
       setStudents([]);
+      setCalendarEvents([]);
     }
   };
 

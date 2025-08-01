@@ -48,6 +48,7 @@ public class SecurityConfig {
             .antMatchers("/api/teacher/**").hasRole("TEACHER")
             .antMatchers("/api/student/**").hasRole("STUDENT")
             .antMatchers("/api/parent/**").hasRole("PARENT")
+            .antMatchers("/api/calendar/**").authenticated()
             .anyRequest().authenticated()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

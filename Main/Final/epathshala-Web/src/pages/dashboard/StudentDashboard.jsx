@@ -5,6 +5,7 @@ import { getStudentAttendance, debugDatabase, testAuth, testDatabase, getStudent
 import { getStudentGrades } from '../../api/grades';
 import { getStudentAssignments } from '../../api/assignments';
 import { getStudentLeaveStatus, submitLeave } from '../../api/leave';
+import { getEvents } from '../../api/calendar';
 
 function StudentDashboard() {
   const { user } = useAuth();
@@ -12,6 +13,7 @@ function StudentDashboard() {
   const [grades, setGrades] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [leaveStatus, setLeaveStatus] = useState([]);
+  const [calendarEvents, setCalendarEvents] = useState([]);
   const [leaveReason, setLeaveReason] = useState('');
   const [leaveFromDate, setLeaveFromDate] = useState('');
   const [leaveToDate, setLeaveToDate] = useState('');
@@ -67,6 +69,17 @@ function StudentDashboard() {
     }
   }, [user?.id]);
 
+  const loadCalendarEvents = useCallback(async () => {
+    try {
+      const events = await getEvents();
+      console.log('📅 Calendar events:', events);
+      setCalendarEvents(events);
+    } catch (error) {
+      console.error('❌ Error loading calendar events:', error);
+      setErrors(prev => [...prev, `Calendar events failed: ${error.message}`]);
+    }
+  }, []);
+
   const loadData = useCallback(async () => {
     if (!user?.id) return;
     
@@ -81,6 +94,9 @@ function StudentDashboard() {
     
     // Load student details (including class)
     await loadStudentDetails();
+    
+    // Load calendar events
+    await loadCalendarEvents();
     
     try {
       console.log('📊 Loading data for user ID:', user.id);
@@ -104,7 +120,7 @@ function StudentDashboard() {
       console.error('❌ Error loading data:', error);
       setErrors(prev => [...prev, `Data loading failed: ${error.message}`]);
     }
-  }, [user?.id, user?.email, testDatabaseState, testAuthentication, loadDebugInfo, loadStudentDetails]);
+  }, [user?.id, user?.email, testDatabaseState, testAuthentication, loadDebugInfo, loadStudentDetails, loadCalendarEvents]);
 
   // Load assignments after student details are available
   const loadAssignments = useCallback(async () => {
@@ -435,6 +451,33 @@ function StudentDashboard() {
                   No leave requests found
                 </Typography>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Academic Calendar Section */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Academic Calendar
+              </Typography>
+              <List>
+                {calendarEvents && calendarEvents.length > 0 ? (
+                  calendarEvents.map((event, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={event.eventName}
+                        secondary={`${event.date} - ${event.description}`}
+                      />
+                    </ListItem>
+                  ))
+                ) : (
+                  <ListItem>
+                    <ListItemText primary="No calendar events found" />
+                  </ListItem>
+                )}
+              </List>
             </CardContent>
           </Card>
         </Grid>

@@ -3,7 +3,7 @@ node_modules/
 dist/
 .env
 .env.local
-.vite/
+
 
 # Vite cache
 .vite-cache/
@@ -28,10 +28,7 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 dependency-reduced-pom.xml
-build/
-.gradle/
-out/
-*.lock
+
 
 # VS Code
 .vscode/

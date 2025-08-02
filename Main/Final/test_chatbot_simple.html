@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        input, button { margin: 10px 0; padding: 10px; width: 100%; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ePathshala Chatbot API Test</h1>
+        
+        <div class="test-section">
+            <h3>Step 1: Login to get token</h3>
+            <input type="email" id="loginEmail" placeholder="Email" value="admin@epathshala.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="admin123">
+            <select id="loginRole">
+                <option value="ADMIN">Admin</option>
+                <option value="STUDENT">Student</option>
+                <option value="TEACHER">Teacher</option>
+                <option value="PARENT">Parent</option>
+            </select>
+            <button onclick="login()">Login</button>
+            <div id="loginResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Step 2: Test Chatbot API</h3>
+            <input type="text" id="messageInput" placeholder="Type your message" value="hello">
+            <button onclick="testChatbot()">Send Message</button>
+            <div id="chatbotResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Step 3: Test Backend Health</h3>
+            <button onclick="testBackend()">Test Backend</button>
+            <div id="backendResult"></div>
+        </div>
+    </div>
+
+    <script>
+        let authToken = '';
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    authToken = data.token;
+                    document.getElementById('loginResult').innerHTML = 
+                        `<div class="success">✅ Login successful! Token: ${data.token.substring(0, 20)}...</div>`;
+                } else {
+                    document.getElementById('loginResult').innerHTML = 
+                        `<div class="error">❌ Login failed: ${data.error}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('loginResult').innerHTML = 
+                    `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testChatbot() {
+            if (!authToken) {
+                document.getElementById('chatbotResult').innerHTML = 
+                    `<div class="error">❌ Please login first!</div>`;
+                return;
+            }
+            
+            const message = document.getElementById('messageInput').value;
+            
+            try {
+                const response = await fetch('/api/chatbot/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userRole: 'ADMIN',
+                        userEmail: 'admin@epathshala.com'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('chatbotResult').innerHTML = 
+                        `<div class="success">✅ Chatbot Response: ${data.response}</div>
+                         <div class="info">Session ID: ${data.sessionId}</div>`;
+                } else {
+                    document.getElementById('chatbotResult').innerHTML = 
+                        `<div class="error">❌ Chatbot failed: ${data.error}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('chatbotResult').innerHTML = 
+                    `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testBackend() {
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: 'test@test.com', 
+                        password: 'test', 
+                        role: 'ADMIN' 
+                    })
+                });
+                
+                if (response.status === 401) {
+                    document.getElementById('backendResult').innerHTML = 
+                        `<div class="success">✅ Backend is running! (Expected 401 for invalid credentials)</div>`;
+                } else {
+                    document.getElementById('backendResult').innerHTML = 
+                        `<div class="info">ℹ️ Backend response: ${response.status}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('backendResult').innerHTML = 
+                    `<div class="error">❌ Backend error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html> 

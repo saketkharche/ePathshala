@@ -43,6 +43,7 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/api/auth/login").permitAll()
             .antMatchers("/api/auth/forgot-password", "/api/auth/verify-otp").permitAll()
+            .antMatchers("/api/chatbot/**").authenticated()
             .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
             .antMatchers("/api/admin/**").hasRole("ADMIN")
             .antMatchers("/api/teacher/**").hasRole("TEACHER")

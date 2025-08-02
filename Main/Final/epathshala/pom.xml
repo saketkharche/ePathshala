@@ -14,7 +14,7 @@
     <name>ePathshala Backend</name>
     <description>Backend API for ePathshala Educational Management System</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Starters -->

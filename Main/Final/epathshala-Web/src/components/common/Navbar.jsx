@@ -59,19 +59,48 @@ function Navbar() {
     <>
       <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
         <Toolbar>
-          <Typography 
-            variant="h6" 
-            component={Link} 
-            to="/" 
-            sx={{ 
-              flexGrow: 1, 
-              textDecoration: 'none', 
-              color: 'inherit',
-              fontWeight: 'bold'
-            }}
-          >
-            ePathshala
-          </Typography>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              ePathshala
+            </Typography>
+            
+            {/* Navigation Links */}
+            <Button
+              color="inherit"
+              component={Link}
+              to={`/${user.role.toLowerCase()}`}
+              sx={{ textTransform: 'none' }}
+            >
+              Dashboard
+            </Button>
+            
+            <Button
+              color="inherit"
+              component={Link}
+              to={`/${user.role.toLowerCase()}/forum`}
+              sx={{ textTransform: 'none' }}
+            >
+              Forum
+            </Button>
+            
+            <Button
+              color="inherit"
+              component={Link}
+              to={`/${user.role.toLowerCase()}/chat`}
+              sx={{ textTransform: 'none' }}
+            >
+              Chat
+            </Button>
+            
+            <Button
+              color="inherit"
+              component={Link}
+              to={`/${user.role.toLowerCase()}/notifications`}
+              sx={{ textTransform: 'none' }}
+            >
+              Notifications
+            </Button>
+          </Box>
 
           {!user ? (
             <Box sx={{ display: 'flex', gap: 2 }}>

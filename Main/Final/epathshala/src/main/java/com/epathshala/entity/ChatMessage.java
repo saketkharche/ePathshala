@@ -37,6 +37,24 @@ public class ChatMessage {
     @Column(nullable = false)
     private Boolean isUserMessage = true;
     
+    // New fields for real-time chat
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
+    
+    @Column(nullable = false)
+    private String authorName;
+    
+    @Column(nullable = false)
+    private String messageType = "TEXT"; // TEXT, IMAGE, FILE, SYSTEM
+    
+    @Column(columnDefinition = "TEXT")
+    private String attachmentUrl;
+    
     public ChatMessage(String sessionId, String message, String response, String userRole, String userEmail) {
         this.sessionId = sessionId;
         this.message = message;
@@ -44,5 +62,15 @@ public class ChatMessage {
         this.userRole = userRole;
         this.userEmail = userEmail;
         this.timestamp = LocalDateTime.now();
+    }
+    
+    public ChatMessage(String message, String authorName, User author, ChatRoom chatRoom) {
+        this.message = message;
+        this.authorName = authorName;
+        this.author = author;
+        this.chatRoom = chatRoom;
+        this.timestamp = LocalDateTime.now();
+        this.isUserMessage = true;
+        this.messageType = "TEXT";
     }
 } 

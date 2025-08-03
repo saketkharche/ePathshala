@@ -1,0 +1,156 @@
+package com.epathshala.controller;
+
+import com.epathshala.dto.ForumCategoryDTO;
+import com.epathshala.dto.ForumThreadDTO;
+import com.epathshala.dto.ForumReplyDTO;
+import com.epathshala.service.ForumService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/forum")
+@Tag(name = "Forum", description = "Forum management APIs")
+public class ForumController {
+    
+    @Autowired
+    private ForumService forumService;
+    
+    // Category endpoints
+    @GetMapping("/categories")
+    @Operation(summary = "Get all forum categories")
+    public ResponseEntity<List<ForumCategoryDTO>> getAllCategories() {
+        try {
+            List<ForumCategoryDTO> categories = forumService.getAllCategories();
+            return ResponseEntity.ok(categories);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    @PostMapping("/categories")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Create a new forum category")
+    public ResponseEntity<ForumCategoryDTO> createCategory(@RequestBody ForumCategoryDTO categoryDTO) {
+        try {
+            ForumCategoryDTO createdCategory = forumService.createCategory(categoryDTO);
+            return ResponseEntity.ok(createdCategory);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    // Thread endpoints
+    @GetMapping("/categories/{categoryId}/threads")
+    @Operation(summary = "Get threads by category")
+    public ResponseEntity<Page<ForumThreadDTO>> getThreadsByCategory(
+            @PathVariable Long categoryId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<ForumThreadDTO> threads = forumService.getThreadsByCategory(categoryId, pageable);
+            return ResponseEntity.ok(threads);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    @PostMapping("/threads")
+    @Operation(summary = "Create a new forum thread")
+    public ResponseEntity<ForumThreadDTO> createThread(@RequestBody ForumThreadDTO threadDTO) {
+        try {
+            // Get user ID from security context
+            Long userId = getCurrentUserId();
+            ForumThreadDTO createdThread = forumService.createThread(threadDTO, userId);
+            return ResponseEntity.ok(createdThread);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    @GetMapping("/threads/{threadId}")
+    @Operation(summary = "Get thread by ID")
+    public ResponseEntity<ForumThreadDTO> getThreadById(@PathVariable Long threadId) {
+        try {
+            ForumThreadDTO thread = forumService.getThreadById(threadId);
+            return ResponseEntity.ok(thread);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @PutMapping("/threads/{threadId}")
+    @Operation(summary = "Update a forum thread")
+    public ResponseEntity<ForumThreadDTO> updateThread(
+            @PathVariable Long threadId,
+            @RequestBody ForumThreadDTO threadDTO) {
+        try {
+            Long userId = getCurrentUserId();
+            ForumThreadDTO updatedThread = forumService.updateThread(threadId, threadDTO, userId);
+            return ResponseEntity.ok(updatedThread);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    // Reply endpoints
+    @GetMapping("/threads/{threadId}/replies")
+    @Operation(summary = "Get replies by thread")
+    public ResponseEntity<Page<ForumReplyDTO>> getRepliesByThread(
+            @PathVariable Long threadId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<ForumReplyDTO> replies = forumService.getRepliesByThread(threadId, pageable);
+            return ResponseEntity.ok(replies);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    @PostMapping("/replies")
+    @Operation(summary = "Create a new forum reply")
+    public ResponseEntity<ForumReplyDTO> createReply(@RequestBody ForumReplyDTO replyDTO) {
+        try {
+            Long userId = getCurrentUserId();
+            ForumReplyDTO createdReply = forumService.createReply(replyDTO, userId);
+            return ResponseEntity.ok(createdReply);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    // Search endpoints
+    @GetMapping("/search")
+    @Operation(summary = "Search forum threads")
+    public ResponseEntity<Page<ForumThreadDTO>> searchThreads(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<ForumThreadDTO> results = forumService.searchThreads(query, pageable);
+            return ResponseEntity.ok(results);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    // Helper method to get current user ID
+    private Long getCurrentUserId() {
+        // This would be implemented based on your security context
+        // For now, return a default value
+        return 1L; // This should be replaced with actual user ID from security context
+    }
+} 

@@ -11,9 +11,18 @@ export default defineConfig({
         target: 'http://localhost:8081',
         changeOrigin: true,
         secure: false,
+        timeout: 30000,
+        proxyTimeout: 30000,
         configure: (proxy, options) => {
           proxy.on('error', (err, req, res) => {
             console.log('proxy error', err);
+            // Don't crash on proxy errors
+            if (!res.headersSent) {
+              res.writeHead(500, {
+                'Content-Type': 'application/json',
+              });
+              res.end(JSON.stringify({ error: 'Backend connection error' }));
+            }
           });
           proxy.on('proxyReq', (proxyReq, req, res) => {
             console.log('Sending Request to the Target:', req.method, req.url);

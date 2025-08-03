@@ -55,6 +55,13 @@ public class ChatMessage {
     @Column(columnDefinition = "TEXT")
     private String attachmentUrl;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reply_to_id")
+    private ChatMessage replyTo;
+    
+    @Column
+    private Long threadId;
+    
     public ChatMessage(String sessionId, String message, String response, String userRole, String userEmail) {
         this.sessionId = sessionId;
         this.message = message;

@@ -41,6 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
+            .antMatchers("/ws/**").permitAll() // Allow WebSocket connections
             .antMatchers("/api/auth/login").permitAll()
             .antMatchers("/api/auth/forgot-password", "/api/auth/verify-otp").permitAll()
             .antMatchers("/api/chatbot/health").permitAll()

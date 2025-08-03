@@ -4,8 +4,15 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  define: {
+    global: 'window',
+  },
   server: {
     port: 3000,
+    hmr: {
+      port: 3001,
+      overlay: false,
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:8081',
@@ -29,6 +36,20 @@ export default defineConfig({
           });
           proxy.on('proxyRes', (proxyRes, req, res) => {
             console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+          });
+        },
+      },
+      '/ws': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+        configure: (proxy, options) => {
+          proxy.on('error', (err, req, res) => {
+            console.log('WebSocket proxy error', err);
+          });
+          proxy.on('proxyReqWs', (proxyReq, req, socket) => {
+            console.log('WebSocket proxy request:', req.url);
           });
         },
       }

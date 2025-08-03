@@ -10,8 +10,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -29,22 +28,27 @@ public class WebSocketChatController {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
     public ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         try {
-            // Get current user from security context
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-                String email = auth.getName();
-                var user = userRepository.findByEmail(email).orElse(null);
+            // Get user from session attributes (set during connection)
+            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            if (userEmail != null) {
+                var user = userRepository.findByEmail(userEmail).orElse(null);
                 if (user != null) {
                     chatMessage.setAuthorId(user.getId());
                     chatMessage.setAuthorName(user.getName());
-                    chatMessage.setUserEmail(email);
+                    chatMessage.setUserEmail(userEmail);
                     chatMessage.setUserRole(user.getRole());
                     chatMessage.setTimestamp(LocalDateTime.now());
                     chatMessage.setSessionId("ws_" + System.currentTimeMillis());
                     chatMessage.setResponse("Message sent successfully");
+                    
+                    // Handle different message types
+                    if ("THREAD_CREATE".equals(chatMessage.getMessageType())) {
+                        // Handle thread creation
+                        chatMessage.setMessage("New thread created: " + chatMessage.getMessage());
+                        chatMessage.setMessageType("SYSTEM");
+                    }
                     
                     // Save message to database
                     ChatMessageDTO savedMessage = chatService.sendMessage(chatMessage, user.getId());
@@ -76,15 +80,14 @@ public class WebSocketChatController {
     @SendTo("/topic/public")
     public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         try {
-            // Get current user from security context
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-                String email = auth.getName();
-                var user = userRepository.findByEmail(email).orElse(null);
+            // Get user from session attributes (set during connection)
+            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            if (userEmail != null) {
+                var user = userRepository.findByEmail(userEmail).orElse(null);
                 if (user != null) {
                     // Add username to web socket session
                     headerAccessor.getSessionAttributes().put("username", user.getName());
-                    headerAccessor.getSessionAttributes().put("userEmail", email);
+                    headerAccessor.getSessionAttributes().put("userEmail", userEmail);
                     headerAccessor.getSessionAttributes().put("userId", user.getId());
                     
                     // Create join message
@@ -95,7 +98,7 @@ public class WebSocketChatController {
                     joinMessage.setTimestamp(LocalDateTime.now());
                     joinMessage.setSessionId("ws_" + System.currentTimeMillis());
                     joinMessage.setResponse("User joined successfully");
-                    joinMessage.setUserEmail(email);
+                    joinMessage.setUserEmail(userEmail);
                     joinMessage.setUserRole(user.getRole());
                     
                     return joinMessage;
@@ -121,31 +124,23 @@ public class WebSocketChatController {
     public void joinRoom(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         try {
             Long roomId = Long.valueOf(payload.get("roomId").toString());
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
             
-            if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-                String email = auth.getName();
-                var user = userRepository.findByEmail(email).orElse(null);
+            if (userEmail != null) {
+                var user = userRepository.findByEmail(userEmail).orElse(null);
                 
                 if (user != null) {
-                    // Join the specific room
-                    chatService.joinChatRoom(roomId, user.getId());
+                    // Join the specific room and get the system message
+                    ChatMessageDTO joinMessage = chatService.joinChatRoom(roomId, user.getId());
                     
                     // Subscribe user to room-specific topic
                     messagingTemplate.convertAndSendToUser(
-                        email,
+                        userEmail,
                         "/queue/room." + roomId,
                         Map.of("type", "JOIN", "roomId", roomId, "message", "Joined room " + roomId)
                     );
                     
-                    // Notify other users in the room
-                    ChatMessageDTO joinMessage = new ChatMessageDTO();
-                    joinMessage.setMessage(user.getName() + " joined the room");
-                    joinMessage.setMessageType("SYSTEM");
-                    joinMessage.setAuthorName("System");
-                    joinMessage.setTimestamp(LocalDateTime.now());
-                    joinMessage.setChatRoomId(roomId);
-                    
+                    // Broadcast the system message to all users in the room
                     messagingTemplate.convertAndSend("/topic/chat." + roomId, joinMessage);
                 }
             }
@@ -166,24 +161,16 @@ public class WebSocketChatController {
     public void leaveRoom(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         try {
             Long roomId = Long.valueOf(payload.get("roomId").toString());
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
             
-            if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-                String email = auth.getName();
-                var user = userRepository.findByEmail(email).orElse(null);
+            if (userEmail != null) {
+                var user = userRepository.findByEmail(userEmail).orElse(null);
                 
                 if (user != null) {
-                    // Leave the room
-                    chatService.leaveChatRoom(roomId, user.getId());
+                    // Leave the room and get the system message
+                    ChatMessageDTO leaveMessage = chatService.leaveChatRoom(roomId, user.getId());
                     
-                    // Notify other users in the room
-                    ChatMessageDTO leaveMessage = new ChatMessageDTO();
-                    leaveMessage.setMessage(user.getName() + " left the room");
-                    leaveMessage.setMessageType("SYSTEM");
-                    leaveMessage.setAuthorName("System");
-                    leaveMessage.setTimestamp(LocalDateTime.now());
-                    leaveMessage.setChatRoomId(roomId);
-                    
+                    // Broadcast the system message to all users in the room
                     messagingTemplate.convertAndSend("/topic/chat." + roomId, leaveMessage);
                 }
             }
@@ -196,6 +183,53 @@ public class WebSocketChatController {
                 email,
                 "/queue/errors",
                 Map.of("error", "Failed to leave room: " + e.getMessage())
+            );
+        }
+    }
+
+    @MessageMapping("/chat.moderate")
+    public void moderateMessage(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
+        try {
+            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            if (userEmail != null) {
+                var user = userRepository.findByEmail(userEmail).orElse(null);
+                
+                if (user != null && "ADMIN".equals(user.getRole())) {
+                    String action = (String) payload.get("action");
+                    Long messageId = Long.valueOf(payload.get("messageId").toString());
+                    
+                    // Handle moderation actions
+                    switch (action) {
+                        case "delete":
+                            chatService.deleteMessage(messageId, user.getId());
+                            break;
+                        case "flag":
+                            chatService.flagMessage(messageId, user.getId());
+                            break;
+                        case "edit":
+                            // Handle edit action
+                            break;
+                    }
+                    
+                    // Notify other users about moderation
+                    ChatMessageDTO moderationMessage = new ChatMessageDTO();
+                    moderationMessage.setMessage("Message has been " + action + "ed by moderator");
+                    moderationMessage.setMessageType("SYSTEM");
+                    moderationMessage.setAuthorName("System");
+                    moderationMessage.setTimestamp(LocalDateTime.now());
+                    
+                    messagingTemplate.convertAndSend("/topic/public", moderationMessage);
+                }
+            }
+        } catch (Exception e) {
+            // Send error to user
+            String email = headerAccessor.getSessionAttributes().get("userEmail") != null ? 
+                         headerAccessor.getSessionAttributes().get("userEmail").toString() : "anonymous";
+            
+            messagingTemplate.convertAndSendToUser(
+                email,
+                "/queue/errors",
+                Map.of("error", "Failed to moderate message: " + e.getMessage())
             );
         }
     }

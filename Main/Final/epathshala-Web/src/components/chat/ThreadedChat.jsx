@@ -26,7 +26,11 @@ import {
   MenuItem,
   Badge,
   Alert,
-  CircularProgress
+  CircularProgress,
+  Collapse,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material';
 import {
   Chat as ChatIcon,
@@ -39,26 +43,37 @@ import {
   ExitToApp as ExitIcon,
   Notifications as NotificationsIcon,
   Wifi as WifiIcon,
-  WifiOff as WifiOffIcon
+  WifiOff as WifiOffIcon,
+  Reply as ReplyIcon,
+  ExpandMore as ExpandMoreIcon,
+  Create as CreateIcon,
+  Flag as FlagIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../utils/auth';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
-function Chat() {
+function ThreadedChat() {
   const { user } = useAuth();
   const [chatRooms, setChatRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [threads, setThreads] = useState({});
   const [newMessage, setNewMessage] = useState('');
+  const [replyTo, setReplyTo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isConnected, setIsConnected] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   
   // Dialog states
-  const [joinRoomDialog, setJoinRoomDialog] = useState(false);
-  const [selectedRoomToJoin, setSelectedRoomToJoin] = useState(null);
+  const [createThreadDialog, setCreateThreadDialog] = useState(false);
+  const [newThreadTitle, setNewThreadTitle] = useState('');
+  const [newThreadCategory, setNewThreadCategory] = useState('General');
+  const [moderationDialog, setModerationDialog] = useState(false);
+  const [selectedMessageForModeration, setSelectedMessageForModeration] = useState(null);
   
   const messagesEndRef = useRef(null);
   const stompClient = useRef(null);
@@ -81,12 +96,7 @@ function Chat() {
       const subscription = stompClient.current.subscribe(`/topic/chat.${selectedRoom.id}`, (message) => {
         const receivedMessage = JSON.parse(message.body);
         console.log('Received room message:', receivedMessage);
-        console.log('Current messages before update:', messages);
-        setMessages(prev => {
-          const newMessages = [...prev, receivedMessage];
-          console.log('New messages array:', newMessages);
-          return newMessages;
-        });
+        setMessages(prev => [...prev, receivedMessage]);
       });
       
       // Store subscription for cleanup
@@ -99,7 +109,6 @@ function Chat() {
   }, [selectedRoom, isConnected]);
 
   useEffect(() => {
-    console.log('Messages state changed:', messages.length, messages);
     scrollToBottom();
   }, [messages]);
 
@@ -212,37 +221,28 @@ function Chat() {
       const response = await fetch(`/api/chat/rooms/${roomId}/messages`);
       if (response.ok) {
         const data = await response.json();
-        const historicalMessages = data.content || [];
-        console.log('Loaded historical messages:', historicalMessages.length);
-        setMessages(historicalMessages);
+        setMessages(data.content || []);
       }
     } catch (error) {
-      console.error('Failed to load messages:', error);
       setError('Failed to load messages');
     }
   };
 
   const joinRoom = (roomId) => {
-    if (stompClient.current && stompClient.current.connected) {
-      // Send join room message
+    if (stompClient.current?.connected) {
       stompClient.current.publish({
         destination: '/app/chat.joinRoom',
-        body: JSON.stringify({ roomId: roomId })
+        body: JSON.stringify({ roomId })
       });
     }
   };
 
   const leaveRoom = async (roomId) => {
-    try {
-      await fetch(`/api/chat/rooms/${roomId}/leave`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        }
+    if (stompClient.current?.connected) {
+      stompClient.current.publish({
+        destination: '/app/chat.leaveRoom',
+        body: JSON.stringify({ roomId })
       });
-    } catch (error) {
-      console.error('Failed to leave room:', error);
     }
   };
 
@@ -252,12 +252,12 @@ function Chat() {
     const messageToSend = {
       message: newMessage.trim(),
       chatRoomId: selectedRoom.id,
-      messageType: 'TEXT'
+      messageType: 'TEXT',
+      replyTo: replyTo?.id || null,
+      threadId: replyTo?.threadId || null
     };
 
     console.log('Sending message:', messageToSend);
-    console.log('Selected room:', selectedRoom);
-    console.log('WebSocket connected:', stompClient.current?.connected);
 
     stompClient.current.publish({
       destination: '/app/chat.sendMessage',
@@ -265,6 +265,7 @@ function Chat() {
     });
 
     setNewMessage('');
+    setReplyTo(null);
   };
 
   const handleKeyPress = (e) => {
@@ -272,6 +273,60 @@ function Chat() {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const startReply = (message) => {
+    setReplyTo(message);
+  };
+
+  const cancelReply = () => {
+    setReplyTo(null);
+  };
+
+  const createThread = () => {
+    if (!newThreadTitle.trim()) return;
+
+    const threadData = {
+      title: newThreadTitle.trim(),
+      category: newThreadCategory,
+      roomId: selectedRoom.id,
+      createdBy: user.id
+    };
+
+    // Send thread creation message
+    const messageToSend = {
+      message: `New thread created: ${newThreadTitle}`,
+      chatRoomId: selectedRoom.id,
+      messageType: 'THREAD_CREATE',
+      threadData: threadData
+    };
+
+    stompClient.current.publish({
+      destination: '/app/chat.sendMessage',
+      body: JSON.stringify(messageToSend)
+    });
+
+    setCreateThreadDialog(false);
+    setNewThreadTitle('');
+    setNewThreadCategory('General');
+  };
+
+  const moderateMessage = (message, action) => {
+    if (!user || user.role !== 'ADMIN') return;
+
+    const moderationData = {
+      messageId: message.id,
+      action: action, // 'delete', 'edit', 'flag'
+      moderatorId: user.id
+    };
+
+    stompClient.current.publish({
+      destination: '/app/chat.moderate',
+      body: JSON.stringify(moderationData)
+    });
+
+    setModerationDialog(false);
+    setSelectedMessageForModeration(null);
   };
 
   const getCategoryIcon = (category) => {
@@ -294,6 +349,7 @@ function Chat() {
     switch (messageType) {
       case 'SYSTEM': return 'warning';
       case 'TEXT': return 'primary';
+      case 'THREAD_CREATE': return 'success';
       default: return 'default';
     }
   };
@@ -310,6 +366,8 @@ function Chat() {
         return <WifiOffIcon color="disabled" />;
     }
   };
+
+  const canModerate = user?.role === 'ADMIN';
 
   if (loading) {
     return (
@@ -411,6 +469,13 @@ function Chat() {
                   />
                   <IconButton
                     size="small"
+                    onClick={() => setCreateThreadDialog(true)}
+                    color="primary"
+                  >
+                    <CreateIcon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
                     onClick={() => leaveRoom(selectedRoom.id)}
                     color="error"
                   >
@@ -420,28 +485,32 @@ function Chat() {
               </Box>
             </Paper>
 
+            {/* Reply Preview */}
+            {replyTo && (
+              <Paper sx={{ p: 1, mb: 1, bgcolor: 'primary.light', color: 'white' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Typography variant="body2">
+                    Replying to: {replyTo.authorName} - {replyTo.message.substring(0, 50)}...
+                  </Typography>
+                  <IconButton size="small" onClick={cancelReply} color="inherit">
+                    <ExitIcon />
+                  </IconButton>
+                </Box>
+              </Paper>
+            )}
+
             {/* Messages */}
             <Paper sx={{ flexGrow: 1, mb: 2, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <Box sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
                 <Typography variant="caption" color="text.secondary">
-                  Messages: {messages.length} | Last Message: {messages.length > 0 ? messages[messages.length - 1]?.message : 'None'}
+                  Messages: {messages.length}
                 </Typography>
               </Box>
               <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
                 <List>
-                  {console.log('Rendering messages:', messages.length, messages)}
-                  {messages.length === 0 ? (
-                    <ListItem>
-                      <Typography variant="body2" color="text.secondary">
-                        No messages yet. Start the conversation!
-                      </Typography>
-                    </ListItem>
-                  ) : (
-                    messages.map((message, index) => {
-                      console.log('Rendering message:', message);
-                      return (
-                      <ListItem key={message.id || `msg-${index}-${message.timestamp}`} sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                  {messages.map((message, index) => (
+                    <ListItem key={index} sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, width: '100%' }}>
                         <Avatar sx={{ width: 32, height: 32 }}>
                           <PersonIcon />
                         </Avatar>
@@ -457,6 +526,26 @@ function Chat() {
                             variant="outlined"
                           />
                         )}
+                        <Box sx={{ flexGrow: 1 }} />
+                        <IconButton
+                          size="small"
+                          onClick={() => startReply(message)}
+                          color="primary"
+                        >
+                          <ReplyIcon />
+                        </IconButton>
+                        {canModerate && (
+                          <IconButton
+                            size="small"
+                            onClick={() => {
+                              setSelectedMessageForModeration(message);
+                              setModerationDialog(true);
+                            }}
+                            color="warning"
+                          >
+                            <FlagIcon />
+                          </IconButton>
+                        )}
                       </Box>
                       <Paper
                         sx={{
@@ -470,11 +559,16 @@ function Chat() {
                         <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
                           {message.message}
                         </Typography>
+                        {message.replyTo && (
+                          <Box sx={{ mt: 1, p: 1, bgcolor: 'grey.200', borderRadius: 1 }}>
+                            <Typography variant="caption" color="text.secondary">
+                              Replying to: {message.replyTo.authorName}
+                            </Typography>
+                          </Box>
+                        )}
                       </Paper>
                     </ListItem>
-                  );
-                  })
-                  )}
+                  ))}
                   <div ref={messagesEndRef} />
                 </List>
               </Box>
@@ -511,8 +605,72 @@ function Chat() {
           </Box>
         )}
       </Box>
+
+      {/* Create Thread Dialog */}
+      <Dialog open={createThreadDialog} onClose={() => setCreateThreadDialog(false)}>
+        <DialogTitle>Create New Thread</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Thread Title"
+            value={newThreadTitle}
+            onChange={(e) => setNewThreadTitle(e.target.value)}
+            sx={{ mb: 2, mt: 1 }}
+          />
+          <FormControl fullWidth>
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={newThreadCategory}
+              onChange={(e) => setNewThreadCategory(e.target.value)}
+              label="Category"
+            >
+              <MenuItem value="General">General</MenuItem>
+              <MenuItem value="Academic">Academic</MenuItem>
+              <MenuItem value="Technology">Technology</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCreateThreadDialog(false)}>Cancel</Button>
+          <Button onClick={createThread} variant="contained">Create</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Moderation Dialog */}
+      <Dialog open={moderationDialog} onClose={() => setModerationDialog(false)}>
+        <DialogTitle>Moderate Message</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            Message: {selectedMessageForModeration?.message}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Author: {selectedMessageForModeration?.authorName}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setModerationDialog(false)}>Cancel</Button>
+          <Button 
+            onClick={() => moderateMessage(selectedMessageForModeration, 'flag')}
+            color="warning"
+          >
+            Flag
+          </Button>
+          <Button 
+            onClick={() => moderateMessage(selectedMessageForModeration, 'edit')}
+            color="info"
+          >
+            Edit
+          </Button>
+          <Button 
+            onClick={() => moderateMessage(selectedMessageForModeration, 'delete')}
+            color="error"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
 
-export default Chat; 
+export default ThreadedChat; 

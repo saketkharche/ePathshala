@@ -18,4 +18,6 @@ public class ChatMessageDTO {
     private String response;
     private String userEmail;
     private String userRole;
+    private ChatMessageDTO replyTo;
+    private Long threadId;
 } 

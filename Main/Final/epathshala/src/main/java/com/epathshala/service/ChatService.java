@@ -2,6 +2,7 @@ package com.epathshala.service;
 
 import com.epathshala.dto.ChatRoomDTO;
 import com.epathshala.dto.ChatMessageDTO;
+import com.epathshala.dto.NotificationDTO;
 import com.epathshala.entity.ChatRoom;
 import com.epathshala.entity.ChatMessage;
 import com.epathshala.entity.User;
@@ -104,6 +105,18 @@ public class ChatService {
         message.setAttachmentUrl(messageDTO.getAttachmentUrl());
         message.setIsUserMessage(true);
         
+        // Handle reply to message
+        if (messageDTO.getReplyTo() != null && messageDTO.getReplyTo().getId() != null) {
+            ChatMessage replyToMessage = chatMessageRepository.findById(messageDTO.getReplyTo().getId())
+                .orElse(null);
+            message.setReplyTo(replyToMessage);
+        }
+        
+        // Handle thread ID
+        if (messageDTO.getThreadId() != null) {
+            message.setThreadId(messageDTO.getThreadId());
+        }
+        
         // Set required fields
         message.setSessionId("session_" + System.currentTimeMillis());
         message.setResponse("Message sent successfully");
@@ -122,7 +135,7 @@ public class ChatService {
     }
     
     @Transactional
-    public void joinChatRoom(Long chatRoomId, Long userId) {
+    public ChatMessageDTO joinChatRoom(Long chatRoomId, Long userId) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
             .orElseThrow(() -> new RuntimeException("Chat room not found"));
         
@@ -152,11 +165,12 @@ public class ChatService {
         systemMessage.setUserEmail(user.getEmail());
         systemMessage.setTimestamp(LocalDateTime.now());
         
-        chatMessageRepository.save(systemMessage);
+        ChatMessage savedMessage = chatMessageRepository.save(systemMessage);
+        return convertToChatMessageDTO(savedMessage);
     }
     
     @Transactional
-    public void leaveChatRoom(Long chatRoomId, Long userId) {
+    public ChatMessageDTO leaveChatRoom(Long chatRoomId, Long userId) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
             .orElseThrow(() -> new RuntimeException("Chat room not found"));
         
@@ -182,7 +196,8 @@ public class ChatService {
         systemMessage.setUserEmail(user.getEmail());
         systemMessage.setTimestamp(LocalDateTime.now());
         
-        chatMessageRepository.save(systemMessage);
+        ChatMessage savedMessage = chatMessageRepository.save(systemMessage);
+        return convertToChatMessageDTO(savedMessage);
     }
     
     private void createMentionNotifications(ChatMessage message, ChatRoom chatRoom) {
@@ -239,6 +254,55 @@ public class ChatService {
         dto.setAttachmentUrl(message.getAttachmentUrl());
         dto.setTimestamp(message.getTimestamp());
         dto.setIsUserMessage(message.getIsUserMessage());
+        dto.setSessionId(message.getSessionId());
+        dto.setResponse(message.getResponse());
+        dto.setUserEmail(message.getUserEmail());
+        dto.setUserRole(message.getUserRole());
+        dto.setThreadId(message.getThreadId());
+        
+        // Handle reply to message
+        if (message.getReplyTo() != null) {
+            ChatMessageDTO replyToDto = new ChatMessageDTO();
+            replyToDto.setId(message.getReplyTo().getId());
+            replyToDto.setAuthorName(message.getReplyTo().getAuthorName());
+            dto.setReplyTo(replyToDto);
+        }
+        
         return dto;
+    }
+
+    @Transactional
+    public void deleteMessage(Long messageId, Long moderatorId) {
+        ChatMessage message = chatMessageRepository.findById(messageId)
+            .orElseThrow(() -> new RuntimeException("Message not found"));
+        
+        // Check if user is admin or message author
+        User moderator = userRepository.findById(moderatorId)
+            .orElseThrow(() -> new RuntimeException("Moderator not found"));
+        
+        if (!"ADMIN".equals(moderator.getRole()) && !message.getAuthor().getId().equals(moderatorId)) {
+            throw new RuntimeException("Unauthorized to delete this message");
+        }
+        
+        chatMessageRepository.delete(message);
+    }
+
+    @Transactional
+    public void flagMessage(Long messageId, Long moderatorId) {
+        ChatMessage message = chatMessageRepository.findById(messageId)
+            .orElseThrow(() -> new RuntimeException("Message not found"));
+        
+        // Mark message as flagged
+        message.setMessageType("FLAGGED");
+        chatMessageRepository.save(message);
+        
+        // Create notification for admins
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setTitle("Message flagged");
+        notificationDTO.setContent("A message has been flagged for review");
+        notificationDTO.setType("MODERATION");
+        notificationDTO.setRecipientId(moderatorId);
+        
+        notificationService.createNotification(notificationDTO);
     }
 } 

@@ -9,9 +9,50 @@ import TeacherDashboard from "./pages/dashboard/TeacherDashboard";
 import ParentDashboard from "./pages/dashboard/ParentDashboard";
 import Forum from "./components/forum/Forum";
 import Chat from "./components/chat/Chat";
+import ThreadedChat from "./components/chat/ThreadedChat";
 import Notifications from "./components/notifications/Notifications";
 import Navbar from "./components/common/Navbar";
-import { Box } from '@mui/material';
+import WebSocketTest from "./components/chat/WebSocketTest";
+import SimpleTest from "./components/chat/SimpleTest";
+import SimpleWebSocketTest from "./components/chat/SimpleWebSocketTest";
+import SimpleChatTest from "./components/chat/SimpleChatTest";
+import WebSocketDebug from "./components/chat/WebSocketDebug";
+import MessageTest from "./components/chat/MessageTest";
+import ChatDebug from "./components/chat/ChatDebug";
+import { Box, Alert, Typography } from '@mui/material';
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box sx={{ p: 3 }}>
+          <Alert severity="error">
+            <Typography variant="h6">Something went wrong!</Typography>
+            <Typography variant="body2">
+              Error: {this.state.error?.message || 'Unknown error'}
+            </Typography>
+          </Alert>
+        </Box>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 // Layout component for authenticated pages
 function DashboardLayout({ children }) {
@@ -27,103 +68,145 @@ function DashboardLayout({ children }) {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+              <DashboardLayout>
+                <AdminDashboard />
+              </DashboardLayout>
+            } />
+            <Route path="/admin/forum" element={
+              <DashboardLayout>
+                <Forum />
+              </DashboardLayout>
+            } />
+                      <Route path="/admin/chat" element={
             <DashboardLayout>
-              <AdminDashboard />
+              <ThreadedChat />
             </DashboardLayout>
           } />
-          <Route path="/admin/forum" element={
+          <Route path="/admin/websocket-test" element={
             <DashboardLayout>
-              <Forum />
+              <WebSocketTest />
             </DashboardLayout>
           } />
-          <Route path="/admin/chat" element={
-            <DashboardLayout>
-              <Chat />
-            </DashboardLayout>
-          } />
-          <Route path="/admin/notifications" element={
-            <DashboardLayout>
-              <Notifications />
-            </DashboardLayout>
-          } />
-          
-          {/* Student Routes */}
-          <Route path="/student" element={
-            <DashboardLayout>
-              <StudentDashboard />
-            </DashboardLayout>
-          } />
-          <Route path="/student/forum" element={
-            <DashboardLayout>
-              <Forum />
-            </DashboardLayout>
-          } />
-          <Route path="/student/chat" element={
+          <Route path="/admin/chat-simple" element={
             <DashboardLayout>
               <Chat />
             </DashboardLayout>
           } />
-          <Route path="/student/notifications" element={
+          <Route path="/admin/simple-test" element={
             <DashboardLayout>
-              <Notifications />
+              <SimpleTest />
             </DashboardLayout>
           } />
-          
-          {/* Teacher Routes */}
-          <Route path="/teacher" element={
+          <Route path="/admin/simple-websocket-test" element={
             <DashboardLayout>
-              <TeacherDashboard />
+              <SimpleWebSocketTest />
             </DashboardLayout>
           } />
-          <Route path="/teacher/forum" element={
+          <Route path="/admin/simple-chat-test" element={
             <DashboardLayout>
-              <Forum />
+              <SimpleChatTest />
             </DashboardLayout>
           } />
-          <Route path="/teacher/chat" element={
+          <Route path="/admin/websocket-debug" element={
             <DashboardLayout>
-              <Chat />
+              <WebSocketDebug />
             </DashboardLayout>
           } />
-          <Route path="/teacher/notifications" element={
+          <Route path="/admin/message-test" element={
             <DashboardLayout>
-              <Notifications />
+              <MessageTest />
             </DashboardLayout>
           } />
-          
-          {/* Parent Routes */}
-          <Route path="/parent" element={
+          <Route path="/admin/chat-debug" element={
             <DashboardLayout>
-              <ParentDashboard />
+              <ChatDebug />
             </DashboardLayout>
           } />
-          <Route path="/parent/forum" element={
-            <DashboardLayout>
-              <Forum />
-            </DashboardLayout>
-          } />
-          <Route path="/parent/chat" element={
-            <DashboardLayout>
-              <Chat />
-            </DashboardLayout>
-          } />
-          <Route path="/parent/notifications" element={
-            <DashboardLayout>
-              <Notifications />
-            </DashboardLayout>
-          } />
-        </Routes>
-      </Router>
-    </AuthProvider>
+            <Route path="/admin/notifications" element={
+              <DashboardLayout>
+                <Notifications />
+              </DashboardLayout>
+            } />
+            
+            {/* Student Routes */}
+            <Route path="/student" element={
+              <DashboardLayout>
+                <StudentDashboard />
+              </DashboardLayout>
+            } />
+            <Route path="/student/forum" element={
+              <DashboardLayout>
+                <Forum />
+              </DashboardLayout>
+            } />
+            <Route path="/student/chat" element={
+              <DashboardLayout>
+                <Chat />
+              </DashboardLayout>
+            } />
+            <Route path="/student/notifications" element={
+              <DashboardLayout>
+                <Notifications />
+              </DashboardLayout>
+            } />
+            
+            {/* Teacher Routes */}
+            <Route path="/teacher" element={
+              <DashboardLayout>
+                <TeacherDashboard />
+              </DashboardLayout>
+            } />
+            <Route path="/teacher/forum" element={
+              <DashboardLayout>
+                <Forum />
+              </DashboardLayout>
+            } />
+            <Route path="/teacher/chat" element={
+              <DashboardLayout>
+                <Chat />
+              </DashboardLayout>
+            } />
+            <Route path="/teacher/notifications" element={
+              <DashboardLayout>
+                <Notifications />
+              </DashboardLayout>
+            } />
+            
+            {/* Parent Routes */}
+            <Route path="/parent" element={
+              <DashboardLayout>
+                <ParentDashboard />
+              </DashboardLayout>
+            } />
+            <Route path="/parent/forum" element={
+              <DashboardLayout>
+                <Forum />
+              </DashboardLayout>
+            } />
+            <Route path="/parent/chat" element={
+              <DashboardLayout>
+                <Chat />
+              </DashboardLayout>
+            } />
+            <Route path="/parent/notifications" element={
+              <DashboardLayout>
+                <Notifications />
+              </DashboardLayout>
+            } />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

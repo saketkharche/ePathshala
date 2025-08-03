@@ -42,6 +42,7 @@ import {
   Info as InfoIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../utils/auth';
+import { apiCall, get, post } from '../../utils/api';
 
 function Notifications() {
   const { user } = useAuth();
@@ -68,11 +69,8 @@ function Notifications() {
 
   const loadNotifications = async () => {
     try {
-      const response = await fetch('/api/notifications/user');
-      if (response.ok) {
-        const data = await response.json();
-        setNotifications(data.content || []);
-      }
+      const data = await apiCall('/api/notifications/user');
+      setNotifications(data.content || []);
     } catch (error) {
       setError('Failed to load notifications');
     } finally {
@@ -82,11 +80,8 @@ function Notifications() {
 
   const loadAnnouncements = async () => {
     try {
-      const response = await fetch('/api/notifications/announcements');
-      if (response.ok) {
-        const data = await response.json();
-        setAnnouncements(data);
-      }
+      const data = await apiCall('/api/notifications/announcements');
+      setAnnouncements(data);
     } catch (error) {
       setError('Failed to load announcements');
     }
@@ -94,11 +89,8 @@ function Notifications() {
 
   const loadUnreadCount = async () => {
     try {
-      const response = await fetch('/api/notifications/user/unread/count');
-      if (response.ok) {
-        const data = await response.json();
-        setUnreadCount(data.count);
-      }
+      const data = await apiCall('/api/notifications/user/unread/count');
+      setUnreadCount(data.count);
     } catch (error) {
       console.error('Failed to load unread count:', error);
     }
@@ -106,18 +98,9 @@ function Notifications() {
 
   const markAsRead = async (notificationId) => {
     try {
-      const response = await fetch(`/api/notifications/mark-read/${notificationId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        }
-      });
-
-      if (response.ok) {
-        loadNotifications();
-        loadUnreadCount();
-      }
+      await post(`/api/notifications/mark-read/${notificationId}`);
+      loadNotifications();
+      loadUnreadCount();
     } catch (error) {
       setError('Failed to mark notification as read');
     }
@@ -125,18 +108,9 @@ function Notifications() {
 
   const markAllAsRead = async () => {
     try {
-      const response = await fetch('/api/notifications/mark-all-read', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        }
-      });
-
-      if (response.ok) {
-        loadNotifications();
-        loadUnreadCount();
-      }
+      await post('/api/notifications/mark-all-read');
+      loadNotifications();
+      loadUnreadCount();
     } catch (error) {
       setError('Failed to mark all notifications as read');
     }
@@ -144,20 +118,10 @@ function Notifications() {
 
   const createAnnouncement = async () => {
     try {
-      const response = await fetch('/api/notifications/announcements', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        },
-        body: JSON.stringify(newAnnouncement)
-      });
-
-      if (response.ok) {
-        setCreateAnnouncementDialog(false);
-        setNewAnnouncement({ title: '', content: '', targetRole: 'ALL' });
-        loadAnnouncements();
-      }
+      await post('/api/notifications/announcements', newAnnouncement);
+      setCreateAnnouncementDialog(false);
+      setNewAnnouncement({ title: '', content: '', targetRole: 'ALL' });
+      loadAnnouncements();
     } catch (error) {
       setError('Failed to create announcement');
     }

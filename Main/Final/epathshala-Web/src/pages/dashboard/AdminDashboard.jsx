@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../utils/auth';
 import { addStudent, addTeacher, addParent, assignTeacher, getStudents, getTeachers, getParents, deleteUser, addEvent, getEvents, deleteEvent, getDashboardSummary } from '../../api/admin';
 import { getAllActiveSessions, getUserSessions, logoutSession, logoutAllUserSessions } from '../../api/session';
-import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Alert, FormControl, InputLabel, Select, MenuItem, Divider } from '@mui/material';
+import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Alert, FormControl, InputLabel, Select, MenuItem, Divider, CircularProgress } from '@mui/material';
 
 function AdminDashboard() {
   const { user } = useAuth();
@@ -16,6 +16,7 @@ function AdminDashboard() {
   const [selectedUserId, setSelectedUserId] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // Form states
   const [studentForm, setStudentForm] = useState({ name: '', email: '', password: '', studentClass: '' });
@@ -28,11 +29,33 @@ function AdminDashboard() {
   const [resetMessage, setResetMessage] = useState('');
 
   useEffect(() => {
-    getStudents().then(setStudents);
-    getTeachers().then(setTeachers);
-    getParents().then(setParents);
-    getEvents().then(setEvents);
-    getDashboardSummary().then(setDashboardSummary);
+    console.log('🔄 Loading admin dashboard data...');
+    const loadData = async () => {
+      try {
+        const [studentsData, teachersData, parentsData, eventsData, summaryData] = await Promise.all([
+          getStudents(),
+          getTeachers(),
+          getParents(),
+          getEvents(),
+          getDashboardSummary()
+        ]);
+        
+        setStudents(studentsData);
+        setTeachers(teachersData);
+        setParents(parentsData);
+        setEvents(eventsData);
+        setDashboardSummary(summaryData);
+        
+        console.log('✅ Dashboard data loaded successfully');
+        setLoading(false);
+      } catch (error) {
+        console.error('❌ Error loading dashboard data:', error);
+        setError('Failed to load dashboard data');
+        setLoading(false);
+      }
+    };
+    
+    loadData();
     loadActiveSessions();
   }, []);
 
@@ -164,8 +187,22 @@ function AdminDashboard() {
     }
   };
 
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <CircularProgress />
+        <Typography sx={{ ml: 2 }}>Loading dashboard...</Typography>
+      </Box>
+    );
+  }
+
   return (
     <div>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
       <h2>Admin Dashboard</h2>
       <h3>Summary</h3>
       <ul>

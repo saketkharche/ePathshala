@@ -26,9 +26,8 @@ import {
   Clear as ClearIcon
 } from '@mui/icons-material';
 
-function Chatbot() {
+function Chatbot({ isOpen, onClose }) {
   const { user } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -53,11 +52,30 @@ function Chatbot() {
           timestamp: new Date()
         }
       ]);
+      
+      // Test backend connectivity
+      testBackendConnection();
     }
   }, [isOpen]);
 
+  const testBackendConnection = async () => {
+    try {
+      console.log('Testing backend connection...');
+      const response = await fetch('/api/chatbot/health');
+      console.log('Backend health check status:', response.status);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Backend health check response:', data);
+      } else {
+        console.error('Backend health check failed:', response.status);
+      }
+    } catch (error) {
+      console.error('Backend connection test failed:', error);
+    }
+  };
+
   const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+    if (!inputMessage.trim() || isLoading || !user) return;
 
     const userMessage = inputMessage.trim();
     setInputMessage('');
@@ -72,6 +90,20 @@ function Chatbot() {
     setMessages(prev => [...prev, newUserMessage]);
 
     try {
+      console.log('Sending message to chatbot:', {
+        message: userMessage,
+        sessionId: sessionId,
+        userRole: user.role,
+        userEmail: `${user.name}@epathshala.com` // Create email from name
+      });
+
+      console.log('User token:', user.token ? 'Token exists' : 'No token');
+      console.log('User details:', { role: user.role, name: user.name, id: user.id });
+
+      // First test the connection
+      const healthResponse = await fetch('/api/chatbot/health');
+      console.log('Health check status:', healthResponse.status);
+
       const response = await fetch('/api/chatbot/chat', {
         method: 'POST',
         headers: {
@@ -82,12 +114,16 @@ function Chatbot() {
           message: userMessage,
           sessionId: sessionId,
           userRole: user.role,
-          userEmail: user.name // Using name as email for demo
+          userEmail: `${user.name}@epathshala.com` // Create email from name
         })
       });
 
+      console.log('Chatbot response status:', response.status);
+      console.log('Chatbot response headers:', Object.fromEntries(response.headers.entries()));
+
       if (response.ok) {
         const data = await response.json();
+        console.log('Chatbot response data:', data);
         setSessionId(data.sessionId);
         
         // Add bot response to chat
@@ -98,12 +134,14 @@ function Chatbot() {
         };
         setMessages(prev => [...prev, botMessage]);
       } else {
-        throw new Error('Failed to get response');
+        const errorText = await response.text();
+        console.error('Chatbot error response:', errorText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
       }
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage = {
-        message: "Sorry, I'm having trouble responding right now. Please try again later.",
+        message: `Sorry, I'm having trouble responding right now. Error: ${error.message}`,
         isUserMessage: false,
         timestamp: new Date()
       };
@@ -121,7 +159,7 @@ function Chatbot() {
   };
 
   const clearChat = async () => {
-    if (sessionId) {
+    if (sessionId && user) {
       try {
         await fetch(`/api/chatbot/clear/${sessionId}`, {
           method: 'DELETE',
@@ -144,28 +182,18 @@ function Chatbot() {
     });
   };
 
+  // Don't render if user is not logged in
+  if (!user) {
+    return null;
+  }
+
   return (
     <>
-      {/* Floating Action Button */}
-      <Fab
-        color="primary"
-        aria-label="chat"
-        onClick={() => setIsOpen(true)}
-        sx={{
-          position: 'fixed',
-          bottom: 16,
-          right: 16,
-          zIndex: 1000
-        }}
-      >
-        <ChatIcon />
-      </Fab>
-
       {/* Chat Drawer */}
       <Drawer
         anchor="right"
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={onClose}
         PaperProps={{
           sx: {
             width: 400,
@@ -185,7 +213,7 @@ function Chatbot() {
             <IconButton
               edge="end"
               color="inherit"
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
             >
               <CloseIcon />
             </IconButton>
@@ -285,6 +313,14 @@ function Chatbot() {
               variant="outlined"
             >
               Clear Chat
+            </Button>
+            <Button
+              size="small"
+              onClick={testBackendConnection}
+              variant="outlined"
+              color="secondary"
+            >
+              Test Connection
             </Button>
             <Chip
               label={user.role}

@@ -25,6 +25,7 @@ function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,6 +45,14 @@ function Navbar() {
     // Navigate to profile page based on role
     navigate(`/${user?.role?.toLowerCase()}/profile`);
     handleClose();
+  };
+
+  const handleChatbotOpen = () => {
+    setIsChatbotOpen(true);
+  };
+
+  const handleChatbotClose = () => {
+    setIsChatbotOpen(false);
   };
 
   return (
@@ -146,6 +155,7 @@ function Navbar() {
               <IconButton
                 color="inherit"
                 aria-label="chatbot"
+                onClick={handleChatbotOpen}
                 sx={{ 
                   backgroundColor: 'rgba(255,255,255,0.1)',
                   '&:hover': {
@@ -161,7 +171,7 @@ function Navbar() {
       </AppBar>
 
       {/* Chatbot Component - Only show when user is logged in */}
-      {user && <Chatbot />}
+      {user && <Chatbot isOpen={isChatbotOpen} onClose={handleChatbotClose} />}
     </>
   );
 }

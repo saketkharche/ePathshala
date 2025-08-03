@@ -19,6 +19,12 @@ public class ChatbotController {
     @Autowired
     private ChatbotService chatbotService;
     
+    @GetMapping("/health")
+    @Operation(summary = "Chatbot Health Check", description = "Simple health check to verify chatbot service is running")
+    public ResponseEntity<Map<String, String>> healthCheck() {
+        return ResponseEntity.ok(Map.of("status", "Chatbot service is running"));
+    }
+    
     @PostMapping("/chat")
     @Operation(summary = "Send Message to Chatbot", description = "Send a message to the AI assistant and get a response")
     public ResponseEntity<ChatResponse> chat(@RequestBody ChatRequest request) {

@@ -19,6 +19,13 @@ import com.epathshala.repository.TeacherRepository;
 import com.epathshala.dto.AcademicCalendarDTO;
 import com.epathshala.entity.AcademicCalendar;
 import com.epathshala.repository.AcademicCalendarRepository;
+import com.epathshala.entity.Attendance;
+import com.epathshala.repository.AttendanceRepository;
+import com.epathshala.entity.Grade;
+import com.epathshala.repository.GradeRepository;
+import com.epathshala.entity.LeaveRequest;
+import com.epathshala.repository.LeaveRequestRepository;
+import com.epathshala.entity.Teacher;
 
 @Service
 public class AdminService {
@@ -34,6 +41,12 @@ public class AdminService {
     private TeacherRepository teacherRepository;
     @Autowired
     private AcademicCalendarRepository academicCalendarRepository;
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+    @Autowired
+    private GradeRepository gradeRepository;
+    @Autowired
+    private LeaveRequestRepository leaveRequestRepository;
 
     public Map<String, Object> addStudent(UserDTO dto) {
         // Create User for Student
@@ -165,7 +178,65 @@ public class AdminService {
             .collect(Collectors.toList());
     }
     public void deleteUser(Long id) {
-        // TODO: Delete user by id
+        // Find the user first
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            throw new RuntimeException("User not found with ID: " + id);
+        }
+        
+        // Delete associated entities based on user role
+        switch (user.getRole()) {
+            case "STUDENT":
+                Student student = studentRepository.findAll().stream()
+                    .filter(s -> s.getUser().getId().equals(id))
+                    .findFirst().orElse(null);
+                if (student != null) {
+                    // Delete associated records
+                    attendanceRepository.deleteAll(attendanceRepository.findAll().stream()
+                        .filter(a -> a.getStudent() != null && a.getStudent().getId().equals(student.getId()))
+                        .collect(Collectors.toList()));
+                    gradeRepository.deleteAll(gradeRepository.findAll().stream()
+                        .filter(g -> g.getStudent() != null && g.getStudent().getId().equals(student.getId()))
+                        .collect(Collectors.toList()));
+                    leaveRequestRepository.deleteAll(leaveRequestRepository.findAll().stream()
+                        .filter(l -> l.getStudent() != null && l.getStudent().getId().equals(student.getId()))
+                        .collect(Collectors.toList()));
+                    studentRepository.delete(student);
+                }
+                break;
+                
+            case "TEACHER":
+                Teacher teacher = teacherRepository.findAll().stream()
+                    .filter(t -> t.getUser().getId().equals(id))
+                    .findFirst().orElse(null);
+                if (teacher != null) {
+                    // Delete associated records
+                    attendanceRepository.deleteAll(attendanceRepository.findAll().stream()
+                        .filter(a -> a.getMarkedBy() != null && a.getMarkedBy().getId().equals(teacher.getId()))
+                        .collect(Collectors.toList()));
+                    gradeRepository.deleteAll(gradeRepository.findAll().stream()
+                        .filter(g -> g.getTeacher() != null && g.getTeacher().getId().equals(teacher.getId()))
+                        .collect(Collectors.toList()));
+                    teacherRepository.delete(teacher);
+                }
+                break;
+                
+            case "PARENT":
+                Parent parent = parentRepository.findAll().stream()
+                    .filter(p -> p.getUser().getId().equals(id))
+                    .findFirst().orElse(null);
+                if (parent != null) {
+                    parentRepository.delete(parent);
+                }
+                break;
+                
+            default:
+                // For ADMIN or other roles, just delete the user
+                break;
+        }
+        
+        // Finally delete the user
+        userRepository.delete(user);
     }
     public Map<String, Object> assignTeacher(UserDTO dto) {
         // Find teacher by id (or email)

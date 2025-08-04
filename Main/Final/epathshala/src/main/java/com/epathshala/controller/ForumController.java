@@ -13,6 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import com.epathshala.entity.User;
+import com.epathshala.repository.UserRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +31,9 @@ public class ForumController {
     
     @Autowired
     private ForumService forumService;
+    
+    @Autowired
+    private UserRepository userRepository;
     
     // Category endpoints
     @GetMapping("/categories")
@@ -149,8 +159,39 @@ public class ForumController {
     
     // Helper method to get current user ID
     private Long getCurrentUserId() {
-        // This would be implemented based on your security context
-        // For now, return a default value
-        return 1L; // This should be replaced with actual user ID from security context
+        try {
+            // Get current authentication from Spring Security context
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated() && 
+                !(authentication instanceof AnonymousAuthenticationToken)) {
+                
+                // Try to get user ID from principal
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UserDetails) {
+                    // If using UserDetails, extract user ID from username or custom field
+                    String username = ((UserDetails) principal).getUsername();
+                    // You might need to implement a method to get user ID from username
+                    return getUserRepository().findByEmail(username)
+                        .map(User::getId)
+                        .orElse(null);
+                } else if (principal instanceof String) {
+                    // If principal is just a string (username/email)
+                    return getUserRepository().findByEmail((String) principal)
+                        .map(User::getId)
+                        .orElse(null);
+                }
+            }
+        } catch (Exception e) {
+            // Log the error but don't fail the request
+            System.err.println("Error getting current user ID: " + e.getMessage());
+        }
+        
+        // Fallback: return null or throw exception based on your requirements
+        throw new RuntimeException("User not authenticated or user ID not found");
+    }
+    
+    // Helper method to get UserRepository
+    private UserRepository getUserRepository() {
+        return userRepository;
     }
 } 

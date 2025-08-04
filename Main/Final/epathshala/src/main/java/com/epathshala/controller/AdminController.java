@@ -1,7 +1,9 @@
 package com.epathshala.controller;
 
 import com.epathshala.dto.UserDTO;
+import com.epathshala.dto.OnlineClassDTO;
 import com.epathshala.service.AdminService;
+import com.epathshala.service.OnlineClassService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import com.epathshala.dto.AcademicCalendarDTO;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    
+    @Autowired
+    private OnlineClassService onlineClassService;
 
     @PostMapping("/add-student")
     @Operation(summary = "Add Student", description = "Create a new student account")
@@ -90,5 +95,11 @@ public class AdminController {
     @Operation(summary = "Get Dashboard Summary", description = "Get admin dashboard statistics and summary")
     public ResponseEntity<?> getDashboardSummary() {
         return ResponseEntity.ok(adminService.getDashboardSummary());
+    }
+
+    @GetMapping("/online-classes")
+    @Operation(summary = "Get All Online Classes", description = "Retrieve all online classes across the system")
+    public ResponseEntity<?> getAllOnlineClasses() {
+        return ResponseEntity.ok(onlineClassService.getAllClasses());
     }
 }

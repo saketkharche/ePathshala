@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "Authentication management APIs")
@@ -51,5 +53,15 @@ public class AuthController {
     @Operation(summary = "Verify OTP and Reset Password", description = "Verify OTP and reset password")
     public ResponseEntity<?> verifyOtpAndResetPassword(@RequestBody VerifyOtpRequest request) {
         return ResponseEntity.ok(authService.verifyOtpAndResetPassword(request));
+    }
+
+    @GetMapping("/test")
+    @Operation(summary = "Test Endpoint", description = "Simple test endpoint to verify API is working")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok(Map.of(
+            "message", "API is working!",
+            "timestamp", System.currentTimeMillis(),
+            "status", "success"
+        ));
     }
 }

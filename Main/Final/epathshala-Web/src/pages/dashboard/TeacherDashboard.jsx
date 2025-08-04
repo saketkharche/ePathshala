@@ -5,16 +5,20 @@ import { enterGrade, getGradesByClass } from '../../api/grades';
 import { uploadAssignment, getAssignmentsByClass, uploadAssignmentFile } from '../../api/assignments';
 import { getLeavesByClass, approveLeaveAsTeacher } from '../../api/leave';
 import { getEvents } from '../../api/calendar';
-import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem, Tabs, Tab } from '@mui/material';
+import { VideoCall as VideoCallIcon } from '@mui/icons-material';
+import OnlineClassManager from '../../components/teacher/OnlineClassManager';
 
 function TeacherDashboard() {
   const { user } = useAuth();
+  const [currentTab, setCurrentTab] = useState(0);
   const [attendance, setAttendance] = useState([]);
   const [grades, setGrades] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [students, setStudents] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]);
+  const [onlineClasses, setOnlineClasses] = useState([]);
   
   // Attendance form state
   const [attendanceForm, setAttendanceForm] = useState({
@@ -52,13 +56,16 @@ function TeacherDashboard() {
 
   const loadData = async () => {
     try {
-      const [attendanceData, gradesData, assignmentsData, leavesData, studentsData, calendarData] = await Promise.all([
+      const [attendanceData, gradesData, assignmentsData, leavesData, studentsData, calendarData, onlineClassesData] = await Promise.all([
         getAttendanceByClass('Class 10A'),
         getGradesByClass('Class 10A'),
         getAssignmentsByClass('Class 10A'),
         getLeavesByClass('Class 10A'),
         getStudentsByClass('Class 10A'),
-        getEvents()
+        getEvents(),
+        fetch(`/api/teacher/online-classes?teacherId=${user?.id}`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        }).then(res => res.ok ? res.json() : [])
       ]);
       
       console.log('Leave requests data:', leavesData);
@@ -70,6 +77,7 @@ function TeacherDashboard() {
       setLeaveRequests(Array.isArray(leavesData) ? leavesData : []);
       setStudents(Array.isArray(studentsData) ? studentsData : []);
       setCalendarEvents(Array.isArray(calendarData) ? calendarData : []);
+      setOnlineClasses(Array.isArray(onlineClassesData) ? onlineClassesData : []);
     } catch (error) {
       console.error('Error loading data:', error);
       // Set empty arrays on error
@@ -79,6 +87,7 @@ function TeacherDashboard() {
       setLeaveRequests([]);
       setStudents([]);
       setCalendarEvents([]);
+      setOnlineClasses([]);
     }
   };
 
@@ -163,7 +172,26 @@ function TeacherDashboard() {
         Welcome, {user?.name}! (Mathematics - Class 10A)
       </Typography>
 
-      <Grid container spacing={3}>
+      {/* Tabs for different sections */}
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+        <Tabs value={currentTab} onChange={(e, newValue) => setCurrentTab(newValue)}>
+          <Tab label="Dashboard" />
+          <Tab 
+            label="Online Classes" 
+            icon={<VideoCallIcon />} 
+            iconPosition="start"
+          />
+        </Tabs>
+      </Box>
+
+      {/* Online Classes Tab */}
+      {currentTab === 1 && (
+        <OnlineClassManager />
+      )}
+
+      {/* Main Dashboard Tab */}
+      {currentTab === 0 && (
+        <Grid container spacing={3}>
         {/* Mark Attendance Section */}
         <Grid item xs={12} md={6}>
           <Card>
@@ -517,7 +545,73 @@ function TeacherDashboard() {
             </CardContent>
           </Card>
         </Grid>
+
+        {/* Online Classes Section */}
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Online Classes
+              </Typography>
+              <List>
+                {onlineClasses && onlineClasses.length > 0 ? (
+                  onlineClasses.map((classItem, index) => (
+                    <ListItem key={index} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, mb: 1 }}>
+                      <ListItemText
+                        primary={
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Typography variant="subtitle1" fontWeight="bold">
+                              {classItem.title}
+                            </Typography>
+                            <Typography 
+                              variant="caption" 
+                              sx={{ 
+                                backgroundColor: classItem.status === 'active' ? '#4caf50' : 
+                                               classItem.status === 'scheduled' ? '#2196f3' : '#ff9800',
+                                color: 'white',
+                                px: 1,
+                                py: 0.5,
+                                borderRadius: 1,
+                                textTransform: 'uppercase'
+                              }}
+                            >
+                              {classItem.status}
+                            </Typography>
+                          </Box>
+                        }
+                        secondary={
+                          <Box sx={{ mt: 1 }}>
+                            <Typography variant="body2" color="text.secondary">
+                              Subject: {classItem.subject} | Duration: {classItem.duration} minutes
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Scheduled: {new Date(classItem.scheduledTime).toLocaleString()}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Participants: {classItem.currentParticipants || 0}/{classItem.maxParticipants}
+                            </Typography>
+                            <Typography variant="body2" sx={{ mt: 1, fontWeight: 'bold', color: '#1976d2' }}>
+                              Meeting ID: {classItem.roomId}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: '#666', fontSize: '0.8rem' }}>
+                              Meeting URL: {classItem.meetingUrl}
+                            </Typography>
+                          </Box>
+                        }
+                      />
+                    </ListItem>
+                  ))
+                ) : (
+                  <ListItem>
+                    <ListItemText primary="No online classes found" />
+                  </ListItem>
+                )}
+              </List>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
+      )}
     </Box>
   );
 }

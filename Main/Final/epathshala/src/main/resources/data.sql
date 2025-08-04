@@ -98,6 +98,15 @@ INSERT INTO forum_reply (content, author_name, author_id, thread_id, parent_repl
 ('Great to be here! This forum will be very helpful for students.', 'Bob Smith', 9, 1, NULL, 2, NOW(), NOW()),
 ('Welcome everyone! Feel free to ask any questions.', 'John Smith', 2, 1, NULL, 3, NOW(), NOW()),
 ('I can help you with that algebra problem. Let me explain step by step...', 'John Smith', 2, 2, NULL, 1, NOW(), NOW()),
+
+-- Create Sample Online Classes
+INSERT INTO online_class (title, subject, description, scheduled_time, duration, max_participants, current_participants, room_id, meeting_url, status, teacher_id, created_at, updated_at) VALUES 
+('Advanced Mathematics Session', 'Mathematics', 'Advanced algebra and calculus concepts for Class 10A students', NOW() + INTERVAL 1 HOUR, 60, 30, 5, 'math-advanced-2024', 'https://meet.jit.si/math-advanced-2024', 'active', 1, NOW(), NOW()),
+('Science Lab Discussion', 'Science', 'Interactive science lab session covering physics experiments', NOW() + INTERVAL 2 HOUR, 45, 25, 3, 'science-lab-2024', 'https://meet.jit.si/science-lab-2024', 'scheduled', 2, NOW(), NOW()),
+('English Literature Class', 'English', 'Discussion on Shakespeare and modern literature', NOW() + INTERVAL 3 HOUR, 90, 35, 8, 'english-lit-2024', 'https://meet.jit.si/english-lit-2024', 'scheduled', 3, NOW(), NOW()),
+('Computer Science Workshop', 'Computer Science', 'Programming fundamentals and coding practice', NOW() - INTERVAL 1 HOUR, 75, 20, 15, 'cs-workshop-2024', 'https://meet.jit.si/cs-workshop-2024', 'completed', 1, NOW(), NOW()),
+('Mathematics Review Session', 'Mathematics', 'Quick review of important topics before exams', NOW() + INTERVAL 30 MINUTE, 30, 40, 12, 'math-review-2024', 'https://meet.jit.si/math-review-2024', 'active', 1, NOW(), NOW()),
+('Science Quiz Session', 'Science', 'Interactive quiz on biology and chemistry topics', NOW() + INTERVAL 4 HOUR, 60, 30, 6, 'science-quiz-2024', 'https://meet.jit.si/science-quiz-2024', 'scheduled', 2, NOW(), NOW());
 ('Thank you so much for the explanation! It makes sense now.', 'Alice Johnson', 8, 2, 4, 2, NOW(), NOW()),
 ('The computer lab guidelines are posted on the notice board. Please check them.', 'Sarah Johnson', 3, 3, NULL, 1, NOW(), NOW());
 

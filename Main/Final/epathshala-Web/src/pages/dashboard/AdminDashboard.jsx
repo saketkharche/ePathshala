@@ -14,6 +14,7 @@ function AdminDashboard() {
   const [activeSessions, setActiveSessions] = useState([]);
   const [selectedUserSessions, setSelectedUserSessions] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState('');
+  const [onlineClasses, setOnlineClasses] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -32,12 +33,15 @@ function AdminDashboard() {
     console.log('🔄 Loading admin dashboard data...');
     const loadData = async () => {
       try {
-        const [studentsData, teachersData, parentsData, eventsData, summaryData] = await Promise.all([
+        const [studentsData, teachersData, parentsData, eventsData, summaryData, onlineClassesData] = await Promise.all([
           getStudents(),
           getTeachers(),
           getParents(),
           getEvents(),
-          getDashboardSummary()
+          getDashboardSummary(),
+          fetch('/api/admin/online-classes', {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+          }).then(res => res.ok ? res.json() : [])
         ]);
         
         setStudents(studentsData);
@@ -45,6 +49,7 @@ function AdminDashboard() {
         setParents(parentsData);
         setEvents(eventsData);
         setDashboardSummary(summaryData);
+        setOnlineClasses(onlineClassesData);
         
         console.log('✅ Dashboard data loaded successfully');
         setLoading(false);
@@ -287,6 +292,39 @@ function AdminDashboard() {
           </li>
         ))}
       </ul>
+
+      {/* Online Classes Section */}
+      <h3>Online Classes ({onlineClasses.length})</h3>
+      <div style={{ marginBottom: '20px' }}>
+        <ul>
+          {onlineClasses.map(classItem => (
+            <li key={classItem.id} style={{ 
+              border: '1px solid #ddd', 
+              padding: '15px', 
+              margin: '10px 0', 
+              borderRadius: '5px',
+              backgroundColor: '#f9f9f9'
+            }}>
+              <strong>{classItem.title}</strong> - {classItem.subject}
+              <br />
+              <small>
+                Teacher: {classItem.teacherName} | Status: {classItem.status} | Duration: {classItem.duration} minutes
+                <br />
+                Scheduled: {new Date(classItem.scheduledTime).toLocaleString()}
+                <br />
+                Participants: {classItem.currentParticipants || 0}/{classItem.maxParticipants}
+                <br />
+                <strong style={{ color: '#1976d2' }}>Meeting ID: {classItem.roomId}</strong>
+                <br />
+                <span style={{ color: '#666', fontSize: '0.8rem' }}>Meeting URL: {classItem.meetingUrl}</span>
+              </small>
+            </li>
+          ))}
+        </ul>
+        {onlineClasses.length === 0 && (
+          <p style={{ color: '#666', fontStyle: 'italic' }}>No online classes found</p>
+        )}
+      </div>
 
       {/* Session Management Section */}
       <h3>Session Management</h3>

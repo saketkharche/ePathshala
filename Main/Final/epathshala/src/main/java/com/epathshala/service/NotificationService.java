@@ -108,14 +108,25 @@ public class NotificationService {
     
     @Transactional
     public void markAsRead(Long notificationId, Long userId) {
-        // For now, do nothing to avoid compilation errors
-        // TODO: Implement proper mark as read functionality
+        Notification notification = notificationRepository.findById(notificationId)
+            .orElseThrow(() -> new RuntimeException("Notification not found"));
+        
+        // Check if user is the recipient or if it's a global notification
+        if ((notification.getRecipient() != null && notification.getRecipient().getId().equals(userId)) ||
+            notification.getIsGlobal()) {
+            notification.setIsRead(true);
+            notificationRepository.save(notification);
+        }
     }
     
     @Transactional
     public void markAllAsRead(Long userId) {
-        // For now, do nothing to avoid compilation errors
-        // TODO: Implement proper mark all as read functionality
+        // Mark all unread notifications for the user as read
+        List<Notification> unreadNotifications = notificationRepository.findByRecipientIdAndIsReadFalseOrderByCreatedAtDesc(userId, Pageable.unpaged()).getContent();
+        for (Notification notification : unreadNotifications) {
+            notification.setIsRead(true);
+        }
+        notificationRepository.saveAll(unreadNotifications);
     }
     
     public List<NotificationDTO> getGlobalAnnouncements() {
@@ -126,13 +137,13 @@ public class NotificationService {
     }
 
     public Map<String, Object> getUserNotifications(Long userId) {
-        // For now, return empty notifications
-        return Map.of("content", List.of());
+        Page<NotificationDTO> notifications = getNotificationsForUser(userId, Pageable.unpaged());
+        return Map.of("content", notifications.getContent());
     }
 
     public Map<String, Object> getUnreadCount(Long userId) {
-        // For now, return 0 unread count
-        return Map.of("count", 0);
+        Long count = getUnreadNotificationCount(userId);
+        return Map.of("count", count);
     }
     
     private NotificationDTO convertToDTO(Notification notification) {

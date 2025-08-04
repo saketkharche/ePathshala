@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -48,11 +49,14 @@ public class SecurityConfig {
             .antMatchers("/api/chatbot/**").authenticated()
             .antMatchers("/api/forum/categories").permitAll()
             .antMatchers("/api/forum/categories/*/threads").permitAll()
+            .antMatchers("/api/forum/threads/*").permitAll()
+            .antMatchers("/api/forum/threads/*/replies").permitAll()
             .antMatchers("/api/forum/**").authenticated()
             .antMatchers("/api/chat/rooms").permitAll()
             .antMatchers("/api/chat/rooms/*/messages").permitAll()
             .antMatchers("/api/chat/**").authenticated()
-            .antMatchers("/api/notifications/announcements").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/notifications/announcements").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/notifications/announcements").hasAnyRole("ADMIN", "TEACHER")
             .antMatchers("/api/notifications/**").authenticated()
             .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
             .antMatchers("/api/admin/**").hasRole("ADMIN")

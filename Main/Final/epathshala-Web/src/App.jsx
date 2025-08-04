@@ -19,6 +19,7 @@ import SimpleChatTest from "./components/chat/SimpleChatTest";
 import WebSocketDebug from "./components/chat/WebSocketDebug";
 import MessageTest from "./components/chat/MessageTest";
 import ChatDebug from "./components/chat/ChatDebug";
+import ThreadDetail from "./components/forum/ThreadDetail";
 import { Box, Alert, Typography } from '@mui/material';
 
 // Error Boundary Component
@@ -130,6 +131,11 @@ function App() {
           <Route path="/admin/chat-debug" element={
             <DashboardLayout>
               <ChatDebug />
+            </DashboardLayout>
+          } />
+          <Route path="/forum/thread/:threadId" element={
+            <DashboardLayout>
+              <ThreadDetail />
             </DashboardLayout>
           } />
             <Route path="/admin/notifications" element={

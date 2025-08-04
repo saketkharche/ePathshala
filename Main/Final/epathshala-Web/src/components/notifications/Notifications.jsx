@@ -177,7 +177,7 @@ function Notifications() {
           <Badge badgeContent={unreadCount} color="error">
             <NotificationsIcon />
           </Badge>
-          {user.role === 'ADMIN' && (
+          {(user.role === 'ADMIN' || user.role === 'TEACHER') && (
             <Button
               variant="outlined"
               startIcon={<AddIcon />}

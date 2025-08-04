@@ -77,4 +77,32 @@ INSERT INTO assignment (title, subject, class_name, due_date, teacher_id) VALUES
 INSERT INTO leave_request (student_id, reason, from_date, to_date, teacher_approval, parent_approval, status) VALUES 
 (1, 'Medical appointment', CURDATE() + INTERVAL 1 DAY, CURDATE() + INTERVAL 2 DAY, 'Pending', 'Pending', 'Pending'),
 (1, 'Family function', CURDATE() + INTERVAL 3 DAY, CURDATE() + INTERVAL 4 DAY, 'Pending', 'Pending', 'Pending'),
-(1, 'Personal emergency', CURDATE() + INTERVAL 5 DAY, CURDATE() + INTERVAL 6 DAY, 'Pending', 'Pending', 'Pending'); 
+(1, 'Personal emergency', CURDATE() + INTERVAL 5 DAY, CURDATE() + INTERVAL 6 DAY, 'Pending', 'Pending', 'Pending');
+
+-- Create Forum Categories
+INSERT INTO forum_category (name, description, icon) VALUES 
+('Academic', 'Academic discussions and questions', 'School'),
+('Technology', 'Technology and computer science discussions', 'Computer'),
+('General', 'General discussions and announcements', 'Chat');
+
+-- Create Forum Threads
+INSERT INTO forum_thread (title, content, author_name, author_id, category_id, is_pinned, is_locked, view_count, reply_count, created_at, updated_at, last_reply_at) VALUES 
+('Welcome to ePathshala Forum!', 'Welcome everyone to our new forum! Feel free to ask questions and share your thoughts.', 'Admin User', 1, 1, true, false, 25, 3, NOW(), NOW(), NOW()),
+('Math Homework Help', 'I need help with algebra problem #15 on page 45. Can anyone explain the solution?', 'Alice Johnson', 8, 1, false, false, 12, 2, NOW(), NOW(), NOW()),
+('New Computer Lab Setup', 'The new computer lab is now open for students. Please read the guidelines before using.', 'John Smith', 2, 2, false, false, 8, 1, NOW(), NOW(), NOW()),
+('School Event Announcement', 'Annual sports day will be held next month. All students are encouraged to participate.', 'Admin User', 1, 3, false, false, 15, 0, NOW(), NOW(), NOW());
+
+-- Create Forum Replies
+INSERT INTO forum_reply (content, author_name, author_id, thread_id, parent_reply_id, reply_number, created_at, updated_at) VALUES 
+('Thanks for the welcome! Looking forward to participating in discussions.', 'Alice Johnson', 8, 1, NULL, 1, NOW(), NOW()),
+('Great to be here! This forum will be very helpful for students.', 'Bob Smith', 9, 1, NULL, 2, NOW(), NOW()),
+('Welcome everyone! Feel free to ask any questions.', 'John Smith', 2, 1, NULL, 3, NOW(), NOW()),
+('I can help you with that algebra problem. Let me explain step by step...', 'John Smith', 2, 2, NULL, 1, NOW(), NOW()),
+('Thank you so much for the explanation! It makes sense now.', 'Alice Johnson', 8, 2, 4, 2, NOW(), NOW()),
+('The computer lab guidelines are posted on the notice board. Please check them.', 'Sarah Johnson', 3, 3, NULL, 1, NOW(), NOW());
+
+-- Create Sample Notifications
+INSERT INTO notification (title, content, type, priority, sender_id, recipient_id, is_read, is_global, target_role, created_at, expires_at, action_url, action_text) VALUES 
+('Welcome to ePathshala', 'Welcome to our new learning platform!', 'ANNOUNCEMENT', 'HIGH', 1, NULL, false, true, 'ALL', NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), '/announcements', 'View Announcement'),
+('New Assignment Posted', 'Math homework has been assigned. Due date: 7 days', 'ASSIGNMENT', 'MEDIUM', 2, 8, false, false, 'STUDENT', NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), '/assignments', 'View Assignment'),
+('Forum Reply Notification', 'Someone replied to your thread "Math Homework Help"', 'FORUM_REPLY', 'LOW', 2, 8, false, false, 'STUDENT', NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), '/forum/thread/2', 'View Reply'); 

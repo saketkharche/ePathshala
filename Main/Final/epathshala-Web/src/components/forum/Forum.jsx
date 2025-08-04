@@ -40,9 +40,11 @@ import {
   Lock as LockIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 function Forum() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [threads, setThreads] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -260,7 +262,11 @@ function Forum() {
           <List>
             {(showSearch ? searchResults : threads).map((thread) => (
               <Paper key={thread.id} sx={{ mb: 2 }}>
-                <ListItem>
+                <ListItem
+                  button
+                  onClick={() => navigate(`/forum/thread/${thread.id}`)}
+                  sx={{ cursor: 'pointer' }}
+                >
                   <ListItemText
                     primary={
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

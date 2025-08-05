@@ -17,7 +17,8 @@ import {
   Chat as ChatIcon,
   Logout as LogoutIcon,
   Person as PersonIcon,
-  SmartToy as BotIcon
+  SmartToy as BotIcon,
+  Quiz as QuizIcon
 } from '@mui/icons-material';
 import Chatbot from './Chatbot';
 
@@ -100,6 +101,19 @@ function Navbar() {
             >
               Notifications
             </Button>
+            
+            {/* Exams Link - Show for students and teachers */}
+            {(user.role === 'STUDENT' || user.role === 'TEACHER') && (
+              <Button
+                color="inherit"
+                component={Link}
+                to={`/${user.role.toLowerCase()}/exams`}
+                sx={{ textTransform: 'none' }}
+                startIcon={<QuizIcon />}
+              >
+                Exams
+              </Button>
+            )}
           </Box>
 
           {!user ? (

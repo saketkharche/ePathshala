@@ -5,9 +5,10 @@ import { enterGrade, getGradesByClass } from '../../api/grades';
 import { uploadAssignment, getAssignmentsByClass, uploadAssignmentFile } from '../../api/assignments';
 import { getLeavesByClass, approveLeaveAsTeacher } from '../../api/leave';
 import { getEvents } from '../../api/calendar';
-import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem, Tabs, Tab } from '@mui/material';
-import { VideoCall as VideoCallIcon } from '@mui/icons-material';
+import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem, Tabs, Tab, Chip } from '@mui/material';
+import { VideoCall as VideoCallIcon, Quiz as QuizIcon, Assignment as AssignmentIcon, Group as GroupIcon } from '@mui/icons-material';
 import OnlineClassManager from '../../components/teacher/OnlineClassManager';
+import { useNavigate } from 'react-router-dom';
 
 function TeacherDashboard() {
   const { user } = useAuth();
@@ -47,6 +48,8 @@ function TeacherDashboard() {
   // Leave approval state
   const [selectedLeaveId, setSelectedLeaveId] = useState('');
   const [approvalStatus, setApprovalStatus] = useState('Approved');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -547,66 +550,77 @@ function TeacherDashboard() {
         </Grid>
 
         {/* Online Classes Section */}
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
+                <VideoCallIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 Online Classes
               </Typography>
               <List>
-                {onlineClasses && onlineClasses.length > 0 ? (
-                  onlineClasses.map((classItem, index) => (
-                    <ListItem key={index} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, mb: 1 }}>
-                      <ListItemText
-                        primary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant="subtitle1" fontWeight="bold">
-                              {classItem.title}
-                            </Typography>
-                            <Typography 
-                              variant="caption" 
-                              sx={{ 
-                                backgroundColor: classItem.status === 'active' ? '#4caf50' : 
-                                               classItem.status === 'scheduled' ? '#2196f3' : '#ff9800',
-                                color: 'white',
-                                px: 1,
-                                py: 0.5,
-                                borderRadius: 1,
-                                textTransform: 'uppercase'
-                              }}
-                            >
-                              {classItem.status}
-                            </Typography>
-                          </Box>
-                        }
-                        secondary={
-                          <Box sx={{ mt: 1 }}>
-                            <Typography variant="body2" color="text.secondary">
-                              Subject: {classItem.subject} | Duration: {classItem.duration} minutes
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Scheduled: {new Date(classItem.scheduledTime).toLocaleString()}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Participants: {classItem.currentParticipants || 0}/{classItem.maxParticipants}
-                            </Typography>
-                            <Typography variant="body2" sx={{ mt: 1, fontWeight: 'bold', color: '#1976d2' }}>
-                              Meeting ID: {classItem.roomId}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: '#666', fontSize: '0.8rem' }}>
-                              Meeting URL: {classItem.meetingUrl}
-                            </Typography>
-                          </Box>
-                        }
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No online classes found" />
-                  </ListItem>
-                )}
+                <ListItem>
+                  <ListItemText 
+                    primary="Create Online Class" 
+                    secondary="Schedule and manage virtual classroom sessions"
+                  />
+                  <Button variant="outlined" size="small">
+                    Create
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <ListItemText 
+                    primary="Manage Classes" 
+                    secondary="View and edit scheduled online classes"
+                  />
+                  <Button variant="outlined" size="small">
+                    Manage
+                  </Button>
+                </ListItem>
               </List>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Exams Section */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  <QuizIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                  Exams
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<QuizIcon />}
+                  onClick={() => navigate('/teacher/exams')}
+                  sx={{ textTransform: 'none' }}
+                >
+                  Manage Exams
+                </Button>
+              </Box>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Create MCQ exams, manage questions, and view student performance analytics.
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Chip 
+                  label="Create Exam" 
+                  color="primary" 
+                  variant="outlined"
+                  icon={<QuizIcon />}
+                />
+                <Chip 
+                  label="View Results" 
+                  color="secondary" 
+                  variant="outlined"
+                />
+                <Chip 
+                  label="Analytics" 
+                  color="info" 
+                  variant="outlined"
+                />
+              </Box>
             </CardContent>
           </Card>
         </Grid>

@@ -1,4 +1,8 @@
 -- Clear all existing data first
+DELETE FROM exam_answer;
+DELETE FROM exam_attempt;
+DELETE FROM exam_question;
+DELETE FROM exam;
 DELETE FROM attendance;
 DELETE FROM grade;
 DELETE FROM assignment;
@@ -17,6 +21,10 @@ ALTER TABLE attendance AUTO_INCREMENT = 1;
 ALTER TABLE grade AUTO_INCREMENT = 1;
 ALTER TABLE assignment AUTO_INCREMENT = 1;
 ALTER TABLE leave_request AUTO_INCREMENT = 1;
+ALTER TABLE exam AUTO_INCREMENT = 1;
+ALTER TABLE exam_question AUTO_INCREMENT = 1;
+ALTER TABLE exam_attempt AUTO_INCREMENT = 1;
+ALTER TABLE exam_answer AUTO_INCREMENT = 1;
 
 -- Create Admin User
 INSERT INTO user (name, email, password, role) VALUES 
@@ -52,6 +60,21 @@ INSERT INTO student (user_id, student_class, parent_id) VALUES
 (8, 'Class 10A', 1),
 (9, 'Class 10B', 2),
 (10, 'Class 9A', 3);
+
+-- Create Sample Exams (with future dates)
+INSERT INTO exam (title, description, duration_minutes, start_time, end_time, total_marks, negative_marking, negative_marking_percentage, is_active, course_id, created_by, created_at, updated_at) VALUES 
+('Mathematics Mid-Term', 'Covers algebra and calculus topics', 90, DATE_ADD(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 1 DAY + INTERVAL 90 MINUTE), 100, true, 25.0, true, 1, 2, NOW(), NOW()),
+('Science Quiz', 'Basic physics concepts and formulas', 60, DATE_ADD(NOW(), INTERVAL 2 DAY), DATE_ADD(NOW(), INTERVAL 2 DAY + INTERVAL 60 MINUTE), 50, false, 0.0, true, 2, 3, NOW(), NOW()),
+('English Literature Test', 'Shakespeare and modern literature', 75, DATE_ADD(NOW(), INTERVAL 3 DAY), DATE_ADD(NOW(), INTERVAL 3 DAY + INTERVAL 75 MINUTE), 75, true, 20.0, true, 3, 4, NOW(), NOW());
+
+-- Create Sample Exam Questions
+INSERT INTO exam_question (exam_id, question_text, option_a, option_b, option_c, option_d, correct_answer, marks, difficulty, topic) VALUES 
+(1, 'What is the derivative of x²?', 'x', '2x', 'x²', '2x²', 'B', 4, 'Medium', 'Calculus'),
+(1, 'Solve for x: 2x + 5 = 13', '3', '4', '5', '6', 'B', 4, 'Easy', 'Algebra'),
+(1, 'What is the value of sin(90°)?', '0', '1', '-1', '0.5', 'B', 4, 'Easy', 'Trigonometry'),
+(2, 'What is the SI unit of force?', 'Joule', 'Newton', 'Watt', 'Pascal', 'B', 3, 'Easy', 'Physics'),
+(2, 'Which planet is closest to the Sun?', 'Venus', 'Mercury', 'Mars', 'Earth', 'B', 3, 'Easy', 'Astronomy'),
+(3, 'Who wrote "Romeo and Juliet"?', 'Charles Dickens', 'William Shakespeare', 'Jane Austen', 'Mark Twain', 'B', 5, 'Medium', 'Literature');
 
 -- Create Sample Attendance Records
 INSERT INTO attendance (student_id, date, status, marked_by_id) VALUES 
@@ -97,21 +120,4 @@ INSERT INTO forum_reply (content, author_name, author_id, thread_id, parent_repl
 ('Thanks for the welcome! Looking forward to participating in discussions.', 'Alice Johnson', 8, 1, NULL, 1, NOW(), NOW()),
 ('Great to be here! This forum will be very helpful for students.', 'Bob Smith', 9, 1, NULL, 2, NOW(), NOW()),
 ('Welcome everyone! Feel free to ask any questions.', 'John Smith', 2, 1, NULL, 3, NOW(), NOW()),
-('I can help you with that algebra problem. Let me explain step by step...', 'John Smith', 2, 2, NULL, 1, NOW(), NOW()),
-
--- Create Sample Online Classes
-INSERT INTO online_class (title, subject, description, scheduled_time, duration, max_participants, current_participants, room_id, meeting_url, status, teacher_id, created_at, updated_at) VALUES 
-('Advanced Mathematics Session', 'Mathematics', 'Advanced algebra and calculus concepts for Class 10A students', NOW() + INTERVAL 1 HOUR, 60, 30, 5, 'math-advanced-2024', 'https://meet.jit.si/math-advanced-2024', 'active', 1, NOW(), NOW()),
-('Science Lab Discussion', 'Science', 'Interactive science lab session covering physics experiments', NOW() + INTERVAL 2 HOUR, 45, 25, 3, 'science-lab-2024', 'https://meet.jit.si/science-lab-2024', 'scheduled', 2, NOW(), NOW()),
-('English Literature Class', 'English', 'Discussion on Shakespeare and modern literature', NOW() + INTERVAL 3 HOUR, 90, 35, 8, 'english-lit-2024', 'https://meet.jit.si/english-lit-2024', 'scheduled', 3, NOW(), NOW()),
-('Computer Science Workshop', 'Computer Science', 'Programming fundamentals and coding practice', NOW() - INTERVAL 1 HOUR, 75, 20, 15, 'cs-workshop-2024', 'https://meet.jit.si/cs-workshop-2024', 'completed', 1, NOW(), NOW()),
-('Mathematics Review Session', 'Mathematics', 'Quick review of important topics before exams', NOW() + INTERVAL 30 MINUTE, 30, 40, 12, 'math-review-2024', 'https://meet.jit.si/math-review-2024', 'active', 1, NOW(), NOW()),
-('Science Quiz Session', 'Science', 'Interactive quiz on biology and chemistry topics', NOW() + INTERVAL 4 HOUR, 60, 30, 6, 'science-quiz-2024', 'https://meet.jit.si/science-quiz-2024', 'scheduled', 2, NOW(), NOW());
-('Thank you so much for the explanation! It makes sense now.', 'Alice Johnson', 8, 2, 4, 2, NOW(), NOW()),
-('The computer lab guidelines are posted on the notice board. Please check them.', 'Sarah Johnson', 3, 3, NULL, 1, NOW(), NOW());
-
--- Create Sample Notifications
-INSERT INTO notification (title, content, type, priority, sender_id, recipient_id, is_read, is_global, target_role, created_at, expires_at, action_url, action_text) VALUES 
-('Welcome to ePathshala', 'Welcome to our new learning platform!', 'ANNOUNCEMENT', 'HIGH', 1, NULL, false, true, 'ALL', NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), '/announcements', 'View Announcement'),
-('New Assignment Posted', 'Math homework has been assigned. Due date: 7 days', 'ASSIGNMENT', 'MEDIUM', 2, 8, false, false, 'STUDENT', NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), '/assignments', 'View Assignment'),
-('Forum Reply Notification', 'Someone replied to your thread "Math Homework Help"', 'FORUM_REPLY', 'LOW', 2, 8, false, false, 'STUDENT', NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY), '/forum/thread/2', 'View Reply'); 
+('I can help you with that algebra problem. Let me explain step by step...', 'John Smith', 2, 2, NULL, 1, NOW(), NOW()); 

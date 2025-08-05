@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/teacher/**").hasRole("TEACHER")
+                .antMatchers("/api/faculty/**").hasRole("TEACHER") // Add faculty exam endpoints
                 .antMatchers("/api/student/**").hasRole("STUDENT")
                 .antMatchers("/api/parent/**").hasRole("PARENT")
                 .antMatchers("/api/calendar/events").permitAll()

@@ -7,6 +7,7 @@ import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import TeacherDashboard from "./pages/dashboard/TeacherDashboard";
 import ParentDashboard from "./pages/dashboard/ParentDashboard";
+import ExamDashboard from "./pages/dashboard/ExamDashboard";
 import Forum from "./components/forum/Forum";
 import Chat from "./components/chat/Chat";
 import ThreadedChat from "./components/chat/ThreadedChat";
@@ -150,6 +151,11 @@ function App() {
                 <StudentDashboard />
               </DashboardLayout>
             } />
+            <Route path="/student/exams" element={
+              <DashboardLayout>
+                <ExamDashboard />
+              </DashboardLayout>
+            } />
             <Route path="/student/forum" element={
               <DashboardLayout>
                 <Forum />
@@ -170,6 +176,11 @@ function App() {
             <Route path="/teacher" element={
               <DashboardLayout>
                 <TeacherDashboard />
+              </DashboardLayout>
+            } />
+            <Route path="/teacher/exams" element={
+              <DashboardLayout>
+                <ExamDashboard />
               </DashboardLayout>
             } />
             <Route path="/teacher/forum" element={

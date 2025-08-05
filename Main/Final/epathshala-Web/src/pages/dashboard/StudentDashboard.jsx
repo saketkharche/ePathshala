@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, TextField, Button, Alert, Divider, Tabs, Tab, IconButton, Snackbar, Chip } from '@mui/material';
-import { VideoCall as VideoCallIcon, Launch as LaunchIcon, ContentCopy as CopyIcon, Close as CloseIcon } from '@mui/icons-material';
+import { VideoCall as VideoCallIcon, Launch as LaunchIcon, ContentCopy as CopyIcon, Close as CloseIcon, Quiz as QuizIcon } from '@mui/icons-material';
 import { useAuth } from '../../utils/auth';
 import { getStudentAttendance, debugDatabase, testAuth, testDatabase, getStudentDetails } from '../../api/attendance';
 import { getStudentGrades } from '../../api/grades';
@@ -8,9 +8,11 @@ import { getStudentAssignments } from '../../api/assignments';
 import { getStudentLeaveStatus, submitLeave } from '../../api/leave';
 import { getEvents } from '../../api/calendar';
 import OnlineClassJoiner from '../../components/student/OnlineClassJoiner';
+import { useNavigate } from 'react-router-dom';
 
 function StudentDashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(0);
   const [attendance, setAttendance] = useState([]);
   const [grades, setGrades] = useState([]);
@@ -984,6 +986,50 @@ function StudentDashboard() {
                   </ListItem>
                 )}
               </List>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Exams Section */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  <QuizIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                  Exams
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<QuizIcon />}
+                  onClick={() => navigate('/student/exams')}
+                  sx={{ textTransform: 'none' }}
+                >
+                  View All Exams
+                </Button>
+              </Box>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Access your upcoming exams, take tests, and view your results with detailed performance analytics.
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Chip 
+                  label="MCQ Tests" 
+                  color="primary" 
+                  variant="outlined"
+                  icon={<QuizIcon />}
+                />
+                <Chip 
+                  label="Performance Analytics" 
+                  color="secondary" 
+                  variant="outlined"
+                />
+                <Chip 
+                  label="Result Charts" 
+                  color="info" 
+                  variant="outlined"
+                />
+              </Box>
             </CardContent>
           </Card>
         </Grid>

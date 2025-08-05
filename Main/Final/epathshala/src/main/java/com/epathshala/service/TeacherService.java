@@ -14,7 +14,6 @@ import com.epathshala.repository.GradeRepository;
 import com.epathshala.dto.AssignmentDTO;
 import com.epathshala.entity.Assignment;
 import com.epathshala.repository.AssignmentRepository;
-import com.epathshala.dto.LeaveRequestDTO;
 import com.epathshala.dto.LeaveApprovalDTO;
 import com.epathshala.entity.LeaveRequest;
 import com.epathshala.repository.LeaveRequestRepository;

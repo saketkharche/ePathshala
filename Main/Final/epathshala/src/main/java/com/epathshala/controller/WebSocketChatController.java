@@ -31,7 +31,15 @@ public class WebSocketChatController {
     public ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         try {
             // Get user from session attributes (set during connection)
-            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            if (sessionAttributes == null) {
+                ChatMessageDTO errorMessage = new ChatMessageDTO();
+                errorMessage.setMessage("Session not found");
+                errorMessage.setMessageType("SYSTEM");
+                errorMessage.setTimestamp(LocalDateTime.now());
+                return errorMessage;
+            }
+            String userEmail = (String) sessionAttributes.get("userEmail");
             if (userEmail != null) {
                 var user = userRepository.findByEmail(userEmail).orElse(null);
                 if (user != null) {
@@ -81,14 +89,22 @@ public class WebSocketChatController {
     public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         try {
             // Get user from session attributes (set during connection)
-            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            if (sessionAttributes == null) {
+                ChatMessageDTO errorMessage = new ChatMessageDTO();
+                errorMessage.setMessage("Session not found");
+                errorMessage.setMessageType("SYSTEM");
+                errorMessage.setTimestamp(LocalDateTime.now());
+                return errorMessage;
+            }
+            String userEmail = (String) sessionAttributes.get("userEmail");
             if (userEmail != null) {
                 var user = userRepository.findByEmail(userEmail).orElse(null);
                 if (user != null) {
                     // Add username to web socket session
-                    headerAccessor.getSessionAttributes().put("username", user.getName());
-                    headerAccessor.getSessionAttributes().put("userEmail", userEmail);
-                    headerAccessor.getSessionAttributes().put("userId", user.getId());
+                    sessionAttributes.put("username", user.getName());
+                    sessionAttributes.put("userEmail", userEmail);
+                    sessionAttributes.put("userId", user.getId());
                     
                     // Create join message
                     ChatMessageDTO joinMessage = new ChatMessageDTO();
@@ -124,7 +140,16 @@ public class WebSocketChatController {
     public void joinRoom(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         try {
             Long roomId = Long.valueOf(payload.get("roomId").toString());
-            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            if (sessionAttributes == null) {
+                messagingTemplate.convertAndSendToUser(
+                    "anonymous",
+                    "/queue/errors",
+                    Map.of("error", "Session not found")
+                );
+                return;
+            }
+            String userEmail = (String) sessionAttributes.get("userEmail");
             
             if (userEmail != null) {
                 var user = userRepository.findByEmail(userEmail).orElse(null);
@@ -146,8 +171,9 @@ public class WebSocketChatController {
             }
         } catch (Exception e) {
             // Send error to user
-            String email = headerAccessor.getSessionAttributes().get("userEmail") != null ? 
-                         headerAccessor.getSessionAttributes().get("userEmail").toString() : "anonymous";
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            String email = sessionAttributes != null && sessionAttributes.get("userEmail") != null ? 
+                         sessionAttributes.get("userEmail").toString() : "anonymous";
             
             messagingTemplate.convertAndSendToUser(
                 email,
@@ -161,7 +187,16 @@ public class WebSocketChatController {
     public void leaveRoom(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         try {
             Long roomId = Long.valueOf(payload.get("roomId").toString());
-            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            if (sessionAttributes == null) {
+                messagingTemplate.convertAndSendToUser(
+                    "anonymous",
+                    "/queue/errors",
+                    Map.of("error", "Session not found")
+                );
+                return;
+            }
+            String userEmail = (String) sessionAttributes.get("userEmail");
             
             if (userEmail != null) {
                 var user = userRepository.findByEmail(userEmail).orElse(null);
@@ -176,8 +211,9 @@ public class WebSocketChatController {
             }
         } catch (Exception e) {
             // Handle error
-            String email = headerAccessor.getSessionAttributes().get("userEmail") != null ? 
-                         headerAccessor.getSessionAttributes().get("userEmail").toString() : "anonymous";
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            String email = sessionAttributes != null && sessionAttributes.get("userEmail") != null ? 
+                         sessionAttributes.get("userEmail").toString() : "anonymous";
             
             messagingTemplate.convertAndSendToUser(
                 email,
@@ -190,7 +226,16 @@ public class WebSocketChatController {
     @MessageMapping("/chat.moderate")
     public void moderateMessage(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         try {
-            String userEmail = (String) headerAccessor.getSessionAttributes().get("userEmail");
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            if (sessionAttributes == null) {
+                messagingTemplate.convertAndSendToUser(
+                    "anonymous",
+                    "/queue/errors",
+                    Map.of("error", "Session not found")
+                );
+                return;
+            }
+            String userEmail = (String) sessionAttributes.get("userEmail");
             if (userEmail != null) {
                 var user = userRepository.findByEmail(userEmail).orElse(null);
                 
@@ -223,8 +268,9 @@ public class WebSocketChatController {
             }
         } catch (Exception e) {
             // Send error to user
-            String email = headerAccessor.getSessionAttributes().get("userEmail") != null ? 
-                         headerAccessor.getSessionAttributes().get("userEmail").toString() : "anonymous";
+            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+            String email = sessionAttributes != null && sessionAttributes.get("userEmail") != null ? 
+                         sessionAttributes.get("userEmail").toString() : "anonymous";
             
             messagingTemplate.convertAndSendToUser(
                 email,

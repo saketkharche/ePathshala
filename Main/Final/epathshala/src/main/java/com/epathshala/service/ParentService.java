@@ -2,8 +2,6 @@ package com.epathshala.service;
 
 import com.epathshala.entity.Parent;
 import com.epathshala.entity.Student;
-import com.epathshala.entity.Attendance;
-import com.epathshala.entity.Grade;
 import com.epathshala.repository.ParentRepository;
 import com.epathshala.repository.AttendanceRepository;
 import com.epathshala.repository.GradeRepository;
@@ -11,7 +9,6 @@ import com.epathshala.dto.LeaveApprovalDTO;
 import com.epathshala.dto.ParentDashboardDTO;
 import com.epathshala.entity.LeaveRequest;
 import com.epathshala.repository.LeaveRequestRepository;
-import com.epathshala.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -31,8 +28,6 @@ public class ParentService {
     private LeaveRequestRepository leaveRequestRepository;
     @Autowired
     private StudentRepository studentRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     public List<ParentDashboardDTO.AttendanceResponseDTO> getChildAttendance(Long userId) {
         try {

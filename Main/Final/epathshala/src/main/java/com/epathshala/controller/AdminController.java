@@ -1,7 +1,6 @@
 package com.epathshala.controller;
 
 import com.epathshala.dto.UserDTO;
-import com.epathshala.dto.OnlineClassDTO;
 import com.epathshala.service.AdminService;
 import com.epathshala.service.OnlineClassService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -2,6 +2,7 @@ package com.epathshala.interceptor;
 
 import com.epathshala.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,7 +17,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     private SessionService sessionService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws IOException {
         // Skip session tracking for login endpoint and public endpoints
         String requestURI = request.getRequestURI();
         if (requestURI.equals("/api/auth/login") ||

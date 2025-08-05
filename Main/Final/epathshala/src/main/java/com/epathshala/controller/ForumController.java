@@ -22,7 +22,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/forum")

@@ -19,11 +19,8 @@ import com.epathshala.repository.TeacherRepository;
 import com.epathshala.dto.AcademicCalendarDTO;
 import com.epathshala.entity.AcademicCalendar;
 import com.epathshala.repository.AcademicCalendarRepository;
-import com.epathshala.entity.Attendance;
 import com.epathshala.repository.AttendanceRepository;
-import com.epathshala.entity.Grade;
 import com.epathshala.repository.GradeRepository;
-import com.epathshala.entity.LeaveRequest;
 import com.epathshala.repository.LeaveRequestRepository;
 import com.epathshala.entity.Teacher;
 

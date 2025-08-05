@@ -1,154 +1,178 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
   Card,
   CardContent,
   Typography,
   Button,
+  TextField,
+  Grid,
+  Box,
   Chip,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Alert,
-  LinearProgress
+  Snackbar,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material';
 import {
-  Download as DownloadIcon,
   Upload as UploadIcon,
-  CheckCircle as CheckCircleIcon,
-  Schedule as ScheduleIcon,
-  Warning as WarningIcon
+  Download as DownloadIcon,
+  Send as SendIcon,
+  ExpandMore as ExpandMoreIcon,
+  Assignment as AssignmentIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../utils/auth';
 
-function AssignmentTracker() {
+const AssignmentTracker = () => {
   const { user } = useAuth();
   const [assignments, setAssignments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [openSubmit, setOpenSubmit] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
-  const [submissionDialog, setSubmissionDialog] = useState(false);
-  const [submissionFile, setSubmissionFile] = useState(null);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
+
+  const [submitData, setSubmitData] = useState({
+    file: null,
+    submissionText: ''
+  });
 
   useEffect(() => {
     loadAssignments();
+    loadSubmissions();
   }, []);
 
   const loadAssignments = async () => {
     try {
       setLoading(true);
-      // Get student's class from user details or API
-      const studentClass = user?.studentClass || 'Class 10'; // Default fallback
-      
-      const response = await fetch(`/api/student/assignments/${studentClass}`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      const response = await fetch(`/api/assignments/class/${user.className}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         setAssignments(data);
-      } else {
-        setError('Failed to load assignments');
       }
     } catch (error) {
-      setError('Failed to load assignments');
+      console.error('Error loading assignments:', error);
+      showMessage('Error loading assignments', 'error');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDownload = (fileUrl) => {
-    window.open(`/api/files/assignments/${fileUrl}`, '_blank');
-  };
-
-  const handleSubmitAssignment = (assignment) => {
-    setSelectedAssignment(assignment);
-    setSubmissionDialog(true);
+  const loadSubmissions = async () => {
+    try {
+      const response = await fetch(`/api/assignments/student/${user.id}/submissions`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setSubmissions(data);
+      }
+    } catch (error) {
+      console.error('Error loading submissions:', error);
+    }
   };
 
   const handleFileChange = (event) => {
-    setSubmissionFile(event.target.files[0]);
+    setSubmitData({
+      ...submitData,
+      file: event.target.files[0]
+    });
   };
 
-  const handleSubmissionSubmit = async () => {
-    if (!submissionFile) {
-      setError('Please select a file to submit');
-      return;
-    }
-
+  const handleSubmit = async () => {
     try {
-      const formData = new FormData();
-      formData.append('file', submissionFile);
-      formData.append('assignmentId', selectedAssignment.id);
+      setLoading(true);
+      const formDataToSend = new FormData();
+      formDataToSend.append('studentId', user.id);
+      
+      if (submitData.file) {
+        formDataToSend.append('file', submitData.file);
+      }
+      
+      if (submitData.submissionText) {
+        formDataToSend.append('submissionText', submitData.submissionText);
+      }
 
-      const response = await fetch('/api/student/submit-assignment', {
+      const response = await fetch(`/api/assignments/${selectedAssignment.id}/submit`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-        body: formData
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formDataToSend
       });
 
       if (response.ok) {
-        setSubmissionDialog(false);
-        setSubmissionFile(null);
+        showMessage('Assignment submitted successfully!', 'success');
+        setOpenSubmit(false);
         setSelectedAssignment(null);
-        loadAssignments(); // Refresh the list
-        setError('');
+        setSubmitData({ file: null, submissionText: '' });
+        loadSubmissions();
       } else {
-        const data = await response.json();
-        setError(data.error || 'Failed to submit assignment');
+        showMessage('Error submitting assignment', 'error');
       }
     } catch (error) {
-      setError('Failed to submit assignment');
+      console.error('Error submitting assignment:', error);
+      showMessage('Error submitting assignment', 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getStatusChip = (assignment) => {
-    const now = new Date();
-    const dueDate = new Date(assignment.dueDate);
-    const isOverdue = now > dueDate;
-    const isSubmitted = assignment.submitted; // Assuming this field exists
+  const handleDownload = async (filename) => {
+    try {
+      const response = await fetch(`/api/assignments/download/${filename}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
-    if (isSubmitted) {
-      return <Chip icon={<CheckCircleIcon />} label="Submitted" color="success" size="small" />;
-    } else if (isOverdue) {
-      return <Chip icon={<WarningIcon />} label="Overdue" color="error" size="small" />;
-    } else {
-      return <Chip icon={<ScheduleIcon />} label="Pending" color="warning" size="small" />;
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      showMessage('Error downloading file', 'error');
     }
   };
 
-  const getDaysRemaining = (dueDate) => {
-    const now = new Date();
-    const due = new Date(dueDate);
-    const diffTime = due - now;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) {
-      return `${Math.abs(diffDays)} days overdue`;
-    } else if (diffDays === 0) {
-      return 'Due today';
-    } else if (diffDays === 1) {
-      return 'Due tomorrow';
-    } else {
-      return `${diffDays} days remaining`;
-    }
+  const checkSubmissionStatus = (assignmentId) => {
+    return submissions.find(sub => sub.assignmentId === assignmentId);
   };
 
-  if (loading) {
-    return (
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h5" gutterBottom>Assignment Tracker</Typography>
-        <LinearProgress />
-      </Box>
-    );
-  }
+  const showMessage = (msg, sev) => {
+    setMessage(msg);
+    setSeverity(sev);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'submitted': return 'warning';
+      case 'graded': return 'success';
+      case 'late': return 'error';
+      default: return 'default';
+    }
+  };
 
   return (
     <Box sx={{ p: 3 }}>
@@ -156,98 +180,180 @@ function AssignmentTracker() {
         Assignment Tracker
       </Typography>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      <Grid container spacing={3}>
+        {assignments.map((assignment) => {
+          const submission = checkSubmissionStatus(assignment.id);
+          const isSubmitted = !!submission;
+          const isOverdue = new Date(assignment.dueDate) < new Date();
 
-      {assignments.length === 0 ? (
-        <Card>
-          <CardContent>
-            <Typography variant="h6" color="text.secondary" align="center">
-              No assignments found for your class
-            </Typography>
-          </CardContent>
-        </Card>
-      ) : (
-        <List>
-          {assignments.map((assignment) => (
-            <Card key={assignment.id} sx={{ mb: 2 }}>
-              <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                  <Box>
-                    <Typography variant="h6">{assignment.title}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Subject: {assignment.subject}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Due: {new Date(assignment.dueDate).toLocaleDateString()} - {getDaysRemaining(assignment.dueDate)}
-                    </Typography>
-                  </Box>
-                  {getStatusChip(assignment)}
-                </Box>
-
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                  {assignment.fileUrl && (
-                    <Button
-                      variant="outlined"
-                      startIcon={<DownloadIcon />}
-                      onClick={() => handleDownload(assignment.fileUrl)}
-                      size="small"
-                    >
-                      Download Assignment
-                    </Button>
-                  )}
+          return (
+            <Grid item xs={12} md={6} key={assignment.id}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {assignment.title}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    {assignment.subject} - {assignment.className}
+                  </Typography>
+                  <Typography variant="body2" paragraph>
+                    {assignment.description}
+                  </Typography>
                   
-                  {!assignment.submitted && (
-                    <Button
-                      variant="contained"
-                      startIcon={<UploadIcon />}
-                      onClick={() => handleSubmitAssignment(assignment)}
+                  <Box sx={{ mb: 2 }}>
+                    <Chip 
+                      label={`Due: ${new Date(assignment.dueDate).toLocaleDateString()}`}
+                      color={isOverdue ? "error" : "primary"}
                       size="small"
-                      color={new Date() > new Date(assignment.dueDate) ? 'error' : 'primary'}
-                    >
-                      Submit Assignment
-                    </Button>
-                  )}
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
-        </List>
-      )}
+                      sx={{ mr: 1 }}
+                    />
+                    {isSubmitted && (
+                      <Chip 
+                        label={submission.status}
+                        color={getStatusColor(submission.status)}
+                        size="small"
+                        sx={{ mr: 1 }}
+                      />
+                    )}
+                    {submission?.grade && (
+                      <Chip 
+                        label={`Grade: ${submission.grade}/100`}
+                        color="success"
+                        size="small"
+                      />
+                    )}
+                  </Box>
 
-      {/* Submission Dialog */}
-      <Dialog open={submissionDialog} onClose={() => setSubmissionDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Submit Assignment: {selectedAssignment?.title}</DialogTitle>
+                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                    {assignment.fileUrl && (
+                      <Button
+                        size="small"
+                        startIcon={<DownloadIcon />}
+                        onClick={() => handleDownload(assignment.fileUrl)}
+                      >
+                        Download Assignment
+                      </Button>
+                    )}
+                    
+                    {!isSubmitted && (
+                      <Button
+                        size="small"
+                        variant="contained"
+                        startIcon={<SendIcon />}
+                        onClick={() => {
+                          setSelectedAssignment(assignment);
+                          setOpenSubmit(true);
+                        }}
+                        disabled={isOverdue}
+                      >
+                        Submit Solution
+                      </Button>
+                    )}
+                    
+                    {isSubmitted && submission.submissionFileUrl && (
+                      <Button
+                        size="small"
+                        startIcon={<DownloadIcon />}
+                        onClick={() => handleDownload(submission.submissionFileUrl)}
+                      >
+                        Download Submission
+                      </Button>
+                    )}
+                  </Box>
+
+                  {submission?.feedback && (
+                    <Accordion sx={{ mt: 2 }}>
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>View Feedback</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography variant="body2">
+                          {submission.feedback}
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+
+      <Dialog open={openSubmit} onClose={() => setOpenSubmit(false)} maxWidth="md" fullWidth>
+        <DialogTitle>Submit Assignment</DialogTitle>
         <DialogContent>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Please select a file to submit for this assignment.
-          </Typography>
-          <input
-            accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
-            style={{ display: 'none' }}
-            id="assignment-file"
-            type="file"
-            onChange={handleFileChange}
-          />
-          <label htmlFor="assignment-file">
-            <Button variant="outlined" component="span" startIcon={<UploadIcon />}>
-              Choose File
-            </Button>
-          </label>
-          {submissionFile && (
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              Selected: {submissionFile.name}
-            </Typography>
+          {selectedAssignment && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="h6" gutterBottom>
+                {selectedAssignment.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" paragraph>
+                {selectedAssignment.description}
+              </Typography>
+              
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    startIcon={<UploadIcon />}
+                    fullWidth
+                    sx={{ height: 56 }}
+                  >
+                    Upload Solution File
+                    <input
+                      type="file"
+                      hidden
+                      onChange={handleFileChange}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip"
+                    />
+                  </Button>
+                  {submitData.file && (
+                    <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                      Selected file: {submitData.file.name}
+                    </Typography>
+                  )}
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Text Submission (Optional)"
+                    multiline
+                    rows={4}
+                    value={submitData.submissionText}
+                    onChange={(e) => setSubmitData({ ...submitData, submissionText: e.target.value })}
+                    placeholder="Write your solution here..."
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setSubmissionDialog(false)}>Cancel</Button>
-          <Button onClick={handleSubmissionSubmit} variant="contained" disabled={!submissionFile}>
-            Submit
+          <Button onClick={() => setOpenSubmit(false)}>Cancel</Button>
+          <Button 
+            onClick={handleSubmit} 
+            variant="contained"
+            disabled={loading || (!submitData.file && !submitData.submissionText)}
+          >
+            {loading ? 'Submitting...' : 'Submit Assignment'}
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={!!message}
+        autoHideDuration={6000}
+        onClose={() => setMessage('')}
+      >
+        <Alert onClose={() => setMessage('')} severity={severity}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
-}
+};
 
 export default AssignmentTracker; 

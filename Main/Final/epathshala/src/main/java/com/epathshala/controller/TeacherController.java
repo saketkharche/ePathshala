@@ -98,7 +98,8 @@ public class TeacherController {
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
-            String fileName = System.currentTimeMillis() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+            String originalFilename = file.getOriginalFilename();
+            String fileName = System.currentTimeMillis() + "_" + StringUtils.cleanPath(originalFilename != null ? originalFilename : "unknown");
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             String fileUrl = "/" + uploadDir + "/" + fileName;

@@ -106,4 +106,76 @@ public class AssignmentController {
         Boolean hasSubmitted = assignmentService.hasStudentSubmitted(assignmentId, studentId);
         return ResponseEntity.ok(Map.of("hasSubmitted", hasSubmitted));
     }
+    
+    // Get submissions by assignment (Teacher only)
+    @GetMapping("/{assignmentId}/submissions")
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Get submissions by assignment", description = "Get all submissions for a specific assignment")
+    public ResponseEntity<List<AssignmentSubmissionDTO>> getSubmissionsByAssignment(@PathVariable Long assignmentId) {
+        List<AssignmentSubmissionDTO> submissions = assignmentService.getSubmissionsByAssignment(assignmentId);
+        return ResponseEntity.ok(submissions);
+    }
+    
+    // Get submissions by student (Student only)
+    @GetMapping("/student/{studentId}/submissions")
+    @PreAuthorize("hasRole('STUDENT')")
+    @Operation(summary = "Get submissions by student", description = "Get all submissions by a specific student")
+    public ResponseEntity<List<AssignmentSubmissionDTO>> getSubmissionsByStudent(@PathVariable Long studentId) {
+        List<AssignmentSubmissionDTO> submissions = assignmentService.getSubmissionsByStudent(studentId);
+        return ResponseEntity.ok(submissions);
+    }
+    
+    // Grade submission (Teacher only)
+    @PostMapping("/submissions/{submissionId}/grade")
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Grade submission", description = "Grade an assignment submission with feedback")
+    public ResponseEntity<AssignmentSubmissionDTO> gradeSubmission(
+            @PathVariable Long submissionId,
+            @RequestParam("grade") Double grade,
+            @RequestParam("feedback") String feedback) {
+        
+        AssignmentSubmissionDTO gradedSubmission = assignmentService.gradeSubmission(submissionId, grade, feedback);
+        return ResponseEntity.ok(gradedSubmission);
+    }
+    
+    // Download submission file
+    @GetMapping("/submissions/download/{filename}")
+    @Operation(summary = "Download submission file", description = "Download submission file by filename")
+    public ResponseEntity<Resource> downloadSubmissionFile(@PathVariable String filename) {
+        try {
+            Resource resource = assignmentService.downloadSubmissionFile(filename);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    // Get submission statistics (Teacher only)
+    @GetMapping("/{assignmentId}/stats")
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Get submission statistics", description = "Get submission statistics for an assignment")
+    public ResponseEntity<Map<String, Object>> getSubmissionStats(@PathVariable Long assignmentId) {
+        Map<String, Object> stats = assignmentService.getSubmissionStats(assignmentId);
+        return ResponseEntity.ok(stats);
+    }
+    
+    // Get assignments by teacher
+    @GetMapping("/teacher/{teacherId}")
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Get assignments by teacher", description = "Get all assignments created by a teacher")
+    public ResponseEntity<List<AssignmentDTO>> getAssignmentsByTeacher(@PathVariable Long teacherId) {
+        List<AssignmentDTO> assignments = assignmentService.getAssignmentsByTeacher(teacherId);
+        return ResponseEntity.ok(assignments);
+    }
+    
+    // Get all assignments
+    @GetMapping
+    @Operation(summary = "Get all assignments", description = "Get all assignments in the system")
+    public ResponseEntity<List<AssignmentDTO>> getAllAssignments() {
+        List<AssignmentDTO> assignments = assignmentService.getAllAssignments();
+        return ResponseEntity.ok(assignments);
+    }
 } 

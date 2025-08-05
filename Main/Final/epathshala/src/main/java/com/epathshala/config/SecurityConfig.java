@@ -40,38 +40,40 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/ws/**").permitAll() // Allow WebSocket connections
-            .antMatchers("/api/auth/login").permitAll()
-            .antMatchers("/api/auth/test").permitAll() // Allow test endpoint
-            .antMatchers("/api/auth/forgot-password", "/api/auth/verify-otp").permitAll()
-            .antMatchers("/api/chatbot/health").permitAll()
-            .antMatchers("/api/chatbot/**").authenticated()
-            .antMatchers("/api/forum/categories").permitAll()
-            .antMatchers("/api/forum/categories/*/threads").permitAll()
-            .antMatchers("/api/forum/threads/*").permitAll()
-            .antMatchers("/api/forum/threads/*/replies").permitAll()
-            .antMatchers("/api/forum/**").authenticated()
-            .antMatchers("/api/chat/rooms").permitAll()
-            .antMatchers("/api/chat/rooms/*/messages").permitAll()
-            .antMatchers("/api/chat/**").authenticated()
-            .antMatchers(HttpMethod.GET, "/api/notifications/announcements").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/notifications/announcements").hasAnyRole("ADMIN", "TEACHER")
-            .antMatchers("/api/notifications/**").authenticated()
-            .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
-            .antMatchers("/api/admin/**").hasRole("ADMIN")
-            .antMatchers("/api/teacher/**").hasRole("TEACHER")
-            .antMatchers("/api/student/**").hasRole("STUDENT")
-            .antMatchers("/api/parent/**").hasRole("PARENT")
-            .antMatchers("/api/calendar/events").permitAll()
-            .antMatchers("/api/calendar/**").authenticated()
-            .antMatchers("/api/session/info/**", "/api/session/all", "/api/session/user/**", "/api/session/logout/**", "/api/session/logout-all/**").hasRole("ADMIN")
-            .antMatchers("/api/session/my-sessions").authenticated()
-            .anyRequest().authenticated()
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeRequests(authz -> authz
+                .antMatchers("/ws/**").permitAll() // Allow WebSocket connections
+                .antMatchers("/api/auth/login").permitAll()
+                .antMatchers("/api/auth/test").permitAll() // Allow test endpoint
+                .antMatchers("/api/auth/forgot-password", "/api/auth/verify-otp").permitAll()
+                .antMatchers("/api/chatbot/health").permitAll()
+                .antMatchers("/api/chatbot/**").authenticated()
+                .antMatchers("/api/forum/categories").permitAll()
+                .antMatchers("/api/forum/categories/*/threads").permitAll()
+                .antMatchers("/api/forum/threads/*").permitAll()
+                .antMatchers("/api/forum/threads/*/replies").permitAll()
+                .antMatchers("/api/forum/**").authenticated()
+                .antMatchers("/api/chat/rooms").permitAll()
+                .antMatchers("/api/chat/rooms/*/messages").permitAll()
+                .antMatchers("/api/chat/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/notifications/announcements").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/notifications/announcements").hasAnyRole("ADMIN", "TEACHER")
+                .antMatchers("/api/notifications/**").authenticated()
+                .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/teacher/**").hasRole("TEACHER")
+                .antMatchers("/api/student/**").hasRole("STUDENT")
+                .antMatchers("/api/parent/**").hasRole("PARENT")
+                .antMatchers("/api/calendar/events").permitAll()
+                .antMatchers("/api/calendar/**").authenticated()
+                .antMatchers("/api/session/info/**", "/api/session/all", "/api/session/user/**", "/api/session/logout/**", "/api/session/logout-all/**").hasRole("ADMIN")
+                .antMatchers("/api/session/my-sessions").authenticated()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        
         return http.build();
     }
 }

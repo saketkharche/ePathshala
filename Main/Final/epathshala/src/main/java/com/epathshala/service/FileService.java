@@ -39,8 +39,9 @@ public class FileService {
     }
     
     private String uploadFile(MultipartFile file, Path targetPath) throws IOException {
-        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileExtension = getFileExtension(originalFilename);
+        String originalFilename = file.getOriginalFilename();
+        String cleanFilename = StringUtils.cleanPath(originalFilename != null ? originalFilename : "unknown");
+        String fileExtension = getFileExtension(cleanFilename);
         String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
         
         Path targetFile = targetPath.resolve(uniqueFilename);

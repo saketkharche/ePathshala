@@ -3,6 +3,7 @@ package com.epathshala.config;
 import com.epathshala.interceptor.WebSocketInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -18,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private WebSocketInterceptor webSocketInterceptor;
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
+    public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
         // Enable simple broker for pub/sub messaging
         config.enableSimpleBroker("/topic", "/queue", "/user");
         
@@ -30,7 +31,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
+    public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
         // Register STOMP endpoints
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
@@ -47,12 +48,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
+    public void configureClientInboundChannel(@NonNull ChannelRegistration registration) {
         registration.interceptors(webSocketInterceptor);
     }
 
     @Override
-    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+    public void configureWebSocketTransport(@NonNull WebSocketTransportRegistration registration) {
         // Configure transport settings
         registration.setMessageSizeLimit(64 * 1024) // 64KB message size limit
                    .setSendBufferSizeLimit(512 * 1024) // 512KB send buffer

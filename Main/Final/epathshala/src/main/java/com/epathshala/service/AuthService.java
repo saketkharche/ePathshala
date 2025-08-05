@@ -1,7 +1,6 @@
 package com.epathshala.service;
 
 import com.epathshala.dto.LoginRequest;
-import com.epathshala.dto.ForgotPasswordRequest;
 import com.epathshala.dto.VerifyOtpRequest;
 import com.epathshala.entity.User;
 import com.epathshala.entity.Otp;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;

@@ -10,6 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.epathshala.dto.AcademicCalendarDTO;
+import com.epathshala.entity.Exam;
+import com.epathshala.entity.ExamQuestion;
+import com.epathshala.repository.ExamQuestionRepository;
+import com.epathshala.repository.ExamRepository;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -21,6 +28,12 @@ public class AdminController {
     
     @Autowired
     private OnlineClassService onlineClassService;
+
+    @Autowired
+    private ExamRepository examRepository;
+
+    @Autowired
+    private ExamQuestionRepository examQuestionRepository;
 
     @PostMapping("/add-student")
     @Operation(summary = "Add Student", description = "Create a new student account")
@@ -100,5 +113,33 @@ public class AdminController {
     @Operation(summary = "Get All Online Classes", description = "Retrieve all online classes across the system")
     public ResponseEntity<?> getAllOnlineClasses() {
         return ResponseEntity.ok(onlineClassService.getAllClasses());
+    }
+
+    @PostMapping("/add-sample-questions/{examId}")
+    @Operation(summary = "Add Sample Questions", description = "Add sample questions to an exam for testing")
+    public ResponseEntity<String> addSampleQuestions(@PathVariable Long examId) {
+        try {
+            // Check if exam exists
+            Exam exam = examRepository.findById(examId)
+                    .orElseThrow(() -> new RuntimeException("Exam not found"));
+            
+            // Add sample questions
+            List<ExamQuestion> questions = Arrays.asList(
+                new ExamQuestion("What is the output of: System.out.println(10 + 20)?", "30", "1020", "Error", "None of the above", "A", 5, "Easy", "Operators"),
+                new ExamQuestion("Which keyword is used to create a class in Java?", "class", "new", "create", "define", "A", 5, "Easy", "Classes"),
+                new ExamQuestion("What is the correct way to declare a variable in Java?", "int x = 5;", "variable x = 5;", "x = 5;", "declare x = 5;", "A", 5, "Easy", "Variables"),
+                new ExamQuestion("Which of the following is NOT a primitive data type in Java?", "int", "String", "boolean", "double", "B", 5, "Medium", "Data Types"),
+                new ExamQuestion("What is the purpose of the \"public\" keyword in Java?", "To make a method private", "To make a method accessible from anywhere", "To make a method protected", "To make a method static", "B", 5, "Medium", "Access Modifiers")
+            );
+            
+            for (ExamQuestion question : questions) {
+                question.setExam(exam);
+                examQuestionRepository.save(question);
+            }
+            
+            return ResponseEntity.ok("Added " + questions.size() + " sample questions to exam " + examId);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 }

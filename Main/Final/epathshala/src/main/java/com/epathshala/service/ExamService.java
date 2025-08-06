@@ -183,6 +183,11 @@ public class ExamService {
             throw new RuntimeException("Exam is not currently active");
         }
         
+        // Check if exam has questions
+        if (exam.getQuestionCount() == 0) {
+            throw new RuntimeException("Exam has no questions. Please add questions to the exam before starting.");
+        }
+        
         // Check if student has already attempted this exam
         Optional<ExamAttempt> existingAttempt = examAttemptRepository.findByExamIdAndStudentId(examId, studentId);
         if (existingAttempt.isPresent()) {
@@ -353,6 +358,17 @@ public class ExamService {
             dto.setStatus("COMPLETED");
         }
         
+        // Load and set questions
+        List<ExamQuestion> questions = examQuestionRepository.findByExamIdOrderByCreatedAtAsc(exam.getId());
+        System.out.println("Found " + questions.size() + " questions for exam " + exam.getId());
+        
+        List<ExamQuestionDTO> questionDTOs = questions.stream()
+            .map(this::convertQuestionToDTO)
+            .collect(Collectors.toList());
+        
+        System.out.println("Converted " + questionDTOs.size() + " question DTOs");
+        dto.setQuestions(questionDTOs);
+        
         return dto;
     }
     
@@ -367,6 +383,21 @@ public class ExamService {
             dto.getMarks(),
             dto.getDifficulty(),
             dto.getTopic()
+        );
+    }
+
+    private ExamQuestionDTO convertQuestionToDTO(ExamQuestion question) {
+        return new ExamQuestionDTO(
+            question.getId(),
+            question.getQuestionText(),
+            question.getOptionA(),
+            question.getOptionB(),
+            question.getOptionC(),
+            question.getOptionD(),
+            question.getCorrectAnswer(),
+            question.getMarks(),
+            question.getDifficulty(),
+            question.getTopic()
         );
     }
     

@@ -89,11 +89,26 @@ const StudentExamInterface = () => {
       const examData = await startExam(examId);
       const questionsData = await getExamQuestions(examId);
       
+      console.log('Exam data:', examData);
+      console.log('Questions data:', questionsData);
+      
       setCurrentExam(examData);
-      setExamQuestions(Array.isArray(questionsData.questions) ? questionsData.questions : []);
+      // The backend now returns questions directly in the exam data
+      const questions = questionsData.questions || [];
+      setExamQuestions(Array.isArray(questions) ? questions : []);
       setShowExamDialog(true);
     } catch (error) {
       console.error('Error starting exam:', error);
+      
+      // Show user-friendly error message
+      let errorMessage = 'Failed to start exam.';
+      if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      alert(`Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -343,13 +358,28 @@ const StudentExamInterface = () => {
           {currentExam?.title}
         </DialogTitle>
         <DialogContent>
-          {currentExam && examQuestions.length > 0 && (
+          {currentExam && examQuestions.length > 0 ? (
             <MCQExamInterface
               exam={currentExam}
               questions={examQuestions}
               onSubmit={handleSubmitExam}
               onTimeUp={handleTimeUp}
             />
+          ) : (
+            <Box sx={{ p: 3, textAlign: 'center' }}>
+              <Typography variant="h6" color="text.secondary">
+                Loading exam questions...
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                Current Exam: {currentExam?.title || 'None'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Questions Count: {examQuestions.length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Exam Data: {JSON.stringify(currentExam, null, 2)}
+              </Typography>
+            </Box>
           )}
         </DialogContent>
       </Dialog>

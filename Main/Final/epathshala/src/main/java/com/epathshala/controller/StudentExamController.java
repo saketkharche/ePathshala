@@ -18,6 +18,7 @@ import com.epathshala.repository.UserRepository;
 import com.epathshala.entity.User;
 import com.epathshala.repository.StudentRepository;
 import com.epathshala.entity.Student;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/student/exams")
@@ -58,15 +59,18 @@ public class StudentExamController {
     
     @PostMapping("/{examId}/start")
     @Operation(summary = "Start Exam", description = "Start an exam and create an attempt")
-    public ResponseEntity<ExamDTO> startExam(@PathVariable Long examId) {
+    public ResponseEntity<?> startExam(@PathVariable Long examId) {
         try {
             Long studentId = getCurrentStudentId();
             ExamDTO exam = examService.startExam(examId, studentId);
             return ResponseEntity.ok(exam);
+        } catch (RuntimeException e) {
+            System.err.println("Error in startExam: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
             System.err.println("Error in startExam: " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.internalServerError().body(Map.of("error", "Internal server error"));
         }
     }
     
@@ -106,11 +110,12 @@ public class StudentExamController {
         try {
             Long studentId = getCurrentStudentId();
             List<ExamResultDTO> history = examService.getExamHistory(studentId);
-            return ResponseEntity.ok(history);
+            return ResponseEntity.ok(history != null ? history : new ArrayList<>());
         } catch (Exception e) {
             System.err.println("Error in getExamHistory: " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            // Return empty list instead of 500 error
+            return ResponseEntity.ok(new ArrayList<>());
         }
     }
     

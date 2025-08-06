@@ -102,12 +102,12 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
+    <Box sx={{ maxWidth: 1000, mx: 'auto', p: 3 }}>
       {/* Header */}
-      <Card sx={{ mb: 2 }}>
-        <CardContent>
+      <Card sx={{ mb: 3 }}>
+        <CardContent sx={{ p: 3 }}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h5" component="h1">
+            <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
               {exam.title}
             </Typography>
             <Box display="flex" alignItems="center" gap={2}>
@@ -115,10 +115,12 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
                 icon={<Timer />}
                 label={formatTime(timeRemaining)}
                 color={timeRemaining <= 300 ? 'error' : 'primary'}
+                size="large"
               />
               <Chip
                 label={`${getAnsweredCount()}/${questions.length} Answered`}
                 color="info"
+                size="large"
               />
             </Box>
           </Box>
@@ -126,10 +128,10 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
           <LinearProgress 
             variant="determinate" 
             value={getProgress()} 
-            sx={{ height: 8, borderRadius: 4 }}
+            sx={{ height: 10, borderRadius: 5 }}
           />
           
-          <Typography variant="body2" sx={{ mt: 1 }}>
+          <Typography variant="h6" sx={{ mt: 2, fontWeight: 500 }}>
             Question {currentQuestionIndex + 1} of {questions.length}
           </Typography>
         </CardContent>
@@ -144,12 +146,18 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
 
       {/* Question Card */}
       <Card sx={{ mb: 2 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+        <CardContent sx={{ p: 3 }}>
+          <Typography variant="h5" gutterBottom sx={{ mb: 3, fontWeight: 'bold' }}>
             Question {currentQuestionIndex + 1}
           </Typography>
           
-          <Typography variant="body1" paragraph>
+          <Typography variant="h6" paragraph sx={{ 
+            fontSize: '1.2rem', 
+            lineHeight: 1.6, 
+            mb: 3,
+            color: 'text.primary',
+            fontWeight: 500
+          }}>
             {currentQuestion.questionText}
           </Typography>
 
@@ -160,31 +168,75 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
             >
               <FormControlLabel
                 value="A"
-                control={<Radio />}
-                label={`A) ${currentQuestion.optionA}`}
+                control={<Radio size="large" />}
+                label={
+                  <Typography variant="body1" sx={{ fontSize: '1.1rem', fontWeight: 500 }}>
+                    A) {currentQuestion.optionA}
+                  </Typography>
+                }
+                sx={{ 
+                  mb: 2, 
+                  p: 2, 
+                  border: '1px solid #e0e0e0', 
+                  borderRadius: 2,
+                  '&:hover': { backgroundColor: '#f5f5f5' }
+                }}
               />
               <FormControlLabel
                 value="B"
-                control={<Radio />}
-                label={`B) ${currentQuestion.optionB}`}
+                control={<Radio size="large" />}
+                label={
+                  <Typography variant="body1" sx={{ fontSize: '1.1rem', fontWeight: 500 }}>
+                    B) {currentQuestion.optionB}
+                  </Typography>
+                }
+                sx={{ 
+                  mb: 2, 
+                  p: 2, 
+                  border: '1px solid #e0e0e0', 
+                  borderRadius: 2,
+                  '&:hover': { backgroundColor: '#f5f5f5' }
+                }}
               />
               <FormControlLabel
                 value="C"
-                control={<Radio />}
-                label={`C) ${currentQuestion.optionC}`}
+                control={<Radio size="large" />}
+                label={
+                  <Typography variant="body1" sx={{ fontSize: '1.1rem', fontWeight: 500 }}>
+                    C) {currentQuestion.optionC}
+                  </Typography>
+                }
+                sx={{ 
+                  mb: 2, 
+                  p: 2, 
+                  border: '1px solid #e0e0e0', 
+                  borderRadius: 2,
+                  '&:hover': { backgroundColor: '#f5f5f5' }
+                }}
               />
               <FormControlLabel
                 value="D"
-                control={<Radio />}
-                label={`D) ${currentQuestion.optionD}`}
+                control={<Radio size="large" />}
+                label={
+                  <Typography variant="body1" sx={{ fontSize: '1.1rem', fontWeight: 500 }}>
+                    D) {currentQuestion.optionD}
+                  </Typography>
+                }
+                sx={{ 
+                  mb: 2, 
+                  p: 2, 
+                  border: '1px solid #e0e0e0', 
+                  borderRadius: 2,
+                  '&:hover': { backgroundColor: '#f5f5f5' }
+                }}
               />
             </RadioGroup>
           </FormControl>
 
           {answers[currentQuestion.id] && (
-            <Box display="flex" alignItems="center" gap={1} sx={{ mt: 2 }}>
-              <CheckCircle color="success" fontSize="small" />
-              <Typography variant="body2" color="success.main">
+            <Box display="flex" alignItems="center" gap={1} sx={{ mt: 3 }}>
+              <CheckCircle color="success" fontSize="medium" />
+              <Typography variant="body1" color="success.main" sx={{ fontWeight: 500 }}>
                 Answered
               </Typography>
             </Box>
@@ -193,22 +245,36 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
       </Card>
 
       {/* Navigation */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 3 }}>
         <Button
           variant="outlined"
           startIcon={<NavigateBefore />}
           onClick={handlePrevious}
           disabled={currentQuestionIndex === 0}
+          size="large"
+          sx={{ 
+            px: 4, 
+            py: 1.5, 
+            fontSize: '1.1rem',
+            fontWeight: 500
+          }}
         >
           Previous
         </Button>
 
-        <Box display="flex" gap={1}>
+        <Box display="flex" gap={2}>
           {currentQuestionIndex < questions.length - 1 ? (
             <Button
               variant="contained"
               endIcon={<NavigateNext />}
               onClick={handleNext}
+              size="large"
+              sx={{ 
+                px: 4, 
+                py: 1.5, 
+                fontSize: '1.1rem',
+                fontWeight: 500
+              }}
             >
               Next
             </Button>
@@ -217,6 +283,13 @@ const MCQExamInterface = ({ exam, questions, onSubmit, onTimeUp }) => {
               variant="contained"
               color="success"
               onClick={handleSubmit}
+              size="large"
+              sx={{ 
+                px: 4, 
+                py: 1.5, 
+                fontSize: '1.1rem',
+                fontWeight: 500
+              }}
             >
               Submit Exam
             </Button>

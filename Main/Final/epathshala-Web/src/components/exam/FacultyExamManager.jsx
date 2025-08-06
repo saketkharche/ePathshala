@@ -115,11 +115,11 @@ const FacultyExamManager = () => {
     try {
       setLoading(true);
       
-      // Format dates properly for backend (ISO format)
+      // Format dates properly for backend (full ISO format with timezone)
       const formatDateForBackend = (dateString) => {
         if (!dateString) return null;
         const date = new Date(dateString);
-        return date.toISOString().slice(0, 19); // Format: "2024-01-15T10:30:00"
+        return date.toISOString(); // Full ISO format: "2024-01-15T10:30:00.000Z"
       };
       
       const examData = {
@@ -132,13 +132,17 @@ const FacultyExamManager = () => {
       
       console.log('Sending exam data:', examData); // Debug log
       
-      await createExam(examData);
+      const response = await createExam(examData);
+      console.log('Exam created successfully:', response); // Debug log
+      
       setShowCreateDialog(false);
       setShowQuestionsDialog(false);
       resetForms();
       loadExams();
     } catch (error) {
       console.error('Error creating exam:', error);
+      console.error('Error details:', error.response?.data || error.message);
+      // You might want to show an error message to the user here
     } finally {
       setLoading(false);
     }

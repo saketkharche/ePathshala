@@ -327,8 +327,8 @@ public class ExamService {
             exam.getTitle(),
             exam.getDescription(),
             exam.getDurationMinutes(),
-            exam.getStartTime().toString(),
-            exam.getEndTime().toString(),
+            exam.getStartTime() != null ? exam.getStartTime().toString() : null,
+            exam.getEndTime() != null ? exam.getEndTime().toString() : null,
             exam.getTotalMarks()
         );
         
@@ -408,8 +408,8 @@ public class ExamService {
             attempt.getExam().getTitle(),
             attempt.getStudent().getUser().getName(),
             attempt.getStudent().getUser().getEmail(),
-            attempt.getStartTime().toString(),
-            attempt.getEndTime().toString(),
+            attempt.getStartTime() != null ? attempt.getStartTime().toString() : null,
+            attempt.getEndTime() != null ? attempt.getEndTime().toString() : null,
             attempt.getTotalQuestions(),
             attempt.getAnsweredQuestions(),
             attempt.getCorrectAnswers(),

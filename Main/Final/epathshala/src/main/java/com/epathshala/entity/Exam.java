@@ -226,8 +226,7 @@ public class Exam {
     
     // Helper methods
     public boolean isCurrentlyActive() {
-        LocalDateTime now = LocalDateTime.now();
-        return isActive && now.isAfter(startTime) && now.isBefore(endTime);
+        return isActive; // Always active if isActive is true, ignore time
     }
     
     public boolean isUpcoming() {

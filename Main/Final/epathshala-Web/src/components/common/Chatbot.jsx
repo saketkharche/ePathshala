@@ -26,6 +26,15 @@ import {
   Clear as ClearIcon
 } from '@mui/icons-material';
 
+const PREDEFINED_QUESTIONS = [
+  "What is the academic calendar?",
+  "How to check attendance?",
+  "How to request leave?",
+  "How to view grades?",
+  "How to submit assignments?",
+  "How to contact support?"
+];
+
 function Chatbot({ isOpen, onClose }) {
   const { user } = useAuth();
   const [messages, setMessages] = useState([]);
@@ -328,6 +337,22 @@ function Chatbot({ isOpen, onClose }) {
               color="secondary"
               variant="outlined"
             />
+          </Box>
+          <Box sx={{ mb: 1 }}>
+            <TextField
+              select
+              label="Select a question"
+              value=""
+              onChange={e => setInputMessage(e.target.value)}
+              fullWidth
+              size="small"
+              SelectProps={{ native: true }}
+            >
+              <option value="">-- Choose a predefined question --</option>
+              {PREDEFINED_QUESTIONS.map((q, idx) => (
+                <option key={idx} value={q}>{q}</option>
+              ))}
+            </TextField>
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <TextField

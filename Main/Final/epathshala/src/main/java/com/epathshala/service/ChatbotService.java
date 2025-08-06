@@ -19,18 +19,39 @@ public class ChatbotService {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
     
+    private static final List<String> PREDEFINED_QUESTIONS = List.of(
+        "what is the academic calendar?",
+        "how to check attendance?",
+        "how to request leave?",
+        "how to view grades?",
+        "how to submit assignments?",
+        "how to contact support?"
+    );
+    
     @Transactional
     public ChatResponse processMessage(ChatRequest request) {
         String sessionId = request.getSessionId() != null ? request.getSessionId() : UUID.randomUUID().toString();
-        String userMessage = request.getMessage().toLowerCase();
+        String userMessage = request.getMessage() != null ? request.getMessage() : "";
         String userRole = request.getUserRole();
         String userEmail = request.getUserEmail();
-        
+        // Extract author name from email or fallback
+        String authorName = "Unknown";
+        if (userEmail != null && userEmail.contains("@")) {
+            authorName = userEmail.split("@")[0];
+        }
         // Generate response based on message content and user role
         String response = generateResponse(userMessage, userRole);
-        
         // Save the chat message
-        ChatMessage chatMessage = new ChatMessage(sessionId, request.getMessage(), response, userRole, userEmail);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setSessionId(sessionId);
+        chatMessage.setMessage(request.getMessage());
+        chatMessage.setResponse(response);
+        chatMessage.setUserRole(userRole);
+        chatMessage.setUserEmail(userEmail);
+        chatMessage.setAuthorName(authorName);
+        chatMessage.setIsUserMessage(true);
+        chatMessage.setTimestamp(LocalDateTime.now());
+        chatMessage.setMessageType("TEXT");
         chatMessageRepository.save(chatMessage);
         
         // Get chat history
@@ -52,75 +73,30 @@ public class ChatbotService {
     }
     
     private String generateResponse(String message, String userRole) {
-        // Greeting responses
-        if (message.contains("hello") || message.contains("hi") || message.contains("hey")) {
-            return "Hello! I'm the ePathshala Assistant. How can I help you today?";
+        if (message == null || message.trim().isEmpty()) {
+            return "Please select a question from the predefined list.";
         }
-        
-        // Help responses
-        if (message.contains("help") || message.contains("support")) {
-            return "I'm here to help! You can ask me about:\n" +
-                   "• Academic calendar and events\n" +
-                   "• Attendance and grades\n" +
-                   "• Leave requests\n" +
-                   "• Assignments and submissions\n" +
-                   "• General information about the school";
-        }
-        
-        // Role-specific responses
-        if (userRole != null) {
-            switch (userRole.toUpperCase()) {
-                case "ADMIN":
-                    return generateAdminResponse(message);
-                case "STUDENT":
-                    return generateStudentResponse(message);
-                case "TEACHER":
-                    return generateTeacherResponse(message);
-                case "PARENT":
-                    return generateParentResponse(message);
+        String normalized = message.trim().toLowerCase();
+        for (String q : PREDEFINED_QUESTIONS) {
+            if (normalized.equals(q.trim().toLowerCase())) {
+                // Provide a canned answer for each
+                switch (q) {
+                    case "what is the academic calendar?":
+                        return "The academic calendar lists all important dates and events. You can view it in your dashboard.";
+                    case "how to check attendance?":
+                        return "You can check your attendance records in the Attendance section of your dashboard.";
+                    case "how to request leave?":
+                        return "To request leave, go to the Leave section and submit a new request.";
+                    case "how to view grades?":
+                        return "Grades are available in the Grades section of your dashboard.";
+                    case "how to submit assignments?":
+                        return "Assignments can be submitted through the Assignments section. Upload your file and click submit.";
+                    case "how to contact support?":
+                        return "For support, please visit the Contact Us page or reach out to the school administration.";
+                }
             }
         }
-        
-        // General responses
-        if (message.contains("calendar") || message.contains("event")) {
-            return "You can view the academic calendar in your dashboard. It shows all important events, holidays, and exam schedules.";
-        }
-        
-        if (message.contains("attendance") || message.contains("present")) {
-            return "Attendance records are available in your dashboard. Teachers can mark attendance, and students/parents can view their attendance history.";
-        }
-        
-        if (message.contains("grade") || message.contains("mark") || message.contains("score")) {
-            return "Grades and marks are updated by teachers and can be viewed in your dashboard. Check the grades section for detailed information.";
-        }
-        
-        if (message.contains("leave") || message.contains("absent")) {
-            return "Leave requests can be submitted through the dashboard. Students can request leave, and teachers/parents can approve them.";
-        }
-        
-        if (message.contains("assignment") || message.contains("homework")) {
-            return "Assignments are posted by teachers and can be viewed/downloaded by students. Check the assignments section in your dashboard.";
-        }
-        
-        if (message.contains("password") || message.contains("login")) {
-            return "If you're having trouble logging in, you can use the 'Forgot Password' feature to reset your password via OTP.";
-        }
-        
-        if (message.contains("contact") || message.contains("support")) {
-            return "For technical support or general inquiries, please contact the school administration or visit the Contact Us page.";
-        }
-        
-        if (message.contains("thank")) {
-            return "You're welcome! Is there anything else I can help you with?";
-        }
-        
-        if (message.contains("bye") || message.contains("goodbye")) {
-            return "Goodbye! Have a great day! Feel free to chat with me anytime you need help.";
-        }
-        
-        // Default response
-        return "I understand you're asking about '" + message + "'. " +
-               "Could you please be more specific? I can help you with academic calendar, attendance, grades, leave requests, assignments, and general information.";
+        return "Please select a question from the predefined list.";
     }
     
     private String generateAdminResponse(String message) {

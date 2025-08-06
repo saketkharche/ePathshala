@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,6 +42,8 @@ public class ExamQuestionDTO {
     private Integer marksObtained;
     
     private Integer timeSpentSeconds;
+    
+    private Map<String, String> options = new HashMap<>();
     
     // Constructors
     public ExamQuestionDTO() {}
@@ -173,13 +176,11 @@ public class ExamQuestionDTO {
         this.timeSpentSeconds = timeSpentSeconds;
     }
     
-    // Helper method to get options as map
     public Map<String, String> getOptions() {
-        return Map.of(
-            "A", optionA,
-            "B", optionB,
-            "C", optionC,
-            "D", optionD
-        );
+        return options;
+    }
+    
+    public void setOptions(Map<String, String> options) {
+        this.options = options;
     }
 } 

@@ -1,9 +1,7 @@
 package com.epathshala.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,11 +18,9 @@ public class ExamResultDTO {
     
     private String studentEmail;
     
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime startTime;
+    private String startTime;
     
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime endTime;
+    private String endTime;
     
     private Long durationMinutes;
     
@@ -57,11 +53,15 @@ public class ExamResultDTO {
     
     private List<Map<String, Object>> timeAnalysis;
     
+    private Integer unansweredQuestions;
+    
+    private Boolean passed;
+    
     // Constructors
     public ExamResultDTO() {}
     
     public ExamResultDTO(Long attemptId, Long examId, String examTitle, String studentName,
-                        String studentEmail, LocalDateTime startTime, LocalDateTime endTime,
+                        String studentEmail, String startTime, String endTime,
                         Integer totalQuestions, Integer answeredQuestions, Integer correctAnswers,
                         Integer totalMarks, Integer obtainedMarks, Double percentage) {
         this.attemptId = attemptId;
@@ -79,6 +79,8 @@ public class ExamResultDTO {
         this.obtainedMarks = obtainedMarks;
         this.percentage = percentage;
         this.grade = calculateGrade(percentage);
+        this.unansweredQuestions = totalQuestions - answeredQuestions;
+        this.passed = percentage != null && percentage >= 40.0;
     }
     
     // Getters and Setters
@@ -122,19 +124,19 @@ public class ExamResultDTO {
         this.studentEmail = studentEmail;
     }
     
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
     
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
     
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
     
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
     
@@ -258,6 +260,22 @@ public class ExamResultDTO {
         this.timeAnalysis = timeAnalysis;
     }
     
+    public Integer getUnansweredQuestions() {
+        return unansweredQuestions;
+    }
+    
+    public void setUnansweredQuestions(Integer unansweredQuestions) {
+        this.unansweredQuestions = unansweredQuestions;
+    }
+    
+    public Boolean getPassed() {
+        return passed;
+    }
+    
+    public void setPassed(Boolean passed) {
+        this.passed = passed;
+    }
+    
     // Helper methods
     private String calculateGrade(Double percentage) {
         if (percentage == null) return "N/A";
@@ -274,9 +292,5 @@ public class ExamResultDTO {
     
     public boolean isPassed() {
         return percentage != null && percentage >= 40.0;
-    }
-    
-    public Integer getUnansweredQuestions() {
-        return totalQuestions - answeredQuestions;
     }
 } 

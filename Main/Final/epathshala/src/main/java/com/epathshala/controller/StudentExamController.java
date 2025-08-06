@@ -160,7 +160,7 @@ public class StudentExamController {
             System.out.println("Found user ID: " + user.getId()); // Debug log
             
             // Find student by user ID
-            com.epathshala.entity.Student student = studentRepository.findByUserId(user.getId())
+            com.epathshala.entity.Student student = studentRepository.findByUser_Id(user.getId())
                     .orElseThrow(() -> new RuntimeException("Student not found for user ID: " + user.getId()));
             
             System.out.println("Found student ID: " + student.getId()); // Debug log

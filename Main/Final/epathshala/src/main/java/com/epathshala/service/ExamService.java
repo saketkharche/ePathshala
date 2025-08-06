@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,32 +39,73 @@ public class ExamService {
     @Autowired
     private UserRepository userRepository;
     
+    // Utility method to convert ISO 8601 string to LocalDateTime
+    private LocalDateTime parseDateTime(String dateTimeString) {
+        if (dateTimeString == null || dateTimeString.trim().isEmpty()) {
+            throw new IllegalArgumentException("Date/time string cannot be null or empty");
+        }
+        
+        try {
+            // Handle ISO 8601 format with timezone (e.g., "2025-08-06T09:00:00.000Z")
+            if (dateTimeString.endsWith("Z")) {
+                ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString);
+                return zonedDateTime.toLocalDateTime();
+            } else {
+                // Handle ISO 8601 format without timezone
+                return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date/time format: " + dateTimeString + ". Expected ISO 8601 format.", e);
+        }
+    }
+    
     // Faculty/Admin Methods
     
     @Transactional
     public ExamDTO createExam(ExamDTO examDTO, Long facultyId) {
-        User faculty = userRepository.findById(facultyId)
-                .orElseThrow(() -> new RuntimeException("Faculty not found"));
-        
-        Teacher teacher = teacherRepository.findByUserId(facultyId)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
-        
-        Exam exam = new Exam(
-            examDTO.getTitle(),
-            examDTO.getDescription(),
-            examDTO.getDurationMinutes(),
-            examDTO.getStartTime(),
-            examDTO.getEndTime(),
-            examDTO.getTotalMarks()
-        );
-        
-        exam.setCourse(teacher);
-        exam.setCreatedBy(faculty);
-        exam.setNegativeMarking(examDTO.getNegativeMarking());
-        exam.setNegativeMarkingPercentage(examDTO.getNegativeMarkingPercentage());
-        
-        Exam savedExam = examRepository.save(exam);
-        return convertToDTO(savedExam);
+        try {
+            System.out.println("Creating exam with faculty ID: " + facultyId);
+            System.out.println("Exam DTO: " + examDTO);
+            
+            User faculty = userRepository.findById(facultyId)
+                    .orElseThrow(() -> new RuntimeException("Faculty not found with ID: " + facultyId));
+            
+            System.out.println("Found faculty user: " + faculty.getEmail());
+            
+            Teacher teacher = teacherRepository.findByUser(facultyId)
+                    .orElseThrow(() -> new RuntimeException("Teacher not found for user ID: " + facultyId));
+            
+            System.out.println("Found teacher: " + teacher.getSubject() + " - " + teacher.getAssignedClass());
+            
+            // Convert string dates to LocalDateTime
+            LocalDateTime startTime = parseDateTime(examDTO.getStartTime());
+            LocalDateTime endTime = parseDateTime(examDTO.getEndTime());
+            
+            Exam exam = new Exam(
+                examDTO.getTitle(),
+                examDTO.getDescription(),
+                examDTO.getDurationMinutes(),
+                startTime,
+                endTime,
+                examDTO.getTotalMarks()
+            );
+            
+            exam.setCourse(teacher);
+            exam.setCreatedBy(faculty);
+            exam.setNegativeMarking(examDTO.getNegativeMarking() != null ? examDTO.getNegativeMarking() : false);
+            exam.setNegativeMarkingPercentage(examDTO.getNegativeMarkingPercentage() != null ? examDTO.getNegativeMarkingPercentage() : 0.0);
+            exam.setIsActive(examDTO.getIsActive() != null ? examDTO.getIsActive() : true);
+            
+            System.out.println("Saving exam to database...");
+            Exam savedExam = examRepository.save(exam);
+            System.out.println("Exam saved with ID: " + savedExam.getId());
+            
+            return convertToDTO(savedExam);
+        } catch (Exception e) {
+            System.err.println("Error in createExam: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
     
     @Transactional
@@ -279,8 +322,8 @@ public class ExamService {
             exam.getTitle(),
             exam.getDescription(),
             exam.getDurationMinutes(),
-            exam.getStartTime(),
-            exam.getEndTime(),
+            exam.getStartTime().toString(),
+            exam.getEndTime().toString(),
             exam.getTotalMarks()
         );
         
@@ -334,8 +377,8 @@ public class ExamService {
             attempt.getExam().getTitle(),
             attempt.getStudent().getUser().getName(),
             attempt.getStudent().getUser().getEmail(),
-            attempt.getStartTime(),
-            attempt.getEndTime(),
+            attempt.getStartTime().toString(),
+            attempt.getEndTime().toString(),
             attempt.getTotalQuestions(),
             attempt.getAnsweredQuestions(),
             attempt.getCorrectAnswers(),

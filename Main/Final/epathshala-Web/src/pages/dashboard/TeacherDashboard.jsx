@@ -8,6 +8,7 @@ import { getEvents } from '../../api/calendar';
 import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem, Tabs, Tab, Chip } from '@mui/material';
 import { VideoCall as VideoCallIcon, Quiz as QuizIcon, Assignment as AssignmentIcon, Group as GroupIcon } from '@mui/icons-material';
 import OnlineClassManager from '../../components/teacher/OnlineClassManager';
+import FacultyExamManager from '../../components/exam/FacultyExamManager';
 import { useNavigate } from 'react-router-dom';
 
 function TeacherDashboard() {
@@ -184,12 +185,22 @@ function TeacherDashboard() {
             icon={<VideoCallIcon />} 
             iconPosition="start"
           />
+          <Tab 
+            label="Exam Management" 
+            icon={<QuizIcon />} 
+            iconPosition="start"
+          />
         </Tabs>
       </Box>
 
       {/* Online Classes Tab */}
       {currentTab === 1 && (
         <OnlineClassManager />
+      )}
+
+      {/* Exam Management Tab */}
+      {currentTab === 2 && (
+        <FacultyExamManager />
       )}
 
       {/* Main Dashboard Tab */}

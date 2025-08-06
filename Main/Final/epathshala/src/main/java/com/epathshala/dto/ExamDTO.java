@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,12 +23,10 @@ public class ExamDTO {
     private Integer durationMinutes;
     
     @NotNull(message = "Start time is required")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime startTime;
+    private String startTime;
     
     @NotNull(message = "End time is required")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime endTime;
+    private String endTime;
     
     @NotNull(message = "Total marks is required")
     @Positive(message = "Total marks must be positive")
@@ -59,7 +56,7 @@ public class ExamDTO {
     public ExamDTO() {}
     
     public ExamDTO(Long id, String title, String description, Integer durationMinutes,
-                   LocalDateTime startTime, LocalDateTime endTime, Integer totalMarks) {
+                   String startTime, String endTime, Integer totalMarks) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -102,19 +99,19 @@ public class ExamDTO {
         this.durationMinutes = durationMinutes;
     }
     
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
     
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
     
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
     
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
     

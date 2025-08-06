@@ -31,16 +31,19 @@ public class FacultyExamController {
     
     @PostMapping
     @Operation(summary = "Create Exam", description = "Create a new MCQ exam")
-    public ResponseEntity<ExamDTO> createExam(@Valid @RequestBody ExamDTO examDTO) {
+    public ResponseEntity<?> createExam(@Valid @RequestBody ExamDTO examDTO) {
         try {
             Long facultyId = getCurrentFacultyId();
             System.out.println("Faculty ID: " + facultyId); // Debug log
+            System.out.println("Exam DTO: " + examDTO); // Debug log
+            
             ExamDTO createdExam = examService.createExam(examDTO, facultyId);
             return ResponseEntity.ok(createdExam);
         } catch (Exception e) {
             System.err.println("Error in createExam: " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", "Failed to create exam", "message", e.getMessage()));
         }
     }
     
@@ -137,6 +140,25 @@ public class FacultyExamController {
             System.err.println("Error in deleteExam: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    @GetMapping("/health")
+    @Operation(summary = "Health Check", description = "Simple health check endpoint")
+    public ResponseEntity<Map<String, Object>> healthCheck() {
+        try {
+            Long facultyId = getCurrentFacultyId();
+            return ResponseEntity.ok(Map.of(
+                "status", "healthy",
+                "facultyId", facultyId,
+                "timestamp", System.currentTimeMillis()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Map.of(
+                "status", "error",
+                "message", e.getMessage(),
+                "timestamp", System.currentTimeMillis()
+            ));
         }
     }
     

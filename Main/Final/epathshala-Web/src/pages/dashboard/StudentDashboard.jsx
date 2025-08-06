@@ -8,6 +8,7 @@ import { getStudentAssignments } from '../../api/assignments';
 import { getStudentLeaveStatus, submitLeave } from '../../api/leave';
 import { getEvents } from '../../api/calendar';
 import OnlineClassJoiner from '../../components/student/OnlineClassJoiner';
+import StudentExamInterface from '../../components/exam/StudentExamInterface';
 import { useNavigate } from 'react-router-dom';
 
 function StudentDashboard() {
@@ -614,12 +615,22 @@ function StudentDashboard() {
             icon={<VideoCallIcon />} 
             iconPosition="start"
           />
+          <Tab 
+            label="Exams" 
+            icon={<QuizIcon />} 
+            iconPosition="start"
+          />
         </Tabs>
       </Box>
 
       {/* Online Classes Tab */}
       {currentTab === 1 && (
         <OnlineClassJoiner />
+      )}
+
+      {/* Exams Tab */}
+      {currentTab === 2 && (
+        <StudentExamInterface />
       )}
 
       {/* Main Dashboard Tab */}

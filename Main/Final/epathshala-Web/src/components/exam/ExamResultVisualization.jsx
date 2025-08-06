@@ -6,67 +6,42 @@ import {
   Typography,
   Grid,
   Chip,
-  Paper,
+  LinearProgress,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  Paper,
+  Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material';
 import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line
-} from 'recharts';
+  CheckCircle as CheckIcon,
+  Cancel as CancelIcon,
+  Help as HelpIcon,
+  ExpandMore as ExpandMoreIcon,
+  TrendingUp as TrendingUpIcon,
+  Schedule as ScheduleIcon,
+  Assessment as AssessmentIcon
+} from '@mui/icons-material';
 
 const ExamResultVisualization = ({ result }) => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+  if (!result) {
+    return (
+      <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Typography variant="h6" color="text.secondary">
+          No result data available
+        </Typography>
+      </Box>
+    );
+  }
 
-  // Prepare data for pie chart (Answer Distribution)
-  const answerDistributionData = Object.entries(result.answerDistribution || {}).map(([key, value]) => ({
-    name: key,
-    value: value
-  }));
-
-  // Prepare data for bar chart (Topic Performance)
-  const topicPerformanceData = Object.entries(result.topicPerformance || {}).map(([topic, correct]) => ({
-    topic: topic,
-    correct: correct,
-    total: result.questionResults?.filter(q => q.topic === topic).length || 0
-  }));
-
-  // Prepare data for difficulty performance
-  const difficultyData = Object.entries(result.difficultyPerformance || {}).map(([difficulty, correct]) => ({
-    difficulty: difficulty,
-    correct: correct,
-    total: result.questionResults?.filter(q => q.difficulty === difficulty).length || 0
-  }));
-
-  const getGradeColor = (grade) => {
-    switch (grade) {
-      case 'A+':
-      case 'A':
-        return 'success';
-      case 'B+':
-      case 'B':
-        return 'info';
-      case 'C+':
-      case 'C':
-        return 'warning';
-      default:
-        return 'error';
-    }
+  const formatDateTime = (dateTime) => {
+    return new Date(dateTime).toLocaleString();
   };
 
   const formatDuration = (minutes) => {
@@ -75,250 +50,354 @@ const ExamResultVisualization = ({ result }) => {
     return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
   };
 
+  const getGradeColor = (grade) => {
+    if (grade === 'A' || grade === 'A+') return 'success';
+    if (grade === 'B' || grade === 'B+') return 'primary';
+    if (grade === 'C' || grade === 'C+') return 'warning';
+    return 'error';
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'COMPLETED': return 'success';
+      case 'IN_PROGRESS': return 'warning';
+      case 'TIMED_OUT': return 'error';
+      default: return 'default';
+    }
+  };
+
+  const calculateAccuracy = () => {
+    if (result.totalQuestions === 0) return 0;
+    return ((result.correctAnswers / result.totalQuestions) * 100).toFixed(1);
+  };
+
+  const calculateTimeEfficiency = () => {
+    if (result.durationMinutes === 0) return 0;
+    const timeUsed = (new Date(result.endTime) - new Date(result.startTime)) / (1000 * 60);
+    return ((timeUsed / result.durationMinutes) * 100).toFixed(1);
+  };
+
+  const getQuestionStatusIcon = (question) => {
+    if (question.isCorrect) {
+      return <CheckIcon color="success" fontSize="small" />;
+    } else if (question.selectedAnswer) {
+      return <CancelIcon color="error" fontSize="small" />;
+    } else {
+      return <HelpIcon color="warning" fontSize="small" />;
+    }
+  };
+
+  const getQuestionStatusText = (question) => {
+    if (question.isCorrect) return 'Correct';
+    if (question.selectedAnswer) return 'Incorrect';
+    return 'Unanswered';
+  };
+
+  const getQuestionStatusColor = (question) => {
+    if (question.isCorrect) return 'success';
+    if (question.selectedAnswer) return 'error';
+    return 'warning';
+  };
+
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 2 }}>
-      {/* Result Summary */}
+    <Box sx={{ p: 2 }}>
+      {/* Header Summary */}
       <Card sx={{ mb: 3 }}>
         <CardContent>
-          <Typography variant="h4" gutterBottom>
-            Exam Result
-          </Typography>
-          
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" gutterBottom>
+          <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+            <Box>
+              <Typography variant="h5" gutterBottom>
                 {result.examTitle}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Student: {result.studentName}
+                Student: {result.studentName} ({result.studentEmail})
+              </Typography>
+            </Box>
+            <Box display="flex" gap={1}>
+              <Chip
+                label={result.grade}
+                color={getGradeColor(result.grade)}
+                size="large"
+              />
+              <Chip
+                label={result.status}
+                color={getStatusColor(result.status)}
+                size="small"
+              />
+            </Box>
+          </Box>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <Typography variant="h6" color="primary">
+                {result.obtainedMarks}/{result.totalMarks}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Duration: {formatDuration(result.durationMinutes)}
+                Marks Obtained
               </Typography>
             </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <Box display="flex" gap={2} flexWrap="wrap">
-                <Chip
-                  label={`Score: ${result.obtainedMarks}/${result.totalMarks}`}
-                  color="primary"
-                  size="large"
-                />
-                <Chip
-                  label={`${result.percentage.toFixed(1)}%`}
-                  color="secondary"
-                  size="large"
-                />
-                <Chip
-                  label={`Grade: ${result.grade}`}
-                  color={getGradeColor(result.grade)}
-                  size="large"
-                />
-                <Chip
-                  label={result.isPassed ? 'PASSED' : 'FAILED'}
-                  color={result.isPassed ? 'success' : 'error'}
-                  size="large"
-                />
-              </Box>
+            <Grid item xs={12} md={3}>
+              <Typography variant="h6" color="primary">
+                {result.percentage}%
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Percentage
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Typography variant="h6" color="primary">
+                {result.correctAnswers}/{result.totalQuestions}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Correct Answers
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Typography variant="h6" color="primary">
+                {result.answeredQuestions}/{result.totalQuestions}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Questions Attempted
+              </Typography>
             </Grid>
           </Grid>
         </CardContent>
       </Card>
 
-      {/* Charts Grid */}
-      <Grid container spacing={3}>
-        {/* Answer Distribution Pie Chart */}
-        <Grid item xs={12} md={6}>
+      {/* Performance Metrics */}
+      <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Answer Distribution
+                Accuracy
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={answerDistributionData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {answerDistributionData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              <Box display="flex" alignItems="center" gap={2}>
+                <LinearProgress
+                  variant="determinate"
+                  value={parseFloat(calculateAccuracy())}
+                  sx={{ flexGrow: 1, height: 10, borderRadius: 5 }}
+                />
+                <Typography variant="body2" fontWeight="bold">
+                  {calculateAccuracy()}%
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
 
-        {/* Topic Performance Bar Chart */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Topic Performance
+                Time Efficiency
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={topicPerformanceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="topic" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="correct" fill="#8884d8" name="Correct" />
-                  <Bar dataKey="total" fill="#82ca9d" name="Total" />
-                </BarChart>
-              </ResponsiveContainer>
+              <Box display="flex" alignItems="center" gap={2}>
+                <LinearProgress
+                  variant="determinate"
+                  value={parseFloat(calculateTimeEfficiency())}
+                  sx={{ flexGrow: 1, height: 10, borderRadius: 5 }}
+                />
+                <Typography variant="body2" fontWeight="bold">
+                  {calculateTimeEfficiency()}%
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
 
-        {/* Difficulty Performance */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Difficulty Performance
+                Completion Rate
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={difficultyData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="difficulty" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="correct" fill="#ffc658" name="Correct" />
-                  <Bar dataKey="total" fill="#ff7300" name="Total" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Performance Summary */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Performance Summary
-              </Typography>
-              <Box display="flex" flexDirection="column" gap={2}>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Total Questions:</Typography>
-                  <Typography fontWeight="bold">{result.totalQuestions}</Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Answered:</Typography>
-                  <Typography fontWeight="bold">{result.answeredQuestions}</Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Correct Answers:</Typography>
-                  <Typography fontWeight="bold" color="success.main">
-                    {result.correctAnswers}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Incorrect Answers:</Typography>
-                  <Typography fontWeight="bold" color="error.main">
-                    {result.incorrectAnswers}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Unanswered:</Typography>
-                  <Typography fontWeight="bold" color="warning.main">
-                    {result.getUnansweredQuestions()}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Accuracy:</Typography>
-                  <Typography fontWeight="bold">
-                    {result.answeredQuestions > 0 
-                      ? ((result.correctAnswers / result.answeredQuestions) * 100).toFixed(1)
-                      : 0}%
-                  </Typography>
-                </Box>
+              <Box display="flex" alignItems="center" gap={2}>
+                <LinearProgress
+                  variant="determinate"
+                  value={(result.answeredQuestions / result.totalQuestions) * 100}
+                  sx={{ flexGrow: 1, height: 10, borderRadius: 5 }}
+                />
+                <Typography variant="body2" fontWeight="bold">
+                  {((result.answeredQuestions / result.totalQuestions) * 100).toFixed(1)}%
+                </Typography>
               </Box>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
 
-      {/* Question-wise Results Table */}
+      {/* Exam Details */}
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Exam Details
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body2">
+                <strong>Start Time:</strong> {formatDateTime(result.startTime)}
+              </Typography>
+              <Typography variant="body2">
+                <strong>End Time:</strong> {formatDateTime(result.endTime)}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Duration:</strong> {formatDuration(result.durationMinutes)}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body2">
+                <strong>Total Questions:</strong> {result.totalQuestions}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Answered:</strong> {result.answeredQuestions}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Unanswered:</strong> {result.unansweredQuestions || 0}
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+
+      {/* Question Analysis */}
       {result.questionResults && result.questionResults.length > 0 && (
-        <Card sx={{ mt: 3 }}>
+        <Card sx={{ mb: 3 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Question-wise Results
+              Question Analysis
             </Typography>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} variant="outlined">
               <Table>
                 <TableHead>
                   <TableRow>
+                    <TableCell>Q#</TableCell>
                     <TableCell>Question</TableCell>
                     <TableCell>Your Answer</TableCell>
                     <TableCell>Correct Answer</TableCell>
-                    <TableCell>Result</TableCell>
+                    <TableCell>Status</TableCell>
                     <TableCell>Marks</TableCell>
-                    <TableCell>Topic</TableCell>
-                    <TableCell>Difficulty</TableCell>
+                    <TableCell>Time Spent</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {result.questionResults.map((question, index) => (
-                    <TableRow key={question.id}>
-                      <TableCell>
-                        <Typography variant="body2">
-                          Q{index + 1}: {question.questionText.substring(0, 50)}...
+                    <TableRow key={question.id || index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell sx={{ maxWidth: 200 }}>
+                        <Typography variant="body2" noWrap>
+                          {question.questionText}
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Chip
-                          label={question.selectedAnswer || 'Not answered'}
-                          color={question.selectedAnswer ? 'primary' : 'default'}
-                          size="small"
-                        />
+                        {question.selectedAnswer || 'Not answered'}
+                      </TableCell>
+                      <TableCell>{question.correctAnswer}</TableCell>
+                      <TableCell>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          {getQuestionStatusIcon(question)}
+                          <Chip
+                            label={getQuestionStatusText(question)}
+                            color={getQuestionStatusColor(question)}
+                            size="small"
+                          />
+                        </Box>
                       </TableCell>
                       <TableCell>
-                        <Chip
-                          label={question.correctAnswer}
-                          color="success"
-                          size="small"
-                        />
+                        {question.marksObtained}/{question.marks}
                       </TableCell>
                       <TableCell>
-                        <Chip
-                          label={question.isCorrect ? 'Correct' : 'Incorrect'}
-                          color={question.isCorrect ? 'success' : 'error'}
-                          size="small"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Typography variant="body2">
-                          {question.marksObtained}/{question.marks}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Chip label={question.topic} size="small" />
-                      </TableCell>
-                      <TableCell>
-                        <Chip 
-                          label={question.difficulty} 
-                          size="small"
-                          color={question.difficulty === 'HARD' ? 'error' : 
-                                 question.difficulty === 'MEDIUM' ? 'warning' : 'success'}
-                        />
+                        {question.timeSpentSeconds ? `${question.timeSpentSeconds}s` : 'N/A'}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Performance Analytics */}
+      {(result.topicPerformance || result.difficultyPerformance) && (
+        <Grid container spacing={3}>
+          {result.topicPerformance && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Topic Performance
+                  </Typography>
+                  {Object.entries(result.topicPerformance).map(([topic, score]) => (
+                    <Box key={topic} sx={{ mb: 2 }}>
+                      <Box display="flex" justifyContent="space-between" mb={1}>
+                        <Typography variant="body2">{topic}</Typography>
+                        <Typography variant="body2" fontWeight="bold">
+                          {score}%
+                        </Typography>
+                      </Box>
+                      <LinearProgress
+                        variant="determinate"
+                        value={score}
+                        sx={{ height: 8, borderRadius: 4 }}
+                      />
+                    </Box>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {result.difficultyPerformance && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Difficulty Performance
+                  </Typography>
+                  {Object.entries(result.difficultyPerformance).map(([difficulty, score]) => (
+                    <Box key={difficulty} sx={{ mb: 2 }}>
+                      <Box display="flex" justifyContent="space-between" mb={1}>
+                        <Typography variant="body2">{difficulty}</Typography>
+                        <Typography variant="body2" fontWeight="bold">
+                          {score}%
+                        </Typography>
+                      </Box>
+                      <LinearProgress
+                        variant="determinate"
+                        value={score}
+                        sx={{ height: 8, borderRadius: 4 }}
+                      />
+                    </Box>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+        </Grid>
+      )}
+
+      {/* Answer Distribution */}
+      {result.answerDistribution && (
+        <Card sx={{ mt: 3 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Answer Distribution
+            </Typography>
+            <Grid container spacing={2}>
+              {Object.entries(result.answerDistribution).map(([option, count]) => (
+                <Grid item xs={6} md={3} key={option}>
+                  <Box textAlign="center">
+                    <Typography variant="h4" color="primary">
+                      {count}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Option {option}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
           </CardContent>
         </Card>
       )}

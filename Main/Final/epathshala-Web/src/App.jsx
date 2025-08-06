@@ -1,4 +1,7 @@
 import React from "react";
+import Home from "./pages/Home/Home";
+import AboutUs from "./pages/about/AboutUs";
+import ContactUs from "./pages/contact/ContactUs";  // ✅ Add this line
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./utils/auth";
 import LoginPage from "./pages/auth/LoginPage";
@@ -73,7 +76,9 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             

@@ -11,8 +11,13 @@ import {
   Box,
   Divider,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  IconButton,
+  Tooltip,
+  Fade
 } from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
   Dashboard as DashboardIcon,
   School as SchoolIcon,
@@ -37,7 +42,8 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 
-const drawerWidth = 280;
+const SIDEBAR_COLLAPSED_WIDTH = 60;
+const SIDEBAR_EXPANDED_WIDTH = 280;
 
 const menuItems = {
   main: [
@@ -85,7 +91,7 @@ const menuItems = {
   ]
 };
 
-function Sidebar({ open, onClose }) {
+function Sidebar({ open, onClose, collapsed, onCollapse }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
@@ -121,57 +127,50 @@ function Sidebar({ open, onClose }) {
     return user?.role === item.role;
   };
 
-  const renderMenuItem = (item, index) => {
+  // Replace the original renderMenuItem with the modern version (with tooltip/fade)
+  const renderMenuItem = (item, index, isCollapsed) => {
     if (!isItemVisible(item)) return null;
-    
     const isActive = location.pathname === item.path;
-    
     return (
-      <ListItem key={index} disablePadding>
+      <Tooltip title={isCollapsed ? item.text : ''} placement="right" key={item.text} arrow disableHoverListener={!isCollapsed}>
         <ListItemButton
           onClick={() => handleItemClick(item.path)}
           selected={isActive}
           sx={{
+            px: 2, py: 1.5, minHeight: 48,
             '&.Mui-selected': {
               backgroundColor: theme.palette.primary.light,
-              '&:hover': {
-                backgroundColor: theme.palette.primary.light,
-              },
+              '&:hover': { backgroundColor: theme.palette.primary.light },
             },
           }}
+          aria-label={item.text}
         >
-          <ListItemIcon>
-            <item.icon color={isActive ? 'primary' : 'inherit'} />
+          <ListItemIcon sx={{ minWidth: 0, mr: isCollapsed ? 0 : 2, justifyContent: 'center' }}>
+            <item.icon color={isActive ? 'primary' : 'inherit'} fontSize="medium" />
           </ListItemIcon>
-          <ListItemText 
-            primary={item.text}
-            primaryTypographyProps={{
-              color: isActive ? 'primary' : 'inherit',
-              fontWeight: isActive ? 600 : 400,
-            }}
-          />
+          <Fade in={!isCollapsed} timeout={300} unmountOnExit>
+            <ListItemText
+              primary={item.text}
+              primaryTypographyProps={{
+                color: isActive ? 'primary' : 'inherit',
+                fontWeight: isActive ? 600 : 400,
+              }}
+            />
+          </Fade>
         </ListItemButton>
-      </ListItem>
+      </Tooltip>
     );
   };
 
-  const renderSection = (title, items, sectionKey) => (
+  // Replace the original renderSection with the modern version (with fade for title)
+  const renderSection = (title, items, sectionKey, isCollapsed) => (
     <Box key={sectionKey}>
-      <ListItemButton onClick={() => handleExpandClick(sectionKey)}>
-        <ListItemIcon>
-          {title === 'Dashboards' && <DashboardIcon />}
-          {title === 'Features' && <SettingsIcon />}
-          {title === 'Chat & Communication' && <ChatIcon />}
-          {title === 'Admin Tools' && <AdminIcon />}
-        </ListItemIcon>
-        <ListItemText primary={title} />
-        {expanded[sectionKey] ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={expanded[sectionKey]} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {items.map((item, index) => renderMenuItem(item, index))}
-        </List>
-      </Collapse>
+      <Fade in={!isCollapsed} timeout={300} unmountOnExit>
+        <Typography variant="overline" sx={{ px: 2, py: 1, color: 'text.secondary' }}>{title}</Typography>
+      </Fade>
+      <List component="div" disablePadding>
+        {items.map((item, index) => renderMenuItem(item, index, isCollapsed))}
+      </List>
     </Box>
   );
 
@@ -212,28 +211,42 @@ function Sidebar({ open, onClose }) {
     ];
   };
 
+  const drawerWidth = collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH;
+
   const drawerContent = (
-    <Box sx={{ width: drawerWidth }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-        <Typography variant="h6" color="primary" fontWeight="bold">
-          ePathshala
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Learning Management System
-        </Typography>
+    <Box>
+      {/* Collapse/Expand Button (desktop only) */}
+      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: collapsed ? 'center' : 'flex-end', p: 1 }}>
+        <Tooltip title={collapsed ? 'Expand' : 'Collapse'}>
+          <IconButton
+            size="small"
+            onClick={onCollapse}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            sx={{
+              transition: 'transform 0.3s',
+              transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+          >
+            {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </Tooltip>
       </Box>
-      
+      <Fade in={!collapsed} timeout={300} unmountOnExit>
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+          <Typography variant="h6" color="primary" fontWeight="bold">
+            ePathshala
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Learning Management System
+          </Typography>
+        </Box>
+      </Fade>
       <List sx={{ pt: 1 }}>
-        {/* Main Pages */}
-        <Typography variant="overline" sx={{ px: 2, py: 1, color: 'text.secondary' }}>
-          Main Pages
-        </Typography>
-        {menuItems.main.map((item, index) => renderMenuItem(item, index))}
-        
+        {renderSection('Main Pages', menuItems.main, 'main', collapsed)}
         {getSidebarSections(user).map(section => (
           <React.Fragment key={section.sectionKey}>
             <Divider sx={{ my: 2 }} />
-            {renderSection(section.title, section.items, section.sectionKey)}
+            {renderSection(section.title, section.items, section.sectionKey, collapsed)}
           </React.Fragment>
         ))}
       </List>
@@ -253,13 +266,14 @@ function Sidebar({ open, onClose }) {
             boxSizing: 'border-box',
             borderRight: 1,
             borderColor: 'divider',
+            transition: 'width 0.3s',
+            overflowX: 'hidden',
           },
           display: { xs: 'none', md: 'block' }
         }}
       >
         {drawerContent}
       </Drawer>
-
       {/* Mobile Drawer */}
       <Drawer
         variant="temporary"
@@ -271,7 +285,7 @@ function Sidebar({ open, onClose }) {
         sx={{
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: SIDEBAR_EXPANDED_WIDTH,
             boxSizing: 'border-box',
           },
         }}

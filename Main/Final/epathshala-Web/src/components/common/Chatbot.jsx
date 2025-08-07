@@ -15,7 +15,11 @@ import {
   AppBar,
   Toolbar,
   Button,
-  Chip
+  Chip,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -39,12 +43,12 @@ const PREDEFINED_QUESTIONS = [
   "How to contact support?"
 ];
 
-function Chatbot({ isOpen, onClose }) {
+function Chatbot({ open, onClose }) {
   const { user } = useAuth();
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
+  const [selectedQuestion, setSelectedQuestion] = useState('');
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -56,8 +60,7 @@ function Chatbot({ isOpen, onClose }) {
   }, [messages]);
 
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      // Add welcome message
+    if (open && messages.length === 0) {
       setMessages([
         {
           message: "Hello! I'm the ePathshala Assistant. How can I help you today?",
@@ -65,58 +68,21 @@ function Chatbot({ isOpen, onClose }) {
           timestamp: new Date()
         }
       ]);
-      
-      // Test backend connectivity
-      testBackendConnection();
     }
-  }, [isOpen]);
+  }, [open]);
 
-  const testBackendConnection = async () => {
-    try {
-      console.log('Testing backend connection...');
-      const response = await fetch('/api/chatbot/health');
-      console.log('Backend health check status:', response.status);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Backend health check response:', data);
-      } else {
-        console.error('Backend health check failed:', response.status);
-      }
-    } catch (error) {
-      console.error('Backend connection test failed:', error);
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading || !user) return;
-
-    const userMessage = inputMessage.trim();
-    setInputMessage('');
+  const sendPredefinedQuestion = async (question) => {
+    if (isLoading || !user) return;
     setIsLoading(true);
-
-    // Add user message to chat
+    setSelectedQuestion('');
+    // Add user question to chat
     const newUserMessage = {
-      message: userMessage,
+      message: question,
       isUserMessage: true,
       timestamp: new Date()
     };
     setMessages(prev => [...prev, newUserMessage]);
-
     try {
-      console.log('Sending message to chatbot:', {
-        message: userMessage,
-        sessionId: sessionId,
-        userRole: user.role,
-        userEmail: `${user.name}@epathshala.com` // Create email from name
-      });
-
-      console.log('User token:', user.token ? 'Token exists' : 'No token');
-      console.log('User details:', { role: user.role, name: user.name, id: user.id });
-
-      // First test the connection
-      const healthResponse = await fetch('/api/chatbot/health');
-      console.log('Health check status:', healthResponse.status);
-
       const response = await fetch('/api/chatbot/chat', {
         method: 'POST',
         headers: {
@@ -124,22 +90,15 @@ function Chatbot({ isOpen, onClose }) {
           'Authorization': `Bearer ${user.token}`
         },
         body: JSON.stringify({
-          message: userMessage,
+          message: question,
           sessionId: sessionId,
           userRole: user.role,
-          userEmail: `${user.name}@epathshala.com` // Create email from name
+          userEmail: `${user.name}@epathshala.com`
         })
       });
-
-      console.log('Chatbot response status:', response.status);
-      console.log('Chatbot response headers:', Object.fromEntries(response.headers.entries()));
-
       if (response.ok) {
         const data = await response.json();
-        console.log('Chatbot response data:', data);
         setSessionId(data.sessionId);
-        
-        // Add bot response to chat
         const botMessage = {
           message: data.response,
           isUserMessage: false,
@@ -148,26 +107,20 @@ function Chatbot({ isOpen, onClose }) {
         setMessages(prev => [...prev, botMessage]);
       } else {
         const errorText = await response.text();
-        console.error('Chatbot error response:', errorText);
-        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+        setMessages(prev => [...prev, {
+          message: `Sorry, I'm having trouble responding right now. (${response.status}: ${errorText})`,
+          isUserMessage: false,
+          timestamp: new Date()
+        }]);
       }
     } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage = {
+      setMessages(prev => [...prev, {
         message: `Sorry, I'm having trouble responding right now. Error: ${error.message}`,
         isUserMessage: false,
         timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      }]);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
     }
   };
 
@@ -176,44 +129,80 @@ function Chatbot({ isOpen, onClose }) {
       try {
         await fetch(`/api/chatbot/clear/${sessionId}`, {
           method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          }
+          headers: { 'Authorization': `Bearer ${user.token}` }
         });
-      } catch (error) {
-        console.error('Error clearing chat:', error);
-      }
+      } catch (error) {}
     }
     setMessages([]);
     setSessionId(null);
   };
 
   const formatTime = (timestamp) => {
-    return new Date(timestamp).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    });
+    return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Don't render if user is not logged in
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
-    <Drawer anchor="right" open={isOpen} onClose={onClose} PaperProps={{ sx: { width: 400, height: '100%', display: 'flex', flexDirection: 'column' } }}>
-      <ChatHeader onClose={onClose} />
-      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-        <ChatMessageList messages={messages} isLoading={isLoading} messagesEndRef={messagesEndRef} />
-      </Box>
-      <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
-        <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-          <Button size="small" startIcon={<ClearIcon />} onClick={clearChat} variant="outlined">Clear Chat</Button>
-          <Button size="small" onClick={testBackendConnection} variant="outlined" color="secondary">Test Connection</Button>
-          <Chip label={user.role} size="small" color="secondary" variant="outlined" />
+    <Drawer anchor="right" open={open} onClose={onClose} PaperProps={{ sx: { width: 380, height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper', boxShadow: 6, borderRadius: 0 } }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider', display: 'flex', alignItems: 'center', justifyContent: 'space-between', bgcolor: 'background.paper' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <BotIcon color="primary" />
+          <Typography variant="h6" fontWeight={700}>ePathshala Assistant</Typography>
         </Box>
-        <PredefinedQuestionSelector setInputMessage={setInputMessage} />
-        <ChatInputArea inputMessage={inputMessage} setInputMessage={setInputMessage} handleKeyPress={handleKeyPress} sendMessage={sendMessage} isLoading={isLoading} />
+        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+      </Box>
+      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2, bgcolor: 'background.default', display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {messages.map((msg, idx) => (
+          <Box key={idx} sx={{
+            display: 'flex',
+            flexDirection: msg.isUserMessage ? 'row-reverse' : 'row',
+            alignItems: 'flex-end',
+            gap: 1,
+          }}>
+            <Avatar sx={{ bgcolor: msg.isUserMessage ? 'primary.main' : 'secondary.main', width: 28, height: 28 }}>
+              {msg.isUserMessage ? <PersonIcon /> : <BotIcon />}
+            </Avatar>
+            <Paper elevation={2} sx={{
+              p: 1.2,
+              px: 2,
+              borderRadius: 3,
+              bgcolor: msg.isUserMessage ? 'primary.light' : 'grey.100',
+              color: msg.isUserMessage ? 'primary.contrastText' : 'text.primary',
+              maxWidth: '75%',
+              minWidth: 40,
+              wordBreak: 'break-word',
+              boxShadow: msg.isUserMessage ? 2 : 1,
+            }}>
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>{msg.message}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', float: 'right', mt: 0.5 }}>{formatTime(msg.timestamp)}</Typography>
+            </Paper>
+          </Box>
+        ))}
+        <div ref={messagesEndRef} />
+      </Box>
+      <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
+        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+          <Button size="small" startIcon={<ClearIcon />} onClick={clearChat} variant="outlined">Clear Chat</Button>
+        </Box>
+        <FormControl fullWidth disabled={isLoading}>
+          <InputLabel id="chatbot-question-label">Choose a question...</InputLabel>
+          <Select
+            labelId="chatbot-question-label"
+            value={selectedQuestion}
+            label="Choose a question..."
+            onChange={e => {
+              setSelectedQuestion(e.target.value);
+              sendPredefinedQuestion(e.target.value);
+            }}
+            sx={{ borderRadius: 2, bgcolor: 'background.default', fontWeight: 500 }}
+          >
+            {PREDEFINED_QUESTIONS.map((q) => (
+              <MenuItem key={q} value={q}>{q}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {isLoading && <Typography align="center" sx={{ mt: 1 }}><span role="img" aria-label="loading">⏳</span> Waiting for response...</Typography>}
       </Box>
     </Drawer>
   );

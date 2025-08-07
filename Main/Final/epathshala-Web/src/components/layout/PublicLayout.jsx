@@ -8,9 +8,9 @@ function PublicLayout({ children }) {
   
   try {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
-        <Box component="main" sx={{ flexGrow: 1 }}>
+        <Box component="main" className="main-content" sx={{ flexGrow: 1 }}>
           {children}
         </Box>
         <Footer />

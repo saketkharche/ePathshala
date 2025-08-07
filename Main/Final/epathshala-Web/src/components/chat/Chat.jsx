@@ -26,8 +26,11 @@ import {
   MenuItem,
   Badge,
   Alert,
-  CircularProgress
+  CircularProgress,
+  Drawer,
+  useMediaQuery
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import {
   Chat as ChatIcon,
   Send as SendIcon,
@@ -37,6 +40,7 @@ import {
   Computer as ComputerIcon,
   Add as AddIcon,
   ExitToApp as ExitIcon,
+  Menu as MenuIcon,
   Notifications as NotificationsIcon,
   Wifi as WifiIcon,
   WifiOff as WifiOffIcon
@@ -44,10 +48,19 @@ import {
 import { useAuth } from '../../utils/auth';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+import { getToken } from '../../utils/auth';
+import { alpha } from '@mui/material/styles';
+import ChatHeader from './ChatHeader';
+import ChatSidebar from './ChatSidebar';
+import ChatMessages from './ChatMessages';
+import ChatInputBar from './ChatInputBar';
 
 function Chat() {
   const { user } = useAuth();
   const [chatRooms, setChatRooms] = useState([]);
+  const [chatRoomsPage, setChatRoomsPage] = useState(0);
+  const [chatRoomsHasMore, setChatRoomsHasMore] = useState(true);
+  const [chatRoomsLoading, setChatRoomsLoading] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -64,8 +77,22 @@ function Chat() {
   const stompClient = useRef(null);
   const reconnectTimeout = useRef(null);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const stored = localStorage.getItem('chatSidebarCollapsed');
+    return stored === 'true';
+  });
+  const handleToggleSidebarCollapse = () => {
+    setSidebarCollapsed((prev) => {
+      localStorage.setItem('chatSidebarCollapsed', !prev);
+      return !prev;
+    });
+  };
+
   useEffect(() => {
-    loadChatRooms();
+    loadChatRooms(0);
     connectWebSocket();
     return () => {
       disconnectWebSocket();
@@ -190,19 +217,36 @@ function Chat() {
     }
   };
 
-  const loadChatRooms = async () => {
+  const loadChatRooms = async (page = 0) => {
+    setChatRoomsLoading(true);
     try {
-      const response = await fetch('/api/chat/rooms');
+      const token = (typeof getToken === 'function' ? getToken() : localStorage.getItem('token'));
+      const response = await fetch(`/api/chat/rooms/paged?page=${page}&size=10`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 401 || response.status === 403) {
+        setError('You are not authorized to view chat rooms. Please log in again.');
+        setChatRooms([]);
+        setChatRoomsHasMore(false);
+        return;
+      }
       if (response.ok) {
         const data = await response.json();
-        setChatRooms(data);
-        if (data.length > 0) {
-          setSelectedRoom(data[0]);
+        const newRooms = data.content || [];
+        setChatRooms(prev => page === 0 ? newRooms : [...prev, ...newRooms]);
+        setChatRoomsPage(data.number);
+        setChatRoomsHasMore(!data.last);
+        if (page === 0 && newRooms.length > 0) {
+          setSelectedRoom(newRooms[0]);
         }
       }
     } catch (error) {
       setError('Failed to load chat rooms');
     } finally {
+      setChatRoomsLoading(false);
       setLoading(false);
     }
   };
@@ -311,6 +355,10 @@ function Chat() {
     }
   };
 
+  // Sidebar toggle for mobile
+  const handleSidebarOpen = () => setSidebarOpen(true);
+  const handleSidebarClose = () => setSidebarOpen(false);
+
   if (loading) {
     return (
       <Box sx={{ p: 3 }}>
@@ -320,197 +368,152 @@ function Chat() {
   }
 
   return (
-    <Box sx={{ p: 3, height: 'calc(100vh - 200px)', display: 'flex' }}>
-      {/* Connection Status */}
-      <Box sx={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
-        <Chip
-          icon={getConnectionStatusIcon()}
-          label={connectionStatus}
-          color={connectionStatus === 'connected' ? 'success' : 'default'}
-          variant="outlined"
-          onClick={connectionStatus === 'disconnected' ? connectWebSocket : undefined}
-        />
-      </Box>
-
-      {/* Error Alert */}
-      {error && (
-        <Alert 
-          severity="error" 
-          sx={{ position: 'absolute', top: 60, right: 10, zIndex: 1000 }}
-          onClose={() => setError('')}
-        >
-          {error}
-        </Alert>
-      )}
-
-      {/* Chat Rooms Sidebar */}
-      <Box sx={{ width: 300, mr: 3 }}>
-        <Typography variant="h6" gutterBottom>
-          Chat Rooms
-        </Typography>
-        
-        <List>
-          {chatRooms.map((room) => (
-            <Card
-              key={room.id}
-              sx={{
-                mb: 2,
-                cursor: 'pointer',
-                border: selectedRoom?.id === room.id ? 2 : 1,
-                borderColor: selectedRoom?.id === room.id ? 'primary.main' : 'divider'
-              }}
-              onClick={() => setSelectedRoom(room)}
-            >
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Avatar sx={{ bgcolor: 'primary.main', mr: 1 }}>
-                    {getCategoryIcon(room.category)}
-                  </Avatar>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6">{room.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {room.description}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Chip
-                    size="small"
-                    label={`${room.currentUsers}/${room.maxUsers} users`}
-                    color="primary"
-                    variant="outlined"
-                  />
-                  {room.isPrivate && (
-                    <Chip size="small" label="Private" color="secondary" />
-                  )}
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
-        </List>
-      </Box>
-
-      {/* Chat Messages */}
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        {selectedRoom ? (
-          <>
-            {/* Chat Header */}
-            <Paper sx={{ p: 2, mb: 2 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Box>
-                  <Typography variant="h6">{selectedRoom.name}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {selectedRoom.description}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Chip
-                    size="small"
-                    label={`${selectedRoom.currentUsers} online`}
-                    color="success"
-                  />
-                  <IconButton
-                    size="small"
-                    onClick={() => leaveRoom(selectedRoom.id)}
-                    color="error"
-                  >
-                    <ExitIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            </Paper>
-
-            {/* Messages */}
-            <Paper sx={{ flexGrow: 1, mb: 2, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
-                <Typography variant="caption" color="text.secondary">
-                  Messages: {messages.length} | Last Message: {messages.length > 0 ? messages[messages.length - 1]?.message : 'None'}
-                </Typography>
-              </Box>
-              <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-                <List>
-                  {console.log('Rendering messages:', messages.length, messages)}
-                  {messages.length === 0 ? (
-                    <ListItem>
-                      <Typography variant="body2" color="text.secondary">
-                        No messages yet. Start the conversation!
-                      </Typography>
-                    </ListItem>
-                  ) : (
-                    messages.map((message, index) => {
-                      console.log('Rendering message:', message);
-                      return (
-                      <ListItem key={message.id || `msg-${index}-${message.timestamp}`} sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                        <Avatar sx={{ width: 32, height: 32 }}>
-                          <PersonIcon />
-                        </Avatar>
-                        <Typography variant="subtitle2">{message.authorName}</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {formatTime(message.timestamp)}
-                        </Typography>
-                        {message.messageType !== 'TEXT' && (
-                          <Chip
-                            size="small"
-                            label={message.messageType}
-                            color={getMessageTypeColor(message.messageType)}
-                            variant="outlined"
-                          />
-                        )}
-                      </Box>
-                      <Paper
-                        sx={{
-                          p: 1.5,
-                          backgroundColor: message.messageType === 'SYSTEM' ? 'warning.light' : 'grey.100',
-                          borderRadius: 2,
-                          maxWidth: '80%',
-                          wordBreak: 'break-word'
-                        }}
-                      >
-                        <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                          {message.message}
-                        </Typography>
-                      </Paper>
-                    </ListItem>
-                  );
-                  })
-                  )}
-                  <div ref={messagesEndRef} />
-                </List>
-              </Box>
-            </Paper>
-
-            {/* Message Input */}
-            <Paper sx={{ p: 2 }}>
-              <Box sx={{ display: 'flex', gap: 1 }}>
-                <TextField
-                  fullWidth
-                  placeholder={isConnected ? "Type your message..." : "Connecting..."}
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  multiline
-                  maxRows={3}
-                  disabled={!isConnected}
-                />
-                <IconButton
-                  color="primary"
-                  onClick={sendMessage}
-                  disabled={!newMessage.trim() || !isConnected}
-                >
-                  <SendIcon />
-                </IconButton>
-              </Box>
-            </Paper>
-          </>
+    <Box sx={{
+      width: '100%',
+      maxWidth: '100vw',
+      height: '100%',
+      minHeight: 0,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: isMobile ? 'stretch' : 'center',
+      p: { xs: 0, sm: 2 },
+      boxSizing: 'border-box',
+      bgcolor: theme.palette.background.default,
+      overflowX: 'hidden',
+    }}>
+      <Paper elevation={4} sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        maxWidth: 1100,
+        minWidth: 0,
+        maxHeight: { xs: '100%', md: '80vh' },
+        minHeight: { xs: '100%', sm: 400 },
+        borderRadius: 4,
+        boxShadow: 4,
+        overflow: 'hidden',
+        position: 'relative',
+        bgcolor: 'background.paper',
+      }}>
+        {/* Error Alert */}
+        {error && (
+          <Alert 
+            severity="error" 
+            sx={{ position: 'absolute', top: 60, right: 10, zIndex: 1000 }}
+            onClose={() => setError('')}
+          >
+            {error}
+          </Alert>
+        )}
+        {/* Sidebar (Drawer on mobile) */}
+        {isMobile ? (
+          <Drawer
+            anchor="left"
+            open={sidebarOpen}
+            onClose={handleSidebarClose}
+            PaperProps={{ sx: { width: 260, p: 1, maxWidth: '80vw', borderRadius: 0, boxShadow: 2, minWidth: 0, minHeight: 0, bgcolor: theme.palette.background.paper } }}
+            transitionDuration={300}
+          >
+            <ChatSidebar
+              chatRooms={chatRooms}
+              selectedRoom={selectedRoom}
+              onSelectRoom={setSelectedRoom}
+              loading={chatRoomsLoading}
+              hasMore={chatRoomsHasMore}
+              onLoadMore={() => loadChatRooms(chatRoomsPage + 1)}
+              sidebarCollapsed={false}
+              onToggleCollapse={() => {}}
+              showNewRoomButton={true}
+            />
+          </Drawer>
         ) : (
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            <Typography variant="h6" color="text.secondary">
-              Select a chat room to start messaging
-            </Typography>
+          <Box sx={{
+            width: sidebarCollapsed ? 60 : 280,
+            transition: 'width 0.3s',
+            bgcolor: 'background.paper',
+            borderRight: 1,
+            borderColor: 'divider',
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: 0,
+            boxShadow: 2,
+            zIndex: 1,
+          }}>
+            <ChatSidebar
+              chatRooms={chatRooms}
+              selectedRoom={selectedRoom}
+              onSelectRoom={setSelectedRoom}
+              loading={chatRoomsLoading}
+              hasMore={chatRoomsHasMore}
+              onLoadMore={() => loadChatRooms(chatRoomsPage + 1)}
+              sidebarCollapsed={sidebarCollapsed}
+              onToggleCollapse={handleToggleSidebarCollapse}
+              showNewRoomButton={true}
+            />
           </Box>
         )}
-      </Box>
+        {/* Main Chat Area */}
+        <Box sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minWidth: 0,
+          minHeight: 0,
+          p: { xs: 0, sm: 2 },
+          width: '100%',
+          maxWidth: 820,
+          bgcolor: 'background.default',
+          borderRadius: 0,
+          boxShadow: 0,
+          transition: 'margin 0.3s',
+        }}>
+          <ChatHeader
+            isMobile={isMobile}
+            onSidebarOpen={handleSidebarOpen}
+            selectedRoom={selectedRoom}
+            connectionStatus={connectionStatus}
+            getConnectionStatusIcon={getConnectionStatusIcon}
+            connectWebSocket={connectWebSocket}
+          />
+          <Box sx={{
+            flexGrow: 1,
+            overflowY: 'auto',
+            px: { xs: 1, sm: 2 },
+            py: 1,
+            minHeight: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1.5,
+            bgcolor: 'background.default',
+          }}>
+            <ChatMessages
+              messages={messages}
+              messagesEndRef={messagesEndRef}
+              getMessageTypeColor={getMessageTypeColor}
+              getCategoryIcon={getCategoryIcon}
+              formatTime={formatTime}
+            />
+          </Box>
+          <Paper elevation={2} sx={{
+            p: { xs: 1, sm: 2 },
+            borderTop: 1,
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+            position: 'sticky',
+            bottom: 0,
+            zIndex: 2,
+            borderRadius: 0,
+          }}>
+            <ChatInputBar
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              isConnected={isConnected}
+              handleSendMessage={sendMessage}
+              loading={loading}
+            />
+          </Paper>
+        </Box>
+      </Paper>
     </Box>
   );
 }

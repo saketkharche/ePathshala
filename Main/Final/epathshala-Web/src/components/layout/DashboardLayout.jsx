@@ -9,22 +9,32 @@ function DashboardLayout({ children }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const stored = localStorage.getItem('mainSidebarCollapsed');
+    return stored === 'true';
+  });
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
-  const handleSidebarClose = () => {
-    setSidebarOpen(false);
+  const handleSidebarCollapse = () => {
+    setSidebarCollapsed((prev) => {
+      localStorage.setItem('mainSidebarCollapsed', !prev);
+      return !prev;
+    });
   };
+  const sidebarWidth = sidebarCollapsed ? 60 : 280;
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {/* Sidebar */}
-      <Sidebar open={sidebarOpen} onClose={handleSidebarClose} />
-      
+      <Sidebar
+        open={sidebarOpen}
+        onClose={handleSidebarToggle}
+        collapsed={sidebarCollapsed}
+        onCollapse={handleSidebarCollapse}
+      />
       {/* Main Content */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+      <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, ml: { md: `${sidebarCollapsed ? 60 : 280}px` }, transition: 'margin-left 0.3s' }}>
         {/* Top Navigation */}
         <Box sx={{ display: 'flex', alignItems: 'center', p: 2, borderBottom: 1, borderColor: 'divider' }}>
           {isMobile && (
@@ -39,12 +49,10 @@ function DashboardLayout({ children }) {
           )}
           <Navbar />
         </Box>
-        
         {/* Page Content */}
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" className="main-content" sx={{ flexGrow: 1, p: 3 }}>
           {children}
         </Box>
-        
         {/* Footer */}
         <Footer />
       </Box>

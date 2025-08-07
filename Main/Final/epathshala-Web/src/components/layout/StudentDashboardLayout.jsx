@@ -1,41 +1,58 @@
 import React, { useState } from 'react';
-import { Box, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
+import Navbar from '../common/Navbar';
 import StudentSidebar from './StudentSidebar';
 import Footer from './Footer';
-import Navbar from '../common/Navbar';
-import Breadcrumb from '../common/Breadcrumb';
 
 function StudentDashboardLayout({ children }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const stored = localStorage.getItem('studentSidebarCollapsed');
+    return stored === 'true';
+  });
+  const handleSidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
   };
-
+  const handleSidebarCollapse = () => {
+    setSidebarCollapsed((prev) => {
+      localStorage.setItem('studentSidebarCollapsed', !prev);
+      return !prev;
+    });
+  };
+  const sidebarWidth = sidebarCollapsed ? 60 : 280;
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <StudentSidebar open={mobileOpen} onClose={handleDrawerToggle} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-        <Navbar>
+      {/* Sidebar */}
+      <StudentSidebar
+        open={sidebarOpen}
+        onClose={handleSidebarToggle}
+        collapsed={sidebarCollapsed}
+        onCollapse={handleSidebarCollapse}
+      />
+      {/* Main Content */}
+      <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, ml: { md: `${sidebarWidth}px` }, transition: 'margin-left 0.3s' }}>
+        {/* Top Navigation */}
+        <Box sx={{ display: 'flex', alignItems: 'center', p: 2, borderBottom: 1, borderColor: 'divider' }}>
           {isMobile && (
             <IconButton
               color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { md: 'none' } }}
+              aria-label="open sidebar"
+              onClick={handleSidebarToggle}
+              sx={{ mr: 2 }}
             >
               <MenuIcon />
             </IconButton>
           )}
-        </Navbar>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Breadcrumb />
+          <Navbar />
+        </Box>
+        {/* Page Content */}
+        <Box component="main" className="main-content" sx={{ flexGrow: 1, p: 3 }}>
           {children}
         </Box>
+        {/* Footer */}
         <Footer />
       </Box>
     </Box>

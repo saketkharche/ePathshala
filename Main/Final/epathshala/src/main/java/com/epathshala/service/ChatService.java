@@ -78,6 +78,11 @@ public class ChatService {
         return convertToChatRoomDTO(chatRoom);
     }
     
+    public Page<ChatRoomDTO> getActiveChatRooms(Pageable pageable) {
+        return chatRoomRepository.findByIsActiveTrue(pageable)
+            .map(this::convertToChatRoomDTO);
+    }
+    
     // Chat Message methods
     public Page<ChatMessageDTO> getMessagesByChatRoom(Long chatRoomId, Pageable pageable) {
         return chatMessageRepository.findByChatRoomIdOrderByTimestampDesc(chatRoomId, pageable)

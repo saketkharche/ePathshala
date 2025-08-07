@@ -12,7 +12,10 @@ import {
   useTheme,
   useMediaQuery,
   Avatar,
-  Collapse
+  Collapse,
+  Tooltip,
+  IconButton,
+  Fade
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -24,12 +27,16 @@ import {
   Chat as ChatIcon,
   FamilyRestroom as FamilyIcon,
   ExpandLess,
-  ExpandMore
+  ExpandMore,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  School as SchoolIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 
-const drawerWidth = 280;
+const SIDEBAR_COLLAPSED_WIDTH = 60;
+const SIDEBAR_EXPANDED_WIDTH = 280;
 
 const parentMenuItems = [
   {
@@ -79,15 +86,13 @@ const communicationItems = [
   }
 ];
 
-function ParentSidebar({ open, onClose }) {
+function ParentSidebar({ open, onClose, collapsed, onCollapse }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const [expanded, setExpanded] = useState({
-    communication: false
-  });
+  const [expanded, setExpanded] = useState({ communication: false });
 
   const handleDrawerClose = () => {
     if (isMobile) {
@@ -109,41 +114,42 @@ function ParentSidebar({ open, onClose }) {
 
   const renderMenuItem = (item, index) => {
     const isActive = location.pathname === item.path;
-    
     return (
-      <ListItem key={index} disablePadding>
-        <ListItemButton
-          onClick={() => handleItemClick(item.path)}
-          selected={isActive}
-          sx={{
-            '&.Mui-selected': {
-              backgroundColor: theme.palette.primary.light,
-              '&:hover': {
+      <Tooltip title={collapsed ? item.text : ''} placement="right" key={item.text} arrow disableHoverListener={!collapsed}>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => handleItemClick(item.path)}
+            selected={isActive}
+            sx={{
+              px: 2, py: 1.5, minHeight: 48,
+              '&.Mui-selected': {
                 backgroundColor: theme.palette.primary.light,
+                '&:hover': { backgroundColor: theme.palette.primary.light },
               },
-            },
-            '&:hover': {
-              backgroundColor: theme.palette.action.hover,
-            },
-          }}
-        >
-          <ListItemIcon>
-            <item.icon color={isActive ? 'primary' : 'inherit'} />
-          </ListItemIcon>
-          <ListItemText 
-            primary={item.text}
-            secondary={item.description}
-            primaryTypographyProps={{
-              color: isActive ? 'primary' : 'inherit',
-              fontWeight: isActive ? 600 : 400,
+              '&:hover': { backgroundColor: theme.palette.action.hover },
             }}
-            secondaryTypographyProps={{
-              fontSize: '0.75rem',
-              color: isActive ? 'primary' : 'text.secondary',
-            }}
-          />
-        </ListItemButton>
-      </ListItem>
+            aria-label={item.text}
+          >
+            <ListItemIcon sx={{ minWidth: 0, mr: collapsed ? 0 : 2, justifyContent: 'center' }}>
+              <item.icon color={isActive ? 'primary' : 'inherit'} />
+            </ListItemIcon>
+            <Fade in={!collapsed} timeout={300} unmountOnExit>
+              <ListItemText
+                primary={item.text}
+                secondary={item.description}
+                primaryTypographyProps={{
+                  color: isActive ? 'primary' : 'inherit',
+                  fontWeight: isActive ? 600 : 400,
+                }}
+                secondaryTypographyProps={{
+                  fontSize: '0.75rem',
+                  color: isActive ? 'primary' : 'text.secondary',
+                }}
+              />
+            </Fade>
+          </ListItemButton>
+        </ListItem>
+      </Tooltip>
     );
   };
 
@@ -164,49 +170,65 @@ function ParentSidebar({ open, onClose }) {
     </Box>
   );
 
+  const drawerWidth = collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH;
   const drawerContent = (
-    <Box sx={{ width: drawerWidth }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-        <Typography variant="h6" color="primary" fontWeight="bold">
-          ePathshala
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Parent Portal
-        </Typography>
+    <Box sx={{ width: drawerWidth, transition: 'width 0.3s' }}>
+      {/* Collapse/Expand Button (desktop only) */}
+      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: collapsed ? 'center' : 'flex-end', p: 1 }}>
+        <Tooltip title={collapsed ? 'Expand' : 'Collapse'}>
+          <IconButton
+            size="small"
+            onClick={onCollapse}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            sx={{
+              transition: 'transform 0.3s',
+              transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+          >
+            {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </Tooltip>
       </Box>
-
+      <Fade in={!collapsed} timeout={300} unmountOnExit>
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+          <Typography variant="h6" color="primary" fontWeight="bold">
+            ePathshala
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Parent Portal
+          </Typography>
+        </Box>
+      </Fade>
       {/* Parent Profile Section */}
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <Avatar sx={{ mr: 2, bgcolor: theme.palette.primary.main }}>
-            <FamilyIcon />
-          </Avatar>
-          <Box>
-            <Typography variant="subtitle1" fontWeight="bold">
-              {user?.name || 'Parent'}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Parent ID: {user?.id}
-            </Typography>
+      <Fade in={!collapsed} timeout={300} unmountOnExit>
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Avatar sx={{ mr: 2, bgcolor: theme.palette.primary.main }}>
+              <SchoolIcon />
+            </Avatar>
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold">
+                {user?.name || 'Parent'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Parent ID: {user?.id}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      
+      </Fade>
       <List sx={{ pt: 1 }}>
-        {/* Main Parent Functions */}
-        <Typography variant="overline" sx={{ px: 2, py: 1, color: 'text.secondary' }}>
-          Parent Functions
-        </Typography>
+        <Fade in={!collapsed} timeout={300} unmountOnExit>
+          <Typography variant="overline" sx={{ px: 2, py: 1, color: 'text.secondary' }}>
+            Academic Functions
+          </Typography>
+        </Fade>
         {parentMenuItems.map((item, index) => renderMenuItem(item, index))}
-        
         <Divider sx={{ my: 2 }} />
-        
-        {/* Communication Section */}
         {renderSection('Communication', communicationItems, 'communication')}
       </List>
     </Box>
   );
-
   return (
     <>
       {/* Desktop Drawer */}
@@ -220,13 +242,14 @@ function ParentSidebar({ open, onClose }) {
             boxSizing: 'border-box',
             borderRight: 1,
             borderColor: 'divider',
+            transition: 'width 0.3s',
+            overflowX: 'hidden',
           },
           display: { xs: 'none', md: 'block' }
         }}
       >
         {drawerContent}
       </Drawer>
-
       {/* Mobile Drawer */}
       <Drawer
         variant="temporary"
@@ -238,7 +261,7 @@ function ParentSidebar({ open, onClose }) {
         sx={{
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: SIDEBAR_EXPANDED_WIDTH,
             boxSizing: 'border-box',
           },
         }}

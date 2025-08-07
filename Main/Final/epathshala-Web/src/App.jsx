@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from "./utils/auth";
@@ -16,14 +16,9 @@ function App() {
         <CssBaseline />
         <ErrorBoundary>
           <AuthProvider>
-            <BrowserRouter
-              future={{
-                v7_startTransition: true,
-                v7_relativeSplatPath: true,
-              }}
-            >
+            <Router>
               <AppRoutes />
-            </BrowserRouter>
+            </Router>
           </AuthProvider>
         </ErrorBoundary>
       </ThemeProvider>

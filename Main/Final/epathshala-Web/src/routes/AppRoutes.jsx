@@ -37,6 +37,10 @@ import AdminResetPassword from '../pages/dashboard/AdminResetPassword';
 import AdminAcademicCalendar from '../pages/dashboard/AdminAcademicCalendar';
 import AdminOnlineClasses from '../pages/dashboard/AdminOnlineClasses';
 import AdminSessionManagement from '../pages/dashboard/AdminSessionManagement';
+import AdminProfile from '../components/profile/AdminProfile';
+import TeacherProfile from '../components/profile/TeacherProfile';
+import StudentProfile from '../components/profile/StudentProfile';
+import ParentProfile from '../components/profile/ParentProfile';
 
 // Teacher Dashboard Pages
 import TeacherAttendancePage from '../pages/dashboard/teacher/TeacherAttendancePage';
@@ -196,6 +200,7 @@ function AppRoutes() {
             <AdminSessionManagement />
           </AdminDashboardLayout>
         } />
+        <Route path="/admin/profile" element={<AdminDashboardLayout><AdminProfile /></AdminDashboardLayout>} />
         
         {/* Student Routes */}
         <Route path="/student" element={
@@ -253,6 +258,7 @@ function AppRoutes() {
             <Notifications />
           </StudentDashboardLayout>
         } />
+        <Route path="/student/profile" element={<StudentDashboardLayout><StudentProfile /></StudentDashboardLayout>} />
         
         {/* Teacher Routes */}
         <Route path="/teacher" element={
@@ -310,6 +316,7 @@ function AppRoutes() {
             <Notifications />
           </TeacherDashboardLayout>
         } />
+        <Route path="/teacher/profile" element={<TeacherDashboardLayout><TeacherProfile /></TeacherDashboardLayout>} />
         
         {/* Parent Routes */}
         <Route path="/parent" element={
@@ -347,6 +354,7 @@ function AppRoutes() {
             <Notifications />
           </ParentDashboardLayout>
         } />
+        <Route path="/parent/profile" element={<ParentDashboardLayout><ParentProfile /></ParentDashboardLayout>} />
         
         {/* Shared Routes */}
         <Route path="/forum/thread/:threadId" element={

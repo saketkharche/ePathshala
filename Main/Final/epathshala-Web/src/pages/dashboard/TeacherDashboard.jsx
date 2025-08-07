@@ -1,642 +1,153 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../utils/auth';
-import { markAttendance, getAttendanceByClass, getStudentsByClass } from '../../api/attendance';
-import { enterGrade, getGradesByClass } from '../../api/grades';
-import { uploadAssignment, getAssignmentsByClass, uploadAssignmentFile } from '../../api/assignments';
-import { getLeavesByClass, approveLeaveAsTeacher } from '../../api/leave';
-import { getEvents } from '../../api/calendar';
-import { Button, Box, TextField, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem, Tabs, Tab, Chip } from '@mui/material';
-import { VideoCall as VideoCallIcon, Quiz as QuizIcon, Assignment as AssignmentIcon, Group as GroupIcon } from '@mui/icons-material';
-import OnlineClassManager from '../../components/teacher/OnlineClassManager';
-import FacultyExamManager from '../../components/exam/FacultyExamManager';
+import React from 'react';
+import { Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../utils/auth';
+import TeacherOverview from '../../components/dashboard/TeacherOverview';
+import {
+  Person as PersonIcon,
+  Assignment as AssignmentIcon,
+  Quiz as QuizIcon,
+  Grade as GradeIcon,
+  Schedule as ScheduleIcon,
+  Event as EventIcon,
+  VideoCall as VideoCallIcon
+} from '@mui/icons-material';
 
 function TeacherDashboard() {
   const { user } = useAuth();
-  const [currentTab, setCurrentTab] = useState(0);
-  const [attendance, setAttendance] = useState([]);
-  const [grades, setGrades] = useState([]);
-  const [assignments, setAssignments] = useState([]);
-  const [leaveRequests, setLeaveRequests] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  const [onlineClasses, setOnlineClasses] = useState([]);
-  
-  // Attendance form state
-  const [attendanceForm, setAttendanceForm] = useState({
-    studentId: '',
-    date: '',
-    status: 'PRESENT'
-  });
-
-  // Grade form state
-  const [gradeForm, setGradeForm] = useState({
-    studentId: '',
-    subject: '',
-    marks: '',
-    remarks: ''
-  });
-
-  // Assignment form state
-  const [assignmentForm, setAssignmentForm] = useState({
-    title: '',
-    subject: '',
-    className: 'Class 10A',
-    dueDate: '',
-    fileUrl: ''
-  });
-
-  // Leave approval state
-  const [selectedLeaveId, setSelectedLeaveId] = useState('');
-  const [approvalStatus, setApprovalStatus] = useState('Approved');
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-      loadData();
+  const dashboardCards = [
+    {
+      title: 'Attendance Management',
+      description: 'Mark and track student attendance for all your classes',
+      icon: PersonIcon,
+      path: '/teacher/attendance',
+      color: '#1976d2'
+    },
+    {
+      title: 'Assignment Management',
+      description: 'Create, assign, and grade student assignments',
+      icon: AssignmentIcon,
+      path: '/teacher/assignments',
+      color: '#f57c00'
+    },
+    {
+      title: 'Exam Management',
+      description: 'Create and manage online exams and assessments',
+      icon: QuizIcon,
+      path: '/teacher/exams',
+      color: '#d32f2f'
+    },
+    {
+      title: 'Grade Management',
+      description: 'Enter and manage student grades and performance',
+      icon: GradeIcon,
+      path: '/teacher/grades',
+      color: '#388e3c'
+    },
+    {
+      title: 'Leave Requests',
+      description: 'Review and approve student leave requests',
+      icon: ScheduleIcon,
+      path: '/teacher/leave-requests',
+      color: '#7b1fa2'
+    },
+    {
+      title: 'Academic Calendar',
+      description: 'View and manage academic events and schedules',
+      icon: EventIcon,
+      path: '/teacher/calendar',
+      color: '#ff9800'
+    },
+    {
+      title: 'Online Classes',
+      description: 'Schedule and conduct virtual classroom sessions',
+      icon: VideoCallIcon,
+      path: '/teacher/online-classes',
+      color: '#009688'
     }
-  }, [user]);
+  ];
 
-  const loadData = async () => {
-    try {
-      const [attendanceData, gradesData, assignmentsData, leavesData, studentsData, calendarData, onlineClassesData] = await Promise.all([
-        getAttendanceByClass('Class 10A'),
-        getGradesByClass('Class 10A'),
-        getAssignmentsByClass('Class 10A'),
-        getLeavesByClass('Class 10A'),
-        getStudentsByClass('Class 10A'),
-        getEvents(),
-        fetch(`/api/teacher/online-classes?teacherId=${user?.id}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }).then(res => res.ok ? res.json() : [])
-      ]);
-      
-      console.log('Leave requests data:', leavesData);
-      
-      // Ensure data is always an array
-      setAttendance(Array.isArray(attendanceData) ? attendanceData : []);
-      setGrades(Array.isArray(gradesData) ? gradesData : []);
-      setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
-      setLeaveRequests(Array.isArray(leavesData) ? leavesData : []);
-      setStudents(Array.isArray(studentsData) ? studentsData : []);
-      setCalendarEvents(Array.isArray(calendarData) ? calendarData : []);
-      setOnlineClasses(Array.isArray(onlineClassesData) ? onlineClassesData : []);
-    } catch (error) {
-      console.error('Error loading data:', error);
-      // Set empty arrays on error
-      setAttendance([]);
-      setGrades([]);
-      setAssignments([]);
-      setLeaveRequests([]);
-      setStudents([]);
-      setCalendarEvents([]);
-      setOnlineClasses([]);
-    }
-  };
-
-  const handleMarkAttendance = async (e) => {
-    e.preventDefault();
-    try {
-      await markAttendance(attendanceForm);
-      setAttendanceForm({ studentId: '', date: '', status: 'PRESENT' });
-      alert('Attendance marked successfully!');
-      loadData();
-    } catch (error) {
-      console.error('Error marking attendance:', error);
-      alert('Error marking attendance');
-    }
-  };
-
-  const handleEnterGrade = async (e) => {
-    e.preventDefault();
-    try {
-      await enterGrade(gradeForm);
-      setGradeForm({ studentId: '', subject: '', marks: '', remarks: '' });
-      alert('Grade entered successfully!');
-      loadData();
-    } catch (error) {
-      console.error('Error entering grade:', error);
-      alert('Error entering grade');
-    }
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const fileUrl = await uploadAssignmentFile(file);
-        setAssignmentForm(prev => ({ ...prev, fileUrl }));
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      }
-    }
-  };
-
-  const handleUploadAssignment = async (e) => {
-    e.preventDefault();
-    try {
-      await uploadAssignment(assignmentForm);
-      setAssignmentForm({ title: '', subject: '', className: 'Class 10A', dueDate: '', fileUrl: '' });
-      alert('Assignment uploaded successfully!');
-      loadData();
-    } catch (error) {
-      console.error('Error uploading assignment:', error);
-      alert('Error uploading assignment');
-    }
-  };
-
-  const handleApproveLeave = async () => {
-    if (!selectedLeaveId) {
-      alert('Please select a leave request');
-      return;
-    }
-    try {
-      await approveLeaveAsTeacher({
-        leaveId: selectedLeaveId,
-        approverRole: 'TEACHER',
-        approvalStatus: approvalStatus
-      });
-      setSelectedLeaveId('');
-      setApprovalStatus('Approved');
-      alert('Leave request processed successfully!');
-      loadData();
-    } catch (error) {
-      console.error('Error approving leave:', error);
-      alert('Error processing leave request');
-    }
+  const handleCardClick = (path) => {
+    navigate(path);
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Teacher Dashboard
-      </Typography>
-      <Typography variant="body1" color="text.secondary" gutterBottom>
-        Welcome, {user?.name}! (Mathematics - Class 10A)
-      </Typography>
-
-      {/* Tabs for different sections */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-        <Tabs value={currentTab} onChange={(e, newValue) => setCurrentTab(newValue)}>
-          <Tab label="Dashboard" />
-          <Tab 
-            label="Online Classes" 
-            icon={<VideoCallIcon />} 
-            iconPosition="start"
-          />
-          <Tab 
-            label="Exam Management" 
-            icon={<QuizIcon />} 
-            iconPosition="start"
-          />
-        </Tabs>
-      </Box>
-
-      {/* Online Classes Tab */}
-      {currentTab === 1 && (
-        <OnlineClassManager />
-      )}
-
-      {/* Exam Management Tab */}
-      {currentTab === 2 && (
-        <FacultyExamManager />
-      )}
-
-      {/* Main Dashboard Tab */}
-      {currentTab === 0 && (
-        <Grid container spacing={3}>
-        {/* Mark Attendance Section */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Mark Attendance
-              </Typography>
-              <form onSubmit={handleMarkAttendance}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Student</InputLabel>
-                  <Select
-                    value={attendanceForm.studentId}
-                    onChange={(e) => setAttendanceForm({ ...attendanceForm, studentId: e.target.value })}
-                    label="Student"
-                    required
-                  >
-                    {students.map((student) => (
-                      <MenuItem key={student.id} value={student.id}>
-                        {student.name} ({student.studentClass})
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="Date"
-                  value={attendanceForm.date}
-                  onChange={(e) => setAttendanceForm({ ...attendanceForm, date: e.target.value })}
-                  margin="normal"
-                  required
-                  InputLabelProps={{ shrink: true }}
-                />
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Status</InputLabel>
-                  <Select
-                    value={attendanceForm.status}
-                    onChange={(e) => setAttendanceForm({ ...attendanceForm, status: e.target.value })}
-                    label="Status"
-                  >
-                    <MenuItem value="PRESENT">Present</MenuItem>
-                    <MenuItem value="ABSENT">Absent</MenuItem>
-                    <MenuItem value="LATE">Late</MenuItem>
-                  </Select>
-                </FormControl>
-                <Button 
-                  type="submit" 
-                  variant="contained" 
-                  color="primary" 
-                  sx={{ mt: 2 }}
-                >
-                  Mark Attendance
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Enter Grades Section */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Enter Grades
-              </Typography>
-              <form onSubmit={handleEnterGrade}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Student</InputLabel>
-                  <Select
-                    value={gradeForm.studentId}
-                    onChange={(e) => setGradeForm({ ...gradeForm, studentId: e.target.value })}
-                    label="Student"
-                    required
-                  >
-                    {students.map((student) => (
-                      <MenuItem key={student.id} value={student.id}>
-                        {student.name} ({student.studentClass})
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  fullWidth
-                  label="Subject"
-                  value={gradeForm.subject}
-                  onChange={(e) => setGradeForm({ ...gradeForm, subject: e.target.value })}
-                  margin="normal"
-                  required
-                />
-                <TextField
-                  fullWidth
-                  type="number"
-                  label="Marks"
-                  value={gradeForm.marks}
-                  onChange={(e) => setGradeForm({ ...gradeForm, marks: e.target.value })}
-                  margin="normal"
-                  required
-                />
-                <TextField
-                  fullWidth
-                  label="Remarks"
-                  value={gradeForm.remarks}
-                  onChange={(e) => setGradeForm({ ...gradeForm, remarks: e.target.value })}
-                  margin="normal"
-                />
-                <Button 
-                  type="submit" 
-                  variant="contained" 
-                  color="primary" 
-                  sx={{ mt: 2 }}
-                >
-                  Enter Grade
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Upload Assignment Section */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Upload Assignment
-              </Typography>
-              <form onSubmit={handleUploadAssignment}>
-                <TextField
-                  fullWidth
-                  label="Title"
-                  value={assignmentForm.title}
-                  onChange={(e) => setAssignmentForm({ ...assignmentForm, title: e.target.value })}
-                  margin="normal"
-                  required
-                />
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  style={{ margin: '16px 0' }}
-                />
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="Due Date"
-                  value={assignmentForm.dueDate}
-                  onChange={(e) => setAssignmentForm({ ...assignmentForm, dueDate: e.target.value })}
-                  margin="normal"
-                  required
-                  InputLabelProps={{ shrink: true }}
-                />
-                <TextField
-                  fullWidth
-                  label="Subject"
-                  value={assignmentForm.subject}
-                  onChange={(e) => setAssignmentForm({ ...assignmentForm, subject: e.target.value })}
-                  margin="normal"
-                  required
-                />
-                <TextField
-                  fullWidth
-                  label="Class Name"
-                  value={assignmentForm.className}
-                  onChange={(e) => setAssignmentForm({ ...assignmentForm, className: e.target.value })}
-                  margin="normal"
-                  required
-                />
-                <Button 
-                  type="submit" 
-                  variant="contained" 
-                  color="primary" 
-                  sx={{ mt: 2 }}
-                >
-                  Upload Assignment
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Leave Approval Section */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Leave Requests
-              </Typography>
-              <List>
-                {leaveRequests && leaveRequests.length > 0 ? (
-                  leaveRequests.map((leave, index) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={`Student: ${leave.studentName}`}
-                        secondary={`Reason: ${leave.reason} | From: ${leave.fromDate} | To: ${leave.toDate}`}
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No leave requests found" />
-                  </ListItem>
-                )}
-              </List>
-              
-              <Divider sx={{ my: 2 }} />
-              
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Select Leave Request</InputLabel>
-                <Select
-                  value={selectedLeaveId}
-                  onChange={(e) => setSelectedLeaveId(e.target.value)}
-                  label="Select Leave Request"
-                >
-                  {leaveRequests && leaveRequests.length > 0 ? (
-                    leaveRequests.map((leave, index) => (
-                      <MenuItem key={index} value={leave.id}>
-                        {leave.studentName} - {leave.reason}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem value="">No leave requests available</MenuItem>
-                  )}
-                </Select>
-              </FormControl>
-              
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Approval Status</InputLabel>
-                <Select
-                  value={approvalStatus}
-                  onChange={(e) => setApprovalStatus(e.target.value)}
-                  label="Approval Status"
-                >
-                  <MenuItem value="Approved">Approve</MenuItem>
-                  <MenuItem value="Rejected">Reject</MenuItem>
-                  <MenuItem value="Pending">Pending</MenuItem>
-                </Select>
-              </FormControl>
-              
-              <Button 
-                variant="contained" 
-                color="primary" 
-                onClick={handleApproveLeave}
-                sx={{ mt: 2 }}
-                disabled={!selectedLeaveId}
+    <Box>
+      {/* Overview Component */}
+      <TeacherOverview />
+      
+      {/* Quick Access Cards */}
+      <Box sx={{ mt: { xs: 3, md: 4 } }}>
+        <Typography 
+          variant="h5" 
+          gutterBottom 
+          fontWeight="bold"
+          sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2rem' } }}
+        >
+          Quick Access
+        </Typography>
+        <Typography 
+          variant="body1" 
+          color="text.secondary" 
+          sx={{ 
+            mb: { xs: 2, md: 3 },
+            fontSize: { xs: '0.9rem', sm: '1rem' }
+          }}
+        >
+          Access all your teaching tools and manage your classes efficiently
+        </Typography>
+        
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
+          {dashboardCards.map((card, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card 
+                sx={{ 
+                  height: '100%',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4
+                  }
+                }}
               >
-                Process Leave Request
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* View Data Sections */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Class Attendance
-              </Typography>
-              <List>
-                {attendance && attendance.length > 0 ? (
-                  attendance.map((record, index) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={`Student: ${record.studentName}`}
-                        secondary={`Date: ${record.date} | Status: ${record.status}`}
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No attendance records found" />
-                  </ListItem>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Class Grades
-              </Typography>
-              <List>
-                {grades && grades.length > 0 ? (
-                  grades.map((grade, index) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={`Student: ${grade.studentName}`}
-                        secondary={`Subject: ${grade.subject} | Marks: ${grade.marks}`}
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No grades found" />
-                  </ListItem>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Class Assignments
-              </Typography>
-              <List>
-                {assignments && assignments.length > 0 ? (
-                  assignments.map((assignment, index) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={assignment.title}
-                        secondary={`Due: ${assignment.dueDate} | Subject: ${assignment.subject}`}
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No assignments found" />
-                  </ListItem>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Academic Calendar
-              </Typography>
-              <List>
-                {calendarEvents && calendarEvents.length > 0 ? (
-                  calendarEvents.map((event, index) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={event.eventName}
-                        secondary={`${event.date} - ${event.description}`}
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No calendar events found" />
-                  </ListItem>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Online Classes Section */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                <VideoCallIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                Online Classes
-              </Typography>
-              <List>
-                <ListItem>
-                  <ListItemText 
-                    primary="Create Online Class" 
-                    secondary="Schedule and manage virtual classroom sessions"
-                  />
-                  <Button variant="outlined" size="small">
-                    Create
-                  </Button>
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="Manage Classes" 
-                    secondary="View and edit scheduled online classes"
-                  />
-                  <Button variant="outlined" size="small">
-                    Manage
-                  </Button>
-                </ListItem>
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Exams Section */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h6" gutterBottom>
-                  <QuizIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                  Exams
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<QuizIcon />}
-                  onClick={() => navigate('/teacher/exams')}
-                  sx={{ textTransform: 'none' }}
+                <CardActionArea 
+                  onClick={() => handleCardClick(card.path)}
+                  sx={{ height: '100%', p: { xs: 2, sm: 3 } }}
                 >
-                  Manage Exams
-                </Button>
-              </Box>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Create MCQ exams, manage questions, and view student performance analytics.
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                <Chip 
-                  label="Create Exam" 
-                  color="primary" 
-                  variant="outlined"
-                  icon={<QuizIcon />}
-                />
-                <Chip 
-                  label="View Results" 
-                  color="secondary" 
-                  variant="outlined"
-                />
-                <Chip 
-                  label="Analytics" 
-                  color="info" 
-                  variant="outlined"
-                />
-              </Box>
-            </CardContent>
-          </Card>
+                  <CardContent sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: { xs: 1.5, sm: 2 } }}>
+                      <card.icon sx={{ 
+                        fontSize: { xs: 36, sm: 48, md: 48 }, 
+                        color: card.color 
+                      }} />
+                    </Box>
+                    <Typography 
+                      variant="h6" 
+                      gutterBottom 
+                      fontWeight="bold"
+                      sx={{ 
+                        fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+                        mb: { xs: 1, sm: 1.5 }
+                      }}
+                    >
+                      {card.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' } }}
+                    >
+                      {card.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
-      </Grid>
-      )}
+      </Box>
     </Box>
   );
 }

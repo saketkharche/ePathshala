@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { forgotPassword, verifyOtp } from '../../api/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Box, 
   TextField, 
@@ -11,10 +11,28 @@ import {
   CardContent,
   Stepper,
   Step,
-  StepLabel
+  StepLabel,
+  Container,
+  useTheme,
+  useMediaQuery,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
+import {
+  Email as EmailIcon,
+  Lock as LockIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  Security as SecurityIcon,
+  ArrowBack as ArrowBackIcon
+} from '@mui/icons-material';
+import Navbar from '../../components/common/Navbar';
 
 function ForgotPassword() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
+  
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -23,7 +41,8 @@ function ForgotPassword() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleRequestOtp = async (e) => {
     e.preventDefault();
@@ -74,139 +93,283 @@ function ForgotPassword() {
     }
   };
 
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleToggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const steps = ['Request OTP', 'Verify OTP & Reset Password'];
 
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      minHeight: '100vh',
-      padding: 2
-    }}>
-      <Card sx={{ maxWidth: 400, width: '100%' }}>
-        <CardContent>
-          <Typography variant="h5" gutterBottom align="center">
-            Forgot Password
-          </Typography>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Navbar */}
+      <Navbar />
+      
+      {/* Main Content */}
+      <Box sx={{ 
+        flex: 1,
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        py: { xs: 4, md: 6 },
+        px: { xs: 2, sm: 4 }
+      }}>
+        <Container maxWidth="md">
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ 
+              maxWidth: 500, 
+              width: '100%', 
+              boxShadow: 8,
+              borderRadius: 3,
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+                {/* Header */}
+                <Box sx={{ textAlign: 'center', mb: 4 }}>
+                  <SecurityIcon sx={{ 
+                    fontSize: { xs: 48, sm: 56 }, 
+                    color: '#1976d2', 
+                    mb: 2 
+                  }} />
+                  <Typography 
+                    variant="h4" 
+                    gutterBottom 
+                    sx={{ 
+                      color: '#1976d2',
+                      fontWeight: 700,
+                      fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' }
+                    }}
+                  >
+                    Reset Password
+                  </Typography>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      color: 'text.secondary',
+                      fontSize: { xs: '0.9rem', sm: '1rem' }
+                    }}
+                  >
+                    Follow the steps to reset your password
+                  </Typography>
+                </Box>
 
-          <Stepper activeStep={step} sx={{ mb: 3 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+                {/* Stepper */}
+                <Stepper 
+                  activeStep={step} 
+                  sx={{ 
+                    mb: 4,
+                    '& .MuiStepLabel-label': {
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' }
+                    }
+                  }}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
 
-          {step === 0 && (
-            <Box component="form" onSubmit={handleRequestOtp}>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Enter your email address to receive an OTP for password reset.
-              </Typography>
-              
-              <TextField
-                fullWidth
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-              />
-              
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                disabled={loading}
-                sx={{ mb: 2 }}
-              >
-                {loading ? 'Sending OTP...' : 'Send OTP'}
-              </Button>
-            </Box>
-          )}
+                {/* Step 1: Request OTP */}
+                {step === 0 && (
+                  <Box component="form" onSubmit={handleRequestOtp}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 3,
+                        fontSize: { xs: '1rem', sm: '1.1rem' },
+                        fontWeight: 600
+                      }}
+                    >
+                      Enter your email address to receive a verification code
+                    </Typography>
+                    
+                    <TextField
+                      fullWidth
+                      label="Email Address"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      sx={{ mb: 4 }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <EmailIcon color="action" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <Button
+                      fullWidth
+                      type="submit"
+                      variant="contained"
+                      disabled={loading || !email}
+                      sx={{ 
+                        mb: 3, 
+                        py: { xs: 1.5, sm: 2 },
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
+                        fontWeight: 600,
+                        borderRadius: 2,
+                        background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
+                        '&:hover': {
+                          background: 'linear-gradient(45deg, #1565c0 30%, #1976d2 90%)',
+                        }
+                      }}
+                    >
+                      {loading ? 'Sending OTP...' : 'Send OTP'}
+                    </Button>
+                  </Box>
+                )}
 
-          {step === 1 && (
-            <Box component="form" onSubmit={handleVerifyOtp}>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Enter the OTP sent to your email and your new password.
-                <br />
-                <strong>Check the terminal for the OTP code!</strong>
-              </Typography>
-              
-              <TextField
-                fullWidth
-                label="OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-                placeholder="Enter 6-digit OTP"
-              />
-              
-              <TextField
-                fullWidth
-                label="New Password"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-              />
-              
-              <TextField
-                fullWidth
-                label="Confirm Password"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-              />
-              
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                disabled={loading}
-                sx={{ mb: 2 }}
-              >
-                {loading ? 'Verifying...' : 'Reset Password'}
-              </Button>
-              
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={() => setStep(0)}
-                sx={{ mb: 2 }}
-              >
-                Back to Email
-              </Button>
-            </Box>
-          )}
+                {/* Step 2: Verify OTP and Reset Password */}
+                {step === 1 && (
+                  <Box component="form" onSubmit={handleVerifyOtp}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 3,
+                        fontSize: { xs: '1rem', sm: '1.1rem' },
+                        fontWeight: 600
+                      }}
+                    >
+                      Enter the verification code and your new password
+                    </Typography>
+                    
+                    <TextField
+                      fullWidth
+                      label="Verification Code (OTP)"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      required
+                      sx={{ mb: 3 }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SecurityIcon color="action" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <TextField
+                      fullWidth
+                      label="New Password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      sx={{ mb: 3 }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LockIcon color="action" />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={handleTogglePasswordVisibility}
+                              edge="end"
+                            >
+                              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <TextField
+                      fullWidth
+                      label="Confirm New Password"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      sx={{ mb: 4 }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LockIcon color="action" />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={handleToggleConfirmPasswordVisibility}
+                              edge="end"
+                            >
+                              {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <Button
+                      fullWidth
+                      type="submit"
+                      variant="contained"
+                      disabled={loading || !otp || !newPassword || !confirmPassword}
+                      sx={{ 
+                        mb: 3, 
+                        py: { xs: 1.5, sm: 2 },
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
+                        fontWeight: 600,
+                        borderRadius: 2,
+                        background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
+                        '&:hover': {
+                          background: 'linear-gradient(45deg, #1565c0 30%, #1976d2 90%)',
+                        }
+                      }}
+                    >
+                      {loading ? 'Resetting Password...' : 'Reset Password'}
+                    </Button>
+                  </Box>
+                )}
 
-          {message && (
-            <Alert severity="success" sx={{ mt: 2 }}>
-              {message}
-            </Alert>
-          )}
-          
-          {error && (
-            <Alert severity="error" sx={{ mt: 2 }}>
-              {error}
-            </Alert>
-          )}
+                {/* Back to Login Link */}
+                <Box sx={{ textAlign: 'center', mt: 3 }}>
+                  <Button
+                    component={Link}
+                    to="/login"
+                    variant="text"
+                    startIcon={<ArrowBackIcon />}
+                    sx={{ 
+                      color: 'text.secondary',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                      '&:hover': {
+                        color: '#1976d2'
+                      }
+                    }}
+                  >
+                    Back to Login
+                  </Button>
+                </Box>
 
-          <Button
-            fullWidth
-            variant="text"
-            onClick={() => navigate('/login')}
-            sx={{ mt: 2 }}
-          >
-            Back to Login
-          </Button>
-        </CardContent>
-      </Card>
+                {/* Messages */}
+                {message && (
+                  <Alert severity="success" sx={{ mt: 3 }}>
+                    {message}
+                  </Alert>
+                )}
+                
+                {error && (
+                  <Alert severity="error" sx={{ mt: 3 }}>
+                    {error}
+                  </Alert>
+                )}
+              </CardContent>
+            </Card>
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 }

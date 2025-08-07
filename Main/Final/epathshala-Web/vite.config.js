@@ -11,7 +11,6 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
     hmr: {
-      port: 3001,
       overlay: false,
     },
     proxy: {

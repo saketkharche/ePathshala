@@ -11,20 +11,27 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Chip
+  Chip,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 import {
   Chat as ChatIcon,
   Logout as LogoutIcon,
   Person as PersonIcon,
   SmartToy as BotIcon,
-  Quiz as QuizIcon
+  Quiz as QuizIcon,
+  Menu as MenuIcon
 } from '@mui/icons-material';
 import Chatbot from './Chatbot';
 
-function Navbar() {
+function Navbar({ children }) {
+  console.log("Navbar component rendering...");
+  
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState(null);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
@@ -58,118 +65,131 @@ function Navbar() {
     setIsChatbotOpen(false);
   };
 
-  return (
-    <>
-      <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
-        <Toolbar>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              ePathshala
-            </Typography>
+  try {
+    return (
+      <>
+        <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
+          <Toolbar sx={{ 
+            minHeight: { xs: '56px', sm: '64px' },
+            px: { xs: 1, sm: 2, md: 3 }
+          }}>
+            {/* Render children first (like mobile menu button) */}
+            {children}
             
-            {/* Show navigation links only if user is logged in */}
-            {user ? (
-              <>
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to={`/${user.role?.toLowerCase()}`}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Dashboard
-                </Button>
-                
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to={`/${user.role?.toLowerCase()}/forum`}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Forum
-                </Button>
-                
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to={`/${user.role?.toLowerCase()}/chat`}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Chat
-                </Button>
-                
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to={`/${user.role?.toLowerCase()}/notifications`}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Notifications
-                </Button>
-              </>
-            ) : (
-              <>
-                {/* Public navigation links for non-logged in users */}
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to="/home"
-                  sx={{ textTransform: 'none' }}
-                >
-                  Home
-                </Button>
-                
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to="/about"
-                  sx={{ textTransform: 'none' }}
-                >
-                  About
-                </Button>
-                
-                <Button
-                  color="inherit"
-                  component={Link}
-                  to="/contact"
-                  sx={{ textTransform: 'none' }}
-                >
-                  Contact
-                </Button>
-              </>
-            )}
-          </Box>
+            <Box sx={{ 
+              flexGrow: 1, 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: { xs: 1, sm: 2 },
+              flexWrap: 'wrap'
+            }}>
+              <Typography 
+                variant={isMobile ? "h6" : "h5"} 
+                component="div" 
+                sx={{ 
+                  flexGrow: 1,
+                  fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' }
+                }}
+              >
+                ePathshala
+              </Typography>
+              
+              {/* Show navigation links only if user is logged in and not on mobile */}
+              {user && !isMobile ? (
+                <>
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to={`/${user.role?.toLowerCase()}`}
+                    sx={{ 
+                      textTransform: 'none',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                      px: { xs: 1, sm: 2 }
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                  
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to={`/${user.role?.toLowerCase()}/forum`}
+                    sx={{ 
+                      textTransform: 'none',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                      px: { xs: 1, sm: 2 }
+                    }}
+                  >
+                    Forum
+                  </Button>
+                  
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to={`/${user.role?.toLowerCase()}/chat`}
+                    sx={{ 
+                      textTransform: 'none',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                      px: { xs: 1, sm: 2 }
+                    }}
+                  >
+                    Chat
+                  </Button>
+                </>
+              ) : null}
+            </Box>
 
-          {/* Right side of navbar */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {/* User section - always visible */}
             {user ? (
-              <>
-                {/* Chatbot Button */}
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: { xs: 1, sm: 2 }
+              }}>
+                {/* Chatbot button */}
                 <IconButton
                   color="inherit"
                   onClick={handleChatbotOpen}
-                  aria-label="chatbot"
+                  sx={{ 
+                    p: { xs: 0.5, sm: 1 },
+                    '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+                  }}
                 >
                   <BotIcon />
                 </IconButton>
 
-                {/* User Menu */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {/* User info and menu */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: { xs: 0.5, sm: 1 }
+                }}>
                   <Chip
-                    label={user.role || 'User'}
-                    size="small"
-                    color="secondary"
-                    sx={{ color: 'white' }}
+                    label={user?.role || 'User'}
+                    size={isMobile ? "small" : "medium"}
+                    sx={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      color: 'white',
+                      fontSize: { xs: '0.7rem', sm: '0.8rem' }
+                    }}
                   />
+                  
                   <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
+                    size="small"
                     onClick={handleMenu}
-                    color="inherit"
+                    sx={{ 
+                      p: { xs: 0.5, sm: 1 },
+                      '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+                    }}
                   >
-                    <Avatar sx={{ width: 32, height: 32 }}>
-                      <PersonIcon />
+                    <Avatar 
+                      sx={{ 
+                        width: { xs: 28, sm: 32, md: 36 }, 
+                        height: { xs: 28, sm: 32, md: 36 },
+                        fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' }
+                      }}
+                    >
+                      {user?.name?.charAt(0) || 'U'}
                     </Avatar>
                   </IconButton>
                 </Box>
@@ -178,7 +198,7 @@ function Navbar() {
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                    vertical: 'top',
+                    vertical: 'bottom',
                     horizontal: 'right',
                   }}
                   keepMounted
@@ -198,50 +218,45 @@ function Navbar() {
                     Logout
                   </MenuItem>
                 </Menu>
-              </>
+              </Box>
             ) : (
-              <>
-                {/* Login/Register buttons for non-logged in users */}
+              <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 } }}>
                 <Button
-                  color="inherit"
-                  component={Link}
-                  to="/login"
-                  sx={{ textTransform: 'none' }}
-                >
-                  Login
-                </Button>
-                
-                <Button
-                  variant="outlined"
                   color="inherit"
                   component={Link}
                   to="/login"
                   sx={{ 
                     textTransform: 'none',
-                    borderColor: 'white',
-                    '&:hover': {
-                      borderColor: 'white',
-                      backgroundColor: 'rgba(255,255,255,0.1)',
-                    }
+                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                    px: { xs: 1, sm: 2 }
                   }}
                 >
-                  Get Started
+                  Login
                 </Button>
-              </>
+              </Box>
             )}
-          </Box>
+          </Toolbar>
+        </AppBar>
+
+        {/* Chatbot */}
+        <Chatbot 
+          open={isChatbotOpen} 
+          onClose={handleChatbotClose} 
+        />
+      </>
+    );
+  } catch (error) {
+    console.error("Error in Navbar component:", error);
+    return (
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            ePathshala
+          </Typography>
         </Toolbar>
       </AppBar>
-
-      {/* Chatbot */}
-      {user && (
-        <Chatbot
-          open={isChatbotOpen}
-          onClose={handleChatbotClose}
-        />
-      )}
-    </>
-  );
+    );
+  }
 }
 
-export default React.memo(Navbar);
+export default Navbar;

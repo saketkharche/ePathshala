@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, List, ListItem, ListItemText, FormControl, InputLabel, Select, MenuItem, TextField, Button, Alert } from '@mui/material';
 import { getAttendanceByClass, getStudentsByClass, markAttendance } from '../../../api/attendance';
+import { useAuth } from '../../../utils/auth';
 
 function TeacherAttendanceSection() {
+  const { user } = useAuth();
   const [attendance, setAttendance] = useState([]);
   const [students, setStudents] = useState([]);
   const [attendanceForm, setAttendanceForm] = useState({ studentId: '', date: '', status: 'PRESENT' });
@@ -10,7 +12,7 @@ function TeacherAttendanceSection() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
-  const className = 'Class 10A'; // TODO: Replace with dynamic class if needed
+  const className = user?.assignedClass || 'Class 10A'; // Use dynamic class from user profile
 
   const fetchData = async () => {
     setLoading(true);
@@ -30,8 +32,10 @@ function TeacherAttendanceSection() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (className) {
+      fetchData();
+    }
+  }, [className]);
 
   const handleMarkAttendance = async (e) => {
     e.preventDefault();

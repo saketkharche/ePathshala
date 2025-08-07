@@ -8,18 +8,30 @@ import AppRoutes from "./routes/AppRoutes";
 import { theme } from "./theme/theme";
 
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ErrorBoundary>
-        <AuthProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </AuthProvider>
-      </ErrorBoundary>
-    </ThemeProvider>
-  );
+  console.log("App component rendering...");
+  
+  try {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ErrorBoundary>
+          <AuthProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </AuthProvider>
+        </ErrorBoundary>
+      </ThemeProvider>
+    );
+  } catch (error) {
+    console.error("Error in App component:", error);
+    return (
+      <div style={{ padding: '20px', textAlign: 'center', backgroundColor: '#f0f0f0', minHeight: '100vh' }}>
+        <h1 style={{ color: '#1976d2' }}>ePathshala Error</h1>
+        <p>Error: {error.message}</p>
+      </div>
+    );
+  }
 }
 
 export default App;

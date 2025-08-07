@@ -1,292 +1,122 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
+import { Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
-import { getParentChildAttendance } from '../../api/attendance';
-import { getParentChildGrades } from '../../api/grades';
-import { getParentChildLeaveStatus, approveLeaveAsParent } from '../../api/leave';
-import { getEvents } from '../../api/calendar';
+import ParentOverview from '../../components/dashboard/ParentOverview';
 import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box,
-  Grid,
-  Alert,
-  Chip
-} from '@mui/material';
+  Person as PersonIcon,
+  Event as EventIcon,
+  Schedule as ScheduleIcon
+} from '@mui/icons-material';
 
 function ParentDashboard() {
   const { user } = useAuth();
-  const [attendance, setAttendance] = useState([]);
-  const [grades, setGrades] = useState([]);
-  const [leaveStatus, setLeaveStatus] = useState([]);
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  const [leaveApproval, setLeaveApproval] = useState({ leaveId: '', approverRole: 'PARENT', approvalStatus: 'Approved' });
-  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  const loadData = useCallback(async () => {
-    if (!user?.id) return;
-    
-    try {
-      const attendanceData = await getParentChildAttendance(user.id);
-      setAttendance(Array.isArray(attendanceData) ? attendanceData : []);
-    } catch (error) {
-      console.error('Error loading attendance:', error);
-      setAttendance([]);
+  const dashboardCards = [
+    {
+      title: 'Child Progress',
+      description: 'Monitor your child\'s academic performance, grades, and attendance',
+      icon: PersonIcon,
+      path: '/parent/child-progress',
+      color: '#1976d2'
+    },
+    {
+      title: 'Leave Approvals',
+      description: 'Review and approve your child\'s leave requests',
+      icon: ScheduleIcon,
+      path: '/parent/leave-approvals',
+      color: '#f57c00'
+    },
+    {
+      title: 'Academic Calendar',
+      description: 'View upcoming events, holidays, and important dates',
+      icon: EventIcon,
+      path: '/parent/calendar',
+      color: '#388e3c'
     }
+  ];
 
-    try {
-      const gradesData = await getParentChildGrades(user.id);
-      setGrades(Array.isArray(gradesData) ? gradesData : []);
-    } catch (error) {
-      console.error('Error loading grades:', error);
-      setGrades([]);
-    }
-
-    try {
-      const leaveData = await getParentChildLeaveStatus(user.id);
-      setLeaveStatus(Array.isArray(leaveData) ? leaveData : []);
-    } catch (error) {
-      console.error('Error loading leave status:', error);
-      setLeaveStatus([]);
-    }
-
-    try {
-      const calendarData = await getEvents();
-      setCalendarEvents(Array.isArray(calendarData) ? calendarData : []);
-    } catch (error) {
-      console.error('Error loading calendar events:', error);
-      setCalendarEvents([]);
-    }
-  }, [user?.id]);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  const handleApproveLeave = async (e) => {
-    e.preventDefault();
-    try {
-      await approveLeaveAsParent(leaveApproval);
-      setMessage('Leave request updated successfully!');
-      loadData(); // Refresh leave status
-      setLeaveApproval({ leaveId: '', approverRole: 'PARENT', approvalStatus: 'Approved' });
-    } catch (error) {
-      console.error('Error approving leave:', error);
-      setMessage('Error updating leave request');
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Approved': return 'success';
-      case 'Rejected': return 'error';
-      case 'Pending': return 'warning';
-      default: return 'default';
-    }
+  const handleCardClick = (path) => {
+    navigate(path);
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Parent Dashboard
-      </Typography>
-
-      {message && (
-        <Alert severity="info" sx={{ mb: 2 }} onClose={() => setMessage('')}>
-          {message}
-        </Alert>
-      )}
-
-      <Grid container spacing={3}>
-        {/* Child's Attendance */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Child's Attendance
-              </Typography>
-              {attendance && attendance.length > 0 ? (
-                <List>
-                  {attendance.map((a) => (
-                    <ListItem key={a.id}>
-                      <ListItemText
-                        primary={`${a.date}: ${a.status}`}
-                        secondary={`Student: ${a.studentName} | Class: ${a.className || 'N/A'}`}
-                      />
-                      <Chip 
-                        label={a.status} 
-                        color={a.status === 'Present' ? 'success' : 'error'}
-                        size="small"
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  No attendance records found
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
+    <Box>
+      {/* Overview Component */}
+      <ParentOverview />
+      
+      {/* Quick Access Cards */}
+      <Box sx={{ mt: { xs: 3, md: 4 } }}>
+        <Typography 
+          variant="h5" 
+          gutterBottom 
+          fontWeight="bold"
+          sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2rem' } }}
+        >
+          Quick Access
+        </Typography>
+        <Typography 
+          variant="body1" 
+          color="text.secondary" 
+          sx={{ 
+            mb: { xs: 2, md: 3 },
+            fontSize: { xs: '0.9rem', sm: '1rem' }
+          }}
+        >
+          Access detailed information and manage your child's academic activities
+        </Typography>
+        
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
+          {dashboardCards.map((card, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card 
+                sx={{ 
+                  height: '100%',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4
+                  }
+                }}
+              >
+                <CardActionArea 
+                  onClick={() => handleCardClick(card.path)}
+                  sx={{ height: '100%', p: { xs: 2, sm: 3 } }}
+                >
+                  <CardContent sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: { xs: 1.5, sm: 2 } }}>
+                      <card.icon sx={{ 
+                        fontSize: { xs: 36, sm: 48, md: 48 }, 
+                        color: card.color 
+                      }} />
+                    </Box>
+                    <Typography 
+                      variant="h6" 
+                      gutterBottom 
+                      fontWeight="bold"
+                      sx={{ 
+                        fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+                        mb: { xs: 1, sm: 1.5 }
+                      }}
+                    >
+                      {card.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' } }}
+                    >
+                      {card.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
-
-        {/* Child's Grades */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Child's Grades
-              </Typography>
-              {grades && grades.length > 0 ? (
-                <List>
-                  {grades.map((g) => (
-                    <ListItem key={g.id}>
-                      <ListItemText
-                        primary={`${g.subject}: ${g.marks}`}
-                        secondary={`Student: ${g.studentName} | Teacher: ${g.teacherName || 'N/A'}`}
-                      />
-                      <Chip 
-                        label={`${g.marks}%`} 
-                        color={g.marks >= 80 ? 'success' : g.marks >= 60 ? 'warning' : 'error'}
-                        size="small"
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  No grades found
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Leave Approval Form */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Approve Leave Requests
-              </Typography>
-              <Box component="form" onSubmit={handleApproveLeave} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <FormControl fullWidth size="small">
-                  <InputLabel>Select Leave Request</InputLabel>
-                  <Select
-                    value={leaveApproval.leaveId}
-                    onChange={(e) => setLeaveApproval({ ...leaveApproval, leaveId: e.target.value })}
-                    label="Select Leave Request"
-                    required
-                  >
-                    {leaveStatus && leaveStatus.length > 0 ? (
-                      leaveStatus.map((leave) => (
-                        <MenuItem key={leave.id} value={leave.id}>
-                          ID: {leave.id} | {leave.studentName} - {leave.reason}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem value="" disabled>
-                        No leave requests available
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-                <FormControl size="small">
-                  <InputLabel>Status</InputLabel>
-                  <Select
-                    value={leaveApproval.approvalStatus}
-                    onChange={(e) => setLeaveApproval({ ...leaveApproval, approvalStatus: e.target.value })}
-                    label="Status"
-                  >
-                    <MenuItem value="Approved">Approve</MenuItem>
-                    <MenuItem value="Rejected">Reject</MenuItem>
-                  </Select>
-                </FormControl>
-                <Button type="submit" variant="contained">
-                  Submit
-                </Button>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Leave Status */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Leave Status
-              </Typography>
-              {leaveStatus && leaveStatus.length > 0 ? (
-                <List>
-                  {leaveStatus.map((l) => (
-                    <ListItem key={l.id}>
-                      <ListItemText
-                        primary={`ID: ${l.id} | ${l.reason}`}
-                        secondary={`Student: ${l.studentName} | From: ${l.fromDate} To: ${l.toDate}`}
-                      />
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Chip 
-                          label={`Teacher: ${l.teacherApproval || 'Pending'}`}
-                          color={getStatusColor(l.teacherApproval)}
-                          size="small"
-                        />
-                        <Chip 
-                          label={`Parent: ${l.parentApproval || 'Pending'}`}
-                          color={getStatusColor(l.parentApproval)}
-                          size="small"
-                        />
-                      </Box>
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  No leave requests found
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Academic Calendar */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Academic Calendar
-              </Typography>
-              {calendarEvents && calendarEvents.length > 0 ? (
-                <List>
-                  {calendarEvents.map((event, index) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={event.eventName}
-                        secondary={`${event.date} - ${event.description}`}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  No calendar events found
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Container>
+      </Box>
+    </Box>
   );
 }
 

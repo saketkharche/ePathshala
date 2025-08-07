@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
+import java.time.LocalDateTime;
 
 @Service
 public class TeacherService {
@@ -163,19 +164,43 @@ public class TeacherService {
     }
 
     public Map<String, Object> uploadAssignment(AssignmentDTO dto) {
+        System.out.println("=== TeacherService.uploadAssignment called ===");
+        System.out.println("Title: " + dto.getTitle());
+        System.out.println("Description: " + dto.getDescription());
+        System.out.println("FileUrl: " + dto.getFileUrl());
+        System.out.println("FileName: " + dto.getFileName());
+        System.out.println("FileSize: " + dto.getFileSize());
+        System.out.println("FileType: " + dto.getFileType());
+        System.out.println("DueDate: " + dto.getDueDate());
+        System.out.println("Subject: " + dto.getSubject());
+        System.out.println("ClassName: " + dto.getClassName());
+        
         // For demo, assume teacher is the first in the repo (in real app, get from auth context)
         Teacher teacher = teacherRepository.findAll().stream().findFirst().orElse(null);
         if (teacher == null) {
+            System.out.println("ERROR: Teacher not found");
             return Map.of("error", "Teacher not found");
         }
+        System.out.println("Found teacher: " + teacher.getId());
+        
         Assignment assignment = new Assignment();
         assignment.setTitle(dto.getTitle());
+        assignment.setDescription(dto.getDescription());
         assignment.setFileUrl(dto.getFileUrl());
+        assignment.setFileName(dto.getFileName());
+        assignment.setFileSize(dto.getFileSize());
+        assignment.setFileType(dto.getFileType());
         assignment.setDueDate(dto.getDueDate());
         assignment.setSubject(dto.getSubject());
         assignment.setClassName(dto.getClassName());
         assignment.setTeacher(teacher);
+        assignment.setCreatedAt(LocalDateTime.now());
+        assignment.setUpdatedAt(LocalDateTime.now());
+        
+        System.out.println("Saving assignment with ID: " + assignment.getId());
         assignmentRepository.save(assignment);
+        System.out.println("Assignment saved with ID: " + assignment.getId());
+        
         notifyAssignment(assignment);
         return Map.of("assignmentId", assignment.getId());
     }

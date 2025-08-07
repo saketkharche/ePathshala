@@ -74,27 +74,28 @@ const AssignmentManager = () => {
   const handleUpload = async () => {
     try {
       setLoading(true);
-      const formDataToSend = new FormData();
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('dueDate', formData.dueDate);
-      formDataToSend.append('subject', formData.subject);
-      formDataToSend.append('className', formData.className);
-      formDataToSend.append('teacherId', user.id);
-      
+      // Build FormData for all fields
+      const form = new FormData();
+      form.append('title', formData.title);
+      form.append('description', formData.description);
+      form.append('dueDate', formData.dueDate);
+      form.append('subject', formData.subject);
+      form.append('className', formData.className);
+      form.append('teacherId', user.id);
       if (formData.file) {
-        formDataToSend.append('file', formData.file);
+        form.append('file', formData.file);
       }
-
+      // Send to /api/assignments
       const response = await fetch('/api/assignments', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
+          // DO NOT set Content-Type, browser will set it for FormData
         },
-        body: formDataToSend
+        body: form
       });
-
       if (response.ok) {
+        const result = await response.json();
         showMessage('Assignment uploaded successfully!', 'success');
         setOpenUpload(false);
         setFormData({
@@ -107,10 +108,10 @@ const AssignmentManager = () => {
         });
         loadAssignments();
       } else {
-        showMessage('Error uploading assignment', 'error');
+        const errorData = await response.json();
+        showMessage(`Error uploading assignment: ${errorData.error || 'Unknown error'}`, 'error');
       }
     } catch (error) {
-      console.error('Error uploading assignment:', error);
       showMessage('Error uploading assignment', 'error');
     } finally {
       setLoading(false);
@@ -215,7 +216,10 @@ const AssignmentManager = () => {
                 fullWidth
                 label="Assignment Title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) => {
+                  console.log('Title changed to:', e.target.value);
+                  setFormData({ ...formData, title: e.target.value });
+                }}
                 required
               />
             </Grid>
@@ -226,7 +230,10 @@ const AssignmentManager = () => {
                 multiline
                 rows={3}
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) => {
+                  console.log('Description changed to:', e.target.value);
+                  setFormData({ ...formData, description: e.target.value });
+                }}
                 required
               />
             </Grid>
@@ -235,7 +242,10 @@ const AssignmentManager = () => {
                 fullWidth
                 label="Subject"
                 value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                onChange={(e) => {
+                  console.log('Subject changed to:', e.target.value);
+                  setFormData({ ...formData, subject: e.target.value });
+                }}
                 required
               />
             </Grid>
@@ -244,7 +254,10 @@ const AssignmentManager = () => {
                 fullWidth
                 label="Class"
                 value={formData.className}
-                onChange={(e) => setFormData({ ...formData, className: e.target.value })}
+                onChange={(e) => {
+                  console.log('ClassName changed to:', e.target.value);
+                  setFormData({ ...formData, className: e.target.value });
+                }}
                 required
               />
             </Grid>
@@ -254,7 +267,10 @@ const AssignmentManager = () => {
                 type="date"
                 label="Due Date"
                 value={formData.dueDate}
-                onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                onChange={(e) => {
+                  console.log('DueDate changed to:', e.target.value);
+                  setFormData({ ...formData, dueDate: e.target.value });
+                }}
                 InputLabelProps={{ shrink: true }}
                 required
               />
@@ -287,6 +303,23 @@ const AssignmentManager = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenUpload(false)}>Cancel</Button>
+          <Button 
+            onClick={() => {
+              console.log('Current formData state:', formData);
+              console.log('Form validation:', {
+                title: !!formData.title,
+                description: !!formData.description,
+                dueDate: !!formData.dueDate,
+                subject: !!formData.subject,
+                className: !!formData.className,
+                file: !!formData.file
+              });
+            }}
+            variant="outlined"
+            size="small"
+          >
+            Debug Form
+          </Button>
           <Button 
             onClick={handleUpload} 
             variant="contained"

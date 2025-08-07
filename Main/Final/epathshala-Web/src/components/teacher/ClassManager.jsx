@@ -69,7 +69,7 @@ function ClassManager() {
         fetch(`/api/teacher/attendance/${teacherClass}`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch(`/api/teacher/assignments/${teacherClass}`, {
+        fetch(`/api/assignments/class/${teacherClass}`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

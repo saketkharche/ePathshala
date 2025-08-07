@@ -82,6 +82,18 @@ public class TeacherController {
     @PostMapping("/assignments")
     public ResponseEntity<?> uploadAssignment(@RequestBody AssignmentDTO dto) {
         try {
+            System.out.println("=== TeacherController.uploadAssignment called ===");
+            System.out.println("Raw DTO received:");
+            System.out.println("  Title: " + dto.getTitle());
+            System.out.println("  Description: " + dto.getDescription());
+            System.out.println("  FileUrl: " + dto.getFileUrl());
+            System.out.println("  FileName: " + dto.getFileName());
+            System.out.println("  FileSize: " + dto.getFileSize());
+            System.out.println("  FileType: " + dto.getFileType());
+            System.out.println("  DueDate: " + dto.getDueDate());
+            System.out.println("  Subject: " + dto.getSubject());
+            System.out.println("  ClassName: " + dto.getClassName());
+            
             return ResponseEntity.ok(teacherService.uploadAssignment(dto));
         } catch (Exception e) {
             System.out.println("Error in uploadAssignment controller: " + e.getMessage());
@@ -102,8 +114,8 @@ public class TeacherController {
             String fileName = System.currentTimeMillis() + "_" + StringUtils.cleanPath(originalFilename != null ? originalFilename : "unknown");
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            String fileUrl = "/" + uploadDir + "/" + fileName;
-            return ResponseEntity.ok().body(fileUrl);
+            // Return only the filename, not the full path
+            return ResponseEntity.ok().body(fileName);
         } catch (Exception e) {
             System.out.println("Error in uploadAssignmentFile controller: " + e.getMessage());
             e.printStackTrace();

@@ -40,6 +40,15 @@ public class AssignmentController {
             @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam("teacherId") Long teacherId) throws IOException {
         
+        System.out.println("=== AssignmentController.createAssignment called ===");
+        System.out.println("Title: " + title);
+        System.out.println("Description: " + description);
+        System.out.println("DueDate: " + dueDate);
+        System.out.println("Subject: " + subject);
+        System.out.println("ClassName: " + className);
+        System.out.println("TeacherId: " + teacherId);
+        System.out.println("File: " + (file != null ? file.getOriginalFilename() : "null"));
+        
         AssignmentDTO dto = new AssignmentDTO();
         dto.setTitle(title);
         dto.setDescription(description);

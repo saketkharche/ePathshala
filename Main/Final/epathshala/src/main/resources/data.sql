@@ -810,3 +810,29 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2025-08-06  9:54:26
+
+-- Fix existing assignment fileUrl fields that contain full paths
+-- Extract only the filename from the full path
+UPDATE assignment 
+SET file_url = SUBSTRING_INDEX(file_url, '/', -1)
+WHERE file_url LIKE '%/%' AND file_url NOT LIKE '%.pdf' AND file_url NOT LIKE '%.doc' AND file_url NOT LIKE '%.docx';
+
+-- Alternative for Windows paths (if any exist)
+UPDATE assignment 
+SET file_url = SUBSTRING_INDEX(file_url, '\\', -1)
+WHERE file_url LIKE '%\\%' AND file_url NOT LIKE '%.pdf' AND file_url NOT LIKE '%.doc' AND file_url NOT LIKE '%.docx';
+
+-- Fix any remaining full paths by extracting just the filename
+UPDATE assignment 
+SET file_url = SUBSTRING_INDEX(file_url, '/', -1)
+WHERE file_url LIKE 'uploads/assignments/%';
+
+-- Also fix assignment submission fileUrl fields
+UPDATE assignment_submissions 
+SET submission_file_url = SUBSTRING_INDEX(submission_file_url, '/', -1)
+WHERE submission_file_url LIKE '%/%' AND submission_file_url NOT LIKE '%.pdf' AND submission_file_url NOT LIKE '%.doc' AND submission_file_url NOT LIKE '%.docx';
+
+-- Fix any remaining full paths in submissions
+UPDATE assignment_submissions 
+SET submission_file_url = SUBSTRING_INDEX(submission_file_url, '/', -1)
+WHERE submission_file_url LIKE 'uploads/submissions/%';

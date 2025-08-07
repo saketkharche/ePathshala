@@ -14,16 +14,42 @@ function StudentAssignmentsSection() {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [submissionForm, setSubmissionForm] = useState({ text: '', file: null });
   const [submitting, setSubmitting] = useState(false);
+  const [studentId, setStudentId] = useState(null);
 
   const className = 'Class 10A'; // TODO: Replace with dynamic class from user profile
+
+  useEffect(() => {
+    // Fetch studentId using user.id
+    const fetchStudentId = async () => {
+      const token = localStorage.getItem('token');
+      if (user && user.id && token) {
+        try {
+          const res = await fetch(`/api/student/details/${user.id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setStudentId(data.id);
+          } else {
+            setError('Failed to fetch student details.');
+          }
+        } catch (err) {
+          setError('Failed to fetch student details.');
+        }
+      }
+    };
+    fetchStudentId();
+  }, [user]);
 
   const fetchData = async () => {
     setLoading(true);
     setError('');
     try {
       const assignmentsData = await getStudentAssignments(className);
+      console.log('Assignments data:', assignmentsData); // Debug log
       setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
     } catch (err) {
+      console.error('Error fetching assignments:', err);
       setError('Failed to load assignments');
     } finally {
       setLoading(false);
@@ -34,24 +60,28 @@ function StudentAssignmentsSection() {
     fetchData();
   }, []);
 
-  const handleDownload = async (filename) => {
+  const handleDownload = async (assignment) => {
+    if (!assignment || !assignment.fileUrl) {
+      setError('No file available for download.');
+      return;
+    }
+    const downloadUrl = `/api/assignments/download/${assignment.fileUrl}`;
     try {
-      const response = await fetch(`/api/assignments/download/${filename}`, {
+      const response = await fetch(downloadUrl, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      }
+      if (!response.ok) throw new Error(`Download failed: ${response.status} ${response.statusText}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = assignment.fileName || 'assignment-file';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch (err) {
-      console.error('Download failed:', err);
+      setError(`Download failed: ${err.message}`);
     }
   };
 
@@ -62,7 +92,18 @@ function StudentAssignmentsSection() {
   };
 
   const handleFileChange = (event) => {
-    setSubmissionForm({ ...submissionForm, file: event.target.files[0] });
+    const file = event.target.files[0];
+    if (file) {
+      // Check file size (1MB = 1,048,576 bytes)
+      const maxSize = 1024 * 1024; // 1MB in bytes
+      if (file.size > maxSize) {
+        setError(`File size must be less than 1MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+        event.target.value = ''; // Clear the file input
+        return;
+      }
+      setSubmissionForm({ ...submissionForm, file });
+      setError(''); // Clear any previous errors
+    }
   };
 
   const handleSubmitSubmission = async () => {
@@ -70,49 +111,34 @@ function StudentAssignmentsSection() {
       setError('No assignment selected');
       return;
     }
-
-    if (!user?.id) {
-      setError('User ID not found. Please log in again.');
+    if (!studentId) {
+      setError('Student ID not found. Please log in again.');
       return;
     }
-
     if (!submissionForm.text && !submissionForm.file) {
       setError('Please provide either submission text or a file.');
       return;
     }
-
-    console.log('Submitting assignment:', {
-      assignmentId: selectedAssignment.id,
-      studentId: user?.id,
-      hasText: !!submissionForm.text,
-      hasFile: !!submissionForm.file,
-      user: user
-    });
-
     setSubmitting(true);
     try {
       const result = await submitAssignment(
         selectedAssignment.id,
-        user?.id,
+        studentId, // <-- use the correct studentId
         submissionForm.text,
         submissionForm.file
       );
-
       if (result) {
         setSubmitDialogOpen(false);
         setSelectedAssignment(null);
         setSubmissionForm({ text: '', file: null });
         setSuccess('Assignment submitted successfully!');
-        setError(''); // Clear any previous errors
-        fetchData(); // Refresh assignments
-        
-        // Clear success message after 3 seconds
+        setError('');
+        fetchData();
         setTimeout(() => setSuccess(''), 3000);
       } else {
         throw new Error('Submission failed');
       }
     } catch (err) {
-      console.error('Submission error:', err);
       setError('Failed to submit assignment. Please try again.');
     } finally {
       setSubmitting(false);
@@ -152,7 +178,7 @@ function StudentAssignmentsSection() {
                       <Button
                         variant="outlined"
                         startIcon={<DownloadIcon />}
-                        onClick={() => handleDownload(assignment.fileName)}
+                        onClick={() => handleDownload(assignment)}
                         size="small"
                       >
                         Download
@@ -209,9 +235,12 @@ function StudentAssignmentsSection() {
                 Attach File
               </Button>
             </label>
+            <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>
+              Maximum file size: 1MB. Supported formats: PDF, DOC, DOCX, TXT, JPG, PNG
+            </Typography>
             {submissionForm.file && (
               <Typography variant="body2" sx={{ mt: 1 }}>
-                Selected: {submissionForm.file.name}
+                Selected: {submissionForm.file.name} ({(submissionForm.file.size / 1024).toFixed(1)}KB)
               </Typography>
             )}
           </Box>

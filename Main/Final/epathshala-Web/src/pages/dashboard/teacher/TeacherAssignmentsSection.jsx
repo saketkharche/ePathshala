@@ -1,38 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, TextField, Button, Alert, Box } from '@mui/material';
-import { getAssignmentsByClass, uploadAssignment } from '../../../api/assignments';
-import { useAuth } from '../../../utils/auth';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, Typography, TextField, Button, Alert, List, ListItem, ListItemText, Box } from '@mui/material';
+import { uploadAssignment } from '../../../api/assignments';
 
 function TeacherAssignmentsSection() {
-  const { user } = useAuth();
   const [assignments, setAssignments] = useState([]);
-  const [assignmentForm, setAssignmentForm] = useState({ title: '', dueDate: '', subject: '', className: '' });
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  // Get user info from localStorage
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const assignedClass = user.assignedClass || user.className || user.class || 'Class 10A';
 
-  const className = user?.assignedClass || 'Class 10A'; // Use dynamic class from user profile
+  const [assignmentForm, setAssignmentForm] = useState({
+    title: '',
+    description: '',
+    dueDate: '',
+    subject: '',
+    className: assignedClass
+  });
 
   const fetchData = async () => {
-    setLoading(true);
-    setError('');
     try {
-      const assignmentsData = await getAssignmentsByClass(className);
-      setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
-    } catch (err) {
-      setError('Failed to load assignments');
+      setLoading(true);
+      const response = await fetch('/api/assignments/class/Class 10A', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setAssignments(data);
+      }
+    } catch (error) {
+      console.error('Error fetching assignments:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (className) {
-      fetchData();
-      setAssignmentForm(prev => ({ ...prev, className }));
-    }
-  }, [className]);
+    fetchData();
+  }, []);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -43,17 +52,15 @@ function TeacherAssignmentsSection() {
     setSuccess('');
     setError('');
     try {
-      const formData = new FormData();
-      formData.append('title', assignmentForm.title);
-      formData.append('dueDate', assignmentForm.dueDate);
-      formData.append('subject', assignmentForm.subject);
-      formData.append('className', assignmentForm.className);
-      if (selectedFile) {
-        formData.append('file', selectedFile);
-      }
-
-      await uploadAssignment(formData);
-      setAssignmentForm({ title: '', dueDate: '', subject: '', className });
+      await uploadAssignment({
+        title: assignmentForm.title,
+        description: assignmentForm.description,
+        dueDate: assignmentForm.dueDate,
+        subject: assignmentForm.subject,
+        className: assignmentForm.className,
+        file: selectedFile
+      });
+      setAssignmentForm({ title: '', description: '', dueDate: '', subject: '', className: assignedClass });
       setSelectedFile(null);
       setSuccess('Assignment uploaded successfully!');
       fetchData();
@@ -81,6 +88,16 @@ function TeacherAssignmentsSection() {
           />
           <TextField
             fullWidth
+            label="Description"
+            value={assignmentForm.description}
+            onChange={(e) => setAssignmentForm({ ...assignmentForm, description: e.target.value })}
+            margin="normal"
+            required
+            multiline
+            rows={3}
+          />
+          <TextField
+            fullWidth
             type="date"
             label="Due Date"
             value={assignmentForm.dueDate}
@@ -97,6 +114,7 @@ function TeacherAssignmentsSection() {
             margin="normal"
             required
           />
+          <input type="hidden" name="className" value={assignmentForm.className} />
           <Box sx={{ mt: 2, mb: 2 }}>
             <input
               accept=".pdf,.doc,.docx,.txt"

@@ -54,6 +54,7 @@ import StudentGradesPage from '../pages/dashboard/student/StudentGradesPage';
 import StudentAttendancePage from '../pages/dashboard/student/StudentAttendancePage';
 import StudentLeaveRequestsPage from '../pages/dashboard/student/StudentLeaveRequestsPage';
 import StudentCalendarPage from '../pages/dashboard/student/StudentCalendarPage';
+import StudentExamResultPage from '../pages/dashboard/student/StudentExamResultPage';
 
 // Parent Dashboard Pages
 import ParentChildProgressPage from '../pages/dashboard/parent/ParentChildProgressPage';
@@ -210,6 +211,11 @@ function AppRoutes() {
         <Route path="/student/exams" element={
           <StudentDashboardLayout>
             <StudentExamsPage />
+          </StudentDashboardLayout>
+        } />
+        <Route path="/student/exams/:examId/result" element={
+          <StudentDashboardLayout>
+            <StudentExamResultPage />
           </StudentDashboardLayout>
         } />
         <Route path="/student/grades" element={

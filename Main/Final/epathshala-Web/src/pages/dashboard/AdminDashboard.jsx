@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../utils/auth';
 import { addStudent, addTeacher, addParent, assignTeacher, getStudents, getTeachers, getParents, deleteUser, addEvent, getEvents, deleteEvent, getDashboardSummary } from '../../api/admin';
 import { getAllActiveSessions, getUserSessions, logoutSession, logoutAllUserSessions } from '../../api/session';
-import { Box, Alert, CircularProgress, Typography } from '@mui/material';
+import { Box, Alert, CircularProgress, Typography, Grid, Card, CardContent } from '@mui/material';
+import { useResponsive, typography, gridConfig, cardStyles } from '../../utils/responsive';
 import AdminSummary from './AdminSummary';
 import AdminAddStudent from './AdminAddStudent';
 import AdminAddTeacher from './AdminAddTeacher';
@@ -15,6 +16,7 @@ import AdminSessionManagement from './AdminSessionManagement';
 
 function AdminDashboard() {
   const { user } = useAuth();
+  const { isMobile, isTablet, isDesktop } = useResponsive();
   const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [parents, setParents] = useState([]);
@@ -99,121 +101,184 @@ function AdminDashboard() {
         loadUserSessions(selectedUserId);
       }
     } catch (error) {
-      setError('Failed to logout session');
+      setError('Failed to logout session: ' + error.message);
     }
   };
 
   const handleLogoutAllUserSessions = async (userId) => {
     try {
-      const numericUserId = parseInt(userId, 10);
-      if (isNaN(numericUserId)) {
-        setError('Invalid user ID. Please enter a valid number.');
-        return;
-      }
-      await logoutAllUserSessions(numericUserId);
-      setMessage('All user sessions logged out successfully');
+      await logoutAllUserSessions(userId);
+      setMessage('All sessions for user logged out successfully');
       loadActiveSessions();
-      setSelectedUserSessions([]);
+      if (selectedUserId) {
+        loadUserSessions(selectedUserId);
+      }
     } catch (error) {
       setError('Failed to logout all user sessions: ' + error.message);
     }
   };
 
-  const handleAddStudent = async e => {
-    e.preventDefault();
-    await addStudent(studentForm);
-    getStudents().then(setStudents);
-  };
-  const handleAddTeacher = async e => {
-    e.preventDefault();
-    await addTeacher(teacherForm);
-    getTeachers().then(setTeachers);
-  };
-  const handleAddParent = async e => {
-    e.preventDefault();
-    await addParent(parentForm);
-    getParents().then(setParents);
-  };
-  const handleAssignTeacher = async e => {
-    e.preventDefault();
-    await assignTeacher(assign);
-    getTeachers().then(setTeachers);
-  };
-  const handleAddEvent = async e => {
-    e.preventDefault();
-    await addEvent(eventForm);
-    getEvents().then(setEvents);
-  };
-  const handleDeleteEvent = async id => {
-    await deleteEvent(id);
-    getEvents().then(setEvents);
-  };
-
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    setResetMessage('');
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setResetMessage('Error: No authentication token found. Please login again.');
+    if (!resetEmail || !newPassword) {
+      setError('Please provide both email and new password');
       return;
     }
+
     try {
-      const res = await fetch(`/api/auth/reset-password?email=${resetEmail}&newPassword=${newPassword}`, { 
+      const response = await fetch('/api/admin/reset-password', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ email: resetEmail, newPassword })
       });
-      const data = await res.json();
-      if (res.ok) {
-        setResetMessage('Password reset successfully!');
+
+      if (response.ok) {
+        setResetMessage('Password reset successfully');
         setResetEmail('');
         setNewPassword('');
       } else {
-        setResetMessage(data.error || data.message || 'Password reset failed');
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to reset password');
       }
     } catch (error) {
-      setResetMessage('Error resetting password: ' + error.message);
+      setError('Failed to reset password: ' + error.message);
     }
   };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '50vh' 
+      }}>
         <CircularProgress />
-        <span style={{ marginLeft: 8 }}>Loading dashboard...</span>
       </Box>
     );
   }
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
       )}
+      
       {message && (
-        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setMessage('')}>{message}</Alert>
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {message}
+        </Alert>
       )}
-      <Typography variant="h4" gutterBottom>Admin Dashboard</Typography>
-      <AdminSummary summary={dashboardSummary} />
-      <AdminAddStudent studentForm={studentForm} setStudentForm={setStudentForm} onAddStudent={handleAddStudent} />
-      <AdminAddTeacher teacherForm={teacherForm} setTeacherForm={setTeacherForm} onAddTeacher={handleAddTeacher} />
-      <AdminAddParent parentForm={parentForm} setParentForm={setParentForm} onAddParent={handleAddParent} />
-      <AdminAssignTeacher assign={assign} setAssign={setAssign} onAssignTeacher={handleAssignTeacher} />
-      <AdminResetPassword resetEmail={resetEmail} setResetEmail={setResetEmail} newPassword={newPassword} setNewPassword={setNewPassword} resetMessage={resetMessage} onResetPassword={handleResetPassword} />
-      <AdminAcademicCalendar eventForm={eventForm} setEventForm={setEventForm} onAddEvent={handleAddEvent} events={events} onDeleteEvent={handleDeleteEvent} />
-      <AdminOnlineClasses onlineClasses={onlineClasses} />
-      <AdminSessionManagement
-        activeSessions={activeSessions}
-        loadActiveSessions={loadActiveSessions}
-        selectedUserId={selectedUserId}
-        setSelectedUserId={setSelectedUserId}
-        selectedUserSessions={selectedUserSessions}
-        loadUserSessions={loadUserSessions}
-        handleLogoutSession={handleLogoutSession}
-        handleLogoutAllUserSessions={handleLogoutAllUserSessions}
-      />
+
+      {/* Dashboard Summary */}
+      {dashboardSummary && (
+        <Box sx={{ mb: { xs: 3, sm: 4, md: 5 } }}>
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              fontWeight: 600,
+              fontSize: typography.h4,
+              mb: { xs: 2, sm: 3 }
+            }}
+          >
+            Dashboard Overview
+          </Typography>
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+            <Grid item xs={6} sm={3}>
+              <Card sx={{ 
+                p: { xs: 2, sm: 3 },
+                borderRadius: { xs: 2, sm: 3 },
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white'
+              }}>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  {dashboardSummary.totalStudents || 0}
+                </Typography>
+                <Typography variant="body2">Total Students</Typography>
+              </Card>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Card sx={{ 
+                p: { xs: 2, sm: 3 },
+                borderRadius: { xs: 2, sm: 3 },
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                color: 'white'
+              }}>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  {dashboardSummary.totalTeachers || 0}
+                </Typography>
+                <Typography variant="body2">Total Teachers</Typography>
+              </Card>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Card sx={{ 
+                p: { xs: 2, sm: 3 },
+                borderRadius: { xs: 2, sm: 3 },
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                color: 'white'
+              }}>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  {dashboardSummary.totalParents || 0}
+                </Typography>
+                <Typography variant="body2">Total Parents</Typography>
+              </Card>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Card sx={{ 
+                p: { xs: 2, sm: 3 },
+                borderRadius: { xs: 2, sm: 3 },
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                color: 'white'
+              }}>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  {dashboardSummary.totalEvents || 0}
+                </Typography>
+                <Typography variant="body2">Total Events</Typography>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
+      )}
+
+      {/* Admin Components */}
+      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+        <Grid item xs={12} md={6}>
+          <AdminSummary />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <AdminAddStudent />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <AdminAddTeacher />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <AdminAddParent />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <AdminAssignTeacher />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <AdminResetPassword />
+        </Grid>
+        <Grid item xs={12}>
+          <AdminAcademicCalendar />
+        </Grid>
+        <Grid item xs={12}>
+          <AdminOnlineClasses />
+        </Grid>
+        <Grid item xs={12}>
+          <AdminSessionManagement />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

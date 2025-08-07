@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Drawer,
   List,
@@ -14,10 +14,13 @@ import {
   useMediaQuery,
   IconButton,
   Tooltip,
-  Fade
+  Fade,
+  Avatar,
+  Chip
 } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Dashboard as DashboardIcon,
   School as SchoolIcon,
@@ -32,15 +35,13 @@ import {
   ContactSupport as ContactIcon,
   Info as InfoIcon,
   Home as HomeIcon,
+  Settings as SettingsIcon,
   ExpandLess,
-  ExpandMore,
-  Wifi as WebSocketIcon,
-  BugReport as DebugIcon,
-  Message as MessageIcon,
-  Settings as SettingsIcon
+  ExpandMore
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
+import { useResponsive, spacing, typography } from '../../utils/responsive';
 
 const SIDEBAR_COLLAPSED_WIDTH = 60;
 const SIDEBAR_EXPANDED_WIDTH = 280;
@@ -75,38 +76,34 @@ const menuItems = {
     { text: 'Forum', icon: ForumIcon, path: '/forum' },
     { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
   ],
-  chat: [
-    { text: 'Simple Chat', icon: ChatIcon, path: '/chat' },
-    { text: 'Threaded Chat', icon: MessageIcon, path: '/threaded-chat' },
-    { text: 'WebSocket Test', icon: WebSocketIcon, path: '/websocket-test' },
-    { text: 'Chat Debug', icon: DebugIcon, path: '/chat-debug' },
-    { text: 'Message Test', icon: MessageIcon, path: '/message-test' },
-    { text: 'Simple Test', icon: MessageIcon, path: '/simple-test' },
-    { text: 'Simple WebSocket Test', icon: WebSocketIcon, path: '/simple-websocket-test' },
-    { text: 'Simple Chat Test', icon: ChatIcon, path: '/simple-chat-test' },
+  adminFeatures: [
+    { text: 'Forum', icon: ForumIcon, path: '/forum' },
+    { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
   ],
-  admin: [
-    { text: 'User Management', icon: AdminIcon, path: '/admin/users', role: 'ADMIN' },
-    { text: 'System Settings', icon: SettingsIcon, path: '/admin/settings', role: 'ADMIN' },
-  ]
 };
 
 function Sidebar({ open, onClose, collapsed, onCollapse }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { isMobile, isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
   const [expanded, setExpanded] = useState({
     dashboards: true,
     features: true,
-    chat: false,
-    admin: false
+    adminSections: true
   });
+
+  // Auto-collapse on mobile
+  useEffect(() => {
+    if (isMobile && !collapsed) {
+      onCollapse?.();
+    }
+  }, [isMobile, collapsed, onCollapse]);
 
   const handleDrawerClose = () => {
     if (isMobile) {
-      onClose();
+      onClose?.();
     }
   };
 
@@ -127,173 +124,321 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
     return user?.role === item.role;
   };
 
-  // Replace the original renderMenuItem with the modern version (with tooltip/fade)
   const renderMenuItem = (item, index, isCollapsed) => {
-    if (!isItemVisible(item)) return null;
     const isActive = location.pathname === item.path;
-    return (
-      <Tooltip title={isCollapsed ? item.text : ''} placement="right" key={item.text} arrow disableHoverListener={!isCollapsed}>
+    const isVisible = isItemVisible(item);
+    
+    if (!isVisible) return null;
+
+    const menuItem = (
+      <ListItem
+        key={item.text}
+        disablePadding
+        sx={{
+          mb: { xs: 0.5, sm: 1 },
+          mx: { xs: 0.5, sm: 1 },
+          borderRadius: { xs: 1, sm: 2 },
+          overflow: 'hidden',
+          '&:hover': {
+            backgroundColor: 'rgba(0,0,0,0.04)',
+          },
+        }}
+      >
         <ListItemButton
           onClick={() => handleItemClick(item.path)}
-          selected={isActive}
           sx={{
-            px: 2, py: 1.5, minHeight: 48,
-            '&.Mui-selected': {
-              backgroundColor: theme.palette.primary.light,
-              '&:hover': { backgroundColor: theme.palette.primary.light },
+            minHeight: { xs: 48, sm: 56 },
+            px: { xs: 1, sm: 2 },
+            borderRadius: { xs: 1, sm: 2 },
+            backgroundColor: isActive ? 'primary.main' : 'transparent',
+            color: isActive ? 'primary.contrastText' : 'inherit',
+            '&:hover': {
+              backgroundColor: isActive ? 'primary.dark' : 'rgba(0,0,0,0.04)',
             },
+            transition: 'all 0.2s ease-in-out',
           }}
-          aria-label={item.text}
         >
-          <ListItemIcon sx={{ minWidth: 0, mr: isCollapsed ? 0 : 2, justifyContent: 'center' }}>
-            <item.icon color={isActive ? 'primary' : 'inherit'} fontSize="medium" />
+          <ListItemIcon
+            sx={{
+              minWidth: { xs: 36, sm: 40 },
+              color: isActive ? 'primary.contrastText' : 'inherit',
+            }}
+          >
+            <item.icon />
           </ListItemIcon>
-          <Fade in={!isCollapsed} timeout={300} unmountOnExit>
+          {!isCollapsed && (
             <ListItemText
               primary={item.text}
-              primaryTypographyProps={{
-                color: isActive ? 'primary' : 'inherit',
-                fontWeight: isActive ? 600 : 400,
+              sx={{
+                '& .MuiTypography-root': {
+                  fontSize: { xs: '0.875rem', sm: '1rem' },
+                  fontWeight: isActive ? 600 : 400,
+                },
               }}
             />
-          </Fade>
+          )}
         </ListItemButton>
-      </Tooltip>
+      </ListItem>
     );
+
+    return isCollapsed ? (
+      <Tooltip title={item.text} placement="right" key={item.text}>
+        {menuItem}
+      </Tooltip>
+    ) : menuItem;
   };
 
-  // Replace the original renderSection with the modern version (with fade for title)
   const renderSection = (title, items, sectionKey, isCollapsed) => (
     <Box key={sectionKey}>
-      <Fade in={!isCollapsed} timeout={300} unmountOnExit>
-        <Typography variant="overline" sx={{ px: 2, py: 1, color: 'text.secondary' }}>{title}</Typography>
-      </Fade>
-      <List component="div" disablePadding>
-        {items.map((item, index) => renderMenuItem(item, index, isCollapsed))}
-      </List>
+      {!isCollapsed && (
+        <Box
+          sx={{
+            px: { xs: 2, sm: 3 },
+            py: { xs: 1, sm: 1.5 },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            '&:hover': {
+              backgroundColor: 'rgba(0,0,0,0.02)',
+            },
+          }}
+          onClick={() => handleExpandClick(sectionKey)}
+        >
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              fontWeight: 600,
+              color: 'text.secondary',
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+            }}
+          >
+            {title}
+          </Typography>
+          {expanded[sectionKey] ? <ExpandLess /> : <ExpandMore />}
+        </Box>
+      )}
+      <Collapse in={!isCollapsed || expanded[sectionKey]} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {items.filter(isItemVisible).map((item, index) =>
+            renderMenuItem(item, index, isCollapsed)
+          )}
+        </List>
+      </Collapse>
     </Box>
   );
 
-  // Only show adminSections if user is ADMIN, and only show dashboards/features/chat for other roles
   const getSidebarSections = (user) => {
+    const sections = [];
+    
     if (user?.role === 'ADMIN') {
-      return [
-        { title: 'Admin', items: menuItems.adminSections, sectionKey: 'adminSections' },
-        { title: 'Dashboards', items: menuItems.dashboards, sectionKey: 'dashboards' },
-        { title: 'Features', items: menuItems.features, sectionKey: 'features' },
-        { title: 'Chat & Communication', items: menuItems.chat, sectionKey: 'chat' },
-      ];
+      sections.push(
+        renderSection('Admin Management', menuItems.adminSections, 'adminSections', collapsed)
+      );
     }
-    if (user?.role === 'STUDENT') {
-      return [
-        { title: 'Student Dashboard', items: menuItems.dashboards.filter(i => i.role === 'STUDENT'), sectionKey: 'studentDashboard' },
-        { title: 'Features', items: menuItems.features, sectionKey: 'features' },
-        { title: 'Chat & Communication', items: menuItems.chat, sectionKey: 'chat' },
-      ];
-    }
-    if (user?.role === 'TEACHER') {
-      return [
-        { title: 'Teacher Dashboard', items: menuItems.dashboards.filter(i => i.role === 'TEACHER'), sectionKey: 'teacherDashboard' },
-        { title: 'Features', items: menuItems.features, sectionKey: 'features' },
-        { title: 'Chat & Communication', items: menuItems.chat, sectionKey: 'chat' },
-      ];
-    }
-    if (user?.role === 'PARENT') {
-      return [
-        { title: 'Parent Dashboard', items: menuItems.dashboards.filter(i => i.role === 'PARENT'), sectionKey: 'parentDashboard' },
-        { title: 'Features', items: menuItems.features, sectionKey: 'features' },
-        { title: 'Chat & Communication', items: menuItems.chat, sectionKey: 'chat' },
-      ];
-    }
-    // Default: show only main pages
-    return [
-      { title: 'Main Pages', items: menuItems.main, sectionKey: 'main' },
-    ];
+    
+    sections.push(
+      renderSection('Dashboards', menuItems.dashboards, 'dashboards', collapsed)
+    );
+    
+    sections.push(
+      renderSection('Features', menuItems.features, 'features', collapsed)
+    );
+    
+    return sections;
   };
 
-  const drawerWidth = collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH;
-
   const drawerContent = (
-    <Box>
-      {/* Collapse/Expand Button (desktop only) */}
-      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: collapsed ? 'center' : 'flex-end', p: 1 }}>
-        <Tooltip title={collapsed ? 'Expand' : 'Collapse'}>
-          <IconButton
-            size="small"
-            onClick={onCollapse}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            sx={{
-              transition: 'transform 0.3s',
-              transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
-            }}
-          >
-            {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </Tooltip>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH,
+        transition: 'width 0.3s ease-in-out',
+      }}
+    >
+      {/* Header */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'space-between',
+          p: { xs: 1.5, sm: 2 },
+          borderBottom: 1,
+          borderColor: 'divider',
+          minHeight: { xs: 64, sm: 72 },
+        }}
+      >
+        {!collapsed && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Avatar
+              sx={{
+                width: { xs: 32, sm: 40 },
+                height: { xs: 32, sm: 40 },
+                bgcolor: 'primary.main',
+              }}
+            >
+              <AdminIcon />
+            </Avatar>
+            <Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: { xs: '1rem', sm: '1.25rem' },
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                }}
+              >
+                ePathshala
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  color: 'text.secondary',
+                }}
+              >
+                Admin Panel
+              </Typography>
+            </Box>
+          </Box>
+        )}
+        
+        <IconButton
+          onClick={onCollapse}
+          sx={{
+            color: 'text.secondary',
+            '&:hover': {
+              backgroundColor: 'rgba(0,0,0,0.04)',
+            },
+          }}
+        >
+          {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
       </Box>
-      <Fade in={!collapsed} timeout={300} unmountOnExit>
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-          <Typography variant="h6" color="primary" fontWeight="bold">
-            ePathshala
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Learning Management System
-          </Typography>
+
+      {/* Navigation Items */}
+      <Box
+        sx={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          '&::-webkit-scrollbar': {
+            width: 6,
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: 'transparent',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            borderRadius: 3,
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          },
+        }}
+      >
+        {getSidebarSections(user)}
+      </Box>
+
+      {/* Footer */}
+      {!collapsed && user && (
+        <Box
+          sx={{
+            p: { xs: 1.5, sm: 2 },
+            borderTop: 1,
+            borderColor: 'divider',
+            backgroundColor: 'background.paper',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+            <Avatar
+              sx={{
+                width: { xs: 32, sm: 40 },
+                height: { xs: 32, sm: 40 },
+                bgcolor: 'primary.main',
+              }}
+            >
+              {user.name?.charAt(0) || 'U'}
+            </Avatar>
+            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  fontSize: { xs: '0.875rem', sm: '1rem' },
+                  fontWeight: 600,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {user.name || 'User'}
+              </Typography>
+              <Chip
+                label={user.role || 'User'}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  height: { xs: 20, sm: 24 },
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
-      </Fade>
-      <List sx={{ pt: 1 }}>
-        {renderSection('Main Pages', menuItems.main, 'main', collapsed)}
-        {getSidebarSections(user).map(section => (
-          <React.Fragment key={section.sectionKey}>
-            <Divider sx={{ my: 2 }} />
-            {renderSection(section.title, section.items, section.sectionKey, collapsed)}
-          </React.Fragment>
-        ))}
-      </List>
+      )}
     </Box>
   );
 
   return (
     <>
-      {/* Desktop Drawer */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            borderRight: 1,
-            borderColor: 'divider',
-            transition: 'width 0.3s',
-            overflowX: 'hidden',
-          },
-          display: { xs: 'none', md: 'block' }
-        }}
-      >
-        {drawerContent}
-      </Drawer>
       {/* Mobile Drawer */}
-      <Drawer
-        variant="temporary"
-        open={open}
-        onClose={onClose}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': {
-            width: SIDEBAR_EXPANDED_WIDTH,
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        {drawerContent}
-      </Drawer>
+      {isMobile && (
+        <Drawer
+          variant="temporary"
+          open={open}
+          onClose={onClose}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: SIDEBAR_EXPANDED_WIDTH,
+              border: 'none',
+              boxShadow: 8,
+            },
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      )}
+
+      {/* Desktop Drawer */}
+      {!isMobile && (
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH,
+              border: 'none',
+              boxShadow: 2,
+              transition: 'width 0.3s ease-in-out',
+              overflowX: 'hidden',
+            },
+          }}
+          open
+        >
+          {drawerContent}
+        </Drawer>
+      )}
     </>
   );
 }
 
-export default React.memo(Sidebar); 
+export default Sidebar; 

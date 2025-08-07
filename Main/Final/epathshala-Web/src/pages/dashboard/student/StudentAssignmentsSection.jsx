@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Button, Alert, Box, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  Alert,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Grid,
+  Chip
+} from '@mui/material';
 import { Upload as UploadIcon, Download as DownloadIcon } from '@mui/icons-material';
 import { getStudentAssignments, submitAssignment } from '../../../api/assignments';
 import { useAuth } from '../../../utils/auth';
+import { useResponsive, typography, buttonStyles, cardStyles } from '../../../utils/responsive';
 
 function StudentAssignmentsSection() {
   const { user } = useAuth();
+  const { isMobile, isTablet, isDesktop } = useResponsive();
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -98,166 +117,286 @@ function StudentAssignmentsSection() {
       const maxSize = 1024 * 1024; // 1MB in bytes
       if (file.size > maxSize) {
         setError(`File size must be less than 1MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
-        event.target.value = ''; // Clear the file input
         return;
       }
-      setSubmissionForm({ ...submissionForm, file });
-      setError(''); // Clear any previous errors
+      setSubmissionForm(prev => ({ ...prev, file }));
+      setError('');
     }
   };
 
   const handleSubmitSubmission = async () => {
-    if (!selectedAssignment) {
-      setError('No assignment selected');
+    if (!selectedAssignment || !submissionForm.text.trim()) {
+      setError('Please provide submission text');
       return;
     }
-    if (!studentId) {
-      setError('Student ID not found. Please log in again.');
-      return;
-    }
-    if (!submissionForm.text && !submissionForm.file) {
-      setError('Please provide either submission text or a file.');
-      return;
-    }
+
     setSubmitting(true);
     try {
-      const result = await submitAssignment(
-        selectedAssignment.id,
-        studentId, // <-- use the correct studentId
-        submissionForm.text,
-        submissionForm.file
-      );
-      if (result) {
-        setSubmitDialogOpen(false);
-        setSelectedAssignment(null);
-        setSubmissionForm({ text: '', file: null });
-        setSuccess('Assignment submitted successfully!');
-        setError('');
-        fetchData();
-        setTimeout(() => setSuccess(''), 3000);
-      } else {
-        throw new Error('Submission failed');
+      const formData = new FormData();
+      formData.append('text', submissionForm.text);
+      if (submissionForm.file) {
+        formData.append('file', submissionForm.file);
       }
+
+      await submitAssignment(selectedAssignment.id, formData);
+      setSuccess('Assignment submitted successfully!');
+      setSubmitDialogOpen(false);
+      setSubmissionForm({ text: '', file: null });
+      fetchData(); // Refresh assignments
     } catch (err) {
-      setError('Failed to submit assignment. Please try again.');
+      setError('Failed to submit assignment: ' + err.message);
     } finally {
       setSubmitting(false);
     }
   };
 
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'submitted':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'overdue':
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  if (loading) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 4 }}>
+        <Typography>Loading assignments...</Typography>
+      </Box>
+    );
+  }
+
   return (
-    <>
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            My Assignments
+    <Box>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {success}
+        </Alert>
+      )}
+
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{
+          fontWeight: 600,
+          fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
+          mb: { xs: 2, sm: 3 }
+        }}
+      >
+        My Assignments
+      </Typography>
+
+      {assignments.length === 0 ? (
+        <Card sx={{
+          p: { xs: 3, sm: 4 },
+          borderRadius: { xs: 2, sm: 3 },
+          textAlign: 'center'
+        }}>
+          <Typography variant="h6" color="text.secondary">
+            No assignments available at the moment.
           </Typography>
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-          {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-          
-          <List>
-            {assignments && assignments.length > 0 ? (
-              assignments.map((assignment, index) => (
-                <ListItem key={index} divider>
-                  <ListItemText
-                    primary={assignment.title}
-                    secondary={
-                      <>
-                        <Typography component="span" variant="body2" color="text.primary">
-                          Due: {assignment.dueDate} | Subject: {assignment.subject}
-                        </Typography>
-                        <br />
-                        <Typography component="span" variant="body2" color="text.secondary">
-                          Status: {assignment.status || 'Not Submitted'}
-                        </Typography>
-                      </>
-                    }
-                  />
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+        </Card>
+      ) : (
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
+          {assignments.map((assignment) => (
+            <Grid item xs={12} sm={6} md={4} key={assignment.id}>
+              <Card sx={{
+                height: '100%',
+                borderRadius: { xs: 2, sm: 3 },
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 4
+                }
+              }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' }
+                      }}
+                    >
+                      {assignment.title}
+                    </Typography>
+                    <Chip
+                      label={assignment.status || 'Pending'}
+                      color={getStatusColor(assignment.status)}
+                      size="small"
+                      sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                    />
+                  </Box>
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      mb: 2,
+                      fontSize: { xs: '0.875rem', sm: '1rem' },
+                      lineHeight: 1.5
+                    }}
+                  >
+                    {assignment.description}
+                  </Typography>
+
+                  <Box sx={{ mb: 2 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                        color: 'text.secondary'
+                      }}
+                    >
+                      <strong>Subject:</strong> {assignment.subject}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                        color: 'text.secondary'
+                      }}
+                    >
+                      <strong>Due Date:</strong> {formatDate(assignment.dueDate)}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    gap: { xs: 1, sm: 2 }
+                  }}>
                     {assignment.fileUrl && (
                       <Button
                         variant="outlined"
+                        size="small"
                         startIcon={<DownloadIcon />}
                         onClick={() => handleDownload(assignment)}
-                        size="small"
+                        sx={{
+                          ...buttonStyles.secondary,
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                        }}
                       >
                         Download
                       </Button>
                     )}
-                    <Button
-                      variant="contained"
-                      startIcon={<UploadIcon />}
-                      onClick={() => handleSubmitAssignment(assignment)}
-                      size="small"
-                    >
-                      Submit
-                    </Button>
-                  </Box>
-                </ListItem>
-              ))
-            ) : (
-              <ListItem>
-                <ListItemText primary="No assignments found" />
-              </ListItem>
-            )}
-          </List>
-        </CardContent>
-      </Card>
 
-      {/* Submission Dialog */}
-      <Dialog open={submitDialogOpen} onClose={() => {
-        setSubmitDialogOpen(false);
-        setSelectedAssignment(null);
-        setSubmissionForm({ text: '', file: null });
-      }} maxWidth="sm" fullWidth>
-        <DialogTitle>Submit Assignment: {selectedAssignment?.title}</DialogTitle>
+                    {assignment.status?.toLowerCase() !== 'submitted' && (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        startIcon={<UploadIcon />}
+                        onClick={() => handleSubmitAssignment(assignment)}
+                        sx={{
+                          ...buttonStyles.primary,
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                        }}
+                      >
+                        Submit
+                      </Button>
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      {/* Submit Assignment Dialog */}
+      <Dialog
+        open={submitDialogOpen}
+        onClose={() => setSubmitDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: { xs: 2, sm: 3 },
+            m: { xs: 2, sm: 4 }
+          }
+        }}
+      >
+        <DialogTitle sx={{
+          fontSize: { xs: '1.25rem', sm: '1.5rem' },
+          fontWeight: 600
+        }}>
+          Submit Assignment: {selectedAssignment?.title}
+        </DialogTitle>
         <DialogContent>
           <TextField
             fullWidth
-            label="Submission Text"
             multiline
-            rows={4}
+            rows={isMobile ? 4 : 6}
+            label="Submission Text"
             value={submissionForm.text}
-            onChange={(e) => setSubmissionForm({ ...submissionForm, text: e.target.value })}
-            margin="normal"
-            placeholder="Enter your submission text here..."
+            onChange={(e) => setSubmissionForm(prev => ({ ...prev, text: e.target.value }))}
+            sx={{ mb: 2, mt: 1 }}
           />
-          <Box sx={{ mt: 2 }}>
-            <input
-              accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
-              style={{ display: 'none' }}
-              id="submission-file"
-              type="file"
-              onChange={handleFileChange}
-            />
-            <label htmlFor="submission-file">
-              <Button variant="outlined" component="span">
-                Attach File
-              </Button>
-            </label>
-            <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>
-              Maximum file size: 1MB. Supported formats: PDF, DOC, DOCX, TXT, JPG, PNG
+          <input
+            accept=".pdf,.doc,.docx,.txt"
+            style={{ display: 'none' }}
+            id="file-upload"
+            type="file"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="file-upload">
+            <Button
+              variant="outlined"
+              component="span"
+              startIcon={<UploadIcon />}
+              sx={{ mb: 2 }}
+            >
+              Upload File (Optional)
+            </Button>
+          </label>
+          {submissionForm.file && (
+            <Typography variant="body2" color="primary" sx={{ mb: 2 }}>
+              Selected file: {submissionForm.file.name}
             </Typography>
-            {submissionForm.file && (
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                Selected: {submissionForm.file.name} ({(submissionForm.file.size / 1024).toFixed(1)}KB)
-              </Typography>
-            )}
-          </Box>
+          )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setSubmitDialogOpen(false)}>Cancel</Button>
-          <Button 
-            onClick={handleSubmitSubmission} 
-            variant="contained" 
-            disabled={submitting || (!submissionForm.text && !submissionForm.file)}
+        <DialogActions sx={{ p: { xs: 2, sm: 3 } }}>
+          <Button
+            onClick={() => setSubmitDialogOpen(false)}
+            sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
           >
-            {submitting ? 'Submitting...' : 'Submit'}
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmitSubmission}
+            variant="contained"
+            disabled={submitting || !submissionForm.text.trim()}
+            sx={{
+              ...buttonStyles.primary,
+              fontSize: { xs: '0.875rem', sm: '1rem' }
+            }}
+          >
+            {submitting ? 'Submitting...' : 'Submit Assignment'}
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 }
 
-export default React.memo(StudentAssignmentsSection); 
+export default StudentAssignmentsSection; 

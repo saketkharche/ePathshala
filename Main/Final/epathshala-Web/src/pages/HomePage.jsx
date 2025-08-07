@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -9,7 +9,19 @@ import {
   CardContent,
   CardMedia,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Avatar,
+  Chip,
+  Paper,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Fade,
+  Slide,
+  Grow,
+  Zoom,
 } from '@mui/material';
 import {
   School as SchoolIcon,
@@ -19,285 +31,495 @@ import {
   Speed as SpeedIcon,
   Support as SupportIcon,
   ArrowForward as ArrowForwardIcon,
-  PlayArrow as PlayIcon
+  PlayArrow as PlayIcon,
+  CheckCircle as CheckIcon,
+  Star as StarIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
+  LocationOn as LocationIcon,
+  AccessTime as TimeIcon,
+  TrendingUp as TrendingIcon,
+  Psychology as PsychologyIcon,
+  AutoStories as StoriesIcon,
+  VideoCall as VideoCallIcon,
+  Forum as ForumIcon,
+  Assignment as AssignmentIcon,
+  Assessment as AssessmentIcon,
+  Schedule as ScheduleIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { ResponsiveContainer } from '../components/layout';
+import { useResponsive, typography, spacing, gridConfig, buttonStyles, textAlign } from '../utils/responsive';
 
 function HomePage() {
-  console.log('HomePage component rendering...');
-  
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isSmallMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isMobile, isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState(0);
+
+  // Auto-scroll through sections
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSection((prev) => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const features = [
     {
-      icon: SchoolIcon,
-      title: 'Interactive Learning',
-      description: 'Engage with dynamic content, quizzes, and real-time feedback to enhance your learning experience.'
+      icon: VideoCallIcon,
+      title: 'Live Online Classes',
+      description: 'Join interactive virtual classrooms with HD video streaming, screen sharing, and real-time collaboration tools.',
+      color: '#1976d2'
     },
     {
-      icon: ComputerIcon,
-      title: 'Online Classes',
-      description: 'Join virtual classrooms with high-quality video streaming and interactive whiteboards.'
+      icon: AssignmentIcon,
+      title: 'Smart Assignments',
+      description: 'Submit and track assignments with automated grading, feedback, and progress analytics.',
+      color: '#388e3c'
     },
     {
-      icon: GroupIcon,
-      title: 'Collaborative Tools',
-      description: 'Work together with classmates through forums, group projects, and shared resources.'
+      icon: AssessmentIcon,
+      title: 'Digital Exams',
+      description: 'Take secure online exams with anti-cheating measures, instant results, and detailed analytics.',
+      color: '#f57c00'
     },
     {
-      icon: SecurityIcon,
-      title: 'Secure Platform',
-      description: 'Your data is protected with enterprise-grade security and privacy controls.'
+      icon: ForumIcon,
+      title: 'Discussion Forums',
+      description: 'Engage in meaningful discussions, ask questions, and collaborate with peers and teachers.',
+      color: '#7b1fa2'
     },
     {
-      icon: SpeedIcon,
-      title: 'Fast Performance',
-      description: 'Optimized for speed with cloud-based infrastructure ensuring smooth operation.'
+      icon: PsychologyIcon,
+      title: 'AI-Powered Learning',
+      description: 'Personalized learning paths with AI chatbot assistance and adaptive content recommendations.',
+      color: '#d32f2f'
     },
     {
-      icon: SupportIcon,
-      title: '24/7 Support',
-      description: 'Get help anytime with our comprehensive support system and documentation.'
+      icon: ScheduleIcon,
+      title: 'Academic Calendar',
+      description: 'Stay organized with integrated calendar, event notifications, and deadline reminders.',
+      color: '#00838f'
     }
   ];
 
   const stats = [
-    { number: '10,000+', label: 'Active Students' },
-    { number: '500+', label: 'Expert Teachers' },
-    { number: '50+', label: 'Courses Available' },
-    { number: '99.9%', label: 'Uptime' }
+    { number: '15,000+', label: 'Active Students', icon: <SchoolIcon /> },
+    { number: '800+', label: 'Expert Teachers', icon: <GroupIcon /> },
+    { number: '100+', label: 'Courses Available', icon: <StoriesIcon /> },
+    { number: '99.9%', label: 'Platform Uptime', icon: <TrendingIcon /> }
   ];
 
-  try {
-    return (
-      <Box sx={{ minHeight: '100vh' }}>
-        {/* Hero Section */}
+  const testimonials = [
+    {
+      name: 'Sarah Johnson',
+      role: 'Student, Grade 12',
+      avatar: 'S',
+      content: 'ePathshala has transformed my learning experience. The interactive features and real-time feedback have helped me excel in my studies.',
+      rating: 5
+    },
+    {
+      name: 'Dr. Michael Chen',
+      role: 'Mathematics Teacher',
+      avatar: 'M',
+      content: 'The platform makes teaching so much more effective. I can track student progress, provide instant feedback, and create engaging content.',
+      rating: 5
+    },
+    {
+      name: 'Lisa Rodriguez',
+      role: 'Parent',
+      avatar: 'L',
+      content: 'As a parent, I love how transparent the platform is. I can monitor my child\'s progress and stay connected with teachers.',
+      rating: 5
+    }
+  ];
+
+  const pricingPlans = [
+    {
+      title: 'Basic',
+      price: 'Free',
+      period: 'Forever',
+      features: [
+        'Access to basic courses',
+        'Limited assignments',
+        'Basic support',
+        'Standard features'
+      ],
+      popular: false,
+      color: '#1976d2'
+    },
+    {
+      title: 'Premium',
+      price: '$9.99',
+      period: 'per month',
+      features: [
+        'All courses and features',
+        'Unlimited assignments',
+        'Priority support',
+        'Advanced analytics',
+        'AI chatbot access',
+        'Custom learning paths'
+      ],
+      popular: true,
+      color: '#388e3c'
+    },
+    {
+      title: 'Institution',
+      price: 'Custom',
+      period: 'Contact us',
+      features: [
+        'Everything in Premium',
+        'Custom branding',
+        'Advanced admin tools',
+        'API access',
+        'Dedicated support',
+        'Custom integrations'
+      ],
+      popular: false,
+      color: '#f57c00'
+    }
+  ];
+
+  const heroSections = [
+    {
+      title: 'Transform Your Learning Journey',
+      subtitle: 'Experience the future of education with our comprehensive online learning platform.',
+      cta: 'Get Started'
+    },
+    {
+      title: 'Connect, Collaborate, Excel',
+      subtitle: 'Join thousands of students and teachers in a dynamic learning environment.',
+      cta: 'Learn More'
+    },
+    {
+      title: 'AI-Powered Education',
+      subtitle: 'Personalized learning experiences with cutting-edge artificial intelligence.',
+      cta: 'Explore Features'
+    }
+  ];
+
+  return (
+    <Box sx={{ minHeight: '100vh' }}>
+      {/* Hero Section with Auto-scrolling */}
+      <Box
+        sx={{
+          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+          color: 'white',
+          py: { xs: 4, sm: 6, md: 8, lg: 12, xl: 16 },
+          position: 'relative',
+          overflow: 'hidden',
+          minHeight: { xs: '70vh', sm: '80vh', md: '90vh', lg: '100vh', xl: '100vh' },
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        {/* Animated background elements */}
         <Box
           sx={{
-            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-            color: 'white',
-            py: { xs: 6, sm: 8, md: 12 },
-            position: 'relative',
-            overflow: 'hidden'
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)',
+            animation: 'pulse 4s ease-in-out infinite alternate'
           }}
-        >
-          <Container maxWidth="lg">
-            <Grid container spacing={{ xs: 3, md: 4 }} alignItems="center">
-              <Grid item xs={12} md={6}>
-                <Typography
-                  variant="h1"
-                  component="h1"
-                  gutterBottom
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem' },
-                    lineHeight: 1.2,
-                    textAlign: { xs: 'center', md: 'left' }
-                  }}
-                >
-                  Transform Your
-                  <Box component="span" sx={{ display: 'block', color: 'secondary.main' }}>
-                    Learning Journey
-                  </Box>
-                </Typography>
-                
-                <Typography
-                  variant="h6"
-                  sx={{
-                    mb: { xs: 3, md: 4 },
-                    fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
-                    textAlign: { xs: 'center', md: 'left' },
-                    opacity: 0.9,
-                    lineHeight: 1.6
-                  }}
-                >
-                  Experience the future of education with our comprehensive online learning platform. 
-                  Connect, collaborate, and excel in your academic pursuits.
-                </Typography>
-                
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  gap: { xs: 2, sm: 3 },
-                  justifyContent: { xs: 'center', md: 'flex-start' },
-                  alignItems: { xs: 'stretch', sm: 'center' }
-                }}>
-                  <Button
-                    variant="contained"
-                    size={isSmallMobile ? "medium" : "large"}
-                    onClick={() => navigate('/login')}
-                    sx={{
-                      backgroundColor: 'secondary.main',
-                      color: 'white',
-                      px: { xs: 3, sm: 4 },
-                      py: { xs: 1.5, sm: 2 },
-                      fontSize: { xs: '0.9rem', sm: '1rem' },
-                      fontWeight: 600,
-                      '&:hover': {
-                        backgroundColor: 'secondary.dark',
-                      }
-                    }}
-                  >
-                    Get Started
-                  </Button>
-                  
-                  <Button
-                    variant="outlined"
-                    size={isSmallMobile ? "medium" : "large"}
-                    onClick={() => navigate('/about')}
-                    sx={{
-                      borderColor: 'white',
-                      color: 'white',
-                      px: { xs: 3, sm: 4 },
-                      py: { xs: 1.5, sm: 2 },
-                      fontSize: { xs: '0.9rem', sm: '1rem' },
-                      fontWeight: 600,
-                      '&:hover': {
-                        borderColor: 'secondary.main',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      }
-                    }}
-                  >
-                    Learn More
-                  </Button>
+        />
+        
+        <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3, md: 4, lg: 6, xl: 8 } }}>
+          <Grid container spacing={{ xs: 3, sm: 4, md: 6, lg: 8, xl: 10 }} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Fade in timeout={1000}>
+                <Box>
+                  {heroSections.map((section, index) => (
+                    <Slide
+                      key={index}
+                      direction="left"
+                      in={activeSection === index}
+                      timeout={800}
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <Box>
+                        <Typography
+                          variant="h1"
+                          component="h1"
+                          gutterBottom
+                          sx={{
+                            fontWeight: 800,
+                            fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem', lg: '3.25rem', xl: '3.75rem' },
+                            lineHeight: 1.1,
+                            textAlign: { xs: 'center', sm: 'center', md: 'left' },
+                            mb: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }
+                          }}
+                        >
+                          {section.title}
+                        </Typography>
+                        
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            mb: { xs: 3, sm: 4, md: 5, lg: 6, xl: 7 },
+                            fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem', lg: '1.375rem', xl: '1.5rem' },
+                            textAlign: { xs: 'center', sm: 'center', md: 'left' },
+                            opacity: 0.9,
+                            lineHeight: 1.6
+                          }}
+                        >
+                          {section.subtitle}
+                        </Typography>
+                        
+                        <Box sx={{ 
+                          display: 'flex', 
+                          flexDirection: { xs: 'column', sm: 'row' },
+                          gap: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 },
+                          justifyContent: { xs: 'center', md: 'flex-start' },
+                          alignItems: { xs: 'stretch', sm: 'center' }
+                        }}>
+                          <Button
+                            variant="contained"
+                            size="large"
+                            onClick={() => navigate('/login')}
+                            sx={{
+                              backgroundColor: 'secondary.main',
+                              color: 'white',
+                              px: { xs: 3, sm: 4, md: 5, lg: 6, xl: 7 },
+                              py: { xs: 1.5, sm: 2, md: 2.5, lg: 3, xl: 3.5 },
+                              fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem', lg: '1.25rem', xl: '1.375rem' },
+                              fontWeight: 600,
+                              borderRadius: 3,
+                              minHeight: { xs: 48, sm: 56, md: 64, lg: 72, xl: 80 },
+                              '&:hover': {
+                                backgroundColor: 'secondary.dark',
+                                transform: 'translateY(-2px)',
+                                boxShadow: 4
+                              },
+                              transition: 'all 0.3s ease'
+                            }}
+                          >
+                            {section.cta}
+                          </Button>
+                          
+                          <Button
+                            variant="outlined"
+                            size="large"
+                            onClick={() => navigate('/about')}
+                            sx={{
+                              borderColor: 'white',
+                              color: 'white',
+                              ...buttonStyles.primary,
+                              fontWeight: 600,
+                              borderRadius: 3,
+                              '&:hover': {
+                                borderColor: 'secondary.main',
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                transform: 'translateY(-2px)'
+                              },
+                              transition: 'all 0.3s ease'
+                            }}
+                          >
+                            Learn More
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Slide>
+                  ))}
                 </Box>
-              </Grid>
-              
-              <Grid item xs={12} md={6}>
+              </Fade>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <Zoom in timeout={1200}>
                 <Box sx={{ 
                   display: 'flex', 
                   justifyContent: { xs: 'center', md: 'flex-end' },
-                  mt: { xs: 4, md: 0 }
+                  mt: { xs: 4, sm: 6, md: 0 }
                 }}>
                   <Box
                     sx={{
-                      width: { xs: '100%', sm: '80%', md: '100%' },
-                      maxWidth: 500,
-                      height: { xs: 250, sm: 300, md: 400 },
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      borderRadius: 3,
+                      width: { xs: '100%', sm: '90%', md: '100%' },
+                      maxWidth: 600,
+                      height: { xs: 250, sm: 300, md: 400, lg: 500 },
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      borderRadius: { xs: 2, sm: 3, md: 4 },
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                      backdropFilter: 'blur(20px)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
+                        animation: 'shimmer 2s infinite'
+                      }
                     }}
                   >
-                    <PlayIcon sx={{ fontSize: { xs: 60, sm: 80, md: 100 }, opacity: 0.8 }} />
+                    <PlayIcon sx={{ 
+                      fontSize: { xs: 60, sm: 80, md: 100, lg: 120 }, 
+                      opacity: 0.8,
+                      color: 'white'
+                    }} />
                   </Box>
                 </Box>
-              </Grid>
+              </Zoom>
             </Grid>
-          </Container>
-        </Box>
+          </Grid>
+        </Container>
+      </Box>
 
-        {/* Stats Section */}
-        <Box sx={{ py: { xs: 4, md: 6 }, backgroundColor: 'grey.50' }}>
-          <Container maxWidth="lg">
-            <Grid container spacing={{ xs: 2, md: 4 }}>
-              {stats.map((stat, index) => (
-                <Grid item xs={6} sm={3} key={index}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Typography
-                      variant="h3"
-                      sx={{
+      {/* Stats Section */}
+      <Box sx={{ py: { xs: 4, sm: 6, md: 8 }, backgroundColor: 'grey.50' }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+            {stats.map((stat, index) => (
+              <Grid item xs={6} sm={3} key={index}>
+                <Grow in timeout={1000 + index * 200}>
+                  <Box sx={{ 
+                    textAlign: 'center',
+                    p: { xs: 2, sm: 3 },
+                    borderRadius: { xs: 2, sm: 3 },
+                    background: 'white',
+                    boxShadow: 2,
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: 4
+                    }
+                  }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      justifyContent: 'center', 
+                      alignItems: 'center',
+                      mb: 1
+                    }}>
+                      <Avatar sx={{ 
+                        bgcolor: 'primary.main', 
+                        width: { xs: 40, sm: 50, md: 60 }, 
+                        height: { xs: 40, sm: 50, md: 60 } 
+                      }}>
+                        {stat.icon}
+                      </Avatar>
+                    </Box>
+                    <Typography 
+                      variant="h4" 
+                      sx={{ 
                         fontWeight: 700,
-                        color: 'primary.main',
-                        fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' }
+                        fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+                        color: 'primary.main'
                       }}
                     >
                       {stat.number}
                     </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
                         color: 'text.secondary',
-                        fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
-                        fontWeight: 500
+                        fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
                       }}
                     >
                       {stat.label}
                     </Typography>
                   </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
+                </Grow>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
 
-        {/* Features Section */}
-        <Box sx={{ py: { xs: 6, md: 8 } }}>
-          <Container maxWidth="lg">
-            <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
-              <Typography
-                variant="h2"
-                sx={{
-                  fontWeight: 700,
-                  fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
-                  mb: 2
-                }}
-              >
-                Why Choose ePathshala?
-              </Typography>
-              <Typography
-                variant="h6"
-                sx={{
-                  color: 'text.secondary',
-                  fontSize: { xs: '1rem', sm: '1.1rem' },
-                  maxWidth: 600,
-                  mx: 'auto'
-                }}
-              >
-                Discover the features that make our platform the preferred choice for modern education
-              </Typography>
-            </Box>
-            
-            <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
-              {features.map((feature, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
+      {/* Features Section */}
+      <Box sx={{ py: { xs: 6, sm: 8, md: 12 } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: { xs: 4, sm: 6, md: 8 } }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 700,
+                fontSize: typography.h2,
+                mb: { xs: 2, sm: 3 }
+              }}
+            >
+              Why Choose ePathshala?
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'text.secondary',
+                fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+                maxWidth: 700,
+                mx: 'auto',
+                lineHeight: 1.6
+              }}
+            >
+              Discover the features that make our platform the preferred choice for modern education
+            </Typography>
+          </Box>
+          
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4, lg: 5 }}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Grow in timeout={1000 + index * 200}>
                   <Card
                     sx={{
                       height: '100%',
-                      transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                      transition: 'all 0.3s ease-in-out',
+                      borderRadius: { xs: 2, sm: 3 },
+                      overflow: 'hidden',
                       '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: theme.shadows[8]
-                      },
-                      p: { xs: 2, sm: 3 }
+                        transform: 'translateY(-12px)',
+                        boxShadow: theme.shadows[12],
+                        '& .feature-icon': {
+                          transform: 'scale(1.1)',
+                          color: feature.color
+                        }
+                      }
                     }}
                   >
-                    <CardContent sx={{ textAlign: 'center', p: { xs: 1, sm: 2 } }}>
+                    <CardContent sx={{ 
+                      textAlign: 'center', 
+                      p: { xs: 2, sm: 3, md: 4 },
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center'
+                    }}>
                       <Box sx={{ 
                         display: 'flex', 
                         justifyContent: 'center', 
                         mb: { xs: 2, sm: 3 }
                       }}>
                         <feature.icon 
+                          className="feature-icon"
                           sx={{ 
-                            fontSize: { xs: 40, sm: 50, md: 60 },
-                            color: 'primary.main'
-                          }} 
+                            fontSize: { xs: 40, sm: 50, md: 60, lg: 70 },
+                            color: 'primary.main',
+                            transition: 'all 0.3s ease-in-out'
+                          }}
                         />
                       </Box>
                       <Typography
-                        variant="h6"
+                        variant="h5"
                         sx={{
                           fontWeight: 600,
-                          mb: { xs: 1, sm: 2 },
-                          fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
+                          fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' },
+                          mb: { xs: 1, sm: 2 }
                         }}
                       >
                         {feature.title}
                       </Typography>
                       <Typography
-                        variant="body2"
+                        variant="body1"
                         sx={{
                           color: 'text.secondary',
-                          fontSize: { xs: '0.85rem', sm: '0.9rem' },
+                          fontSize: { xs: '0.875rem', sm: '1rem' },
                           lineHeight: 1.6
                         }}
                       >
@@ -305,81 +527,415 @@ function HomePage() {
                       </Typography>
                     </CardContent>
                   </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
+                </Grow>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
 
-        {/* CTA Section */}
-        <Box
-          sx={{
-            background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.secondary.dark} 100%)`,
-            color: 'white',
-            py: { xs: 6, md: 8 }
-          }}
-        >
-          <Container maxWidth="lg">
-            <Box sx={{ textAlign: 'center' }}>
-              <Typography
-                variant="h3"
+      {/* Testimonials Section */}
+      <Box sx={{ py: { xs: 6, sm: 8, md: 12 }, backgroundColor: 'grey.50' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: { xs: 4, sm: 6, md: 8 } }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 700,
+                fontSize: typography.h2,
+                mb: { xs: 2, sm: 3 }
+              }}
+            >
+              What Our Users Say
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'text.secondary',
+                fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+                maxWidth: 700,
+                mx: 'auto',
+                lineHeight: 1.6
+              }}
+            >
+              Hear from students, teachers, and parents about their experience with ePathshala
+            </Typography>
+          </Box>
+          
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+            {testimonials.map((testimonial, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Grow in timeout={1000 + index * 200}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      p: { xs: 2, sm: 3, md: 4 },
+                      borderRadius: { xs: 2, sm: 3 },
+                      background: 'white',
+                      boxShadow: 2,
+                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: 4
+                      }
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Avatar
+                        sx={{
+                          width: { xs: 40, sm: 50, md: 60 },
+                          height: { xs: 40, sm: 50, md: 60 },
+                          bgcolor: 'primary.main',
+                          mr: 2
+                        }}
+                      >
+                        {testimonial.avatar}
+                      </Avatar>
+                      <Box>
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' }
+                          }}
+                        >
+                          {testimonial.name}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: 'text.secondary',
+                            fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                          }}
+                        >
+                          {testimonial.role}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: 'text.secondary',
+                        fontSize: { xs: '0.875rem', sm: '1rem' },
+                        lineHeight: 1.6,
+                        mb: 2
+                      }}
+                    >
+                      "{testimonial.content}"
+                    </Typography>
+                    
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <StarIcon
+                          key={i}
+                          sx={{
+                            color: 'warning.main',
+                            fontSize: { xs: '1rem', sm: '1.25rem' }
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Card>
+                </Grow>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Pricing Section */}
+      <Box sx={{ py: { xs: 6, sm: 8, md: 12 } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: { xs: 4, sm: 6, md: 8 } }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 700,
+                fontSize: typography.h2,
+                mb: { xs: 2, sm: 3 }
+              }}
+            >
+              Choose Your Plan
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'text.secondary',
+                fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+                maxWidth: 600,
+                mx: 'auto'
+              }}
+            >
+              Flexible pricing options to suit your learning needs
+            </Typography>
+          </Box>
+          
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
+            {pricingPlans.map((plan, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Grow in timeout={1000 + index * 200}>
+                  <Card sx={{
+                    height: '100%',
+                    borderRadius: { xs: 2, sm: 3 },
+                    position: 'relative',
+                    transition: 'all 0.3s ease',
+                    transform: plan.popular ? 'scale(1.02)' : 'scale(1)',
+                    '&:hover': {
+                      transform: plan.popular ? 'scale(1.05)' : 'scale(1.02)',
+                      boxShadow: 8
+                    }
+                  }}>
+                    {plan.popular && (
+                      <Chip
+                        label="Most Popular"
+                        color="secondary"
+                        sx={{
+                          position: 'absolute',
+                          top: -12,
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          zIndex: 1,
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                        }}
+                      />
+                    )}
+                    
+                    <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 }, textAlign: 'center' }}>
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontWeight: 700,
+                          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+                          mb: 1
+                        }}
+                      >
+                        {plan.title}
+                      </Typography>
+                      
+                      <Box sx={{ mb: 3 }}>
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            fontWeight: 800,
+                            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                            color: plan.color
+                          }}
+                        >
+                          {plan.price}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: 'text.secondary',
+                            fontSize: { xs: '0.875rem', sm: '1rem' }
+                          }}
+                        >
+                          {plan.period}
+                        </Typography>
+                      </Box>
+                      
+                      <List sx={{ mb: 3 }}>
+                        {plan.features.map((feature, featureIndex) => (
+                          <ListItem key={featureIndex} sx={{ px: 0, py: 0.5 }}>
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <CheckIcon sx={{ color: 'success.main', fontSize: { xs: '1rem', sm: '1.25rem' } }} />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={feature}
+                              sx={{
+                                '& .MuiListItemText-primary': {
+                                  fontSize: { xs: '0.875rem', sm: '1rem' }
+                                }
+                              }}
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
+                      
+                      <Button
+                        variant={plan.popular ? 'contained' : 'outlined'}
+                        fullWidth
+                        size="large"
+                        sx={{
+                          ...buttonStyles.primary,
+                          backgroundColor: plan.popular ? plan.color : 'transparent',
+                          color: plan.popular ? 'white' : plan.color,
+                          borderColor: plan.color,
+                          '&:hover': {
+                            backgroundColor: plan.popular ? plan.color : plan.color,
+                            color: 'white'
+                          }
+                        }}
+                      >
+                        Get Started
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grow>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* CTA Section */}
+      <Box sx={{ 
+        py: { xs: 6, sm: 8, md: 12 }, 
+        background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+        color: 'white'
+      }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 700,
+                fontSize: typography.h2,
+                mb: { xs: 2, sm: 3 }
+              }}
+            >
+              Ready to Transform Your Learning?
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
+                maxWidth: 600,
+                mx: 'auto',
+                mb: { xs: 3, sm: 4, md: 5 },
+                opacity: 0.9,
+                lineHeight: 1.6
+              }}
+            >
+              Join thousands of students and teachers who are already experiencing the future of education
+            </Typography>
+            
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: 2, sm: 3 },
+              justifyContent: 'center',
+              alignItems: { xs: 'stretch', sm: 'center' }
+            }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => navigate('/login')}
                 sx={{
-                  fontWeight: 700,
-                  fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
-                  mb: { xs: 2, md: 3 }
+                  backgroundColor: 'secondary.main',
+                  color: 'white',
+                  ...buttonStyles.primary,
+                  fontWeight: 600,
+                  borderRadius: 3,
+                  '&:hover': {
+                    backgroundColor: 'secondary.dark',
+                    transform: 'translateY(-2px)',
+                    boxShadow: 4
+                  },
+                  transition: 'all 0.3s ease'
                 }}
               >
-                Ready to Start Learning?
+                Get Started Now
+              </Button>
+              
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() => navigate('/contact')}
+                sx={{
+                  borderColor: 'white',
+                  color: 'white',
+                  ...buttonStyles.primary,
+                  fontWeight: 600,
+                  borderRadius: 3,
+                  '&:hover': {
+                    borderColor: 'secondary.main',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    transform: 'translateY(-2px)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Contact Us
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Contact Section */}
+      <Box sx={{ py: { xs: 8, md: 12 } }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={{ xs: 4, md: 6 }}>
+            <Grid item xs={12} md={6}>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                  mb: 3
+                }}
+              >
+                Get in Touch
               </Typography>
               <Typography
                 variant="h6"
                 sx={{
-                  mb: { xs: 3, md: 4 },
-                  fontSize: { xs: '1rem', sm: '1.1rem' },
-                  opacity: 0.9,
-                  maxWidth: 600,
-                  mx: 'auto'
+                  color: 'text.secondary',
+                  mb: 4,
+                  lineHeight: 1.6
                 }}
               >
-                Join thousands of students who are already transforming their education with ePathshala
+                Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
               </Typography>
-              <Button
-                variant="contained"
-                size={isSmallMobile ? "large" : "large"}
-                onClick={() => navigate('/login')}
-                sx={{
-                  backgroundColor: 'white',
-                  color: 'secondary.main',
-                  px: { xs: 4, sm: 6 },
-                  py: { xs: 2, sm: 2.5 },
-                  fontSize: { xs: '1rem', sm: '1.1rem' },
-                  fontWeight: 600,
-                  '&:hover': {
-                    backgroundColor: 'grey.100',
-                  }
-                }}
-              >
-                Join Now
-                <ArrowForwardIcon sx={{ ml: 1 }} />
-              </Button>
-            </Box>
-          </Container>
-        </Box>
+              
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <EmailIcon sx={{ color: 'primary.main' }} />
+                  <Typography>support@epathshala.com</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <PhoneIcon sx={{ color: 'primary.main' }} />
+                  <Typography>+1 (555) 123-4567</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <LocationIcon sx={{ color: 'primary.main' }} />
+                  <Typography>123 Education Street, Learning City, LC 12345</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <TimeIcon sx={{ color: 'primary.main' }} />
+                  <Typography>Monday - Friday: 9:00 AM - 6:00 PM</Typography>
+                </Box>
+              </Box>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ p: 4, borderRadius: 3 }}>
+                <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+                  Send us a Message
+                </Typography>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => navigate('/contact')}
+                  fullWidth
+                  sx={{
+                    py: 2,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    borderRadius: 2
+                  }}
+                >
+                  Contact Us
+                </Button>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
-    );
-  } catch (error) {
-    console.error("Error in HomePage component:", error);
-    return (
-      <Box sx={{ p: 4, textAlign: 'center' }}>
-        <Typography variant="h4" color="error">
-          Something went wrong
-        </Typography>
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          Please try refreshing the page
-        </Typography>
-      </Box>
-    );
-  }
+    </Box>
+  );
 }
 
 export default HomePage; 

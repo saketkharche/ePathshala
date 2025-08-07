@@ -395,16 +395,16 @@ function Chat() {
         position: 'relative',
         bgcolor: 'background.paper',
       }}>
-        {/* Error Alert */}
-        {error && (
-          <Alert 
-            severity="error" 
-            sx={{ position: 'absolute', top: 60, right: 10, zIndex: 1000 }}
-            onClose={() => setError('')}
-          >
-            {error}
-          </Alert>
-        )}
+      {/* Error Alert */}
+      {error && (
+        <Alert 
+          severity="error" 
+          sx={{ position: 'absolute', top: 60, right: 10, zIndex: 1000 }}
+          onClose={() => setError('')}
+        >
+          {error}
+        </Alert>
+      )}
         {/* Sidebar (Drawer on mobile) */}
         {isMobile ? (
           <Drawer
@@ -512,7 +512,7 @@ function Chat() {
               loading={loading}
             />
           </Paper>
-        </Box>
+      </Box>
       </Paper>
     </Box>
   );

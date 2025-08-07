@@ -35,6 +35,15 @@ function DashboardLayout({ children }) {
       />
       {/* Main Content */}
       <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, ml: { md: `${sidebarCollapsed ? 60 : 280}px` }, transition: 'margin-left 0.3s' }}>
+        {/* Fixed Navbar */}
+        <Navbar />
+        {/* Spacer to prevent content from being hidden behind fixed navbar */}
+        <Box
+          sx={{
+            height: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
+            width: '100%',
+          }}
+        />
         {/* Top Navigation */}
         <Box sx={{ display: 'flex', alignItems: 'center', p: 2, borderBottom: 1, borderColor: 'divider' }}>
           {isMobile && (
@@ -47,7 +56,6 @@ function DashboardLayout({ children }) {
               <MenuIcon />
             </IconButton>
           )}
-          <Navbar />
         </Box>
         {/* Page Content */}
         <Box component="main" className="main-content" sx={{ flexGrow: 1, p: 3 }}>

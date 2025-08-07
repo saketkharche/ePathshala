@@ -15,11 +15,11 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ErrorBoundary>
-          <AuthProvider>
-            <Router>
+          <Router>
+            <AuthProvider>
               <AppRoutes />
-            </Router>
-          </AuthProvider>
+            </AuthProvider>
+          </Router>
         </ErrorBoundary>
       </ThemeProvider>
     );

@@ -10,7 +10,20 @@ function PublicLayout({ children }) {
     return (
       <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
-        <Box component="main" className="main-content" sx={{ flexGrow: 1 }}>
+        {/* Spacer to prevent content from being hidden behind fixed navbar */}
+        <Box
+          sx={{
+            height: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
+            width: '100%',
+          }}
+        />
+        <Box 
+          component="main" 
+          className="main-content" 
+          sx={{ 
+            flexGrow: 1,
+          }}
+        >
           {children}
         </Box>
         <Footer />

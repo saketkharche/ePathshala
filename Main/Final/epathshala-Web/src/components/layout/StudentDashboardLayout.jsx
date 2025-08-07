@@ -4,25 +4,31 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import Navbar from '../common/Navbar';
 import StudentSidebar from './StudentSidebar';
 import Footer from './Footer';
+import { useResponsive } from '../../utils/responsive';
 
 function StudentDashboardLayout({ children }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { isMobile, isTablet, isDesktop } = useResponsive();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const stored = localStorage.getItem('studentSidebarCollapsed');
     return stored === 'true';
   });
+  
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
+  
   const handleSidebarCollapse = () => {
     setSidebarCollapsed((prev) => {
-      localStorage.setItem('studentSidebarCollapsed', !prev);
-      return !prev;
+      const newState = !prev;
+      localStorage.setItem('studentSidebarCollapsed', newState);
+      return newState;
     });
   };
+  
   const sidebarWidth = sidebarCollapsed ? 60 : 280;
+  
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {/* Sidebar */}
@@ -32,10 +38,40 @@ function StudentDashboardLayout({ children }) {
         collapsed={sidebarCollapsed}
         onCollapse={handleSidebarCollapse}
       />
+      
       {/* Main Content */}
-      <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, ml: { md: `${sidebarWidth}px` }, transition: 'margin-left 0.3s' }}>
+      <Box 
+        className="app-wrapper" 
+        sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          flexGrow: 1, 
+          ml: { md: `${sidebarWidth}px` }, 
+          transition: 'margin-left 0.3s ease-in-out' 
+        }}
+      >
+        {/* Fixed Navbar */}
+        <Navbar />
+        {/* Spacer to prevent content from being hidden behind fixed navbar */}
+        <Box
+          sx={{
+            height: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
+            width: '100%',
+          }}
+        />
+        
         {/* Top Navigation */}
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 2, borderBottom: 1, borderColor: 'divider' }}>
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            p: { xs: 1.5, sm: 2 }, 
+            borderBottom: 1, 
+            borderColor: 'divider',
+            backgroundColor: 'background.paper',
+            boxShadow: 1
+          }}
+        >
           {isMobile && (
             <IconButton
               color="inherit"
@@ -46,12 +82,22 @@ function StudentDashboardLayout({ children }) {
               <MenuIcon />
             </IconButton>
           )}
-          <Navbar />
         </Box>
+        
         {/* Page Content */}
-        <Box component="main" className="main-content" sx={{ flexGrow: 1, p: 3 }}>
+        <Box 
+          component="main" 
+          className="main-content" 
+          sx={{ 
+            flexGrow: 1, 
+            p: { xs: 2, sm: 3, md: 4 },
+            backgroundColor: 'background.default',
+            minHeight: 'calc(100vh - 64px - 64px)', // Subtract header and footer heights
+          }}
+        >
           {children}
         </Box>
+        
         {/* Footer */}
         <Footer />
       </Box>

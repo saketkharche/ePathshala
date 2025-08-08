@@ -106,4 +106,4 @@ function ParentDashboardLayout({ children }) {
   );
 }
 
-export default ParentDashboardLayout;
+export default React.memo(ParentDashboardLayout);

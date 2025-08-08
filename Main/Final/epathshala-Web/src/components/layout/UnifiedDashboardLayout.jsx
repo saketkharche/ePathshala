@@ -1,46 +1,25 @@
 import React from 'react';
-import { useAuth } from '../../utils/auth';
-import { Navigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 import UnifiedNavigation from './UnifiedNavigation';
 
-const UnifiedDashboardLayout = ({ children, requiredRole = null }) => {
-  const { user, loading } = useAuth();
-
-  // Show loading spinner while checking authentication
-  if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontSize: '1.2rem'
-      }}>
-        Loading...
-      </div>
-    );
-  }
-
-  // Redirect to login if not authenticated
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Redirect based on role if required role doesn't match
-  if (requiredRole && user.role !== requiredRole) {
-    const roleRoutes = {
-      ADMIN: '/admin/dashboard',
-      STUDENT: '/student/dashboard',
-      TEACHER: '/teacher/dashboard',
-      PARENT: '/parent/dashboard'
-    };
-    return <Navigate to={roleRoutes[user.role] || '/login'} replace />;
-  }
-
+const UnifiedDashboardLayout = ({ children }) => {
   return (
-    <UnifiedNavigation>
-      {children}
-    </UnifiedNavigation>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <UnifiedNavigation>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            backgroundColor: 'background.default',
+            minHeight: '100vh',
+            overflow: 'auto'
+          }}
+        >
+          {children}
+        </Box>
+      </UnifiedNavigation>
+    </Box>
   );
 };
 

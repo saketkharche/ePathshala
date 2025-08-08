@@ -106,4 +106,4 @@ function StudentDashboardLayout({ children }) {
   );
 }
 
-export default StudentDashboardLayout;
+export default React.memo(StudentDashboardLayout);

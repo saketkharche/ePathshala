@@ -106,4 +106,4 @@ function TeacherDashboardLayout({ children }) {
   );
 }
 
-export default TeacherDashboardLayout;
+export default React.memo(TeacherDashboardLayout);

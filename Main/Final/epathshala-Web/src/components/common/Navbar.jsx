@@ -78,6 +78,10 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
   const [notifError, setNotifError] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Determine if we're on a page with sidebar (dashboard pages)
+  // If onMenuClick is provided, we're on a dashboard page with sidebar
+  const hasSidebar = onMenuClick !== undefined;
+
   // Load notifications when user is authenticated
   useEffect(() => {
     if (user && user.role && ['ADMIN', 'STUDENT', 'TEACHER', 'PARENT'].includes(user.role)) {
@@ -194,178 +198,214 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
           transition: 'all 0.3s ease',
           // Ensure navbar stays above all content
           zIndex: theme.zIndex.appBar,
-          // Proper positioning - only span the main content area
+          // Position based on whether we have a sidebar
           top: 0,
-          left: { md: sidebarCollapsed ? '60px' : '280px' }, // Start after sidebar
+          left: hasSidebar ? { 
+            xs: 0, // Full width on mobile
+            md: sidebarCollapsed ? '60px' : '280px' // Start after sidebar
+          } : 0, // Full width on public pages
           right: 0,
-          width: { md: sidebarCollapsed ? 'calc(100% - 60px)' : 'calc(100% - 280px)' }, // Full width minus sidebar
-          // Ensure proper height
-          minHeight: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
+          width: hasSidebar ? { 
+            xs: '100%', // Full width on mobile
+            md: sidebarCollapsed ? 'calc(100% - 60px)' : 'calc(100% - 280px)' // Width minus sidebar
+          } : '100%', // Full width on public pages
+          // Ensure proper height with responsive sizing
+          height: { xs: '56px', sm: '64px', md: '72px' },
+          minHeight: { xs: '56px', sm: '64px', md: '72px' },
           // Prevent content from showing through
           backgroundColor: 'rgba(255,255,255,0.95)',
+          // Add responsive container
+          maxWidth: '100vw',
+          overflow: 'hidden'
         }}
       >
         <Toolbar sx={{
-          minHeight: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
-          px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 },
+          height: { xs: '56px', sm: '64px', md: '72px' },
+          minHeight: { xs: '56px', sm: '64px', md: '72px' },
+          px: { xs: 3, sm: 4, md: 6 },
+          py: 0,
           boxShadow: 'none',
           bgcolor: 'transparent',
           display: 'flex',
-          gap: 2,
+          gap: { xs: 2, sm: 3, md: 4 },
           // Ensure proper alignment
           alignItems: 'center',
+          justifyContent: 'space-between',
           // Prevent overflow
-          overflow: 'hidden'
+          overflow: 'hidden',
+          // Make it flexible
+          flexWrap: 'nowrap',
+          // Add max width container for better centering
+          maxWidth: hasSidebar ? '100%' : '1400px', // Increased width for better spacing
+          mx: 'auto'
         }}>
           {/* Left: App logo/title */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: 1, 
-            mr: 2,
+            gap: { xs: 1, sm: 1.5 }, 
             // Prevent text overflow
             minWidth: 0,
-            flexShrink: 0
+            flexShrink: 0,
+            // Give more space to logo
+            maxWidth: { xs: '45%', sm: '40%', md: '35%' }
           }}>
             <Logo 
-              size={isMobile ? 32 : 40} 
               variant="minimal"
-              sx={{ mr: 1 }}
-            />
-            <Typography
-              variant={isMobile ? 'h6' : 'h5'}
-              component="div"
-              sx={{
-                fontWeight: 700,
-                fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' },
-                letterSpacing: 1,
+              size={isMobile ? 'small' : 'medium'}
+              sx={{ 
                 color: roleColor,
-                textShadow: '0 1px 8px rgba(0,0,0,0.04)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                // Prevent text overflow
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
+                fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' },
+                fontWeight: 700,
+                letterSpacing: 1,
+                textShadow: '0 1px 8px rgba(0,0,0,0.04)'
               }}
-            >
-              ePathshala
-            </Typography>
+            />
           </Box>
 
-          {/* Mobile Menu Button */}
-          {user && isMobile && onMenuClick && (
-            <IconButton
-              color="inherit"
-              aria-label="open sidebar"
-              onClick={onMenuClick}
-              sx={{ 
-                mr: 1,
-                display: { xs: 'flex', md: 'none' }
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
 
-          {/* Center: Navigation links (desktop) */}
-          {user && !isMobile && (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 1, 
-              flexGrow: 1,
-              // Prevent overflow
-              overflow: 'hidden'
-            }}>
-              {NAV_LINKS.map(link => (
-                <Button
-                  key={link.label}
-                  color="inherit"
-                  component={Link}
-                  to={link.path(user.role?.toLowerCase())}
-                  startIcon={link.icon}
-                  sx={{
-                    textTransform: 'none',
-                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                    px: { xs: 1, sm: 2 },
-                    borderRadius: 2,
-                    transition: 'background 0.2s',
-                    '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' },
-                    // Prevent text overflow
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}
-                >
-                  {link.label}
-                </Button>
-              ))}
-            </Box>
-          )}
-          {!user && !isMobile && (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 1, 
-              flexGrow: 1,
-              // Prevent overflow
-              overflow: 'hidden'
-            }}>
-              {PUBLIC_LINKS.map(link => (
-                <Button
-                  key={link.label}
-                  color="inherit"
-                  component={Link}
-                  to={link.path}
-                  sx={{
-                    textTransform: 'none',
-                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                    px: { xs: 1, sm: 2 },
-                    borderRadius: 2,
-                    transition: 'background 0.2s',
-                    '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' },
-                    // Prevent text overflow
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}
-                >
-                  {link.label}
-                </Button>
-              ))}
-            </Box>
-          )}
-          {user && isMobile && (
-            <IconButton
-              color="inherit"
-              onClick={handleDrawerToggle}
-              sx={{ ml: 1 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          {!user && isMobile && (
-            <IconButton
-              color="inherit"
-              onClick={handleDrawerToggle}
-              sx={{ ml: 1 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
 
-          {/* Right: User actions */}
+          {/* Right: Navigation links and User actions */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: { xs: 1, sm: 2 }, 
+            gap: { xs: 1, sm: 1.5, md: 2 }, 
             ml: 'auto',
             // Prevent overflow
             overflow: 'hidden',
             flexShrink: 0
           }}>
+            {/* Mobile Menu Buttons */}
+            {user && isMobile && onMenuClick && (
+              <IconButton
+                color="inherit"
+                aria-label="open sidebar"
+                onClick={onMenuClick}
+                sx={{ 
+                  display: { xs: 'flex', md: 'none' },
+                  p: { xs: 0.75, sm: 1, md: 1.25 },
+                  transition: 'all 0.2s ease',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(0,0,0,0.06)',
+                    transform: 'scale(1.05)'
+                  }
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            {user && isMobile && !onMenuClick && (
+              <IconButton
+                color="inherit"
+                onClick={handleDrawerToggle}
+                sx={{ 
+                  display: { xs: 'flex', md: 'none' },
+                  p: { xs: 0.75, sm: 1, md: 1.25 },
+                  transition: 'all 0.2s ease',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(0,0,0,0.06)',
+                    transform: 'scale(1.05)'
+                  }
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            {!user && isMobile && (
+              <IconButton
+                color="inherit"
+                onClick={handleDrawerToggle}
+                sx={{ 
+                  display: { xs: 'flex', md: 'none' },
+                  p: { xs: 0.75, sm: 1, md: 1.25 },
+                  transition: 'all 0.2s ease',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(0,0,0,0.06)',
+                    transform: 'scale(1.05)'
+                  }
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            {/* Navigation links (desktop) */}
+            {user && !isMobile && (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: { xs: 1, sm: 1.5, md: 2 }, 
+                mr: 2
+              }}>
+                {NAV_LINKS.map(link => (
+                  <Button
+                    key={link.label}
+                    color="inherit"
+                    component={Link}
+                    to={link.path(user.role?.toLowerCase())}
+                    startIcon={link.icon}
+                    sx={{
+                      textTransform: 'none',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+                      px: { xs: 1.5, sm: 2, md: 2.5 },
+                      py: { xs: 0.75, sm: 1 },
+                      borderRadius: 2,
+                      transition: 'all 0.2s ease',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(0,0,0,0.04)',
+                        transform: 'translateY(-1px)'
+                      },
+                      // Prevent text overflow
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      // Make buttons more flexible
+                      minWidth: 'auto',
+                      flexShrink: 0
+                    }}
+                  >
+                    {link.label}
+                  </Button>
+                ))}
+              </Box>
+            )}
+            {!user && !isMobile && (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: { xs: 1, sm: 1.5, md: 2 }, 
+                mr: 2
+              }}>
+                {PUBLIC_LINKS.map(link => (
+                  <Button
+                    key={link.label}
+                    color="inherit"
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      textTransform: 'none',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+                      px: { xs: 1.5, sm: 2, md: 2.5 },
+                      py: { xs: 0.75, sm: 1 },
+                      borderRadius: 2,
+                      transition: 'all 0.2s ease',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(0,0,0,0.04)',
+                        transform: 'translateY(-1px)'
+                      },
+                      // Prevent text overflow
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      // Make buttons more flexible
+                      minWidth: 'auto',
+                      flexShrink: 0
+                    }}
+                  >
+                    {link.label}
+                  </Button>
+                ))}
+              </Box>
+            )}
             {user && (
               <>
                 {/* Notification bell - only show if user has permission */}
@@ -375,9 +415,12 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
                       color="inherit"
                       onClick={handleNotifOpen}
                       sx={{ 
-                        p: { xs: 0.5, sm: 1 }, 
-                        transition: 'background 0.2s', 
-                        '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } 
+                        p: { xs: 0.75, sm: 1, md: 1.25 }, 
+                        transition: 'all 0.2s ease', 
+                        '&:hover': { 
+                          backgroundColor: 'rgba(0,0,0,0.06)',
+                          transform: 'scale(1.05)'
+                        } 
                       }}
                     >
                       <Badge badgeContent={unreadCount} color="error" max={99}>
@@ -393,9 +436,12 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
                     color="inherit"
                     onClick={handleChatbotOpen}
                     sx={{ 
-                      p: { xs: 0.5, sm: 1 }, 
-                      transition: 'background 0.2s', 
-                      '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } 
+                      p: { xs: 0.75, sm: 1, md: 1.25 }, 
+                      transition: 'all 0.2s ease', 
+                      '&:hover': { 
+                        backgroundColor: 'rgba(0,0,0,0.06)',
+                        transform: 'scale(1.05)'
+                      } 
                     }}
                   >
                     <BotIcon />
@@ -431,9 +477,12 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
                     <IconButton
                       onClick={handleMenu}
                       sx={{ 
-                        p: { xs: 0.5, sm: 1 }, 
-                        transition: 'background 0.2s', 
-                        '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } 
+                        p: { xs: 0.75, sm: 1, md: 1.25 }, 
+                        transition: 'all 0.2s ease', 
+                        '&:hover': { 
+                          backgroundColor: 'rgba(0,0,0,0.06)',
+                          transform: 'scale(1.05)'
+                        } 
                       }}
                     >
                       <Avatar

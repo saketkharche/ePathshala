@@ -205,4 +205,4 @@ const ResponsiveContainer = ({
   );
 };
 
-export default ResponsiveContainer; 
+export default React.memo(ResponsiveContainer); 

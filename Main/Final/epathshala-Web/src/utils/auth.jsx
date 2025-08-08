@@ -248,16 +248,21 @@ export function AuthProvider({ children }) {
       setSessionExpired(false);
 
       console.log('User logged in successfully, navigating to dashboard');
+      console.log('Navigation target:', `/${data.role.toLowerCase()}`);
+      console.log('Navigate function available:', !!navigate);
 
       // Navigate to appropriate dashboard based on role
       try {
         if (navigate) {
+          console.log('Using navigate function');
           navigate(`/${data.role.toLowerCase()}`);
         } else {
+          console.log('Using window.location.href');
           window.location.href = `/${data.role.toLowerCase()}`;
         }
       } catch (error) {
         console.error('Navigation error:', error);
+        console.log('Falling back to window.location.href');
         window.location.href = `/${data.role.toLowerCase()}`;
       }
 
@@ -315,6 +320,7 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     loading,
+    isAuthenticated: !!user?.token,
     login,
     logout,
     refreshSession,

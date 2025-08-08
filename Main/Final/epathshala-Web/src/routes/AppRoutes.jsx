@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Box, Typography, Button } from '@mui/material';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import PublicLayout from '../components/layout/PublicLayout';
 import ProtectedLayout from '../components/layout/ProtectedLayout';
@@ -591,6 +592,42 @@ function AppRoutes() {
             </DashboardLayout>
           </ProtectedLayout>
         } />
+        
+        {/* Unauthorized Route */}
+        <Route path="/unauthorized" element={
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            minHeight: '100vh',
+            p: 3,
+            textAlign: 'center'
+          }}>
+            <Typography variant="h4" color="error" gutterBottom>
+              Access Denied
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              You don't have permission to access this page.
+            </Typography>
+            <Button 
+              variant="contained" 
+              onClick={() => window.location.href = '/login'}
+              sx={{ mr: 2 }}
+            >
+              Go to Login
+            </Button>
+            <Button 
+              variant="outlined" 
+              onClick={() => window.location.href = '/'}
+            >
+              Go to Home
+            </Button>
+          </Box>
+        } />
+        
+        {/* Catch-all route - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );
   } catch (error) {

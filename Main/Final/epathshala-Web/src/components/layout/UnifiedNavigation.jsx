@@ -11,7 +11,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
   Divider,
   Avatar,
   Menu,
@@ -26,39 +25,33 @@ import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
   School as SchoolIcon,
-  People as PeopleIcon,
-  Book as BookIcon,
   Assignment as AssignmentIcon,
-  Event as EventIcon,
   Grade as GradeIcon,
   Notifications as NotificationsIcon,
   AccountCircle as AccountCircleIcon,
   Logout as LogoutIcon,
-  ExpandLess,
-  ExpandMore,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   AdminPanelSettings as AdminIcon,
   Person as PersonIcon,
   FamilyRestroom as ParentIcon,
   TrendingUp as TrendingIcon,
-  Add as AddIcon,
-  Class as ClassIcon,
-  Subject as SubjectIcon,
   CalendarToday as CalendarIcon,
   Settings as SettingsIcon,
   Assessment as AssessmentIcon,
   VideoCall as VideoCallIcon,
   Forum as ForumIcon,
-  Chat as ChatIcon,
-  Home as HomeIcon,
-  Info as InfoIcon,
-  ContactSupport as ContactIcon,
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  Schedule as ScheduleIcon,
   CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
-  Pending as PendingIcon
+  Pending as PendingIcon,
+  // Unique icons for different functions
+  PersonAdd as PersonAddIcon,
+  GroupAdd as GroupAddIcon,
+  PersonAddAlt as PersonAddAltIcon,
+  Link as LinkIcon,
+  EventNote as EventNoteIcon,
+  VideoLibrary as VideoLibraryIcon,
+  Security as SecurityIcon,
+  Quiz as QuizIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
@@ -67,7 +60,7 @@ import { useResponsive } from '../../utils/responsive';
 const drawerWidth = 280;
 const collapsedDrawerWidth = 70;
 
-// Role-specific menu configurations - moved outside component to prevent recreation
+// Role-specific menu configurations with unique icons
 const roleMenus = {
   ADMIN: {
     title: 'Admin Panel',
@@ -84,24 +77,24 @@ const roleMenus = {
       {
         title: 'User Management',
         items: [
-          { text: 'Add Student', icon: AddIcon, path: '/admin/add-student' },
-          { text: 'Add Teacher', icon: AddIcon, path: '/admin/add-teacher' },
-          { text: 'Add Parent', icon: AddIcon, path: '/admin/add-parent' },
-          { text: 'Assign Teacher', icon: AssignmentIcon, path: '/admin/assign-teacher' },
+          { text: 'Add Student', icon: PersonAddIcon, path: '/admin/add-student' },
+          { text: 'Add Teacher', icon: GroupAddIcon, path: '/admin/add-teacher' },
+          { text: 'Add Parent', icon: PersonAddAltIcon, path: '/admin/add-parent' },
+          { text: 'Assign Teacher', icon: LinkIcon, path: '/admin/assign-teacher' },
         ]
       },
       {
         title: 'Academic',
         items: [
-          { text: 'Academic Calendar', icon: CalendarIcon, path: '/admin/academic-calendar' },
-          { text: 'Online Classes', icon: VideoCallIcon, path: '/admin/online-classes' },
-          { text: 'Session Management', icon: SettingsIcon, path: '/admin/session-management' },
+          { text: 'Academic Calendar', icon: EventNoteIcon, path: '/admin/academic-calendar' },
+          { text: 'Online Classes', icon: VideoLibraryIcon, path: '/admin/online-classes' },
+          { text: 'Session Management', icon: SecurityIcon, path: '/admin/session-management' },
         ]
       },
       {
         title: 'System',
         items: [
-          { text: 'Reset Password', icon: SettingsIcon, path: '/admin/reset-password' },
+          { text: 'Reset Password', icon: SecurityIcon, path: '/admin/reset-password' },
         ]
       }
     ]
@@ -121,7 +114,7 @@ const roleMenus = {
         title: 'Academic',
         items: [
           { text: 'Assignments', icon: AssignmentIcon, path: '/student/assignments' },
-          { text: 'Exams', icon: AssessmentIcon, path: '/student/exams' },
+          { text: 'Exams', icon: QuizIcon, path: '/student/exams' },
           { text: 'Grades', icon: GradeIcon, path: '/student/grades' },
           { text: 'Attendance', icon: CheckCircleIcon, path: '/student/attendance' },
         ]
@@ -157,7 +150,7 @@ const roleMenus = {
         title: 'Teaching',
         items: [
           { text: 'Assignments', icon: AssignmentIcon, path: '/teacher/assignments' },
-          { text: 'Exams', icon: AssessmentIcon, path: '/teacher/exams' },
+          { text: 'Exams', icon: QuizIcon, path: '/teacher/exams' },
           { text: 'Grades', icon: GradeIcon, path: '/teacher/grades' },
           { text: 'Attendance', icon: CheckCircleIcon, path: '/teacher/attendance' },
         ]
@@ -219,14 +212,12 @@ const UnifiedNavigation = ({ children }) => {
   });
   const [hoverExpanded, setHoverExpanded] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState(null);
-  const [expandedSections, setExpandedSections] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const [notifications, setNotifications] = useState([]);
 
   const currentRole = user?.role || 'STUDENT';
   const roleConfig = roleMenus[currentRole] || roleMenus.STUDENT;
-
-
+  const effectiveCollapsed = collapsed && !hoverExpanded;
 
   // Handle sidebar collapse
   const handleCollapse = () => {
@@ -250,25 +241,14 @@ const UnifiedNavigation = ({ children }) => {
     if (collapsed && !isMobile) {
       const timeout = setTimeout(() => {
         setHoverExpanded(false);
-      }, 200);
+      }, 300);
       setHoverTimeout(timeout);
     }
   };
 
-  // Get effective collapsed state (considering hover)
-  const effectiveCollapsed = collapsed && !hoverExpanded;
-
-  // Handle mobile drawer
+  // Handle mobile drawer toggle
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-
-  // Handle section expansion
-  const handleSectionClick = (sectionTitle) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [sectionTitle]: !prev[sectionTitle]
-    }));
   };
 
   // Handle navigation
@@ -292,7 +272,6 @@ const UnifiedNavigation = ({ children }) => {
   const handleLogout = () => {
     logout();
     handleUserMenuClose();
-    navigate('/login');
   };
 
   // Check if item is active
@@ -309,8 +288,6 @@ const UnifiedNavigation = ({ children }) => {
         .catch(err => console.error('Failed to fetch notifications:', err));
     }
   }, [user]);
-
-
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -335,19 +312,20 @@ const UnifiedNavigation = ({ children }) => {
       onMouseEnter={handleSidebarMouseEnter}
       onMouseLeave={handleSidebarMouseLeave}
     >
-      {/* Header - Only expand button when collapsed */}
+      {/* Header */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: effectiveCollapsed ? 'center' : 'flex-start',
           p: effectiveCollapsed ? 1 : 2,
           minHeight: 64,
           borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           backgroundColor: alpha(roleConfig.color, 0.08),
           borderLeft: `4px solid ${roleConfig.color}`,
           position: 'relative',
-          zIndex: 1000
+          zIndex: 1000,
+          width: '100%'
         }}
       >
         {/* Expand Button - Only visible when collapsed */}
@@ -377,8 +355,8 @@ const UnifiedNavigation = ({ children }) => {
 
         {/* User info when expanded */}
         {!effectiveCollapsed && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0 }}>
-            <Box sx={{ minWidth: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0, flex: 1 }}>
+            <Box sx={{ minWidth: 0, flex: 1, maxWidth: '100%' }}>
               <Typography
                 variant="h6"
                 sx={{
@@ -388,7 +366,8 @@ const UnifiedNavigation = ({ children }) => {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  mb: 0.5
+                  mb: 0.5,
+                  lineHeight: 1.2
                 }}
               >
                 {roleConfig.title}
@@ -401,7 +380,8 @@ const UnifiedNavigation = ({ children }) => {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  display: 'block'
+                  display: 'block',
+                  lineHeight: 1.2
                 }}
               >
                 {user?.name || user?.email}
@@ -455,6 +435,7 @@ const UnifiedNavigation = ({ children }) => {
                         backgroundColor: isActive ? alpha(roleConfig.color, 0.1) : 'transparent',
                         color: isActive ? roleConfig.color : 'text.primary',
                         cursor: 'pointer',
+                        width: '100%',
                         '&:hover': {
                           backgroundColor: isActive 
                             ? alpha(roleConfig.color, 0.15) 
@@ -472,7 +453,8 @@ const UnifiedNavigation = ({ children }) => {
                           minWidth: effectiveCollapsed ? 0 : 40,
                           mr: effectiveCollapsed ? 0 : 1,
                           display: 'flex',
-                          justifyContent: effectiveCollapsed ? 'center' : 'flex-start'
+                          justifyContent: effectiveCollapsed ? 'center' : 'flex-start',
+                          alignItems: 'center'
                         }}
                       >
                         <IconComponent fontSize="small" />
@@ -516,20 +498,21 @@ const UnifiedNavigation = ({ children }) => {
       <Box sx={{ p: 2, borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}` }}>
         {effectiveCollapsed ? (
           <Tooltip title="Logout" placement="right" arrow>
-            <ListItemButton
-              onClick={handleLogout}
-              sx={{
-                borderRadius: 1,
-                color: 'error.main',
-                cursor: 'pointer',
-                justifyContent: 'center',
-                '&:hover': {
-                  backgroundColor: alpha(theme.palette.error.main, 0.1),
-                  transform: 'scale(1.1)',
-                },
-                transition: 'all 0.2s ease-in-out'
-              }}
-            >
+                      <ListItemButton
+            onClick={handleLogout}
+            sx={{
+              borderRadius: 1,
+              color: 'error.main',
+              cursor: 'pointer',
+              justifyContent: 'center',
+              width: '100%',
+              '&:hover': {
+                backgroundColor: alpha(theme.palette.error.main, 0.1),
+                transform: 'scale(1.1)',
+              },
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
               <ListItemIcon sx={{ color: 'error.main', minWidth: 0 }}>
                 <LogoutIcon fontSize="small" />
               </ListItemIcon>
@@ -542,6 +525,7 @@ const UnifiedNavigation = ({ children }) => {
               borderRadius: 1,
               color: 'error.main',
               cursor: 'pointer',
+              width: '100%',
               '&:hover': {
                 backgroundColor: alpha(theme.palette.error.main, 0.1),
                 transform: 'translateX(2px)',
@@ -698,7 +682,8 @@ const UnifiedNavigation = ({ children }) => {
           top: 64, // Height of AppBar
           left: 0,
           height: 'calc(100vh - 64px)',
-          zIndex: 1000
+          zIndex: 1000,
+          overflow: 'hidden'
         }}
         onMouseEnter={handleSidebarMouseEnter}
         onMouseLeave={handleSidebarMouseLeave}
@@ -739,6 +724,11 @@ const UnifiedNavigation = ({ children }) => {
               transition: theme.transitions.create(['width'], {
                 duration: theme.transitions.duration.standard,
               }),
+              overflow: 'hidden',
+              position: 'fixed',
+              top: 64,
+              left: 0,
+              height: 'calc(100vh - 64px)',
             },
           }}
           open
@@ -756,10 +746,11 @@ const UnifiedNavigation = ({ children }) => {
           transition: theme.transitions.create(['margin-left'], {
             duration: theme.transitions.duration.standard,
           }),
+          width: { md: `calc(100% - ${effectiveCollapsed ? collapsedDrawerWidth : drawerWidth}px)` },
         }}
       >
         <Toolbar /> {/* Spacer for AppBar */}
-        <Box sx={{ p: 3, minHeight: 'calc(100vh - 64px)' }}>
+        <Box sx={{ p: 3, minHeight: 'calc(100vh - 64px)', width: '100%' }}>
           {children}
         </Box>
       </Box>
@@ -819,14 +810,14 @@ const UnifiedNavigation = ({ children }) => {
         />
       )}
 
-      {/* Floating Collapse Button - Outside Sidebar */}
+      {/* Floating Collapse Button - Fixed positioning */}
       <Box
         sx={{
           position: 'fixed',
-          left: effectiveCollapsed ? collapsedDrawerWidth + 20 : drawerWidth + 20,
+          left: effectiveCollapsed ? collapsedDrawerWidth + 5 : drawerWidth + 5,
           top: '50%',
           transform: 'translateY(-50%)',
-          zIndex: 9999999,
+          zIndex: 9999,
           display: { xs: 'none', md: 'block' },
           transition: theme.transitions.create(['left'], {
             duration: theme.transitions.duration.standard,

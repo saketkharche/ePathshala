@@ -1,46 +1,42 @@
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Box } from '@mui/material';
 import { useAuth } from '../../utils/auth';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Navigate } from 'react-router-dom';
 
-const ProtectedLayout = ({ children, requiredRole = null }) => {
-  const { user, loading } = useAuth();
-  const location = useLocation();
+const ProtectedLayout = ({ children, allowedRoles = [], requiredRole }) => {
+  const { user, isAuthenticated } = useAuth();
 
-  // Show loading spinner while authentication is being checked
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          gap: 2
-        }}
-      >
-        <CircularProgress size={60} />
-        <Typography variant="h6" color="text.secondary">
-          Loading...
-        </Typography>
-      </Box>
-    );
+  console.log('ProtectedLayout - user:', user);
+  console.log('ProtectedLayout - isAuthenticated:', isAuthenticated);
+  console.log('ProtectedLayout - requiredRole:', requiredRole);
+  console.log('ProtectedLayout - allowedRoles:', allowedRoles);
+
+  if (!isAuthenticated) {
+    console.log('ProtectedLayout - Redirecting to login (not authenticated)');
+    return <Navigate to="/login" replace />;
   }
 
-  // Redirect to login if not authenticated
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  // Check if specific role is required
+  if (requiredRole && user?.role !== requiredRole) {
+    console.log('ProtectedLayout - Redirecting to unauthorized (role mismatch)');
+    console.log('Required role:', requiredRole, 'User role:', user?.role);
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  // Check role if required
-  if (requiredRole && user.role !== requiredRole) {
-    // Redirect to appropriate dashboard based on user role
-    const rolePath = user.role?.toLowerCase() || 'login';
-    return <Navigate to={`/${rolePath}/dashboard`} replace />;
+  // Check if any of the allowed roles match
+  if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) {
+    console.log('ProtectedLayout - Redirecting to unauthorized (not in allowed roles)');
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  return children;
+  console.log('ProtectedLayout - Rendering children');
+
+  return (
+    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+      {children}
+    </Box>
+  );
 };
 
 export default ProtectedLayout;
+

@@ -61,8 +61,18 @@ public class AuthController {
     }
 
     @PostMapping("/verify-otp")
-    @Operation(summary = "Verify OTP", description = "Verify OTP and reset password")
+    @Operation(summary = "Verify OTP and Reset Password", description = "Verify OTP and reset password")
     public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest req) {
         return ResponseEntity.ok(authService.verifyOtpAndResetPassword(req));
+    }
+
+    @GetMapping("/test")
+    @Operation(summary = "Test Endpoint", description = "Simple test endpoint to verify API is working")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok(Map.of(
+            "message", "API is working!",
+            "timestamp", System.currentTimeMillis(),
+            "status", "success"
+        ));
     }
 }

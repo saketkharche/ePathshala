@@ -4,15 +4,13 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import Navbar from '../common/Navbar';
-import { useAuth } from '../../utils/auth';
 import { useResponsive } from '../../utils/responsive';
 
 function AdminDashboardLayout({ children }) {
-  const { user } = useAuth();
   const { isMobile, isTablet, isDesktop } = useResponsive();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    const stored = localStorage.getItem('adminSidebarCollapsed');
+    const stored = localStorage.getItem('mainSidebarCollapsed');
     return stored === 'true';
   });
 
@@ -23,34 +21,12 @@ function AdminDashboardLayout({ children }) {
   const handleSidebarCollapse = () => {
     setSidebarCollapsed((prev) => {
       const newState = !prev;
-      localStorage.setItem('adminSidebarCollapsed', newState);
+      localStorage.setItem('mainSidebarCollapsed', newState);
       return newState;
     });
   };
 
   const sidebarWidth = sidebarCollapsed ? 60 : 280;
-
-  // Only render sidebar if user is ADMIN
-  if (user?.role !== 'ADMIN') {
-    return (
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-        <Box className="app-wrapper" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-          <Navbar />
-          {/* Spacer to prevent content from being hidden behind fixed navbar */}
-          <Box
-            sx={{
-              height: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
-              width: '100%',
-            }}
-          />
-          <Box component="main" className="main-content" sx={{ flexGrow: 1, p: 3 }}>
-            {children}
-          </Box>
-          <Footer />
-        </Box>
-      </Box>
-    );
-  }
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -70,11 +46,12 @@ function AdminDashboardLayout({ children }) {
           flexDirection: 'column', 
           flexGrow: 1, 
           ml: { md: `${sidebarWidth}px` }, 
-          transition: 'margin-left 0.3s ease-in-out' 
+          transition: 'margin-left 0.3s ease-in-out',
+          width: { md: `calc(100% - ${sidebarWidth}px)` }
         }}
       >
         {/* Fixed Navbar */}
-        <Navbar />
+        <Navbar sidebarCollapsed={sidebarCollapsed} />
         {/* Spacer to prevent content from being hidden behind fixed navbar */}
         <Box
           sx={{

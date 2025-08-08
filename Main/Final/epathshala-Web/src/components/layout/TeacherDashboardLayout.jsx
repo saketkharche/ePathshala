@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import Navbar from '../common/Navbar';
-import TeacherSidebar from './TeacherSidebar';
+import Sidebar from './Sidebar';
 import Footer from './Footer';
 import { useResponsive } from '../../utils/responsive';
 
@@ -11,7 +11,7 @@ function TeacherDashboardLayout({ children }) {
   const { isMobile, isTablet, isDesktop } = useResponsive();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    const stored = localStorage.getItem('teacherSidebarCollapsed');
+    const stored = localStorage.getItem('mainSidebarCollapsed');
     return stored === 'true';
   });
   
@@ -22,7 +22,7 @@ function TeacherDashboardLayout({ children }) {
   const handleSidebarCollapse = () => {
     setSidebarCollapsed((prev) => {
       const newState = !prev;
-      localStorage.setItem('teacherSidebarCollapsed', newState);
+      localStorage.setItem('mainSidebarCollapsed', newState);
       return newState;
     });
   };
@@ -32,7 +32,7 @@ function TeacherDashboardLayout({ children }) {
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {/* Sidebar */}
-      <TeacherSidebar
+      <Sidebar
         open={sidebarOpen}
         onClose={handleSidebarToggle}
         collapsed={sidebarCollapsed}
@@ -47,11 +47,12 @@ function TeacherDashboardLayout({ children }) {
           flexDirection: 'column', 
           flexGrow: 1, 
           ml: { md: `${sidebarWidth}px` }, 
-          transition: 'margin-left 0.3s ease-in-out' 
+          transition: 'margin-left 0.3s ease-in-out',
+          width: { md: `calc(100% - ${sidebarWidth}px)` }
         }}
       >
         {/* Fixed Navbar */}
-        <Navbar />
+        <Navbar sidebarCollapsed={sidebarCollapsed} />
         {/* Spacer to prevent content from being hidden behind fixed navbar */}
         <Box
           sx={{
@@ -105,4 +106,4 @@ function TeacherDashboardLayout({ children }) {
   );
 }
 
-export default React.memo(TeacherDashboardLayout);
+export default TeacherDashboardLayout;

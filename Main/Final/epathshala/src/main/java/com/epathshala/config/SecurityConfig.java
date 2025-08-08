@@ -45,6 +45,7 @@ public class SecurityConfig {
             .authorizeRequests(authz -> authz
                 .antMatchers("/ws/**").permitAll() // Allow WebSocket connections
                 .antMatchers("/api/auth/login").permitAll()
+                .antMatchers("/api/auth/status").permitAll() // Allow status endpoint
                 .antMatchers("/api/auth/test").permitAll() // Allow test endpoint
                 .antMatchers("/api/auth/forgot-password", "/api/auth/verify-otp").permitAll()
                 .antMatchers("/api/chatbot/health").permitAll()

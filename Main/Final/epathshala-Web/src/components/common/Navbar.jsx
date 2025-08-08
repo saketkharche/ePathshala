@@ -32,6 +32,7 @@ import {
   Notifications as NotificationsIcon,
 } from '@mui/icons-material';
 import Chatbot from './Chatbot';
+import Logo from './Logo';
 import {
   fetchUserNotifications,
   fetchUnreadNotificationCount,
@@ -63,11 +64,11 @@ const PUBLIC_LINKS = [
   { label: 'Contact', path: '/contact' },
 ];
 
-function Navbar() {
+function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = propIsMobile || useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState(null);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [notifAnchorEl, setNotifAnchorEl] = useState(null);
@@ -191,11 +192,17 @@ function Navbar() {
           boxShadow: '0 4px 24px 0 rgba(0,0,0,0.08)',
           color: 'text.primary',
           transition: 'all 0.3s ease',
+          // Ensure navbar stays above all content
           zIndex: theme.zIndex.appBar,
+          // Proper positioning - only span the main content area
           top: 0,
-          left: 0,
+          left: { md: sidebarCollapsed ? '60px' : '280px' }, // Start after sidebar
           right: 0,
-          width: '100%',
+          width: { md: sidebarCollapsed ? 'calc(100% - 60px)' : 'calc(100% - 280px)' }, // Full width minus sidebar
+          // Ensure proper height
+          minHeight: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
+          // Prevent content from showing through
+          backgroundColor: 'rgba(255,255,255,0.95)',
         }}
       >
         <Toolbar sx={{
@@ -205,9 +212,26 @@ function Navbar() {
           bgcolor: 'transparent',
           display: 'flex',
           gap: 2,
+          // Ensure proper alignment
+          alignItems: 'center',
+          // Prevent overflow
+          overflow: 'hidden'
         }}>
           {/* Left: App logo/title */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mr: 2 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1, 
+            mr: 2,
+            // Prevent text overflow
+            minWidth: 0,
+            flexShrink: 0
+          }}>
+            <Logo 
+              size={isMobile ? 32 : 40} 
+              variant="minimal"
+              sx={{ mr: 1 }}
+            />
             <Typography
               variant={isMobile ? 'h6' : 'h5'}
               component="div"
@@ -220,16 +244,41 @@ function Navbar() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
+                // Prevent text overflow
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
               }}
             >
-              {roleIcon}
               ePathshala
             </Typography>
           </Box>
 
-          {/* Center: Navigation links (desktop) or hamburger (mobile) */}
+          {/* Mobile Menu Button */}
+          {user && isMobile && onMenuClick && (
+            <IconButton
+              color="inherit"
+              aria-label="open sidebar"
+              onClick={onMenuClick}
+              sx={{ 
+                mr: 1,
+                display: { xs: 'flex', md: 'none' }
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          {/* Center: Navigation links (desktop) */}
           {user && !isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              flexGrow: 1,
+              // Prevent overflow
+              overflow: 'hidden'
+            }}>
               {NAV_LINKS.map(link => (
                 <Button
                   key={link.label}
@@ -244,6 +293,10 @@ function Navbar() {
                     borderRadius: 2,
                     transition: 'background 0.2s',
                     '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' },
+                    // Prevent text overflow
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                   }}
                 >
                   {link.label}
@@ -252,7 +305,14 @@ function Navbar() {
             </Box>
           )}
           {!user && !isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              flexGrow: 1,
+              // Prevent overflow
+              overflow: 'hidden'
+            }}>
               {PUBLIC_LINKS.map(link => (
                 <Button
                   key={link.label}
@@ -266,6 +326,10 @@ function Navbar() {
                     borderRadius: 2,
                     transition: 'background 0.2s',
                     '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' },
+                    // Prevent text overflow
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                   }}
                 >
                   {link.label}
@@ -293,7 +357,15 @@ function Navbar() {
           )}
 
           {/* Right: User actions */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 }, ml: 'auto' }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: { xs: 1, sm: 2 }, 
+            ml: 'auto',
+            // Prevent overflow
+            overflow: 'hidden',
+            flexShrink: 0
+          }}>
             {user && (
               <>
                 {/* Notification bell - only show if user has permission */}
@@ -302,7 +374,11 @@ function Navbar() {
                     <IconButton
                       color="inherit"
                       onClick={handleNotifOpen}
-                      sx={{ p: { xs: 0.5, sm: 1 }, transition: 'background 0.2s', '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } }}
+                      sx={{ 
+                        p: { xs: 0.5, sm: 1 }, 
+                        transition: 'background 0.2s', 
+                        '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } 
+                      }}
                     >
                       <Badge badgeContent={unreadCount} color="error" max={99}>
                         <NotificationsIcon />
@@ -316,14 +392,24 @@ function Navbar() {
                   <IconButton
                     color="inherit"
                     onClick={handleChatbotOpen}
-                    sx={{ p: { xs: 0.5, sm: 1 }, transition: 'background 0.2s', '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } }}
+                    sx={{ 
+                      p: { xs: 0.5, sm: 1 }, 
+                      transition: 'background 0.2s', 
+                      '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } 
+                    }}
                   >
                     <BotIcon />
                   </IconButton>
                 </Tooltip>
 
                 {/* User menu */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  // Prevent overflow
+                  minWidth: 0
+                }}>
                   <Chip
                     label={user.role || 'User'}
                     size="small"
@@ -335,12 +421,20 @@ function Navbar() {
                       '& .MuiChip-label': {
                         px: { xs: 1, sm: 1.5 },
                       },
+                      // Prevent text overflow
+                      maxWidth: { xs: 60, sm: 80 },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
                     }}
                   />
                   <Tooltip title="Account settings">
                     <IconButton
                       onClick={handleMenu}
-                      sx={{ p: { xs: 0.5, sm: 1 }, transition: 'background 0.2s', '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } }}
+                      sx={{ 
+                        p: { xs: 0.5, sm: 1 }, 
+                        transition: 'background 0.2s', 
+                        '&:hover': { backgroundColor: 'rgba(0,0,0,0.06)' } 
+                      }}
                     >
                       <Avatar
                         sx={{
@@ -359,7 +453,13 @@ function Navbar() {
             )}
 
             {!user && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: { xs: 1, sm: 2 },
+                // Prevent overflow
+                overflow: 'hidden'
+              }}>
                 <Button
                   color="inherit"
                   component={Link}
@@ -377,6 +477,10 @@ function Navbar() {
                       backgroundColor: 'rgba(0,0,0,0.04)',
                       borderColor: 'rgba(0,0,0,0.24)',
                     },
+                    // Prevent text overflow
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                   }}
                 >
                   Sign In
@@ -394,7 +498,15 @@ function Navbar() {
         onClose={handleNotifClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{ sx: { minWidth: 260, borderRadius: 2, boxShadow: 4 } }}
+        PaperProps={{ 
+          sx: { 
+            minWidth: 260, 
+            borderRadius: 2, 
+            boxShadow: 4,
+            // Ensure popover appears above other content
+            zIndex: theme.zIndex.modal + 1
+          } 
+        }}
       >
         <Box sx={{ p: 1 }}>
           <Typography variant="subtitle1" sx={{ mb: 1 }}>
@@ -431,7 +543,14 @@ function Navbar() {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        PaperProps={{ sx: { borderRadius: 2, boxShadow: 4 } }}
+        PaperProps={{ 
+          sx: { 
+            borderRadius: 2, 
+            boxShadow: 4,
+            // Ensure menu appears above other content
+            zIndex: theme.zIndex.modal + 1
+          } 
+        }}
       >
         <MenuItem onClick={handleProfile}>
           <PersonIcon sx={{ mr: 1 }} />
@@ -454,7 +573,15 @@ function Navbar() {
         anchor="left"
         open={drawerOpen}
         onClose={handleDrawerToggle}
-        PaperProps={{ sx: { width: 220, borderRadius: 2, boxShadow: 4 } }}
+        PaperProps={{ 
+          sx: { 
+            width: 220, 
+            borderRadius: 2, 
+            boxShadow: 4,
+            // Ensure mobile drawer appears above all content
+            zIndex: theme.zIndex.modal + 2
+          } 
+        }}
       >
         <Box sx={{ p: 2 }}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 700, color: roleColor, display: 'flex', alignItems: 'center', gap: 1 }}>

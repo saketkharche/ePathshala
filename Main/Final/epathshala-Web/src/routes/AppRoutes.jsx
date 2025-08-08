@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import PublicLayout from '../components/layout/PublicLayout';
+import ProtectedLayout from '../components/layout/ProtectedLayout';
 import AdminDashboardLayout from '../components/layout/AdminDashboardLayout';
 import StudentDashboardLayout from '../components/layout/StudentDashboardLayout';
 import TeacherDashboardLayout from '../components/layout/TeacherDashboardLayout';
@@ -55,6 +56,7 @@ import TeacherExamsPage from '../pages/dashboard/teacher/TeacherExamsPage';
 import StudentAssignmentsPage from '../pages/dashboard/student/StudentAssignmentsPage';
 import StudentExamsPage from '../pages/dashboard/student/StudentExamsPage';
 import StudentGradesPage from '../pages/dashboard/student/StudentGradesPage';
+import StudentProgressPage from '../pages/dashboard/student/StudentProgressPage';
 import StudentAttendancePage from '../pages/dashboard/student/StudentAttendancePage';
 import StudentLeaveRequestsPage from '../pages/dashboard/student/StudentLeaveRequestsPage';
 import StudentCalendarPage from '../pages/dashboard/student/StudentCalendarPage';
@@ -64,6 +66,7 @@ import StudentExamResultPage from '../pages/dashboard/student/StudentExamResultP
 import ParentChildProgressPage from '../pages/dashboard/parent/ParentChildProgressPage';
 import ParentLeaveApprovalsPage from '../pages/dashboard/parent/ParentLeaveApprovalsPage';
 import ParentCalendarPage from '../pages/dashboard/parent/ParentCalendarPage';
+import HoverTest from '../pages/test/HoverTest';
 
 function AppRoutes() {
   console.log("AppRoutes component rendering...");
@@ -98,328 +101,495 @@ function AppRoutes() {
         } />
         
         {/* Admin Routes */}
-        <Route path="/admin" element={<Navigate to="/admin/summary" replace />} />
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/admin/dashboard" element={
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminDashboard />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
+        } />
         <Route path="/admin/forum" element={
-          <AdminDashboardLayout>
-            <Forum />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <Forum />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/chat" element={
-          <AdminDashboardLayout>
-            <ThreadedChat />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <ThreadedChat />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/websocket-test" element={
-          <AdminDashboardLayout>
-            <WebSocketTest />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <WebSocketTest />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/chat-simple" element={
-          <AdminDashboardLayout>
-            <Chat />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <Chat />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/simple-test" element={
-          <AdminDashboardLayout>
-            <SimpleTest />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <SimpleTest />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/simple-websocket-test" element={
-          <AdminDashboardLayout>
-            <SimpleWebSocketTest />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <SimpleWebSocketTest />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/simple-chat-test" element={
-          <AdminDashboardLayout>
-            <SimpleChatTest />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <SimpleChatTest />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/websocket-debug" element={
-          <AdminDashboardLayout>
-            <WebSocketDebug />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <WebSocketDebug />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/message-test" element={
-          <AdminDashboardLayout>
-            <MessageTest />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <MessageTest />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/chat-debug" element={
-          <AdminDashboardLayout>
-            <ChatDebug />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <ChatDebug />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/notifications" element={
-          <AdminDashboardLayout>
-            <Notifications />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <Notifications />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
+        } />
+        <Route path="/admin/hover-test" element={
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <HoverTest />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         {/* Admin Section Routes */}
         <Route path="/admin/summary" element={
-          <AdminDashboardLayout>
-            <AdminSummary />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminSummary />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/add-student" element={
-          <AdminDashboardLayout>
-            <AdminAddStudent />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminAddStudent />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/add-teacher" element={
-          <AdminDashboardLayout>
-            <AdminAddTeacher />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminAddTeacher />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/add-parent" element={
-          <AdminDashboardLayout>
-            <AdminAddParent />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminAddParent />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/assign-teacher" element={
-          <AdminDashboardLayout>
-            <AdminAssignTeacher />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminAssignTeacher />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/reset-password" element={
-          <AdminDashboardLayout>
-            <AdminResetPassword />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminResetPassword />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/calendar" element={
-          <AdminDashboardLayout>
-            <AdminAcademicCalendar />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminAcademicCalendar />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/online-classes" element={
-          <AdminDashboardLayout>
-            <AdminOnlineClasses />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminOnlineClasses />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/admin/sessions" element={
-          <AdminDashboardLayout>
-            <AdminSessionManagement />
-          </AdminDashboardLayout>
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminSessionManagement />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
         } />
-        <Route path="/admin/profile" element={<AdminDashboardLayout><AdminProfile /></AdminDashboardLayout>} />
+        <Route path="/admin/profile" element={
+          <ProtectedLayout requiredRole="ADMIN">
+            <AdminDashboardLayout>
+              <AdminProfile />
+            </AdminDashboardLayout>
+          </ProtectedLayout>
+        } />
         
         {/* Student Routes */}
         <Route path="/student" element={
-          <StudentDashboardLayout>
-            <StudentDashboard />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentDashboard />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/assignments" element={
-          <StudentDashboardLayout>
-            <StudentAssignmentsPage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentAssignmentsPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/exams" element={
-          <StudentDashboardLayout>
-            <StudentExamsPage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentExamsPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/exams/:examId/result" element={
-          <StudentDashboardLayout>
-            <StudentExamResultPage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentExamResultPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/grades" element={
-          <StudentDashboardLayout>
-            <StudentGradesPage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentGradesPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
+        } />
+        <Route path="/student/progress" element={
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentProgressPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/attendance" element={
-          <StudentDashboardLayout>
-            <StudentAttendancePage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentAttendancePage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/leave-requests" element={
-          <StudentDashboardLayout>
-            <StudentLeaveRequestsPage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentLeaveRequestsPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/calendar" element={
-          <StudentDashboardLayout>
-            <StudentCalendarPage />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentCalendarPage />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/forum" element={
-          <StudentDashboardLayout>
-            <Forum />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <Forum />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/chat" element={
-          <StudentDashboardLayout>
-            <Chat />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <Chat />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/student/notifications" element={
-          <StudentDashboardLayout>
-            <Notifications />
-          </StudentDashboardLayout>
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <Notifications />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
         } />
-        <Route path="/student/profile" element={<StudentDashboardLayout><StudentProfile /></StudentDashboardLayout>} />
+        <Route path="/student/profile" element={
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentProfile />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
+        } />
         
         {/* Teacher Routes */}
         <Route path="/teacher" element={
-          <TeacherDashboardLayout>
-            <TeacherDashboard />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherDashboard />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/attendance" element={
-          <TeacherDashboardLayout>
-            <TeacherAttendancePage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherAttendancePage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/grades" element={
-          <TeacherDashboardLayout>
-            <TeacherGradesPage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherGradesPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/assignments" element={
-          <TeacherDashboardLayout>
-            <TeacherAssignmentsPage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherAssignmentsPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/leave-requests" element={
-          <TeacherDashboardLayout>
-            <TeacherLeaveRequestsPage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherLeaveRequestsPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/calendar" element={
-          <TeacherDashboardLayout>
-            <TeacherCalendarPage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherCalendarPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/online-classes" element={
-          <TeacherDashboardLayout>
-            <TeacherOnlineClassesPage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherOnlineClassesPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/exams" element={
-          <TeacherDashboardLayout>
-            <TeacherExamsPage />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherExamsPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/forum" element={
-          <TeacherDashboardLayout>
-            <Forum />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <Forum />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/chat" element={
-          <TeacherDashboardLayout>
-            <Chat />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <Chat />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/teacher/notifications" element={
-          <TeacherDashboardLayout>
-            <Notifications />
-          </TeacherDashboardLayout>
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <Notifications />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
         } />
-        <Route path="/teacher/profile" element={<TeacherDashboardLayout><TeacherProfile /></TeacherDashboardLayout>} />
+        <Route path="/teacher/profile" element={
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <TeacherProfile />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
+        } />
         
         {/* Parent Routes */}
         <Route path="/parent" element={
-          <ParentDashboardLayout>
-            <ParentDashboard />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <ParentDashboard />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/parent/child-progress" element={
-          <ParentDashboardLayout>
-            <ParentChildProgressPage />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <ParentChildProgressPage />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/parent/leave-approvals" element={
-          <ParentDashboardLayout>
-            <ParentLeaveApprovalsPage />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <ParentLeaveApprovalsPage />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/parent/calendar" element={
-          <ParentDashboardLayout>
-            <ParentCalendarPage />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <ParentCalendarPage />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/parent/forum" element={
-          <ParentDashboardLayout>
-            <Forum />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <Forum />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/parent/chat" element={
-          <ParentDashboardLayout>
-            <Chat />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <Chat />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/parent/notifications" element={
-          <ParentDashboardLayout>
-            <Notifications />
-          </ParentDashboardLayout>
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <Notifications />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
         } />
-        <Route path="/parent/profile" element={<ParentDashboardLayout><ParentProfile /></ParentDashboardLayout>} />
+        <Route path="/parent/profile" element={
+          <ProtectedLayout requiredRole="PARENT">
+            <ParentDashboardLayout>
+              <ParentProfile />
+            </ParentDashboardLayout>
+          </ProtectedLayout>
+        } />
         
         {/* Shared Routes */}
         <Route path="/forum/thread/:threadId" element={
-          <DashboardLayout>
-            <ThreadDetail />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <ThreadDetail />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         
         {/* Chat & Communication Routes */}
         <Route path="/chat" element={
-          <DashboardLayout>
-            <Chat />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <Chat />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/threaded-chat" element={
-          <DashboardLayout>
-            <ThreadedChat />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <ThreadedChat />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/websocket-test" element={
-          <DashboardLayout>
-            <WebSocketTest />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <WebSocketTest />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/chat-debug" element={
-          <DashboardLayout>
-            <ChatDebug />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <ChatDebug />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/message-test" element={
-          <DashboardLayout>
-            <MessageTest />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <MessageTest />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/simple-test" element={
-          <DashboardLayout>
-            <SimpleTest />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <SimpleTest />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/simple-websocket-test" element={
-          <DashboardLayout>
-            <SimpleWebSocketTest />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <SimpleWebSocketTest />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/simple-chat-test" element={
-          <DashboardLayout>
-            <SimpleChatTest />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <SimpleChatTest />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         
         {/* Feature Routes */}
         <Route path="/forum" element={
-          <DashboardLayout>
-            <Forum />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <Forum />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/notifications" element={
-          <DashboardLayout>
-            <Notifications />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <Notifications />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
         <Route path="/exams" element={
-          <DashboardLayout>
-            <ExamDashboard />
-          </DashboardLayout>
+          <ProtectedLayout>
+            <DashboardLayout>
+              <ExamDashboard />
+            </DashboardLayout>
+          </ProtectedLayout>
         } />
       </Routes>
     );

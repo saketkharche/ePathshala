@@ -37,79 +37,229 @@ import {
   Home as HomeIcon,
   Settings as SettingsIcon,
   ExpandLess,
-  ExpandMore
+  ExpandMore,
+  People as PeopleIcon,
+  Book as BookIcon,
+  Grade as GradeIcon,
+  Event as EventIcon,
+  VideoCall as VideoCallIcon,
+  Assessment as AssessmentIcon,
+  Security as SecurityIcon,
+  Business as BusinessIcon,
+  FamilyRestroom as FamilyIcon,
+  TrendingUp as TrendingIcon,
+  Schedule as ScheduleIcon,
+  NotificationsActive as NotificationsActiveIcon,
+  Message as MessageIcon,
+  FileCopy as FileCopyIcon,
+  History as HistoryIcon,
+  Star as StarIcon,
+  Help as HelpIcon,
+  Logout as LogoutIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { useResponsive, spacing, typography } from '../../utils/responsive';
+import { alpha } from '@mui/material/styles';
+import Logo from '../common/Logo';
 
 const SIDEBAR_COLLAPSED_WIDTH = 60;
 const SIDEBAR_EXPANDED_WIDTH = 280;
 
-const menuItems = {
-  main: [
-    { text: 'Home', icon: HomeIcon, path: '/home' },
-    { text: 'About Us', icon: InfoIcon, path: '/about' },
-    { text: 'Contact Us', icon: ContactIcon, path: '/contact' },
-  ],
-  dashboards: [
-    { text: 'Admin Dashboard', icon: AdminIcon, path: '/admin', role: 'ADMIN' },
-    { text: 'Student Dashboard', icon: SchoolIcon, path: '/student', role: 'STUDENT' },
-    { text: 'Teacher Dashboard', icon: PersonIcon, path: '/teacher', role: 'TEACHER' },
-    { text: 'Parent Dashboard', icon: PersonIcon, path: '/parent', role: 'PARENT' },
-  ],
-  adminSections: [
-    { text: 'Summary', icon: DashboardIcon, path: '/admin/summary', role: 'ADMIN' },
-    { text: 'Add Student', icon: PersonIcon, path: '/admin/add-student', role: 'ADMIN' },
-    { text: 'Add Teacher', icon: PersonIcon, path: '/admin/add-teacher', role: 'ADMIN' },
-    { text: 'Add Parent', icon: PersonIcon, path: '/admin/add-parent', role: 'ADMIN' },
-    { text: 'Assign Teacher', icon: AssignmentIcon, path: '/admin/assign-teacher', role: 'ADMIN' },
-    { text: 'Reset Password', icon: SettingsIcon, path: '/admin/reset-password', role: 'ADMIN' },
-    { text: 'Academic Calendar', icon: CalendarIcon, path: '/admin/calendar', role: 'ADMIN' },
-    { text: 'Online Classes', icon: ChatIcon, path: '/admin/online-classes', role: 'ADMIN' },
-    { text: 'Session Management', icon: SettingsIcon, path: '/admin/sessions', role: 'ADMIN' },
-  ],
-  features: [
-    { text: 'Exams', icon: QuizIcon, path: '/student/exams', role: 'STUDENT' },
-    { text: 'Assignments', icon: AssignmentIcon, path: '/assignments' },
-    { text: 'Calendar', icon: CalendarIcon, path: '/calendar' },
-    { text: 'Forum', icon: ForumIcon, path: '/forum' },
-    { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
-  ],
-  adminFeatures: [
-    { text: 'Forum', icon: ForumIcon, path: '/forum' },
-    { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
-  ],
+// Role-specific menu configurations
+const roleMenus = {
+  ADMIN: {
+    title: 'Admin Panel',
+    icon: AdminIcon,
+    sections: [
+      {
+        title: 'Dashboard',
+        items: [
+          { text: 'Overview', icon: DashboardIcon, path: '/admin' },
+          { text: 'Summary', icon: TrendingIcon, path: '/admin/summary' },
+        ]
+      },
+      {
+        title: 'User Management',
+        items: [
+          { text: 'Add Student', icon: SchoolIcon, path: '/admin/add-student' },
+          { text: 'Add Teacher', icon: PersonIcon, path: '/admin/add-teacher' },
+          { text: 'Add Parent', icon: FamilyIcon, path: '/admin/add-parent' },
+          { text: 'Assign Teacher', icon: AssignmentIcon, path: '/admin/assign-teacher' },
+        ]
+      },
+      {
+        title: 'System Management',
+        items: [
+          { text: 'Academic Calendar', icon: CalendarIcon, path: '/admin/calendar' },
+          { text: 'Online Classes', icon: VideoCallIcon, path: '/admin/online-classes' },
+          { text: 'Session Management', icon: SecurityIcon, path: '/admin/sessions' },
+          { text: 'Reset Password', icon: SettingsIcon, path: '/admin/reset-password' },
+        ]
+      },
+      {
+        title: 'Communication',
+        items: [
+          { text: 'Forum', icon: ForumIcon, path: '/forum' },
+          { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
+        ]
+      }
+    ]
+  },
+  STUDENT: {
+    title: 'Student Portal',
+    icon: SchoolIcon,
+    sections: [
+      {
+        title: 'Dashboard',
+        items: [
+          { text: 'Overview', icon: DashboardIcon, path: '/student' },
+          { text: 'My Progress', icon: TrendingIcon, path: '/student/progress' },
+        ]
+      },
+      {
+        title: 'Academic',
+        items: [
+          { text: 'Exams', icon: QuizIcon, path: '/student/exams' },
+          { text: 'Assignments', icon: AssignmentIcon, path: '/student/assignments' },
+          { text: 'Grades', icon: GradeIcon, path: '/student/grades' },
+          { text: 'Attendance', icon: ScheduleIcon, path: '/student/attendance' },
+        ]
+      },
+      {
+        title: 'Resources',
+        items: [
+          { text: 'Calendar', icon: CalendarIcon, path: '/student/calendar' },
+          { text: 'Online Classes', icon: VideoCallIcon, path: '/student/online-classes' },
+          { text: 'Leave Requests', icon: EventIcon, path: '/student/leave-requests' },
+        ]
+      },
+      {
+        title: 'Communication',
+        items: [
+          { text: 'Forum', icon: ForumIcon, path: '/forum' },
+          { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
+          { text: 'Chat', icon: ChatIcon, path: '/chat' },
+        ]
+      }
+    ]
+  },
+  TEACHER: {
+    title: 'Teacher Portal',
+    icon: PersonIcon,
+    sections: [
+      {
+        title: 'Dashboard',
+        items: [
+          { text: 'Overview', icon: DashboardIcon, path: '/teacher' },
+          { text: 'My Classes', icon: SchoolIcon, path: '/teacher/classes' },
+        ]
+      },
+      {
+        title: 'Academic Management',
+        items: [
+          { text: 'Exams', icon: QuizIcon, path: '/teacher/exams' },
+          { text: 'Assignments', icon: AssignmentIcon, path: '/teacher/assignments' },
+          { text: 'Grades', icon: GradeIcon, path: '/teacher/grades' },
+          { text: 'Attendance', icon: ScheduleIcon, path: '/teacher/attendance' },
+        ]
+      },
+      {
+        title: 'Teaching Tools',
+        items: [
+          { text: 'Online Classes', icon: VideoCallIcon, path: '/teacher/online-classes' },
+          { text: 'Calendar', icon: CalendarIcon, path: '/teacher/calendar' },
+          { text: 'Leave Approvals', icon: EventIcon, path: '/teacher/leave-approvals' },
+        ]
+      },
+      {
+        title: 'Communication',
+        items: [
+          { text: 'Forum', icon: ForumIcon, path: '/forum' },
+          { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
+          { text: 'Chat', icon: ChatIcon, path: '/chat' },
+        ]
+      }
+    ]
+  },
+  PARENT: {
+    title: 'Parent Portal',
+    icon: FamilyIcon,
+    sections: [
+      {
+        title: 'Dashboard',
+        items: [
+          { text: 'Overview', icon: DashboardIcon, path: '/parent' },
+          { text: 'Child Progress', icon: TrendingIcon, path: '/parent/child-progress' },
+        ]
+      },
+      {
+        title: 'Child Information',
+        items: [
+          { text: 'Academic Calendar', icon: CalendarIcon, path: '/parent/calendar' },
+          { text: 'Leave Approvals', icon: EventIcon, path: '/parent/leave-approvals' },
+          { text: 'Notifications', icon: NotificationsIcon, path: '/notifications' },
+        ]
+      },
+      {
+        title: 'Communication',
+        items: [
+          { text: 'Forum', icon: ForumIcon, path: '/forum' },
+          { text: 'Chat', icon: ChatIcon, path: '/chat' },
+        ]
+      }
+    ]
+  }
 };
 
-function Sidebar({ open, onClose, collapsed, onCollapse }) {
+// Common menu items for all roles
+const commonMenuItems = [
+  { text: 'Home', icon: HomeIcon, path: '/home' },
+  { text: 'About Us', icon: InfoIcon, path: '/about' },
+  { text: 'Contact Us', icon: ContactIcon, path: '/contact' },
+  { text: 'Help', icon: HelpIcon, path: '/help' },
+];
+
+function Sidebar({ open, onClose, collapsed, onCollapse, isMobile }) {
   const theme = useTheme();
-  const { isMobile, isTablet, isDesktop } = useResponsive();
+  const responsive = useResponsive();
+  const isMobileDevice = isMobile || responsive.isMobile;
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
-  const [expanded, setExpanded] = useState({
-    dashboards: true,
-    features: true,
-    adminSections: true
-  });
+  const { user, logout } = useAuth();
+  const [expanded, setExpanded] = useState({});
 
-  // Auto-collapse on mobile
+  // Get role-specific menu configuration
+  const getRoleMenu = () => {
+    if (!user?.role) return null;
+    return roleMenus[user.role] || roleMenus.ADMIN;
+  };
+
+  const roleMenu = getRoleMenu();
+
+  // Initialize expanded state for all sections
   useEffect(() => {
-    if (isMobile && !collapsed) {
-      onCollapse?.();
+    if (roleMenu) {
+      const initialExpanded = {};
+      roleMenu.sections.forEach(section => {
+        initialExpanded[section.title] = true;
+      });
+      setExpanded(initialExpanded);
     }
-  }, [isMobile, collapsed, onCollapse]);
+  }, [roleMenu]);
 
   const handleDrawerClose = () => {
-    if (isMobile) {
+    if (isMobileDevice) {
       onClose?.();
     }
   };
 
   const handleItemClick = (path) => {
     navigate(path);
-    handleDrawerClose();
+    // Only close drawer on mobile, don't change collapsed state
+    if (isMobileDevice) {
+      handleDrawerClose();
+    }
   };
 
   const handleExpandClick = (section) => {
@@ -119,17 +269,14 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
     }));
   };
 
-  const isItemVisible = (item) => {
-    if (!item.role) return true;
-    return user?.role === item.role;
+  const handleLogout = () => {
+    logout();
+    handleDrawerClose();
   };
 
   const renderMenuItem = (item, index, isCollapsed) => {
     const isActive = location.pathname === item.path;
-    const isVisible = isItemVisible(item);
     
-    if (!isVisible) return null;
-
     const menuItem = (
       <ListItem
         key={item.text}
@@ -156,12 +303,21 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
               backgroundColor: isActive ? 'primary.dark' : 'rgba(0,0,0,0.04)',
             },
             transition: 'all 0.2s ease-in-out',
+            // Ensure proper centering when collapsed
+            justifyContent: isCollapsed ? 'center' : 'flex-start',
           }}
         >
           <ListItemIcon
             sx={{
               minWidth: { xs: 36, sm: 40 },
               color: isActive ? 'primary.contrastText' : 'inherit',
+              // Ensure icon is always visible and properly sized
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              '& .MuiSvgIcon-root': {
+                fontSize: { xs: 20, sm: 24 },
+              },
             }}
           >
             <item.icon />
@@ -188,8 +344,8 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
     ) : menuItem;
   };
 
-  const renderSection = (title, items, sectionKey, isCollapsed) => (
-    <Box key={sectionKey}>
+  const renderSection = (section, isCollapsed) => (
+    <Box key={section.title}>
       {!isCollapsed && (
         <Box
           sx={{
@@ -203,7 +359,7 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
               backgroundColor: 'rgba(0,0,0,0.02)',
             },
           }}
-          onClick={() => handleExpandClick(sectionKey)}
+          onClick={() => handleExpandClick(section.title)}
         >
           <Typography
             variant="subtitle2"
@@ -215,14 +371,14 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
               letterSpacing: 0.5,
             }}
           >
-            {title}
+            {section.title}
           </Typography>
-          {expanded[sectionKey] ? <ExpandLess /> : <ExpandMore />}
+          {expanded[section.title] ? <ExpandLess /> : <ExpandMore />}
         </Box>
       )}
-      <Collapse in={!isCollapsed || expanded[sectionKey]} timeout="auto" unmountOnExit>
+      <Collapse in={!isCollapsed || expanded[section.title]} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {items.filter(isItemVisible).map((item, index) =>
+          {section.items.map((item, index) =>
             renderMenuItem(item, index, isCollapsed)
           )}
         </List>
@@ -230,25 +386,31 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
     </Box>
   );
 
-  const getSidebarSections = (user) => {
-    const sections = [];
-    
-    if (user?.role === 'ADMIN') {
-      sections.push(
-        renderSection('Admin Management', menuItems.adminSections, 'adminSections', collapsed)
-      );
-    }
-    
-    sections.push(
-      renderSection('Dashboards', menuItems.dashboards, 'dashboards', collapsed)
-    );
-    
-    sections.push(
-      renderSection('Features', menuItems.features, 'features', collapsed)
-    );
-    
-    return sections;
-  };
+  const renderCommonMenuItems = (isCollapsed) => (
+    <Box>
+      {!isCollapsed && (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            px: { xs: 2, sm: 3 },
+            py: { xs: 1, sm: 1.5 },
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            fontWeight: 600,
+            color: 'text.secondary',
+            textTransform: 'uppercase',
+            letterSpacing: 0.5,
+          }}
+        >
+          General
+        </Typography>
+      )}
+      <List component="div" disablePadding>
+        {commonMenuItems.map((item, index) =>
+          renderMenuItem(item, index, isCollapsed)
+        )}
+      </List>
+    </Box>
+  );
 
   const drawerContent = (
     <Box
@@ -258,6 +420,9 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
         height: '100%',
         width: collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH,
         transition: 'width 0.3s ease-in-out',
+        overflow: 'hidden',
+        position: 'relative',
+        zIndex: theme.zIndex.drawer
       }}
     >
       {/* Header */}
@@ -270,50 +435,52 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
           borderBottom: 1,
           borderColor: 'divider',
           minHeight: { xs: 64, sm: 72 },
+          position: 'sticky',
+          top: 0,
+          backgroundColor: 'background.paper',
+          zIndex: 1
         }}
       >
-        {!collapsed && (
+        {/* Role title when expanded */}
+        {!collapsed && roleMenu && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar
+            <roleMenu.icon 
+              sx={{ 
+                color: theme.palette.primary.main,
+                fontSize: { xs: 24, sm: 28 },
+              }} 
+            />
+            <Typography
+              variant="h6"
               sx={{
-                width: { xs: 32, sm: 40 },
-                height: { xs: 32, sm: 40 },
-                bgcolor: 'primary.main',
+                fontSize: { xs: '1rem', sm: '1.25rem' },
+                fontWeight: 600,
+                lineHeight: 1.2,
+                color: theme.palette.primary.main,
               }}
             >
-              <AdminIcon />
-            </Avatar>
-            <Box>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontSize: { xs: '1rem', sm: '1.25rem' },
-                  fontWeight: 600,
-                  lineHeight: 1.2,
-                }}
-              >
-                ePathshala
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                  color: 'text.secondary',
-                }}
-              >
-                Admin Panel
-              </Typography>
-            </Box>
+              {roleMenu.title}
+            </Typography>
           </Box>
         )}
         
+        {/* Expand/Collapse button - always visible */}
         <IconButton
           onClick={onCollapse}
           sx={{
             color: 'text.secondary',
+            backgroundColor: alpha(theme.palette.primary.main, 0.1),
+            border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
             '&:hover': {
-              backgroundColor: 'rgba(0,0,0,0.04)',
+              backgroundColor: alpha(theme.palette.primary.main, 0.2),
+              color: theme.palette.primary.main,
+              transform: 'scale(1.1)',
             },
+            transition: 'all 0.2s ease-in-out',
+            width: { xs: 32, sm: 36 },
+            height: { xs: 32, sm: 36 },
+            minWidth: { xs: 32, sm: 36 },
+            minHeight: { xs: 32, sm: 36 },
           }}
         >
           {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -326,6 +493,8 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
           flexGrow: 1,
           overflowY: 'auto',
           overflowX: 'hidden',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(0,0,0,0.2) transparent',
           '&::-webkit-scrollbar': {
             width: 6,
           },
@@ -339,9 +508,22 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
           '&::-webkit-scrollbar-thumb:hover': {
             backgroundColor: 'rgba(0,0,0,0.3)',
           },
+          px: { xs: 0.5, sm: 1 },
+          py: { xs: 1, sm: 1.5 }
         }}
       >
-        {getSidebarSections(user)}
+        {/* Role-specific sections */}
+        {roleMenu && roleMenu.sections.map(section => 
+          renderSection(section, collapsed)
+        )}
+        
+        {/* Divider */}
+        {roleMenu && (
+          <Divider sx={{ my: { xs: 1, sm: 2 }, mx: { xs: 1, sm: 2 } }} />
+        )}
+        
+        {/* Common menu items */}
+        {renderCommonMenuItems(collapsed)}
       </Box>
 
       {/* Footer */}
@@ -352,6 +534,9 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
             borderTop: 1,
             borderColor: 'divider',
             backgroundColor: 'background.paper',
+            position: 'sticky',
+            bottom: 0,
+            zIndex: 1
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
@@ -387,6 +572,56 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
               />
             </Box>
           </Box>
+          
+          {/* Logout button */}
+          <ListItemButton
+            onClick={handleLogout}
+            sx={{
+              borderRadius: 1,
+              color: 'error.main',
+              '&:hover': {
+                backgroundColor: 'error.light',
+                color: 'error.contrastText',
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: 'inherit' }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
+        </Box>
+      )}
+      
+      {/* Collapsed footer with logout icon */}
+      {collapsed && user && (
+        <Box
+          sx={{
+            p: 1,
+            borderTop: 1,
+            borderColor: 'divider',
+            backgroundColor: 'background.paper',
+            position: 'sticky',
+            bottom: 0,
+            zIndex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Tooltip title="Logout" placement="right">
+            <IconButton
+              onClick={handleLogout}
+              sx={{
+                color: 'error.main',
+                '&:hover': {
+                  backgroundColor: 'error.light',
+                  color: 'error.contrastText',
+                },
+              }}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       )}
     </Box>
@@ -395,13 +630,13 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
   return (
     <>
       {/* Mobile Drawer */}
-      {isMobile && (
+      {isMobileDevice && (
         <Drawer
           variant="temporary"
           open={open}
           onClose={onClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
@@ -410,6 +645,8 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
               width: SIDEBAR_EXPANDED_WIDTH,
               border: 'none',
               boxShadow: 8,
+              zIndex: theme.zIndex.modal + 1,
+              backgroundColor: 'background.paper',
             },
           }}
         >
@@ -418,7 +655,7 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
       )}
 
       {/* Desktop Drawer */}
-      {!isMobile && (
+      {!isMobileDevice && (
         <Drawer
           variant="permanent"
           sx={{
@@ -430,6 +667,12 @@ function Sidebar({ open, onClose, collapsed, onCollapse }) {
               boxShadow: 2,
               transition: 'width 0.3s ease-in-out',
               overflowX: 'hidden',
+              zIndex: theme.zIndex.drawer,
+              backgroundColor: 'background.paper',
+              position: 'fixed',
+              height: '100vh',
+              top: 0,
+              left: 0
             },
           }}
           open

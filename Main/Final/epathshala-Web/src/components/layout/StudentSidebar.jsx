@@ -68,6 +68,12 @@ const studentMenuItems = [
     description: 'View academic performance'
   },
   {
+    text: 'My Progress',
+    icon: SchoolIcon,
+    path: '/student/progress',
+    description: 'Track academic progress'
+  },
+  {
     text: 'My Attendance',
     icon: PersonIcon,
     path: '/student/attendance',

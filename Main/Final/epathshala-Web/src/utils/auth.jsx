@@ -55,6 +55,7 @@ const getTokenExpirationTime = (token) => {
 
 export function AuthProvider({ children }) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
@@ -79,6 +80,11 @@ export function AuthProvider({ children }) {
 
   const [sessionWarning, setSessionWarning] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
+
+  // Set loading to false after initialization
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   // Auto-logout function
   const autoLogout = useCallback((reason = 'Session expired') => {
@@ -155,22 +161,110 @@ export function AuthProvider({ children }) {
     return () => clearTimeout(timeout);
   }, [sessionWarning, user, autoLogout]);
 
-  const login = (token, role, userId, name) => {
-    // Validate token before storing
-    if (!token || isTokenExpired(token)) {
-      throw new Error('Invalid or expired token');
+  // Health check function to test backend connectivity
+  const checkBackendHealth = async () => {
+    try {
+      const response = await fetch('/api/auth/status', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('Backend health check status:', response.status);
+      return response.ok;
+    } catch (error) {
+      console.error('Backend health check failed:', error);
+      return false;
     }
+  };
 
-    // Store in localStorage
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", role);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("name", name);
+  // Login function that handles API call
+  const login = async (email, password, role) => {
+    try {
+      console.log('Attempting login with:', { email, role });
+      
+      // Check backend connectivity first
+      const isBackendHealthy = await checkBackendHealth();
+      if (!isBackendHealthy) {
+        throw new Error('Backend server is not accessible. Please check if the server is running.');
+      }
+      
+      // Make API call to login endpoint
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, role }),
+      });
 
-    // Update state
-    setUser({ token, role, id: userId, name });
-    setSessionWarning(false);
-    setSessionExpired(false);
+      console.log('Login response status:', response.status);
+      console.log('Login response headers:', response.headers);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ 
+          error: `HTTP ${response.status}: ${response.statusText}` 
+        }));
+        console.error('Login error response:', errorData);
+        throw new Error(errorData.error || errorData.message || `Login failed: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Login success data:', { 
+        hasToken: !!data.token, 
+        role: data.role, 
+        userId: data.userId, 
+        name: data.name 
+      });
+      
+      // Validate response data
+      if (!data.token) {
+        console.error('No token in response:', data);
+        throw new Error('Invalid response: No token received from server');
+      }
+
+      // Validate token before storing
+      if (isTokenExpired(data.token)) {
+        console.error('Token is expired:', data.token);
+        throw new Error('Invalid or expired token received from server');
+      }
+
+      console.log('Token validation passed, storing user data');
+
+      // Store in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("name", data.name);
+
+      // Update state
+      setUser({ 
+        token: data.token, 
+        role: data.role, 
+        id: data.userId, 
+        name: data.name 
+      });
+      setSessionWarning(false);
+      setSessionExpired(false);
+
+      console.log('User logged in successfully, navigating to dashboard');
+
+      // Navigate to appropriate dashboard based on role
+      try {
+        if (navigate) {
+          navigate(`/${data.role.toLowerCase()}`);
+        } else {
+          window.location.href = `/${data.role.toLowerCase()}`;
+        }
+      } catch (error) {
+        console.error('Navigation error:', error);
+        window.location.href = `/${data.role.toLowerCase()}`;
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const logout = (reason = 'User logged out') => {
@@ -220,6 +314,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    loading,
     login,
     logout,
     refreshSession,

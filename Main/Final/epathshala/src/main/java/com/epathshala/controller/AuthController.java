@@ -25,6 +25,17 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(req));
     }
 
+    @GetMapping("/status")
+    @Operation(summary = "Auth Status", description = "Check authentication service status")
+    public ResponseEntity<?> getStatus() {
+        Map<String, Object> status = Map.of(
+            "status", "OK",
+            "message", "Authentication service is running",
+            "timestamp", System.currentTimeMillis()
+        );
+        return ResponseEntity.ok(status);
+    }
+
     @PostMapping("/logout")
     @Operation(summary = "User Logout", description = "Logout user and invalidate session")
     public ResponseEntity<?> logout(@RequestParam String sessionId) {
@@ -44,24 +55,14 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    @Operation(summary = "Forgot Password", description = "Request OTP for password reset")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        return ResponseEntity.ok(authService.forgotPassword(request.getEmail()));
+    @Operation(summary = "Forgot Password", description = "Send password reset OTP to user email")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest req) {
+        return ResponseEntity.ok(authService.forgotPassword(req.getEmail()));
     }
 
     @PostMapping("/verify-otp")
-    @Operation(summary = "Verify OTP and Reset Password", description = "Verify OTP and reset password")
-    public ResponseEntity<?> verifyOtpAndResetPassword(@RequestBody VerifyOtpRequest request) {
-        return ResponseEntity.ok(authService.verifyOtpAndResetPassword(request));
-    }
-
-    @GetMapping("/test")
-    @Operation(summary = "Test Endpoint", description = "Simple test endpoint to verify API is working")
-    public ResponseEntity<?> test() {
-        return ResponseEntity.ok(Map.of(
-            "message", "API is working!",
-            "timestamp", System.currentTimeMillis(),
-            "status", "success"
-        ));
+    @Operation(summary = "Verify OTP", description = "Verify OTP and reset password")
+    public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest req) {
+        return ResponseEntity.ok(authService.verifyOtpAndResetPassword(req));
     }
 }

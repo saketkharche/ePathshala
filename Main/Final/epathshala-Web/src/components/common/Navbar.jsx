@@ -21,6 +21,8 @@ import {
   ListItem as MUIListItem,
   ListItemText as MUIListItemText,
   Tooltip,
+  Divider,
+  alpha,
 } from '@mui/material';
 import {
   Chat as ChatIcon,
@@ -30,6 +32,10 @@ import {
   Quiz as QuizIcon,
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
+  Home as HomeIcon,
+  Info as InfoIcon,
+  ContactSupport as ContactIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import Chatbot from './Chatbot';
 import Logo from './Logo';
@@ -45,6 +51,7 @@ const ROLE_COLORS = {
   TEACHER: '#388e3c',
   PARENT: '#fbc02d',
 };
+
 const ROLE_ICONS = {
   ADMIN: <PersonIcon />,
   STUDENT: <QuizIcon />,
@@ -58,10 +65,9 @@ const NAV_LINKS = [
   { label: 'Chat', path: (role) => `/${role}/chat`, icon: <ChatIcon fontSize="small" /> },
 ];
 
-const PUBLIC_LINKS = [
-  { label: 'Home', path: '/' },
-  { label: 'About', path: '/about' },
-  { label: 'Contact', path: '/contact' },
+const COMMON_LINKS = [
+  { label: 'About Us', path: '/about', icon: <InfoIcon fontSize="small" /> },
+  { label: 'Contact Us', path: '/contact', icon: <ContactIcon fontSize="small" /> },
 ];
 
 function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false }) {
@@ -78,10 +84,6 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
   const [notifError, setNotifError] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Determine if we're on a page with sidebar (dashboard pages)
-  // If onMenuClick is provided, we're on a dashboard page with sidebar
-  const hasSidebar = onMenuClick !== undefined;
-
   // Load notifications when user is authenticated
   useEffect(() => {
     if (user && user.role && ['ADMIN', 'STUDENT', 'TEACHER', 'PARENT'].includes(user.role)) {
@@ -93,29 +95,29 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
   }, [user]);
 
   const loadNotifications = async () => {
-    // Only load notifications for authenticated users with proper roles
     if (!user || !user.role || !['ADMIN', 'STUDENT', 'TEACHER', 'PARENT'].includes(user.role)) {
       setNotifications([]);
       setUnreadCount(0);
       return;
     }
 
-    setNotifLoading(true);
-    setNotifError("");
     try {
-      const notifData = await fetchUserNotifications();
-      setNotifications(notifData.notifications || []);
-      setUnreadCount(notifData.unreadCount || 0);
-    } catch (e) {
-      console.warn('Failed to load notifications:', e.message);
-      setNotifications([]);
-      setUnreadCount(0);
-      // Don't show error for 403/401 as it might be normal for some users
-      if (e.message.includes('403') || e.message.includes('401')) {
-        setNotifError("");
-      } else {
-        setNotifError("Failed to load notifications");
+      setNotifLoading(true);
+      const [notifData, countData] = await Promise.all([
+        fetchUserNotifications(),
+        fetchUnreadNotificationCount()
+      ]);
+      
+      if (notifData.success) {
+        setNotifications(notifData.data || []);
       }
+      
+      if (countData.success) {
+        setUnreadCount(countData.data || 0);
+      }
+    } catch (error) {
+      console.error('Error loading notifications:', error);
+      setNotifError('Failed to load notifications');
     } finally {
       setNotifLoading(false);
     }
@@ -123,424 +125,223 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
 
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  
+
   const handleLogout = () => { 
-    logout(); 
-    try {
-      if (navigate) {
-        navigate('/login');
-      } else {
-        window.location.href = '/login';
-      }
-    } catch (error) {
-      console.error('Navigation error:', error);
-      window.location.href = '/login';
-    }
-    handleClose(); 
+    logout();
+    setAnchorEl(null);
+    navigate('/');
   };
-  
+
   const handleProfile = () => { 
+    setAnchorEl(null);
     if (user?.role) {
-      try {
-        if (navigate) {
-          navigate(`/${user.role.toLowerCase()}/profile`);
-        } else {
-          window.location.href = `/${user.role.toLowerCase()}/profile`;
-        }
-      } catch (error) {
-        console.error('Navigation error:', error);
-        window.location.href = `/${user.role.toLowerCase()}/profile`;
-      }
+      navigate(`/${user.role.toLowerCase()}/profile`);
     }
-    handleClose(); 
   };
-  
+
   const handleChatbotOpen = () => setIsChatbotOpen(true);
   const handleChatbotClose = () => setIsChatbotOpen(false);
-  
+
   const handleNotifOpen = async (event) => { 
-    setNotifAnchorEl(event.currentTarget); 
-    await loadNotifications(); 
+    setNotifAnchorEl(event.currentTarget);
+    if (unreadCount > 0) {
+      try {
+        await markAllNotificationsAsRead();
+        setUnreadCount(0);
+      } catch (error) {
+        console.error('Error marking notifications as read:', error);
+      }
+    }
   };
-  
+
   const handleNotifClose = async () => { 
-    setNotifAnchorEl(null); 
-    
-    // Only mark notifications as read for authenticated users with proper roles
-    if (!user || !user.role || !['ADMIN', 'STUDENT', 'TEACHER', 'PARENT'].includes(user.role)) {
-      return;
-    }
-    
-    try {
-      await markAllNotificationsAsRead();
-      await loadNotifications();
-    } catch (error) {
-      console.warn('Failed to mark notifications as read:', error.message);
-      // Don't show error for 403/401 as it might be normal for some users
-    }
+    setNotifAnchorEl(null);
   };
-  const notifOpen = Boolean(notifAnchorEl);
+
   const handleDrawerToggle = () => setDrawerOpen((prev) => !prev);
 
-  const roleColor = user?.role ? ROLE_COLORS[user.role.toUpperCase()] || theme.palette.primary.main : theme.palette.primary.main;
-  const roleIcon = user?.role ? ROLE_ICONS[user.role.toUpperCase()] : <PersonIcon />;
+  const roleColor = user?.role ? ROLE_COLORS[user.role] : theme.palette.primary.main;
+  const roleIcon = user?.role ? ROLE_ICONS[user.role] : <PersonIcon />;
 
   return (
     <>
       <AppBar 
         position="fixed" 
-        elevation={4} 
+        elevation={0}
         sx={{
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(12px)',
-          boxShadow: '0 4px 24px 0 rgba(0,0,0,0.08)',
-          color: 'text.primary',
-          transition: 'all 0.3s ease',
-          // Ensure navbar stays above all content
+          background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.95)} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`,
+          backdropFilter: 'blur(10px)',
+          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           zIndex: theme.zIndex.appBar,
-          // Position based on whether we have a sidebar
-          top: 0,
-          left: hasSidebar ? { 
-            xs: 0, // Full width on mobile
-            md: sidebarCollapsed ? '60px' : '280px' // Start after sidebar
-          } : 0, // Full width on public pages
-          right: 0,
-          width: hasSidebar ? { 
-            xs: '100%', // Full width on mobile
-            md: sidebarCollapsed ? 'calc(100% - 60px)' : 'calc(100% - 280px)' // Width minus sidebar
-          } : '100%', // Full width on public pages
-          // Ensure proper height with responsive sizing
-          height: { xs: '56px', sm: '64px', md: '72px' },
-          minHeight: { xs: '56px', sm: '64px', md: '72px' },
-          // Prevent content from showing through
-          backgroundColor: 'rgba(255,255,255,0.95)',
-          // Add responsive container
-          maxWidth: '100vw',
-          overflow: 'hidden'
+          left: '240px',
+          width: 'calc(100% - 240px)',
+          transition: 'all 0.3s ease',
+          ...(sidebarCollapsed && {
+            left: '64px',
+            width: 'calc(100% - 64px)',
+          }),
         }}
       >
         <Toolbar sx={{
-          height: { xs: '56px', sm: '64px', md: '72px' },
-          minHeight: { xs: '56px', sm: '64px', md: '72px' },
-          px: { xs: 3, sm: 4, md: 6 },
+          height: { xs: '64px', sm: '72px' },
+          minHeight: { xs: '64px', sm: '72px' },
+          px: { xs: 2, sm: 3, md: 4 },
           py: 0,
-          boxShadow: 'none',
-          bgcolor: 'transparent',
           display: 'flex',
-          gap: { xs: 2, sm: 3, md: 4 },
-          // Ensure proper alignment
           alignItems: 'center',
           justifyContent: 'space-between',
-          // Prevent overflow
-          overflow: 'hidden',
-          // Make it flexible
-          flexWrap: 'nowrap',
-          // Add max width container for better centering
-          maxWidth: hasSidebar ? '100%' : '1400px', // Increased width for better spacing
-          mx: 'auto'
+          gap: { xs: 2, sm: 3 },
         }}>
-          {/* Left: App logo/title */}
+          {/* Logo Section */}
           <Box sx={{ 
             display: 'flex', 
-            alignItems: 'center', 
-            gap: { xs: 1, sm: 1.5 }, 
-            // Prevent text overflow
-            minWidth: 0,
+            alignItems: 'center',
             flexShrink: 0,
-            // Give more space to logo
-            maxWidth: { xs: '45%', sm: '40%', md: '35%' }
           }}>
             <Logo 
               variant="minimal"
               size={isMobile ? 'small' : 'medium'}
               sx={{ 
-                color: roleColor,
-                fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' },
+                color: theme.palette.primary.main,
+                fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
                 fontWeight: 700,
-                letterSpacing: 1,
-                textShadow: '0 1px 8px rgba(0,0,0,0.04)'
+                letterSpacing: 0.5,
+                textShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                }
               }}
             />
           </Box>
 
-
-
-          {/* Right: Navigation links and User actions */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: { xs: 1, sm: 1.5, md: 2 }, 
-            ml: 'auto',
-            // Prevent overflow
-            overflow: 'hidden',
-            flexShrink: 0
-          }}>
-            {/* Mobile Menu Buttons */}
-            {user && isMobile && onMenuClick && (
-              <IconButton
-                color="inherit"
-                aria-label="open sidebar"
-                onClick={onMenuClick}
-                sx={{ 
-                  display: { xs: 'flex', md: 'none' },
-                  p: { xs: 0.75, sm: 1, md: 1.25 },
-                  transition: 'all 0.2s ease',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(0,0,0,0.06)',
-                    transform: 'scale(1.05)'
-                  }
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-            {user && isMobile && !onMenuClick && (
-              <IconButton
-                color="inherit"
-                onClick={handleDrawerToggle}
-                sx={{ 
-                  display: { xs: 'flex', md: 'none' },
-                  p: { xs: 0.75, sm: 1, md: 1.25 },
-                  transition: 'all 0.2s ease',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(0,0,0,0.06)',
-                    transform: 'scale(1.05)'
-                  }
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-            {!user && isMobile && (
-              <IconButton
-                color="inherit"
-                onClick={handleDrawerToggle}
-                sx={{ 
-                  display: { xs: 'flex', md: 'none' },
-                  p: { xs: 0.75, sm: 1, md: 1.25 },
-                  transition: 'all 0.2s ease',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(0,0,0,0.06)',
-                    transform: 'scale(1.05)'
-                  }
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-            {/* Navigation links (desktop) */}
-            {user && !isMobile && (
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: { xs: 1, sm: 1.5, md: 2 }, 
-                mr: 2
-              }}>
-                {NAV_LINKS.map(link => (
-                  <Button
-                    key={link.label}
-                    color="inherit"
-                    component={Link}
-                    to={link.path(user.role?.toLowerCase())}
-                    startIcon={link.icon}
-                    sx={{
-                      textTransform: 'none',
-                      fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
-                      px: { xs: 1.5, sm: 2, md: 2.5 },
-                      py: { xs: 0.75, sm: 1 },
-                      borderRadius: 2,
-                      transition: 'all 0.2s ease',
-                      '&:hover': { 
-                        backgroundColor: 'rgba(0,0,0,0.04)',
-                        transform: 'translateY(-1px)'
-                      },
-                      // Prevent text overflow
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      // Make buttons more flexible
-                      minWidth: 'auto',
-                      flexShrink: 0
-                    }}
-                  >
-                    {link.label}
-                  </Button>
-                ))}
-              </Box>
-            )}
-            {!user && !isMobile && (
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: { xs: 1, sm: 1.5, md: 2 }, 
-                mr: 2
-              }}>
-                {PUBLIC_LINKS.map(link => (
+          {/* Desktop Navigation */}
+          {!isMobile && (
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1,
+              ml: 'auto',
+            }}>
+              {/* Common Links for Authenticated Users */}
+              <Box sx={{ display: 'flex', gap: 1, mr: 2 }}>
+                {COMMON_LINKS.map(link => (
                   <Button
                     key={link.label}
                     color="inherit"
                     component={Link}
                     to={link.path}
+                    startIcon={link.icon}
                     sx={{
                       textTransform: 'none',
-                      fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
-                      px: { xs: 1.5, sm: 2, md: 2.5 },
-                      py: { xs: 0.75, sm: 1 },
+                      fontSize: '0.85rem',
+                      px: 1.5,
+                      py: 0.75,
                       borderRadius: 2,
+                      fontWeight: 500,
                       transition: 'all 0.2s ease',
                       '&:hover': { 
-                        backgroundColor: 'rgba(0,0,0,0.04)',
-                        transform: 'translateY(-1px)'
+                        backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                        transform: 'translateY(-1px)',
                       },
-                      // Prevent text overflow
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      // Make buttons more flexible
-                      minWidth: 'auto',
-                      flexShrink: 0
                     }}
                   >
                     {link.label}
                   </Button>
                 ))}
               </Box>
-            )}
-            {user && (
-              <>
-                {/* Notification bell - only show if user has permission */}
-                {user.role && ['ADMIN', 'STUDENT', 'TEACHER', 'PARENT'].includes(user.role) && (
-                  <Tooltip title="Notifications">
-                    <IconButton
-                      color="inherit"
-                      onClick={handleNotifOpen}
-                      sx={{ 
-                        p: { xs: 0.75, sm: 1, md: 1.25 }, 
-                        transition: 'all 0.2s ease', 
-                        '&:hover': { 
-                          backgroundColor: 'rgba(0,0,0,0.06)',
-                          transform: 'scale(1.05)'
-                        } 
-                      }}
-                    >
-                      <Badge badgeContent={unreadCount} color="error" max={99}>
-                        <NotificationsIcon />
-                      </Badge>
-                    </IconButton>
-                  </Tooltip>
-                )}
 
-                {/* Chatbot button */}
-                <Tooltip title="AI Assistant">
+              {/* Notifications */}
+              {['ADMIN', 'STUDENT', 'TEACHER', 'PARENT'].includes(user?.role) && (
+                <Tooltip title="Notifications">
                   <IconButton
                     color="inherit"
-                    onClick={handleChatbotOpen}
+                    onClick={handleNotifOpen}
                     sx={{ 
-                      p: { xs: 0.75, sm: 1, md: 1.25 }, 
-                      transition: 'all 0.2s ease', 
+                      p: 1,
+                      transition: 'all 0.2s ease',
                       '&:hover': { 
-                        backgroundColor: 'rgba(0,0,0,0.06)',
-                        transform: 'scale(1.05)'
+                        backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                        transform: 'scale(1.05)',
                       } 
                     }}
                   >
-                    <BotIcon />
+                    <Badge badgeContent={unreadCount} color="error" max={99}>
+                      <NotificationsIcon />
+                    </Badge>
                   </IconButton>
                 </Tooltip>
+              )}
 
-                {/* User menu */}
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: 1,
-                  // Prevent overflow
-                  minWidth: 0
-                }}>
-                  <Chip
-                    label={user.role || 'User'}
-                    size="small"
-                    sx={{
-                      backgroundColor: roleColor,
-                      color: 'white',
-                      fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                      height: { xs: 24, sm: 28 },
-                      '& .MuiChip-label': {
-                        px: { xs: 1, sm: 1.5 },
-                      },
-                      // Prevent text overflow
-                      maxWidth: { xs: 60, sm: 80 },
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis'
-                    }}
-                  />
-                  <Tooltip title="Account settings">
-                    <IconButton
-                      onClick={handleMenu}
-                      sx={{ 
-                        p: { xs: 0.75, sm: 1, md: 1.25 }, 
-                        transition: 'all 0.2s ease', 
-                        '&:hover': { 
-                          backgroundColor: 'rgba(0,0,0,0.06)',
-                          transform: 'scale(1.05)'
-                        } 
-                      }}
-                    >
-                      <Avatar
-                        sx={{
-                          width: { xs: 32, sm: 36, md: 40 },
-                          height: { xs: 32, sm: 36, md: 40 },
-                          backgroundColor: roleColor,
-                          fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
-                        }}
-                      >
-                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                      </Avatar>
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </>
-            )}
-
-            {!user && (
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: { xs: 1, sm: 2 },
-                // Prevent overflow
-                overflow: 'hidden'
-              }}>
-                <Button
+              {/* Chatbot */}
+              <Tooltip title="AI Assistant">
+                <IconButton
                   color="inherit"
-                  component={Link}
-                  to="/login"
-                  sx={{
-                    textTransform: 'none',
-                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                    px: { xs: 1.5, sm: 2 },
-                    py: { xs: 0.5, sm: 0.75 },
-                    borderRadius: 2,
-                    border: '1px solid',
-                    borderColor: 'rgba(0,0,0,0.12)',
-                    transition: 'all 0.2s',
-                    '&:hover': {
-                      backgroundColor: 'rgba(0,0,0,0.04)',
-                      borderColor: 'rgba(0,0,0,0.24)',
-                    },
-                    // Prevent text overflow
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                  onClick={handleChatbotOpen}
+                  sx={{ 
+                    p: 1,
+                    transition: 'all 0.2s ease',
+                    '&:hover': { 
+                      backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                      transform: 'scale(1.05)',
+                    } 
                   }}
                 >
-                  Sign In
-                </Button>
-              </Box>
-            )}
-          </Box>
+                  <BotIcon />
+                </IconButton>
+              </Tooltip>
+
+              {/* User Menu */}
+              <Tooltip title="User Menu">
+                <IconButton
+                  onClick={handleMenu}
+                  sx={{ 
+                    p: 1,
+                    transition: 'all 0.2s ease',
+                    '&:hover': { 
+                      backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                      transform: 'scale(1.05)',
+                    } 
+                  }}
+                >
+                  <Avatar 
+                    sx={{ 
+                      width: 32, 
+                      height: 32,
+                      bgcolor: roleColor,
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+
+          {/* Mobile Menu Button */}
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              onClick={handleDrawerToggle}
+              sx={{ 
+                ml: 'auto',
+                p: 1,
+                transition: 'all 0.2s ease',
+                '&:hover': { 
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  transform: 'scale(1.05)',
+                }
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
-      
-      {/* Notification Popover */}
+
+      {/* Notifications Popover */}
       <Popover
         open={Boolean(notifAnchorEl)}
         anchorEl={notifAnchorEl}
@@ -549,33 +350,58 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{ 
           sx: { 
-            minWidth: 260, 
-            borderRadius: 2, 
-            boxShadow: 4,
-            // Ensure popover appears above other content
-            zIndex: theme.zIndex.modal + 1
+            width: 320,
+            maxHeight: 400,
+            borderRadius: 2,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           } 
         }}
       >
-        <Box sx={{ p: 1 }}>
-          <Typography variant="subtitle1" sx={{ mb: 1 }}>
-            Notifications
-          </Typography>
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Notifications
+            </Typography>
+            <IconButton size="small" onClick={handleNotifClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Box>
+          <Divider sx={{ mb: 2 }} />
           {notifError && (
-            <Typography variant="body2" color="error">{notifError}</Typography>
+            <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+              {notifError}
+            </Typography>
           )}
           {notifLoading ? (
-            <Typography variant="body2">Loading...</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Loading notifications...
+            </Typography>
           ) : (
-            <MUIList dense>
+            <MUIList dense sx={{ p: 0 }}>
               {notifications.length === 0 && !notifError && (
                 <MUIListItem>
-                  <MUIListItemText primary="No notifications" />
+                  <MUIListItemText 
+                    primary="No notifications" 
+                    sx={{ textAlign: 'center', color: 'text.secondary' }}
+                  />
                 </MUIListItem>
               )}
               {notifications.map((notif) => (
-                <MUIListItem key={notif.id} selected={!notif.read}>
-                  <MUIListItemText primary={notif.text || notif.content || notif.title} />
+                <MUIListItem 
+                  key={notif.id} 
+                  sx={{ 
+                    borderRadius: 1,
+                    mb: 0.5,
+                    backgroundColor: !notif.read ? alpha(theme.palette.primary.main, 0.05) : 'transparent',
+                  }}
+                >
+                  <MUIListItemText 
+                    primary={notif.text || notif.content || notif.title}
+                    secondary={new Date(notif.createdAt).toLocaleDateString()}
+                    primaryTypographyProps={{ fontSize: '0.875rem' }}
+                    secondaryTypographyProps={{ fontSize: '0.75rem' }}
+                  />
                 </MUIListItem>
               ))}
             </MUIList>
@@ -595,60 +421,198 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
         PaperProps={{ 
           sx: { 
             borderRadius: 2, 
-            boxShadow: 4,
-            // Ensure menu appears above other content
-            zIndex: theme.zIndex.modal + 1
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            minWidth: 200,
           } 
         }}
       >
-        <MenuItem onClick={handleProfile}>
-          <PersonIcon sx={{ mr: 1 }} />
-          Profile
-          <Chip
-            label={user?.role}
-            color="default"
-            size="small"
-            sx={{ ml: 1, bgcolor: roleColor, color: 'white', fontWeight: 600 }}
-          />
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <LogoutIcon sx={{ mr: 1 }} />
-          Logout
-        </MenuItem>
+        <Box sx={{ p: 1 }}>
+          <MenuItem onClick={handleProfile} sx={{ borderRadius: 1, mb: 0.5 }}>
+            <PersonIcon sx={{ mr: 2, color: 'text.secondary' }} />
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                Profile
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Manage your account
+              </Typography>
+            </Box>
+            <Chip
+              label={user?.role}
+              size="small"
+              sx={{ 
+                bgcolor: roleColor, 
+                color: 'white', 
+                fontWeight: 600,
+                fontSize: '0.625rem',
+              }}
+            />
+          </MenuItem>
+          <Divider sx={{ my: 1 }} />
+          <MenuItem onClick={handleLogout} sx={{ borderRadius: 1 }}>
+            <LogoutIcon sx={{ mr: 2, color: 'text.secondary' }} />
+            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              Logout
+            </Typography>
+          </MenuItem>
+        </Box>
       </Menu>
 
-      {/* Mobile Drawer for navigation */}
+      {/* Mobile Drawer */}
       <Drawer
-        anchor="left"
+        anchor="right"
         open={drawerOpen}
         onClose={handleDrawerToggle}
         PaperProps={{ 
           sx: { 
-            width: 220, 
-            borderRadius: 2, 
-            boxShadow: 4,
-            // Ensure mobile drawer appears above all content
-            zIndex: theme.zIndex.modal + 2
+            width: 280,
+            borderRadius: '16px 0 0 16px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
           } 
         }}
       >
-        <Box sx={{ p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 2, fontWeight: 700, color: roleColor, display: 'flex', alignItems: 'center', gap: 1 }}>
-            {roleIcon} ePathshala
-          </Typography>
-          <MUIList>
-            {user
-              ? NAV_LINKS.map(link => (
-                  <MUIListItem button key={link.label} component={Link} to={link.path(user.role?.toLowerCase())} onClick={handleDrawerToggle}>
-                    {link.icon}
-                    <MUIListItemText primary={link.label} sx={{ ml: 1 }} />
-                  </MUIListItem>
-                ))
-              : PUBLIC_LINKS.map(link => (
-                  <MUIListItem button key={link.label} component={Link} to={link.path} onClick={handleDrawerToggle}>
-                    <MUIListItemText primary={link.label} />
-                  </MUIListItem>
-                ))}
+        <Box sx={{ p: 3 }}>
+          {/* Header */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+            <Logo 
+              variant="minimal"
+              size="small"
+              sx={{ 
+                color: theme.palette.primary.main,
+                fontSize: '1.25rem',
+                fontWeight: 700,
+              }}
+            />
+            <IconButton onClick={handleDrawerToggle} size="small">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <Divider sx={{ mb: 3 }} />
+
+          {/* Navigation Links */}
+          <MUIList sx={{ p: 0 }}>
+            {/* User Info */}
+            <Box sx={{ mb: 3, p: 2, borderRadius: 2, bgcolor: alpha(theme.palette.primary.main, 0.05) }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Avatar 
+                  sx={{ 
+                    width: 40, 
+                    height: 40,
+                    bgcolor: roleColor,
+                    mr: 2,
+                  }}
+                >
+                  {user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+                </Avatar>
+                <Box>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    {user?.name || user?.email}
+                  </Typography>
+                  <Chip
+                    label={user?.role}
+                    size="small"
+                    sx={{ 
+                      bgcolor: roleColor, 
+                      color: 'white', 
+                      fontWeight: 600,
+                      fontSize: '0.625rem',
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Dashboard Links */}
+            {NAV_LINKS.map(link => (
+              <MUIListItem 
+                button 
+                key={link.label} 
+                component={Link} 
+                to={link.path(user?.role?.toLowerCase())} 
+                onClick={handleDrawerToggle}
+                sx={{ 
+                  borderRadius: 1, 
+                  mb: 0.5,
+                  '&:hover': {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  }
+                }}
+              >
+                {link.icon}
+                <MUIListItemText 
+                  primary={link.label} 
+                  sx={{ ml: 2 }}
+                  primaryTypographyProps={{ fontWeight: 500 }}
+                />
+              </MUIListItem>
+            ))}
+
+            <Divider sx={{ my: 2 }} />
+
+            {/* Common Links */}
+            {COMMON_LINKS.map(link => (
+              <MUIListItem 
+                button 
+                key={link.label} 
+                component={Link} 
+                to={link.path} 
+                onClick={handleDrawerToggle}
+                sx={{ 
+                  borderRadius: 1, 
+                  mb: 0.5,
+                  '&:hover': {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  }
+                }}
+              >
+                {link.icon}
+                <MUIListItemText 
+                  primary={link.label} 
+                  sx={{ ml: 2 }}
+                  primaryTypographyProps={{ fontWeight: 500 }}
+                />
+              </MUIListItem>
+            ))}
+
+            <Divider sx={{ my: 2 }} />
+
+            {/* User Actions */}
+            <MUIListItem 
+              button 
+              onClick={() => { handleProfile(); handleDrawerToggle(); }}
+              sx={{ 
+                borderRadius: 1, 
+                mb: 0.5,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                }
+              }}
+            >
+              <PersonIcon sx={{ mr: 2, color: 'text.secondary' }} />
+              <MUIListItemText 
+                primary="Profile" 
+                primaryTypographyProps={{ fontWeight: 500 }}
+              />
+            </MUIListItem>
+
+            <MUIListItem 
+              button 
+              onClick={() => { handleLogout(); handleDrawerToggle(); }}
+              sx={{ 
+                borderRadius: 1,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.error.main, 0.08),
+                }
+              }}
+            >
+              <LogoutIcon sx={{ mr: 2, color: 'error.main' }} />
+              <MUIListItemText 
+                primary="Logout" 
+                primaryTypographyProps={{ fontWeight: 500, color: 'error.main' }}
+              />
+            </MUIListItem>
           </MUIList>
         </Box>
       </Drawer>

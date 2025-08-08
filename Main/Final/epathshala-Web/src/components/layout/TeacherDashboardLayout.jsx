@@ -1,109 +1,52 @@
 import React, { useState } from 'react';
-import { Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Box } from '@mui/material';
 import Navbar from '../common/Navbar';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
-import { useResponsive } from '../../utils/responsive';
+import TeacherSidebar from './TeacherSidebar';
 
 function TeacherDashboardLayout({ children }) {
-  const theme = useTheme();
-  const { isMobile, isTablet, isDesktop } = useResponsive();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    const stored = localStorage.getItem('mainSidebarCollapsed');
-    return stored === 'true';
-  });
-  
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
-  
+
   const handleSidebarCollapse = () => {
-    setSidebarCollapsed((prev) => {
-      const newState = !prev;
-      localStorage.setItem('mainSidebarCollapsed', newState);
-      return newState;
-    });
+    setSidebarCollapsed(!sidebarCollapsed);
   };
-  
-  const sidebarWidth = sidebarCollapsed ? 60 : 280;
-  
+
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar */}
-      <Sidebar
-        open={sidebarOpen}
-        onClose={handleSidebarToggle}
+      <TeacherSidebar 
+        open={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)}
         collapsed={sidebarCollapsed}
         onCollapse={handleSidebarCollapse}
       />
-      
-      {/* Main Content */}
-      <Box 
-        className="app-wrapper" 
-        sx={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          flexGrow: 1, 
-          ml: { md: `${sidebarWidth}px` }, 
-          transition: 'margin-left 0.3s ease-in-out',
-          width: { md: `calc(100% - ${sidebarWidth}px)` }
-        }}
-      >
-        {/* Fixed Navbar */}
-        <Navbar sidebarCollapsed={sidebarCollapsed} />
-        {/* Spacer to prevent content from being hidden behind fixed navbar */}
-        <Box
-          sx={{
-            height: { xs: '56px', sm: '64px', md: '72px', lg: '80px', xl: '88px' },
-            width: '100%',
-          }}
+      <Box sx={{ 
+        flexGrow: 1, 
+        display: 'flex', 
+        flexDirection: 'column',
+        minHeight: '100vh',
+      }}>
+        <Navbar 
+          onMenuClick={handleSidebarToggle}
+          sidebarCollapsed={sidebarCollapsed}
         />
-        
-        {/* Top Navigation */}
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            p: { xs: 1.5, sm: 2 }, 
-            borderBottom: 1, 
-            borderColor: 'divider',
-            backgroundColor: 'background.paper',
-            boxShadow: 1
-          }}
-        >
-          {isMobile && (
-            <IconButton
-              color="inherit"
-              aria-label="open sidebar"
-              onClick={handleSidebarToggle}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-        </Box>
-        
-        {/* Page Content */}
         <Box 
           component="main" 
-          className="main-content" 
           sx={{ 
-            flexGrow: 1, 
-            p: { xs: 2, sm: 3, md: 4 },
-            backgroundColor: 'background.default',
-            minHeight: 'calc(100vh - 64px - 64px)', // Subtract header and footer heights
+            flexGrow: 1,
+            pt: { xs: '64px', sm: '72px' },
+            px: { xs: 2, sm: 3, md: 4 },
+            py: 3,
           }}
         >
           {children}
         </Box>
-        
-        {/* Footer */}
-        <Footer />
       </Box>
     </Box>
   );
 }
 
-export default React.memo(TeacherDashboardLayout);
+export default TeacherDashboardLayout;

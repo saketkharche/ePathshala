@@ -446,9 +446,4 @@ function StudentSidebar({ open, onClose, collapsed, onCollapse }) {
 }
 
 export default StudentSidebar;
-    </>
-  );
-}
-
-export default StudentSidebar;
 

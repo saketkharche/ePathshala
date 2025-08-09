@@ -78,6 +78,16 @@ export async function submitAssignment(assignmentId, studentId, submissionText, 
     try {
       errorData = await res.json();
     } catch {}
+    
+    // Handle specific status codes
+    if (res.status === 409) {
+      throw new Error('Assignment already submitted');
+    } else if (res.status === 404) {
+      throw new Error('Assignment or student not found');
+    } else if (res.status === 400) {
+      throw new Error('Invalid submission data');
+    }
+    
     throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
   }
   return res.json();

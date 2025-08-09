@@ -58,7 +58,30 @@ const AssignmentTracker = () => {
       
       if (response.ok) {
         const data = await response.json();
-        setAssignments(data);
+        
+        // Check submission status for each assignment
+        const assignmentsWithStatus = await Promise.all(
+          data.map(async (assignment) => {
+            try {
+              const statusResponse = await fetch(`/api/assignments/${assignment.id}/submitted/${user.id}`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+              });
+              if (statusResponse.ok) {
+                const { hasSubmitted } = await statusResponse.json();
+                return {
+                  ...assignment,
+                  hasSubmitted,
+                  status: hasSubmitted ? 'submitted' : 'pending'
+                };
+              }
+            } catch (error) {
+              console.error(`Error checking submission status for assignment ${assignment.id}:`, error);
+            }
+            return { ...assignment, hasSubmitted: false, status: 'pending' };
+          })
+        );
+        
+        setAssignments(assignmentsWithStatus);
       }
     } catch (error) {
       console.error('Error loading assignments:', error);

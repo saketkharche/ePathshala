@@ -99,10 +99,37 @@ public class AssignmentController {
             @PathVariable Long assignmentId,
             @RequestParam("studentId") Long studentId,
             @RequestParam(value = "file", required = false) MultipartFile file,
-            @RequestParam(value = "submissionText", required = false) String submissionText) throws IOException {
+            @RequestParam(value = "submissionText", required = false) String submissionText) {
         
-        AssignmentSubmissionDTO submission = assignmentService.submitAssignment(assignmentId, studentId, file, submissionText);
-        return ResponseEntity.ok(submission);
+        try {
+            // Validate inputs
+            if (submissionText == null || submissionText.trim().isEmpty()) {
+                if (file == null || file.isEmpty()) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+            
+            AssignmentSubmissionDTO submission = assignmentService.submitAssignment(assignmentId, studentId, file, submissionText);
+            return ResponseEntity.ok(submission);
+        } catch (RuntimeException e) {
+            System.err.println("Error submitting assignment: " + e.getMessage());
+            e.printStackTrace();
+            
+            // Handle specific error cases
+            if (e.getMessage().contains("Assignment already submitted")) {
+                return ResponseEntity.status(409).build(); // 409 Conflict
+            } else if (e.getMessage().contains("Assignment not found")) {
+                return ResponseEntity.status(404).build(); // 404 Not Found
+            } else if (e.getMessage().contains("Student not found")) {
+                return ResponseEntity.status(404).build(); // 404 Not Found
+            }
+            
+            return ResponseEntity.status(500).build();
+        } catch (IOException e) {
+            System.err.println("File upload error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
     
     // Check if student has submitted

@@ -66,7 +66,30 @@ function StudentAssignmentsSection() {
     try {
       const assignmentsData = await getStudentAssignments(className);
       console.log('Assignments data:', assignmentsData); // Debug log
-      setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
+      
+      // Check submission status for each assignment
+      const assignmentsWithStatus = await Promise.all(
+        (Array.isArray(assignmentsData) ? assignmentsData : []).map(async (assignment) => {
+          try {
+            const response = await fetch(`/api/assignments/${assignment.id}/submitted/${studentId}`, {
+              headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            if (response.ok) {
+              const { hasSubmitted } = await response.json();
+              return {
+                ...assignment,
+                hasSubmitted,
+                status: hasSubmitted ? 'submitted' : 'pending'
+              };
+            }
+          } catch (error) {
+            console.error(`Error checking submission status for assignment ${assignment.id}:`, error);
+          }
+          return { ...assignment, hasSubmitted: false, status: 'pending' };
+        })
+      );
+      
+      setAssignments(assignmentsWithStatus);
     } catch (err) {
       console.error('Error fetching assignments:', err);
       setError('Failed to load assignments');
@@ -151,7 +174,18 @@ function StudentAssignmentsSection() {
       setSubmissionForm({ text: '', file: null });
       fetchData(); // Refresh assignments
     } catch (err) {
-      setError('Failed to submit assignment: ' + err.message);
+      const errorMessage = err.message.toLowerCase();
+      if (errorMessage.includes('already submitted')) {
+        setError('This assignment has already been submitted. You cannot submit it again.');
+        setSubmitDialogOpen(false);
+        fetchData(); // Refresh assignments to update status
+      } else if (errorMessage.includes('http error! status: 500')) {
+        setError('Assignment has already been submitted. Please refresh the page.');
+        setSubmitDialogOpen(false);
+        fetchData(); // Refresh assignments to update status
+      } else {
+        setError('Failed to submit assignment: ' + err.message);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -308,7 +342,25 @@ function StudentAssignmentsSection() {
                       </Button>
                     )}
 
-                    {assignment.status?.toLowerCase() !== 'submitted' && (
+                    {assignment.hasSubmitted ? (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled
+                        sx={{
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                          color: 'success.main',
+                          borderColor: 'success.main',
+                          '&.Mui-disabled': {
+                            color: 'success.main',
+                            borderColor: 'success.main',
+                            opacity: 0.7
+                          }
+                        }}
+                      >
+                        ✓ Already Submitted
+                      </Button>
+                    ) : (
                       <Button
                         variant="contained"
                         size="small"

@@ -54,6 +54,12 @@ public class AssignmentSubmission {
         this.submissionText = submissionText;
         this.submittedAt = LocalDateTime.now();
         this.status = "submitted";
-        this.submittedLate = LocalDateTime.now().isAfter(assignment.getDueDate().atTime(23, 59, 59));
+        
+        // Check if submitted late - handle null dueDate safely
+        if (assignment.getDueDate() != null) {
+            this.submittedLate = LocalDateTime.now().isAfter(assignment.getDueDate().atTime(23, 59, 59));
+        } else {
+            this.submittedLate = false;
+        }
     }
 } 

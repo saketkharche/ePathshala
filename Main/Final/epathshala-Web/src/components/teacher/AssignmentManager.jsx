@@ -21,6 +21,7 @@ import {
   Add as AddIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../utils/auth';
+import { uploadAssignment } from '../../api/assignments';
 
 const AssignmentManager = () => {
   const { user } = useAuth();
@@ -74,28 +75,11 @@ const AssignmentManager = () => {
   const handleUpload = async () => {
     try {
       setLoading(true);
-      // Build FormData for all fields
-      const form = new FormData();
-      form.append('title', formData.title);
-      form.append('description', formData.description);
-      form.append('dueDate', formData.dueDate);
-      form.append('subject', formData.subject);
-      form.append('className', formData.className);
-      form.append('teacherId', user.id);
-      if (formData.file) {
-        form.append('file', formData.file);
-      }
-      // Send to /api/assignments
-      const response = await fetch('/api/assignments', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-          // DO NOT set Content-Type, browser will set it for FormData
-        },
-        body: form
-      });
-      if (response.ok) {
-        const result = await response.json();
+      
+      // Use the uploadAssignment API function
+      const result = await uploadAssignment(formData);
+      
+      if (result.id) {
         showMessage('Assignment uploaded successfully!', 'success');
         setOpenUpload(false);
         setFormData({
@@ -108,11 +92,11 @@ const AssignmentManager = () => {
         });
         loadAssignments();
       } else {
-        const errorData = await response.json();
-        showMessage(`Error uploading assignment: ${errorData.error || 'Unknown error'}`, 'error');
+        showMessage(`Error uploading assignment: ${result.error || 'Unknown error'}`, 'error');
       }
     } catch (error) {
-      showMessage('Error uploading assignment', 'error');
+      console.error('Upload error:', error);
+      showMessage(`Error uploading assignment: ${error.message}`, 'error');
     } finally {
       setLoading(false);
     }

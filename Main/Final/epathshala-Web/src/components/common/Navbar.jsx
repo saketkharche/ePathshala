@@ -169,6 +169,7 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
       <AppBar 
         position="fixed" 
         elevation={0}
+        color="default"
         sx={{
           background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.95)} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`,
           backdropFilter: 'blur(10px)',

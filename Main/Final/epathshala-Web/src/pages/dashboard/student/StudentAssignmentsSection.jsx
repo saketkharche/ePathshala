@@ -125,20 +125,27 @@ function StudentAssignmentsSection() {
   };
 
   const handleSubmitSubmission = async () => {
-    if (!selectedAssignment || !submissionForm.text.trim()) {
-      setError('Please provide submission text');
+    if (!selectedAssignment) {
+      setError('No assignment selected');
+      return;
+    }
+    if (!studentId) {
+      setError('Unable to identify student. Please re-login.');
+      return;
+    }
+    if (!submissionForm.text.trim() && !submissionForm.file) {
+      setError('Please provide submission text or attach a file');
       return;
     }
 
     setSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append('text', submissionForm.text);
-      if (submissionForm.file) {
-        formData.append('file', submissionForm.file);
-      }
-
-      await submitAssignment(selectedAssignment.id, formData);
+      await submitAssignment(
+        selectedAssignment.id,
+        studentId,
+        submissionForm.text,
+        submissionForm.file
+      );
       setSuccess('Assignment submitted successfully!');
       setSubmitDialogOpen(false);
       setSubmissionForm({ text: '', file: null });
@@ -385,7 +392,7 @@ function StudentAssignmentsSection() {
           <Button
             onClick={handleSubmitSubmission}
             variant="contained"
-            disabled={submitting || !submissionForm.text.trim()}
+            disabled={submitting || (!submissionForm.text.trim() && !submissionForm.file)}
             sx={{
               ...buttonStyles.primary,
               fontSize: { xs: '0.875rem', sm: '1rem' }

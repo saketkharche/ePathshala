@@ -52,6 +52,9 @@ import TeacherLeaveRequestsPage from '../pages/dashboard/teacher/TeacherLeaveReq
 import TeacherCalendarPage from '../pages/dashboard/teacher/TeacherCalendarPage';
 import TeacherOnlineClassesPage from '../pages/dashboard/teacher/TeacherOnlineClassesPage';
 import TeacherExamsPage from '../pages/dashboard/teacher/TeacherExamsPage';
+// Exam management and interfaces
+import FacultyExamManager from '../components/exam/FacultyExamManager';
+import StudentExamInterface from '../components/exam/StudentExamInterface';
 
 // Student Dashboard Pages
 import StudentAssignmentsPage from '../pages/dashboard/student/StudentAssignmentsPage';
@@ -300,6 +303,13 @@ function AppRoutes() {
             </StudentDashboardLayout>
           </ProtectedLayout>
         } />
+        <Route path="/student/exams/:examId" element={
+          <ProtectedLayout requiredRole="STUDENT">
+            <StudentDashboardLayout>
+              <StudentExamInterface />
+            </StudentDashboardLayout>
+          </ProtectedLayout>
+        } />
         <Route path="/student/exams/:examId/result" element={
           <ProtectedLayout requiredRole="STUDENT">
             <StudentDashboardLayout>
@@ -425,6 +435,27 @@ function AppRoutes() {
           <ProtectedLayout requiredRole="TEACHER">
             <TeacherDashboardLayout>
               <TeacherExamsPage />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
+        } />
+        <Route path="/teacher/exams/create" element={
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <FacultyExamManager />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
+        } />
+        <Route path="/teacher/exams/:examId/edit" element={
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <FacultyExamManager />
+            </TeacherDashboardLayout>
+          </ProtectedLayout>
+        } />
+        <Route path="/teacher/exams/:examId/results" element={
+          <ProtectedLayout requiredRole="TEACHER">
+            <TeacherDashboardLayout>
+              <FacultyExamManager />
             </TeacherDashboardLayout>
           </ProtectedLayout>
         } />

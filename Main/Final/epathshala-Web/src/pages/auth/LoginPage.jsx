@@ -46,7 +46,7 @@ import {
   Security as SecurityIcon,
   Home as HomeIcon
 } from '@mui/icons-material';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { useAuth } from "../../utils/auth.jsx";
 import { useResponsive } from "../../utils/responsive";
@@ -57,6 +57,7 @@ function LoginPage() {
   const { isMobile, isTablet } = useResponsive();
   const theme = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -130,6 +131,17 @@ function LoginPage() {
     });
   };
 
+  const handleHomeClick = () => {
+    console.log('Home button clicked - navigating to home');
+    try {
+      navigate('/');
+    } catch (error) {
+      console.error('Navigation error:', error);
+      // Fallback to window.location
+      window.location.href = '/';
+    }
+  };
+
   return (
     <Box sx={{ 
       minHeight: '100vh',
@@ -141,22 +153,54 @@ function LoginPage() {
       overflow: 'hidden'
     }}>
       {/* Simple Navigation Bar */}
-      <AppBar position="static" sx={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 600 }}>
+      <AppBar 
+        position="static" 
+        sx={{ 
+          background: 'rgba(255, 255, 255, 0.95)', 
+          backdropFilter: 'blur(10px)',
+          zIndex: 10,
+          position: 'relative'
+        }}
+      >
+        <Toolbar sx={{ 
+          justifyContent: 'space-between',
+          position: 'relative',
+          zIndex: 10,
+          minHeight: 64
+        }}>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              color: 'text.primary', 
+              fontWeight: 600,
+              cursor: 'pointer'
+            }}
+            onClick={handleHomeClick}
+          >
             ePathshala
           </Typography>
           <Button
-            component={Link}
-            to="/"
+            onClick={handleHomeClick}
+            onMouseDown={() => console.log('Button mouse down')}
+            onMouseUp={() => console.log('Button mouse up')}
             variant="outlined"
             startIcon={<HomeIcon />}
             sx={{ 
               color: 'primary.main',
               borderColor: 'primary.main',
+              cursor: 'pointer',
+              pointerEvents: 'auto',
+              userSelect: 'none',
+              position: 'relative',
+              zIndex: 11,
+              minWidth: 100,
+              height: 40,
               '&:hover': {
                 backgroundColor: 'primary.main',
                 color: 'white'
+              },
+              '&:active': {
+                transform: 'scale(0.98)'
               }
             }}
           >

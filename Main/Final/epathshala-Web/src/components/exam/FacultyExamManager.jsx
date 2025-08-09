@@ -127,13 +127,25 @@ const FacultyExamManager = () => {
         startTime: formatDateForBackend(examForm.startTime),
         endTime: formatDateForBackend(examForm.endTime),
         createdBy: user?.email || user?.username,
-        questions: questionsForm
+        // Questions are added in a separate API call after exam creation
       };
       
       console.log('Sending exam data:', examData); // Debug log
       
-      const response = await createExam(examData);
-      console.log('Exam created successfully:', response); // Debug log
+      const createdExam = await createExam(examData);
+      console.log('Exam created successfully:', createdExam); // Debug log
+
+      // Add questions to the created exam
+      if (createdExam?.id && Array.isArray(questionsForm) && questionsForm.length > 0) {
+        try {
+          await addQuestions(createdExam.id, questionsForm);
+          console.log('Questions added successfully for exam:', createdExam.id);
+        } catch (addErr) {
+          console.error('Error adding questions after exam creation:', addErr);
+          // Surface a friendly message so the teacher knows why students cannot start the exam
+          alert('Exam was created, but adding questions failed. Please try adding questions again.');
+        }
+      }
       
       setShowCreateDialog(false);
       setShowQuestionsDialog(false);

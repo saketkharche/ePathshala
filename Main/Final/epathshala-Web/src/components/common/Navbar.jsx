@@ -74,7 +74,8 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = propIsMobile || useMediaQuery(theme.breakpoints.down('md'));
+  const mediaQueryIsMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = propIsMobile || mediaQueryIsMobile;
   const [anchorEl, setAnchorEl] = useState(null);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [notifAnchorEl, setNotifAnchorEl] = useState(null);
@@ -173,13 +174,10 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
           backdropFilter: 'blur(10px)',
           borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           zIndex: theme.zIndex.appBar,
-          left: { xs: 0, md: '240px' },
-          width: { xs: '100%', md: 'calc(100% - 240px)' },
-          transition: 'all 0.3s ease',
-          ...(sidebarCollapsed && {
-            left: { xs: 0, md: '64px' },
-            width: { xs: '100%', md: 'calc(100% - 64px)' },
-          }),
+          // Full width navbar - no sidebar offset needed with static layout
+          left: 0,
+          width: '100%',
+          transition: 'all 0.3s ease-in-out',
         }}
       >
         <Toolbar sx={{
@@ -191,6 +189,7 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: { xs: 2, sm: 3 },
+          width: '100%',
         }}>
           {/* Logo Section */}
           <Box sx={{ 

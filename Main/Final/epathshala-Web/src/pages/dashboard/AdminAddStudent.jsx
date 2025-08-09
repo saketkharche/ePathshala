@@ -48,7 +48,16 @@ function AdminAddStudent() {
     setError('');
     
     try {
-      const result = await addStudent(values);
+      // Only send the fields that the backend UserDTO expects
+      const studentData = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        studentClass: values.studentClass
+        // Note: rollNumber, phone, address are not supported by the backend UserDTO
+      };
+      
+      const result = await addStudent(studentData);
       if (result && result.error) {
         setError(result.error);
       } else {
@@ -163,6 +172,14 @@ function AdminAddStudent() {
               Enter student information to create a new account in the system
             </Typography>
           </Box>
+
+          {/* Info Alert about field limitations */}
+          <Alert severity="info" sx={{ mb: 3 }}>
+            <Typography variant="body2">
+              <strong>Note:</strong> Only the following fields will be saved to the system: Name, Email, Password, and Class. 
+              Additional fields (Roll Number, Phone, Address) are for display purposes only.
+            </Typography>
+          </Alert>
 
           {/* Loading Progress */}
           {loading && (

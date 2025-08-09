@@ -466,3 +466,4 @@ flowchart TD
 
 This comprehensive flow chart demonstrates the complete architecture and data flow of the ePathshala system, covering authentication, user interactions, real-time features, and system deployment.
 
+

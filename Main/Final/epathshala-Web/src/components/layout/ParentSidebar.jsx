@@ -370,52 +370,53 @@ function ParentSidebar({ open, onClose, collapsed, onCollapse }) {
     </Box>
   );
 
-  return (
-    <>
-      {/* Mobile Drawer */}
-      {isMobile && (
-        <Drawer
-          variant="temporary"
-          open={open}
-          onClose={onClose}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: SIDEBAR_EXPANDED_WIDTH,
-              border: 'none',
-              boxShadow: 8,
-            },
-          }}
-        >
-          {drawerContent}
-        </Drawer>
-      )}
+  if (isMobile) {
+    // Mobile: Overlay drawer
+    return (
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={onClose}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: SIDEBAR_EXPANDED_WIDTH,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+            zIndex: theme.zIndex.modal + 1,
+            backgroundColor: 'background.paper',
+            overflowY: 'auto'
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+    );
+  }
 
-      {/* Desktop Drawer */}
-      {!isMobile && (
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH,
-              border: 'none',
-              boxShadow: 2,
-              transition: 'width 0.3s ease-in-out',
-              overflowX: 'hidden',
-            },
-          }}
-          open
-        >
-          {drawerContent}
-        </Drawer>
-      )}
-    </>
+  // Desktop: Static sidebar
+  return (
+    <Box
+      sx={{
+        width: collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH,
+        flexShrink: 0,
+        transition: 'width 0.3s ease-in-out',
+        height: '100vh',
+        position: 'sticky',
+        top: 0,
+        backgroundColor: 'background.paper',
+        borderRight: `1px solid ${theme.palette.divider}`,
+        boxShadow: '2px 0 8px rgba(0,0,0,0.1)',
+        zIndex: theme.zIndex.drawer,
+        overflow: 'hidden'
+      }}
+    >
+      {drawerContent}
+    </Box>
   );
 }
 

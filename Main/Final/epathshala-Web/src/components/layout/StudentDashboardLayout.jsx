@@ -1,55 +1,124 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme, useMediaQuery } from '@mui/material';
 import Navbar from '../common/Navbar';
 import StudentSidebar from './StudentSidebar';
+import Footer from './Footer';
 
 function StudentDashboardLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const stored = localStorage.getItem('studentSidebarCollapsed');
+    return stored === 'true';
+  });
+  
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
+  
   const handleSidebarCollapse = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
+    setSidebarCollapsed((prev) => {
+      localStorage.setItem('studentSidebarCollapsed', !prev);
+      return !prev;
+    });
   };
 
+  // Calculate sidebar width based on collapsed state
+  const sidebarWidth = sidebarCollapsed ? 60 : 280;
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <StudentSidebar 
-        open={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)}
-        collapsed={sidebarCollapsed}
-        onCollapse={handleSidebarCollapse}
-      />
-      <Box sx={{ 
-        flexGrow: 1, 
+    <Box 
+      className="student-dashboard-container"
+      sx={{ 
         display: 'flex', 
-        flexDirection: 'column',
         minHeight: '100vh',
-      }}>
+        width: '100%',
+        position: 'relative',
+        backgroundColor: 'background.default'
+      }}
+    >
+      {/* Desktop Sidebar - Always present on desktop */}
+      {!isMobile && (
+        <Box
+          sx={{
+            width: `${sidebarWidth}px`,
+            flexShrink: 0,
+            transition: 'width 0.3s ease-in-out',
+            zIndex: theme.zIndex.drawer + 1
+          }}
+        >
+          <StudentSidebar
+            open={sidebarOpen}
+            onClose={handleSidebarToggle}
+            collapsed={sidebarCollapsed}
+            onCollapse={handleSidebarCollapse}
+            isMobile={false}
+          />
+        </Box>
+      )}
+      
+      {/* Mobile Sidebar - Overlay */}
+      {isMobile && (
+        <StudentSidebar
+          open={sidebarOpen}
+          onClose={handleSidebarToggle}
+          collapsed={false} // Never collapsed on mobile
+          onCollapse={handleSidebarCollapse}
+          isMobile={true}
+        />
+      )}
+      
+      {/* Main Content Area */}
+      <Box 
+        className="student-app-wrapper" 
+        sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          flexGrow: 1,
+          width: '100%',
+          minHeight: '100vh',
+          overflow: 'hidden',
+          position: 'relative'
+        }}
+      >
+        {/* Fixed Navbar */}
         <Navbar 
           onMenuClick={handleSidebarToggle}
+          isMobile={isMobile}
           sidebarCollapsed={sidebarCollapsed}
         />
+        
+        {/* Spacer to prevent content from being hidden behind fixed navbar */}
+        <Box
+          sx={{
+            height: { xs: '64px', sm: '72px' },
+            width: '100%',
+            flexShrink: 0
+          }}
+        />
+        
+        {/* Page Content */}
         <Box 
           component="main" 
+          className="student-main-content" 
           sx={{ 
-            flexGrow: 1,
-            pt: { xs: '64px', sm: '72px' },
-            px: { xs: 2, sm: 3, md: 4 },
-            py: 3,
-            position: 'relative',
-            zIndex: 1,
-            overflow: 'hidden',
+            flexGrow: 1, 
+            p: { xs: 2, sm: 3 },
+            width: '100%',
+            overflow: 'auto',
+            minHeight: 0, // Allow content to shrink
+            backgroundColor: 'background.paper'
           }}
         >
           {children}
         </Box>
+        
+        {/* Footer */}
+        <Footer />
       </Box>
     </Box>
   );
 }
 
-export default StudentDashboardLayout;
+export default React.memo(StudentDashboardLayout);

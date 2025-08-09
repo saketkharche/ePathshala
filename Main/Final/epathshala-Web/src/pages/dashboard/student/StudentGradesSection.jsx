@@ -79,8 +79,8 @@ function StudentGradesSection() {
                 <ListItemText
                   primary={grade.subject}
                   secondary={
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-                      <Typography component="span" variant="body2" color="text.primary">
+                    <React.Fragment>
+                      <Typography component="span" variant="body2" color="text.primary" sx={{ display: 'block', mb: 1 }}>
                         Marks: {grade.marks}
                       </Typography>
                       <Chip 
@@ -88,7 +88,7 @@ function StudentGradesSection() {
                         color={getGradeColor(grade.marks)}
                         size="small"
                       />
-                    </Box>
+                    </React.Fragment>
                   }
                 />
               </ListItem>

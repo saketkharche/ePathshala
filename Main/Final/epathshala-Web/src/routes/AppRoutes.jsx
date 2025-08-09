@@ -68,6 +68,7 @@ import ParentChildProgressPage from '../pages/dashboard/parent/ParentChildProgre
 import ParentLeaveApprovalsPage from '../pages/dashboard/parent/ParentLeaveApprovalsPage';
 import ParentCalendarPage from '../pages/dashboard/parent/ParentCalendarPage';
 import HoverTest from '../pages/test/HoverTest';
+import LayoutTest from '../pages/test/LayoutTest';
 
 function AppRoutes() {
   console.log("AppRoutes component rendering...");
@@ -193,6 +194,11 @@ function AppRoutes() {
               <HoverTest />
             </AdminDashboardLayout>
           </ProtectedLayout>
+        } />
+        <Route path="/test/layout" element={
+          <DashboardLayout>
+            <LayoutTest />
+          </DashboardLayout>
         } />
         {/* Admin Section Routes */}
         <Route path="/admin/summary" element={

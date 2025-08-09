@@ -80,13 +80,29 @@ function UserManagement() {
   const handleSubmit = async () => {
     try {
       const endpoint = `/api/admin/add-${dialogType.slice(0, -1)}`;
+      
+      // Filter the data to only include fields that the backend expects
+      let filteredData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      };
+      
+      // Add role-specific fields
+      if (dialogType === 'student') {
+        filteredData.studentClass = formData.studentClass;
+      } else if (dialogType === 'teacher') {
+        filteredData.subject = formData.subject;
+        filteredData.assignedClass = formData.assignedClass;
+      }
+      
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(filteredData)
       });
 
       if (response.ok) {

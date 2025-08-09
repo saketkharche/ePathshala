@@ -215,9 +215,9 @@ function Forum() {
                     <Avatar sx={{ bgcolor: category.color, mr: 1 }}>
                       {getCategoryIcon(category.icon)}
                     </Avatar>
-                    <Typography variant="h6">{category.name}</Typography>
+                    <Typography variant="h6" component="div">{category.name}</Typography>
                   </Box>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }} component="div">
                     {category.description}
                   </Typography>
                   <Box sx={{ display: 'flex', gap: 1 }}>
@@ -269,21 +269,21 @@ function Forum() {
                 >
                   <ListItemText
                     primary={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {thread.isPinned && <PinIcon color="primary" />}
-                        {thread.isLocked && <LockIcon color="error" />}
-                        <Typography variant="h6">{thread.title}</Typography>
-                      </Box>
+                      <React.Fragment>
+                        {thread.isPinned && <PinIcon color="primary" sx={{ mr: 1, verticalAlign: 'middle' }} />}
+                        {thread.isLocked && <LockIcon color="error" sx={{ mr: 1, verticalAlign: 'middle' }} />}
+                        <Typography variant="h6" component="span">{thread.title}</Typography>
+                      </React.Fragment>
                     }
                     secondary={
-                      <Box>
-                        <Typography variant="body2" color="text.secondary">
+                      <React.Fragment>
+                        <Typography variant="body2" color="text.secondary" component="div">
                           By {thread.authorName} • {formatDate(thread.createdAt)}
                         </Typography>
-                        <Typography variant="body2" sx={{ mt: 1 }}>
+                        <Typography variant="body2" sx={{ mt: 1 }} component="div">
                           {thread.content.substring(0, 200)}...
                         </Typography>
-                      </Box>
+                      </React.Fragment>
                     }
                   />
                   <ListItemSecondaryAction>

@@ -84,7 +84,6 @@ const roleMenus = {
         items: [
           { text: 'Add Student', icon: SchoolIcon, path: '/admin/add-student' },
           { text: 'Add Teacher', icon: PersonIcon, path: '/admin/add-teacher' },
-          { text: 'Add Parent', icon: FamilyIcon, path: '/admin/add-parent' },
           { text: 'Assign Teacher', icon: AssignmentIcon, path: '/admin/assign-teacher' },
         ]
       },
@@ -217,8 +216,16 @@ const commonMenuItems = [
   { text: 'Home', icon: HomeIcon, path: '/home' },
   { text: 'About Us', icon: InfoIcon, path: '/about' },
   { text: 'Contact Us', icon: ContactIcon, path: '/contact' },
-  { text: 'Help', icon: HelpIcon, path: '/help' },
 ];
+
+// Help section with chatbot
+const helpSection = {
+  title: 'Help & Support',
+  items: [
+    { text: 'Help Center', icon: HelpIcon, path: '/help' },
+    { text: 'AI Chatbot', icon: ChatIcon, path: '/chatbot' },
+  ]
+};
 
 function Sidebar({ open, onClose, collapsed, onCollapse, isMobile }) {
   const theme = useTheme();
@@ -459,6 +466,30 @@ function Sidebar({ open, onClose, collapsed, onCollapse, isMobile }) {
       
       <List component="div" disablePadding sx={{ py: isCollapsed ? 1 : 0 }}>
         {commonMenuItems.map((item, index) =>
+          renderMenuItem(item, index, isCollapsed)
+        )}
+      </List>
+
+      {/* Help & Support Section */}
+      {!isCollapsed && (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            px: { xs: 2, sm: 3 },
+            py: { xs: 1, sm: 1.5 },
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            fontWeight: 600,
+            color: 'text.secondary',
+            textTransform: 'uppercase',
+            letterSpacing: 0.5,
+          }}
+        >
+          Help & Support
+        </Typography>
+      )}
+      
+      <List component="div" disablePadding sx={{ py: isCollapsed ? 1 : 0 }}>
+        {helpSection.items.map((item, index) =>
           renderMenuItem(item, index, isCollapsed)
         )}
       </List>

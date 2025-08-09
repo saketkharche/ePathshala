@@ -33,7 +33,7 @@ import ThreadDetail from '../components/forum/ThreadDetail';
 import AdminSummary from '../pages/dashboard/AdminSummary';
 import AdminAddStudent from '../pages/dashboard/AdminAddStudent';
 import AdminAddTeacher from '../pages/dashboard/AdminAddTeacher';
-import AdminAddParent from '../pages/dashboard/AdminAddParent';
+
 import AdminAssignTeacher from '../pages/dashboard/AdminAssignTeacher';
 import AdminResetPassword from '../pages/dashboard/AdminResetPassword';
 import AdminAcademicCalendar from '../pages/dashboard/AdminAcademicCalendar';
@@ -69,6 +69,8 @@ import ParentLeaveApprovalsPage from '../pages/dashboard/parent/ParentLeaveAppro
 import ParentCalendarPage from '../pages/dashboard/parent/ParentCalendarPage';
 import HoverTest from '../pages/test/HoverTest';
 import LayoutTest from '../pages/test/LayoutTest';
+import ChatbotPage from '../pages/ChatbotPage';
+import HelpPage from '../pages/HelpPage';
 
 function AppRoutes() {
   console.log("AppRoutes component rendering...");
@@ -99,6 +101,16 @@ function AppRoutes() {
         <Route path="/contact" element={
           <PublicLayout>
             <ContactUs />
+          </PublicLayout>
+        } />
+        <Route path="/chatbot" element={
+          <PublicLayout>
+            <ChatbotPage />
+          </PublicLayout>
+        } />
+        <Route path="/help" element={
+          <PublicLayout>
+            <HelpPage />
           </PublicLayout>
         } />
         
@@ -222,13 +234,7 @@ function AppRoutes() {
             </AdminDashboardLayout>
           </ProtectedLayout>
         } />
-        <Route path="/admin/add-parent" element={
-          <ProtectedLayout requiredRole="ADMIN">
-            <AdminDashboardLayout>
-              <AdminAddParent />
-            </AdminDashboardLayout>
-          </ProtectedLayout>
-        } />
+
         <Route path="/admin/assign-teacher" element={
           <ProtectedLayout requiredRole="ADMIN">
             <AdminDashboardLayout>

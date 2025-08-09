@@ -79,7 +79,6 @@ const roleMenus = {
         items: [
           { text: 'Add Student', icon: PersonAddIcon, path: '/admin/add-student' },
           { text: 'Add Teacher', icon: GroupAddIcon, path: '/admin/add-teacher' },
-          { text: 'Add Parent', icon: PersonAddAltIcon, path: '/admin/add-parent' },
           { text: 'Assign Teacher', icon: LinkIcon, path: '/admin/assign-teacher' },
         ]
       },

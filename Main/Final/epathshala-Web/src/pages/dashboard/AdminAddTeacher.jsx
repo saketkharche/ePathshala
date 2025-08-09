@@ -51,7 +51,17 @@ function AdminAddTeacher() {
     setError('');
     
     try {
-      const result = await addTeacher(values);
+      // Only send the fields that the backend UserDTO expects
+      const teacherData = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        subject: values.subject,
+        assignedClass: values.assignedClass
+        // Note: phone, qualification, experience are not supported by the backend UserDTO
+      };
+      
+      const result = await addTeacher(teacherData);
       if (result && result.error) {
         setError(result.error);
       } else {
@@ -173,6 +183,14 @@ function AdminAddTeacher() {
               Enter teacher information to create a new account in the system
             </Typography>
           </Box>
+
+          {/* Info Alert about field limitations */}
+          <Alert severity="info" sx={{ mb: 3 }}>
+            <Typography variant="body2">
+              <strong>Note:</strong> Only the following fields will be saved to the system: Name, Email, Password, Subject, and Assigned Class. 
+              Additional fields (Phone, Qualification, Experience) are for display purposes only.
+            </Typography>
+          </Alert>
 
           {/* Loading Progress */}
           {loading && (

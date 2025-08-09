@@ -51,7 +51,7 @@ import { useResponsive, typography, gridConfig, cardStyles } from '../../utils/r
 import AdminSummary from './AdminSummary';
 import AdminAddStudent from './AdminAddStudent';
 import AdminAddTeacher from './AdminAddTeacher';
-import AdminAddParent from './AdminAddParent';
+
 import AdminAssignTeacher from './AdminAssignTeacher';
 import AdminResetPassword from './AdminResetPassword';
 import AdminAcademicCalendar from './AdminAcademicCalendar';
@@ -339,13 +339,7 @@ function AdminDashboard() {
       color: '#f093fb',
       onClick: () => setActiveTab('add-teacher')
     },
-    {
-      title: 'Add Parent',
-      description: 'Register new parent',
-      icon: FamilyIcon,
-      color: '#4facfe',
-      onClick: () => setActiveTab('add-parent')
-    },
+
     {
       title: 'Assign Teacher',
       description: 'Assign teacher to class',
@@ -553,7 +547,7 @@ function AdminDashboard() {
             {activeTab === 'overview' && <AdminSummary />}
             {activeTab === 'add-student' && <AdminAddStudent />}
             {activeTab === 'add-teacher' && <AdminAddTeacher />}
-            {activeTab === 'add-parent' && <AdminAddParent />}
+
             {activeTab === 'assign-teacher' && <AdminAssignTeacher />}
             {activeTab === 'reset-password' && <AdminResetPassword />}
             {activeTab === 'calendar' && <AdminAcademicCalendar />}

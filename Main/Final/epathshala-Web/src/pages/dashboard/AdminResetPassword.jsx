@@ -13,7 +13,7 @@ function AdminResetPassword() {
     setResetMessage('');
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`/api/auth/reset-password?email=${encodeURIComponent(resetEmail)}&newPassword=${encodeURIComponent(newPassword)}`, {
+      const res = await fetch(`/api/password/reset?email=${encodeURIComponent(resetEmail)}&newPassword=${encodeURIComponent(newPassword)}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

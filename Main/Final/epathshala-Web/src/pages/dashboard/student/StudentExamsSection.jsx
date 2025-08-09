@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Button, Alert, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { Quiz as QuizIcon, PlayArrow as PlayIcon, Assessment as AssessmentIcon, Warning as WarningIcon } from '@mui/icons-material';
-import { getAvailableExams, getExamHistory, startExam } from '../../../api/exams';
+import { Card, CardContent, Typography, List, ListItem, ListItemText, Button, Alert, Box } from '@mui/material';
+import { PlayArrow as PlayIcon, Assessment as AssessmentIcon, Warning as WarningIcon } from '@mui/icons-material';
+import { getAvailableExams, getExamHistory } from '../../../api/exams';
 import { useAuth } from '../../../utils/auth';
 
 function StudentExamsSection() {
@@ -10,9 +10,7 @@ function StudentExamsSection() {
   const [examHistory, setExamHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [startingExam, setStartingExam] = useState(false);
+  // Removed confirm/start flow; clicking Start now navigates to exam page
 
   const fetchData = async () => {
     setLoading(true);
@@ -36,28 +34,11 @@ function StudentExamsSection() {
   }, []);
 
   const handleStartExam = (exam) => {
-    setSelectedExam(exam);
-    setConfirmDialogOpen(true);
+    // Redirect to exam page without starting it
+    window.location.href = `/student/exams/${exam.id}`;
   };
 
-  const confirmStartExam = async () => {
-    if (!selectedExam) return;
-
-    setStartingExam(true);
-    try {
-      // Start the exam
-      await startExam(selectedExam.id);
-      
-      // Navigate to exam interface
-      window.location.href = `/student/exams/${selectedExam.id}`;
-    } catch (err) {
-      setError('Failed to start exam. Please try again.');
-      setConfirmDialogOpen(false);
-      setSelectedExam(null);
-    } finally {
-      setStartingExam(false);
-    }
-  };
+  // Removed confirmStartExam; navigation happens immediately on click
 
   const handleViewResult = (examId) => {
     // Navigate to exam result page
@@ -174,33 +155,7 @@ function StudentExamsSection() {
         </CardContent>
       </Card>
 
-      {/* Confirmation Dialog */}
-      <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
-        <DialogTitle>Start Exam</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to start the exam "{selectedExam?.title}"?
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            Duration: {selectedExam?.durationMinutes} minutes<br />
-            Total Marks: {selectedExam?.totalMarks}<br />
-            Questions: {selectedExam?.questionCount || 0}
-          </Typography>
-          <Typography variant="body2" color="warning.main" sx={{ mt: 2 }}>
-            ⚠️ Once you start the exam, the timer will begin and cannot be paused.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
-          <Button 
-            onClick={confirmStartExam} 
-            variant="contained" 
-            disabled={startingExam}
-          >
-            {startingExam ? 'Starting...' : 'Start Exam'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Confirmation dialog removed: direct navigation on Start click */}
     </>
   );
 }

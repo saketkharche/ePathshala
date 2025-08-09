@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -49,6 +50,8 @@ import ExamResultVisualization from './ExamResultVisualization';
 
 const StudentExamInterface = () => {
   const { user } = useAuth();
+  const { examId } = useParams();
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(0);
   const [availableExams, setAvailableExams] = useState([]);
   const [examHistory, setExamHistory] = useState([]);
@@ -173,6 +176,112 @@ const StudentExamInterface = () => {
     return 'error';
   };
 
+  // If routed with :examId, show exam detail page instead of the generic center
+  const selectedExam = useMemo(() => {
+    if (!examId) return null;
+    return availableExams.find((e) => String(e.id) === String(examId)) || null;
+  }, [availableExams, examId]);
+
+  if (examId) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Button variant="text" onClick={() => navigate('/student/exams')} sx={{ mb: 2 }}>
+          ← Back to Exams
+        </Button>
+        <Typography variant="h4" component="h1" gutterBottom>
+          {selectedExam ? selectedExam.title : 'Exam Details'}
+        </Typography>
+
+        {!selectedExam ? (
+          loading ? (
+            <Box display="flex" justifyContent="center" p={3}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Alert severity="warning">Exam not found or not available.</Alert>
+          )
+        ) : (
+          <Card>
+            <CardContent>
+              <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+                <Chip label={selectedExam.status} color={getStatusColor(selectedExam.status)} size="small" />
+              </Box>
+              <Typography variant="body1" paragraph>{selectedExam.description}</Typography>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2"><strong>Course:</strong> {selectedExam.courseName}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2"><strong>Duration:</strong> {formatDuration(selectedExam.durationMinutes)}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2"><strong>Total Marks:</strong> {selectedExam.totalMarks}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2"><strong>Questions:</strong> {selectedExam.questionCount || 0}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2" color="text.secondary"><strong>Start:</strong> {formatDateTime(selectedExam.startTime)}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2" color="text.secondary"><strong>End:</strong> {formatDateTime(selectedExam.endTime)}</Typography>
+                </Grid>
+              </Grid>
+
+              {selectedExam.negativeMarking && (
+                <Chip label={`Negative Marking: ${selectedExam.negativeMarkingPercentage}%`} color="error" size="small" sx={{ mb: 2 }} />
+              )}
+
+              {selectedExam.status === 'ACTIVE' ? (
+                <Button
+                  variant="contained"
+                  startIcon={<StartIcon />}
+                  onClick={() => handleStartExam(selectedExam.id)}
+                  disabled={loading}
+                >
+                  Start Exam
+                </Button>
+              ) : (
+                <Alert severity={selectedExam.status === 'UPCOMING' ? 'info' : 'warning'}>
+                  {selectedExam.status === 'UPCOMING' ? 'This exam is not active yet.' : 'This exam is no longer active.'}
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Exam Interface Dialog */}
+        <Dialog 
+          open={showExamDialog} 
+          onClose={() => setShowExamDialog(false)} 
+          maxWidth="lg" 
+          fullWidth
+          disableEscapeKeyDown
+        >
+          <DialogTitle>
+            {currentExam?.title}
+          </DialogTitle>
+          <DialogContent>
+            {currentExam && examQuestions.length > 0 ? (
+              <MCQExamInterface
+                exam={currentExam}
+                questions={examQuestions}
+                onSubmit={handleSubmitExam}
+                onTimeUp={handleTimeUp}
+              />
+            ) : (
+              <Box sx={{ p: 3, textAlign: 'center' }}>
+                <Typography variant="h6" color="text.secondary">
+                  Loading exam questions...
+                </Typography>
+              </Box>
+            )}
+          </DialogContent>
+        </Dialog>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" component="h1" gutterBottom>
@@ -252,10 +361,10 @@ const StudentExamInterface = () => {
                           <Button
                             variant="contained"
                             startIcon={<StartIcon />}
-                            onClick={() => handleStartExam(exam.id)}
+                            onClick={() => navigate(`/student/exams/${exam.id}`)}
                             disabled={loading}
                           >
-                            Start Exam
+                            Go to Exam
                           </Button>
                         )}
                         
@@ -330,7 +439,7 @@ const StudentExamInterface = () => {
                         <Button
                           size="small"
                           startIcon={<ViewIcon />}
-                          onClick={() => handleViewResult(result.examId)}
+                          onClick={() => navigate(`/student/exams/${result.examId}/result`)}
                         >
                           View Result
                         </Button>
@@ -346,7 +455,7 @@ const StudentExamInterface = () => {
         </Box>
       )}
 
-      {/* Exam Interface Dialog */}
+      {/* Exam Interface Dialog for generic listing view */}
       <Dialog 
         open={showExamDialog} 
         onClose={() => setShowExamDialog(false)} 
@@ -369,15 +478,6 @@ const StudentExamInterface = () => {
             <Box sx={{ p: 3, textAlign: 'center' }}>
               <Typography variant="h6" color="text.secondary">
                 Loading exam questions...
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Current Exam: {currentExam?.title || 'None'}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Questions Count: {examQuestions.length}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Exam Data: {JSON.stringify(currentExam, null, 2)}
               </Typography>
             </Box>
           )}

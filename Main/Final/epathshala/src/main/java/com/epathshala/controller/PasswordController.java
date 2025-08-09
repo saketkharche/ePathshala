@@ -169,4 +169,37 @@ public class PasswordController {
             return ResponseEntity.badRequest().body(errorResponse);
         }
     }
+
+    @PostMapping("/reset")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+        summary = "Admin reset user password",
+        description = "Allows an ADMIN to directly reset a user's password by email"
+    )
+    public ResponseEntity<Map<String, Object>> resetUserPassword(
+            @RequestParam String email,
+            @RequestParam String newPassword) {
+        try {
+            User user = userRepository.findByEmail(email).orElse(null);
+            if (user == null) {
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "User not found with email: " + email);
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+
+            String hashed = passwordUtility.encodePassword(newPassword);
+            user.setPassword(hashed);
+            userRepository.save(user);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Password reset successfully");
+            response.put("email", email);
+            response.put("userId", user.getId());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Failed to reset password: " + e.getMessage());
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+    }
 } 

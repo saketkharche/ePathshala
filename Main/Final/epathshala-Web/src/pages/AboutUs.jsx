@@ -49,30 +49,36 @@ function AboutUs() {
     }
   ];
 
-  const team = [
+  const developerTeam = [
     {
-      name: 'Dr. Sarah Johnson',
-      role: 'Chief Executive Officer',
-      avatar: 'SJ',
-      bio: 'Education technology expert with 15+ years of experience in digital learning platforms.'
+      name: 'Saket Kharche',
+      role: 'Full Stack Developer',
+      image: '/saketk.jpg',
+      bio: 'Lead developer specializing in React, Spring Boot, and modern web technologies.'
     },
     {
-      name: 'Michael Chen',
-      role: 'Chief Technology Officer',
-      avatar: 'MC',
-      bio: 'Software architect specializing in scalable educational technology solutions.'
+      name: 'Satyajeet Khamkar',
+      role: 'Backend Developer',
+      image: '/satyaK.jpg',
+      bio: 'Expert in Java, Spring Framework, and database design with focus on scalable architecture.'
     },
     {
-      name: 'Dr. Emily Rodriguez',
-      role: 'Head of Academic Affairs',
-      avatar: 'ER',
-      bio: 'Curriculum specialist with expertise in online learning methodologies.'
+      name: 'Ravi Yadav',
+      role: 'Frontend Developer',
+      image: '/raviy.jpg',
+      bio: 'UI/UX specialist with expertise in React, Material-UI, and responsive design.'
     },
     {
-      name: 'David Thompson',
-      role: 'Head of Student Success',
-      avatar: 'DT',
-      bio: 'Student experience advocate focused on improving learning outcomes.'
+      name: 'Gaurav Ahirrao',
+      role: 'Database Developer',
+      image: '/gauravA.jpg',
+      bio: 'Database architect and administrator with deep knowledge of SQL and data management.'
+    },
+    {
+      name: 'Anushree Upadhye',
+      role: 'UI/UX Designer',
+      image: '/AnushreeU.jpg',
+      bio: 'Creative designer focused on user experience and modern interface design.'
     }
   ];
 
@@ -252,7 +258,7 @@ function AboutUs() {
           </Grid>
         </Box>
 
-        {/* Team */}
+        {/* Developer Team */}
         <Box sx={{ mb: { xs: 4, sm: 6, md: 8 } }}>
           <Typography 
             variant="h4" 
@@ -264,11 +270,11 @@ function AboutUs() {
               mb: { xs: 3, sm: 4, md: 5 }
             }}
           >
-            Our Leadership Team
+            Our Developer Team
           </Typography>
           <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
-            {team.map((member, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+            {developerTeam.map((member, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <Card sx={{ 
                   height: '100%',
                   p: { xs: 2, sm: 3 },
@@ -281,16 +287,22 @@ function AboutUs() {
                   }
                 }}>
                   <CardContent>
-                    <Avatar sx={{ 
-                      width: { xs: 60, sm: 80, md: 100 }, 
-                      height: { xs: 60, sm: 80, md: 100 },
-                      mx: 'auto',
-                      mb: 2,
-                      bgcolor: 'primary.main',
-                      fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }
+                    <Box sx={{ 
+                      display: 'flex', 
+                      justifyContent: 'center', 
+                      mb: 2
                     }}>
-                      {member.avatar}
-                    </Avatar>
+                      <Avatar 
+                        src={member.image}
+                        sx={{ 
+                          width: { xs: 80, sm: 100, md: 120 }, 
+                          height: { xs: 80, sm: 100, md: 120 },
+                          border: '3px solid',
+                          borderColor: 'primary.main',
+                          boxShadow: 2
+                        }}
+                      />
+                    </Box>
                     <Typography 
                       variant="h6" 
                       gutterBottom 
@@ -301,17 +313,16 @@ function AboutUs() {
                     >
                       {member.name}
                     </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color="primary" 
+                    <Chip 
+                      label={member.role}
+                      color="primary"
+                      variant="outlined"
                       sx={{ 
+                        mb: 1,
                         fontWeight: 500,
-                        fontSize: { xs: '0.875rem', sm: '1rem' },
-                        mb: 1
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
                       }}
-                    >
-                      {member.role}
-                    </Typography>
+                    />
                     <Typography 
                       variant="body2" 
                       color="text.secondary"

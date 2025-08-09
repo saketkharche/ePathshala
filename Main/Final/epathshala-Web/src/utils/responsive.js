@@ -347,7 +347,8 @@ export const layoutHelpers = {
   preventOverlap: {
     position: 'relative',
     zIndex: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    isolation: 'isolate'
   },
 
   // Ensure proper stacking

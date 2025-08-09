@@ -40,6 +40,9 @@ function AdminDashboardLayout({ children }) {
             pt: { xs: '64px', sm: '72px' },
             px: { xs: 2, sm: 3, md: 4 },
             py: 3,
+            position: 'relative',
+            zIndex: 1,
+            overflow: 'hidden',
           }}
         >
           {children}

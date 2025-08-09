@@ -11,13 +11,8 @@ import {
   useTheme,
   useMediaQuery,
   Avatar,
-  Chip,
   Paper,
   Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Fade,
   Slide,
   Grow,
@@ -31,8 +26,6 @@ import {
   Speed as SpeedIcon,
   Support as SupportIcon,
   ArrowForward as ArrowForwardIcon,
-  PlayArrow as PlayIcon,
-  CheckCircle as CheckIcon,
   Star as StarIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
@@ -135,51 +128,7 @@ function HomePage() {
     }
   ];
 
-  const pricingPlans = [
-    {
-      title: 'Basic',
-      price: 'Free',
-      period: 'Forever',
-      features: [
-        'Access to basic courses',
-        'Limited assignments',
-        'Basic support',
-        'Standard features'
-      ],
-      popular: false,
-      color: '#1976d2'
-    },
-    {
-      title: 'Premium',
-      price: '$9.99',
-      period: 'per month',
-      features: [
-        'All courses and features',
-        'Unlimited assignments',
-        'Priority support',
-        'Advanced analytics',
-        'AI chatbot access',
-        'Custom learning paths'
-      ],
-      popular: true,
-      color: '#388e3c'
-    },
-    {
-      title: 'Institution',
-      price: 'Custom',
-      period: 'Contact us',
-      features: [
-        'Everything in Premium',
-        'Custom branding',
-        'Advanced admin tools',
-        'API access',
-        'Dedicated support',
-        'Custom integrations'
-      ],
-      popular: false,
-      color: '#f57c00'
-    }
-  ];
+
 
   const heroSections = [
     {
@@ -340,16 +289,17 @@ function HomePage() {
                     sx={{
                       width: { xs: '100%', sm: '90%', md: '100%' },
                       maxWidth: 600,
-                      height: { xs: 250, sm: 300, md: 400, lg: 500 },
-                      background: 'rgba(255, 255, 255, 0.1)',
+                      height: { xs: 300, sm: 350, md: 450, lg: 550 },
+                      background: 'rgba(255, 255, 255, 0.15)',
                       borderRadius: { xs: 2, sm: 3, md: 4 },
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
                       backdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
                       position: 'relative',
                       overflow: 'hidden',
+                      p: { xs: 2, sm: 3, md: 4 },
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 2,
                       '&::before': {
                         content: '""',
                         position: 'absolute',
@@ -357,16 +307,251 @@ function HomePage() {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
-                        animation: 'shimmer 2s infinite'
+                        background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+                        animation: 'pulse 4s ease-in-out infinite alternate'
                       }
                     }}
                   >
-                    <PlayIcon sx={{ 
-                      fontSize: { xs: 60, sm: 80, md: 100, lg: 120 }, 
-                      opacity: 0.8,
-                      color: 'white'
-                    }} />
+                    {/* Dashboard Header */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      mb: 1,
+                      zIndex: 1,
+                      position: 'relative'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          borderRadius: '50%', 
+                          bgcolor: 'error.main',
+                          animation: 'pulse 2s infinite'
+                        }} />
+                        <Box sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          borderRadius: '50%', 
+                          bgcolor: 'warning.main',
+                          animation: 'pulse 2s infinite 0.5s'
+                        }} />
+                        <Box sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          borderRadius: '50%', 
+                          bgcolor: 'success.main',
+                          animation: 'pulse 2s infinite 1s'
+                        }} />
+                      </Box>
+                      <Typography sx={{ 
+                        color: 'white', 
+                        fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' },
+                        fontWeight: 600,
+                        opacity: 0.9
+                      }}>
+                        ePathshala Dashboard
+                      </Typography>
+                    </Box>
+
+                    {/* Main Dashboard Content */}
+                    <Box sx={{ 
+                      flex: 1, 
+                      display: 'grid', 
+                      gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                      gap: 2,
+                      zIndex: 1,
+                      position: 'relative'
+                    }}>
+                      {/* Stats Cards */}
+                      <Box sx={{ 
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: 2,
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                        animation: 'slideInLeft 1s ease-out'
+                      }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <SchoolIcon sx={{ color: 'white', fontSize: '1.2rem', opacity: 0.8 }} />
+                          <Typography sx={{ color: 'white', fontSize: '0.75rem', fontWeight: 600 }}>
+                            Active Students
+                          </Typography>
+                        </Box>
+                        <Typography sx={{ color: 'white', fontSize: '1.5rem', fontWeight: 700 }}>
+                          15,247
+                        </Typography>
+                        <Box sx={{ 
+                          width: '100%', 
+                          height: 4, 
+                          background: 'rgba(255,255,255,0.2)',
+                          borderRadius: 2,
+                          overflow: 'hidden'
+                        }}>
+                          <Box sx={{ 
+                            width: '85%', 
+                            height: '100%', 
+                            background: 'linear-gradient(90deg, #4CAF50, #8BC34A)',
+                            borderRadius: 2,
+                            animation: 'progressBar 2s ease-out'
+                          }} />
+                        </Box>
+                      </Box>
+
+                      <Box sx={{ 
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: 2,
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                        animation: 'slideInRight 1s ease-out 0.2s'
+                      }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <GroupIcon sx={{ color: 'white', fontSize: '1.2rem', opacity: 0.8 }} />
+                          <Typography sx={{ color: 'white', fontSize: '0.75rem', fontWeight: 600 }}>
+                            Online Classes
+                          </Typography>
+                        </Box>
+                        <Typography sx={{ color: 'white', fontSize: '1.5rem', fontWeight: 700 }}>
+                          42
+                        </Typography>
+                        <Box sx={{ 
+                          width: '100%', 
+                          height: 4, 
+                          background: 'rgba(255,255,255,0.2)',
+                          borderRadius: 2,
+                          overflow: 'hidden'
+                        }}>
+                          <Box sx={{ 
+                            width: '68%', 
+                            height: '100%', 
+                            background: 'linear-gradient(90deg, #2196F3, #03A9F4)',
+                            borderRadius: 2,
+                            animation: 'progressBar 2s ease-out 0.3s'
+                          }} />
+                        </Box>
+                      </Box>
+
+                      {/* Feature Icons */}
+                      <Box sx={{ 
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: 2,
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                        animation: 'slideInLeft 1s ease-out 0.4s'
+                      }}>
+                        <Typography sx={{ color: 'white', fontSize: '0.75rem', fontWeight: 600, mb: 1 }}>
+                          Quick Actions
+                        </Typography>
+                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                          {[VideoCallIcon, AssignmentIcon, AssessmentIcon, ForumIcon].map((Icon, index) => (
+                            <Box
+                              key={index}
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: 1,
+                                background: 'rgba(255, 255, 255, 0.15)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                animation: `fadeInUp 0.5s ease-out ${0.6 + index * 0.1}s both`,
+                                '&:hover': {
+                                  background: 'rgba(255, 255, 255, 0.25)',
+                                  transform: 'scale(1.1)'
+                                }
+                              }}
+                            >
+                              <Icon sx={{ color: 'white', fontSize: '1rem', opacity: 0.9 }} />
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+
+                      {/* Recent Activity */}
+                      <Box sx={{ 
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: 2,
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                        animation: 'slideInRight 1s ease-out 0.6s'
+                      }}>
+                        <Typography sx={{ color: 'white', fontSize: '0.75rem', fontWeight: 600, mb: 1 }}>
+                          Recent Activity
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                          {['New assignment posted', 'Exam results available', 'Class starting soon'].map((text, index) => (
+                            <Box
+                              key={index}
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                animation: `fadeInLeft 0.5s ease-out ${0.8 + index * 0.1}s both`
+                              }}
+                            >
+                              <Box sx={{ 
+                                width: 6, 
+                                height: 6, 
+                                borderRadius: '50%', 
+                                bgcolor: 'success.main',
+                                animation: 'pulse 2s infinite'
+                              }} />
+                              <Typography sx={{ 
+                                color: 'white', 
+                                fontSize: '0.7rem', 
+                                opacity: 0.8,
+                                lineHeight: 1.2
+                              }}>
+                                {text}
+                              </Typography>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+                    </Box>
+
+                    {/* Bottom Status Bar */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      mt: 1,
+                      zIndex: 1,
+                      position: 'relative'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          borderRadius: '50%', 
+                          bgcolor: 'success.main',
+                          animation: 'pulse 2s infinite'
+                        }} />
+                        <Typography sx={{ 
+                          color: 'white', 
+                          fontSize: '0.7rem', 
+                          opacity: 0.8
+                        }}>
+                          System Online
+                        </Typography>
+                      </Box>
+                      <Typography sx={{ 
+                        color: 'white', 
+                        fontSize: '0.7rem', 
+                        opacity: 0.6
+                      }}>
+                        Live Demo
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               </Zoom>
@@ -644,140 +829,7 @@ function HomePage() {
         </Container>
       </Box>
 
-      {/* Pricing Section */}
-      <Box sx={{ py: { xs: 6, sm: 8, md: 12 } }}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: { xs: 4, sm: 6, md: 8 } }}>
-            <Typography
-              variant="h2"
-              sx={{
-                fontWeight: 700,
-                fontSize: typography.h2,
-                mb: { xs: 2, sm: 3 }
-              }}
-            >
-              Choose Your Plan
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: 'text.secondary',
-                fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' },
-                maxWidth: 600,
-                mx: 'auto'
-              }}
-            >
-              Flexible pricing options to suit your learning needs
-            </Typography>
-          </Box>
-          
-          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
-            {pricingPlans.map((plan, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Grow in timeout={1000 + index * 200}>
-                  <Card sx={{
-                    height: '100%',
-                    borderRadius: { xs: 2, sm: 3 },
-                    position: 'relative',
-                    transition: 'all 0.3s ease',
-                    transform: plan.popular ? 'scale(1.02)' : 'scale(1)',
-                    '&:hover': {
-                      transform: plan.popular ? 'scale(1.05)' : 'scale(1.02)',
-                      boxShadow: 8
-                    }
-                  }}>
-                    {plan.popular && (
-                      <Chip
-                        label="Most Popular"
-                        color="secondary"
-                        sx={{
-                          position: 'absolute',
-                          top: -12,
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          zIndex: 1,
-                          fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                        }}
-                      />
-                    )}
-                    
-                    <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 }, textAlign: 'center' }}>
-                      <Typography
-                        variant="h4"
-                        sx={{
-                          fontWeight: 700,
-                          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
-                          mb: 1
-                        }}
-                      >
-                        {plan.title}
-                      </Typography>
-                      
-                      <Box sx={{ mb: 3 }}>
-                        <Typography
-                          variant="h3"
-                          sx={{
-                            fontWeight: 800,
-                            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-                            color: plan.color
-                          }}
-                        >
-                          {plan.price}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: 'text.secondary',
-                            fontSize: { xs: '0.875rem', sm: '1rem' }
-                          }}
-                        >
-                          {plan.period}
-                        </Typography>
-                      </Box>
-                      
-                      <List sx={{ mb: 3 }}>
-                        {plan.features.map((feature, featureIndex) => (
-                          <ListItem key={featureIndex} sx={{ px: 0, py: 0.5 }}>
-                            <ListItemIcon sx={{ minWidth: 32 }}>
-                              <CheckIcon sx={{ color: 'success.main', fontSize: { xs: '1rem', sm: '1.25rem' } }} />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={feature}
-                              sx={{
-                                '& .MuiListItemText-primary': {
-                                  fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }
-                              }}
-                            />
-                          </ListItem>
-                        ))}
-                      </List>
-                      
-                      <Button
-                        variant={plan.popular ? 'contained' : 'outlined'}
-                        fullWidth
-                        size="large"
-                        sx={{
-                          ...buttonStyles.primary,
-                          backgroundColor: plan.popular ? plan.color : 'transparent',
-                          color: plan.popular ? 'white' : plan.color,
-                          borderColor: plan.color,
-                          '&:hover': {
-                            backgroundColor: plan.popular ? plan.color : plan.color,
-                            color: 'white'
-                          }
-                        }}
-                      >
-                        Get Started
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Grow>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+
 
       {/* CTA Section */}
       <Box sx={{ 

@@ -647,6 +647,7 @@ function Sidebar({ open, onClose, collapsed, onCollapse, isMobile }) {
               boxShadow: 8,
               zIndex: theme.zIndex.modal + 1,
               backgroundColor: 'background.paper',
+              overflowY: 'auto'
             },
           }}
         >
@@ -672,7 +673,8 @@ function Sidebar({ open, onClose, collapsed, onCollapse, isMobile }) {
               position: 'fixed',
               height: '100vh',
               top: 0,
-              left: 0
+              left: 0,
+              overflowY: 'auto'
             },
           }}
           open

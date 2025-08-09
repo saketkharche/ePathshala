@@ -817,7 +817,7 @@ const UnifiedNavigation = ({ children }) => {
           left: effectiveCollapsed ? collapsedDrawerWidth + 5 : drawerWidth + 5,
           top: '50%',
           transform: 'translateY(-50%)',
-          zIndex: 9999,
+          zIndex: theme.zIndex.drawer + 1,
           display: { xs: 'none', md: 'block' },
           transition: theme.transitions.create(['left'], {
             duration: theme.transitions.duration.standard,

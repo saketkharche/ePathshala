@@ -173,12 +173,12 @@ function Navbar({ onMenuClick, isMobile: propIsMobile, sidebarCollapsed = false 
           backdropFilter: 'blur(10px)',
           borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           zIndex: theme.zIndex.appBar,
-          left: '240px',
-          width: 'calc(100% - 240px)',
+          left: { xs: 0, md: '240px' },
+          width: { xs: '100%', md: 'calc(100% - 240px)' },
           transition: 'all 0.3s ease',
           ...(sidebarCollapsed && {
-            left: '64px',
-            width: 'calc(100% - 64px)',
+            left: { xs: 0, md: '64px' },
+            width: { xs: '100%', md: 'calc(100% - 64px)' },
           }),
         }}
       >

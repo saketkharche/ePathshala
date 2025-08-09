@@ -24,7 +24,9 @@ import {
   Avatar,
   Chip,
   Divider,
-  alpha
+  alpha,
+  AppBar,
+  Toolbar
 } from '@mui/material';
 import {
   School as SchoolIcon,
@@ -41,7 +43,8 @@ import {
   FamilyRestroom as ParentIcon,
   ArrowForward as ArrowForwardIcon,
   Support as SupportIcon,
-  Security as SecurityIcon
+  Security as SecurityIcon,
+  Home as HomeIcon
 } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -137,6 +140,31 @@ function LoginPage() {
       position: 'relative',
       overflow: 'hidden'
     }}>
+      {/* Simple Navigation Bar */}
+      <AppBar position="static" sx={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)' }}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 600 }}>
+            ePathshala
+          </Typography>
+          <Button
+            component={Link}
+            to="/"
+            variant="outlined"
+            startIcon={<HomeIcon />}
+            sx={{ 
+              color: 'primary.main',
+              borderColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+                color: 'white'
+              }
+            }}
+          >
+            Home
+          </Button>
+        </Toolbar>
+      </AppBar>
+
       {/* Background Pattern */}
       <Box
         sx={{
@@ -156,10 +184,10 @@ function LoginPage() {
 
       <Container 
         maxWidth="lg" 
-        sx={{ 
+            sx={{
           position: 'relative',
           zIndex: 1,
-          minHeight: '100vh',
+          minHeight: 'calc(100vh - 64px)',
           display: 'flex',
           alignItems: 'center',
           py: 4
@@ -172,27 +200,27 @@ function LoginPage() {
               <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                 {/* Logo and Brand */}
                 <Box sx={{ mb: 4 }}>
-                  <Box
-                    sx={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                       width: 80,
                       height: 80,
                       borderRadius: '20px',
-                      background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
                       mb: 3,
                       boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                     }}
                   >
                     <SchoolIcon sx={{ fontSize: 40, color: 'white' }} />
-                  </Box>
-                  
-                  <Typography
+              </Box>
+              
+              <Typography
                     variant="h3"
-                    component="h1"
-                    gutterBottom
-                    sx={{
+                component="h1"
+                gutterBottom
+                sx={{
                       fontWeight: 800,
                       background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                       backgroundClip: 'text',
@@ -202,11 +230,11 @@ function LoginPage() {
                     }}
                   >
                     ePathshala
-                  </Typography>
-                  
-                  <Typography
+              </Typography>
+              
+              <Typography
                     variant="h6"
-                    color="text.secondary"
+                color="text.secondary"
                     sx={{ mb: 4, fontWeight: 400 }}
                   >
                     Empowering Education Through Technology
@@ -286,39 +314,39 @@ function LoginPage() {
                     sx={{ mb: 3 }}
                   >
                     Sign in to your account to continue
-                  </Typography>
-                </Box>
+              </Typography>
+            </Box>
 
-                {/* Success/Error Messages */}
-                {message && (
-                  <Alert
-                    severity="success"
+            {/* Success/Error Messages */}
+            {message && (
+              <Alert
+                severity="success"
                     sx={{ mb: 3 }}
-                    onClose={() => setMessage('')}
-                  >
-                    {message}
-                  </Alert>
-                )}
+                onClose={() => setMessage('')}
+              >
+                {message}
+              </Alert>
+            )}
 
-                {error && (
-                  <Alert
-                    severity="error"
+            {error && (
+              <Alert
+                severity="error"
                     sx={{ mb: 3 }}
-                    onClose={() => setError('')}
-                  >
-                    {error}
-                  </Alert>
-                )}
+                onClose={() => setError('')}
+              >
+                {error}
+              </Alert>
+            )}
 
-                {/* Login Form */}
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={loginValidationSchema}
-                  onSubmit={handleLogin}
-                >
-                  {({ values, errors, touched, handleChange, handleBlur, isSubmitting, isValid, dirty }) => (
-                    <Form>
-                      {/* Role Selection */}
+            {/* Login Form */}
+            <Formik
+              initialValues={initialValues}
+              validationSchema={loginValidationSchema}
+              onSubmit={handleLogin}
+            >
+              {({ values, errors, touched, handleChange, handleBlur, isSubmitting, isValid, dirty }) => (
+                <Form>
+                    {/* Role Selection */}
                       <Box sx={{ mb: 3 }}>
                         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
                           Select Your Role
@@ -331,12 +359,12 @@ function LoginPage() {
                                   setSelectedRole(role);
                                   handleChange({ target: { name: 'role', value: role } });
                                 }}
-                                sx={{
+                          sx={{
                                   cursor: 'pointer',
                                   border: values.role === role ? `2px solid ${config.color}` : '2px solid transparent',
                                   backgroundColor: values.role === role ? alpha(config.color, 0.1) : 'transparent',
                                   transition: 'all 0.3s ease',
-                                  '&:hover': {
+                              '&:hover': {
                                     transform: 'translateY(-2px)',
                                     boxShadow: 4,
                                     backgroundColor: alpha(config.color, 0.05)
@@ -354,10 +382,10 @@ function LoginPage() {
                               </Card>
                             </Grid>
                           ))}
-                        </Grid>
+                    </Grid>
                       </Box>
 
-                      {/* Email Field */}
+                    {/* Email Field */}
                       <TextField
                         fullWidth
                         name="email"
@@ -390,7 +418,7 @@ function LoginPage() {
                         }}
                       />
 
-                      {/* Password Field */}
+                    {/* Password Field */}
                       <TextField
                         fullWidth
                         name="password"
@@ -434,7 +462,7 @@ function LoginPage() {
                         }}
                       />
 
-                      {/* Submit Button */}
+                    {/* Submit Button */}
                       <Button
                         type="submit"
                         variant="contained"
@@ -462,57 +490,57 @@ function LoginPage() {
                       >
                         {isSubmitting || loading ? 'Signing In...' : 'Sign In'}
                       </Button>
-                    </Form>
-                  )}
-                </Formik>
+                </Form>
+              )}
+            </Formik>
 
-                {/* Forgot Password Link */}
+            {/* Forgot Password Link */}
                 <Box sx={{ textAlign: 'center', mt: 3 }}>
-                  <Typography 
-                    variant="body2" 
-                    color="text.secondary"
-                  >
-                    Forgot your password?{' '}
-                    <Link 
-                      to="/forgot-password"
-                      style={{ 
-                        color: theme.palette.primary.main, 
-                        textDecoration: 'none',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Reset it here
-                    </Link>
-                  </Typography>
-                </Box>
+              <Typography 
+                variant="body2" 
+                color="text.secondary"
+              >
+                Forgot your password?{' '}
+                <Link 
+                  to="/forgot-password"
+                  style={{ 
+                    color: theme.palette.primary.main, 
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                  }}
+                >
+                  Reset it here
+                </Link>
+              </Typography>
+            </Box>
 
-                {/* Divider */}
+            {/* Divider */}
                 <Divider sx={{ my: 3 }}>
                   <Typography variant="body2" color="text.secondary">
                     Need Help?
-                  </Typography>
+              </Typography>
                 </Divider>
 
-                {/* Contact Support */}
-                <Box sx={{ textAlign: 'center' }}>
-                  <Typography 
-                    variant="body2" 
-                    color="text.secondary"
-                  >
+            {/* Contact Support */}
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography 
+                variant="body2" 
+                color="text.secondary"
+              >
                     Having trouble signing in?{' '}
-                    <Link 
-                      to="/contact"
-                      style={{ 
-                        color: theme.palette.primary.main, 
-                        textDecoration: 'none',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Contact support
-                    </Link>
-                  </Typography>
-                </Box>
-              </Paper>
+                <Link 
+                  to="/contact"
+                  style={{ 
+                    color: theme.palette.primary.main, 
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                  }}
+                >
+                  Contact support
+                </Link>
+              </Typography>
+            </Box>
+          </Paper>
             </Zoom>
           </Grid>
         </Grid>

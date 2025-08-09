@@ -16,7 +16,9 @@ import {
   useTheme,
   useMediaQuery,
   InputAdornment,
-  IconButton
+  IconButton,
+  AppBar,
+  Toolbar
 } from '@mui/material';
 import {
   Email as EmailIcon,
@@ -24,9 +26,10 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   Security as SecurityIcon,
-  ArrowBack as ArrowBackIcon
+  ArrowBack as ArrowBackIcon,
+  Home as HomeIcon,
+  Login as LoginIcon
 } from '@mui/icons-material';
-import Navbar from '../../components/common/Navbar';
 
 function ForgotPassword() {
   const theme = useTheme();
@@ -105,8 +108,46 @@ function ForgotPassword() {
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Navbar */}
-      <Navbar />
+      {/* Simple Navigation Bar */}
+      <AppBar position="static" sx={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)' }}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 600 }}>
+            ePathshala
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              component={Link}
+              to="/"
+              variant="outlined"
+              startIcon={<HomeIcon />}
+              sx={{ 
+                color: 'primary.main',
+                borderColor: 'primary.main',
+                '&:hover': {
+                  backgroundColor: 'primary.main',
+                  color: 'white'
+                }
+              }}
+            >
+              Home
+            </Button>
+            <Button
+              component={Link}
+              to="/login"
+              variant="contained"
+              startIcon={<LoginIcon />}
+              sx={{ 
+                background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #1565c0 30%, #1976d2 90%)',
+                }
+              }}
+            >
+              Sign In
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
       
       {/* Main Content */}
       <Box sx={{ 
@@ -151,10 +192,21 @@ function ForgotPassword() {
                     variant="body1" 
                     sx={{ 
                       color: 'text.secondary',
-                      fontSize: { xs: '0.9rem', sm: '1rem' }
+                      fontSize: { xs: '0.9rem', sm: '1rem' },
+                      mb: 2
                     }}
                   >
-                    Follow the steps to reset your password
+                    Follow the steps to reset your password securely
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: 'text.secondary',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                      opacity: 0.8
+                    }}
+                  >
+                    Don't worry! It happens to the best of us.
                   </Typography>
                 </Box>
 
@@ -164,7 +216,16 @@ function ForgotPassword() {
                   sx={{ 
                     mb: 4,
                     '& .MuiStepLabel-label': {
-                      fontSize: { xs: '0.8rem', sm: '0.9rem' }
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                      fontWeight: 500
+                    },
+                    '& .MuiStepLabel-root.Mui-active .MuiStepLabel-label': {
+                      color: '#1976d2',
+                      fontWeight: 600
+                    },
+                    '& .MuiStepLabel-root.Mui-completed .MuiStepLabel-label': {
+                      color: '#2e7d32',
+                      fontWeight: 600
                     }
                   }}
                 >
@@ -220,7 +281,14 @@ function ForgotPassword() {
                         background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
                         '&:hover': {
                           background: 'linear-gradient(45deg, #1565c0 30%, #1976d2 90%)',
-                        }
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 25px rgba(25, 118, 210, 0.3)',
+                        },
+                        '&:disabled': {
+                          transform: 'none',
+                          boxShadow: 'none',
+                        },
+                        transition: 'all 0.3s ease',
                       }}
                     >
                       {loading ? 'Sending OTP...' : 'Send OTP'}
@@ -326,7 +394,14 @@ function ForgotPassword() {
                         background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
                         '&:hover': {
                           background: 'linear-gradient(45deg, #1565c0 30%, #1976d2 90%)',
-                        }
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 25px rgba(25, 118, 210, 0.3)',
+                        },
+                        '&:disabled': {
+                          transform: 'none',
+                          boxShadow: 'none',
+                        },
+                        transition: 'all 0.3s ease',
                       }}
                     >
                       {loading ? 'Resetting Password...' : 'Reset Password'}
@@ -352,6 +427,37 @@ function ForgotPassword() {
                     Back to Login
                   </Button>
                 </Box>
+
+                {/* Helpful Tips */}
+                {step === 0 && (
+                  <Box sx={{ mt: 3, p: 2, bgcolor: 'info.50', borderRadius: 2, border: '1px solid', borderColor: 'info.200' }}>
+                    <Typography variant="body2" sx={{ color: 'info.700', fontWeight: 500, mb: 1 }}>
+                      💡 Helpful Tips:
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'info.600', fontSize: '0.8rem', lineHeight: 1.4 }}>
+                      • Check your email's spam folder if you don't receive the OTP
+                      <br />
+                      • The OTP is valid for 10 minutes
+                      <br />
+                      • Make sure to enter the email address you used during registration
+                    </Typography>
+                  </Box>
+                )}
+
+                {step === 1 && (
+                  <Box sx={{ mt: 3, p: 2, bgcolor: 'success.50', borderRadius: 2, border: '1px solid', borderColor: 'success.200' }}>
+                    <Typography variant="body2" sx={{ color: 'success.700', fontWeight: 500, mb: 1 }}>
+                      🔐 Password Requirements:
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'success.600', fontSize: '0.8rem', lineHeight: 1.4 }}>
+                      • Minimum 6 characters long
+                      <br />
+                      • Use a combination of letters, numbers, and symbols for better security
+                      <br />
+                      • Avoid using easily guessable information
+                    </Typography>
+                  </Box>
+                )}
 
                 {/* Messages */}
                 {message && (

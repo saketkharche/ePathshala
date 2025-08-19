@@ -1,0 +1,111 @@
+\chapter{Stack\+Blur CHANGES }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s}\index{StackBlur CHANGES@{StackBlur CHANGES}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13704}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13704}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13705}{}\doxysection{\texorpdfstring{2.\+7.\+0}{2.\+7.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13705}
+
+\begin{DoxyItemize}
+\item fix\+: use unsigned right shift to fix blur radius larger than 180 \#59 (@kayahr)
+\item chore\+: update build files (@kayahr)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13706}{}\doxysection{\texorpdfstring{2.\+6.\+0}{2.\+6.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13706}
+
+\begin{DoxyItemize}
+\item feat\+: Image\+Bitmap support (@\+Jason11Q)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13707}{}\doxysection{\texorpdfstring{2.\+5.\+0}{2.\+5.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13707}
+
+\begin{DoxyItemize}
+\item Enhancement\+: boolean arg to skip setting canvas styles (@\+Lukeeee\+Bennett)
+\item Build\+: As per latest dev\+Deps.
+\item Docs\+: Update API docs as per latest
+\end{DoxyItemize}
+
+{\bfseries{Dev-\/facing\+:}}
+
+
+\begin{DoxyItemize}
+\item Linting\+: As per ash-\/nazg
+\item npm\+: Switch to server without reported vulnerabilities
+\item npm\+: Switch to pnpm lock
+\item npm\+: Update dev\+Deps (and switch to new ash-\/nazg peer\+Deps)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13708}{}\doxysection{\texorpdfstring{2.\+4.\+0}{2.\+4.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13708}
+
+\begin{DoxyItemize}
+\item Enhancement (image)\+: add use\+Offset\+Width option for scaled images
+\item Refactoring\+: Move {\ttfamily let} to closer/deeper scope
+\item Linting\+: As per latest ash-\/nazg (add or avoid need for disable comments)
+\item npm\+: Update dev\+Deps.
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13709}{}\doxysection{\texorpdfstring{2.\+3.\+0}{2.\+3.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13709}
+
+\begin{DoxyItemize}
+\item Build\+: Update build files per latest dev\+Deps
+\item Linting (ESLint)\+: Switch to ash-\/nazg/sauron-\/node
+\item Linting (ESLint)\+: Lint MD, HTML, hidden files
+\item Linting (ESLint)\+: Switch to 2 sp. indent, fix max-\/len
+\item Linting (ESLint)\+: Prefer {\ttfamily document.\+query\+Selector} in demo
+\item Linting (ESLint)\+: Add a recommended extension (js) to eslintrc
+\item Maintenance\+: Add {\ttfamily .editorconfig}
+\item Mainenance\+: Use {\ttfamily .json} extension on {\ttfamily .babelrc}
+\item npm\+: Remove {\ttfamily package-\/lock.\+json} in favor of {\ttfamily yarn.\+lock}
+\item npm\+: Avoid bundling {\ttfamily rollup.\+config.\+js}
+\item npm\+: Move from deprecated {\ttfamily opn-\/cli} to {\ttfamily open-\/cli}
+\item npm\+: Add valid {\ttfamily engines} (pointing to minimum Node version until may confirm)
+\item npm\+: Update dev\+Deps (except jsdoc which seems to still have a problem with ESM exports\+: \href{https://github.com/jsdoc/jsdoc/issues/1644}{\texttt{https\+://github.\+com/jsdoc/jsdoc/issues/1644}})
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13710}{}\doxysection{\texorpdfstring{2.\+2.\+0}{2.\+2.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13710}
+
+\begin{DoxyItemize}
+\item Build fix\+: Target 100\% coverage
+\item Refactoring (minor)\+: {\ttfamily x + x} -\/\texorpdfstring{$>$}{>} {\ttfamily 2 \texorpdfstring{$\ast$}{*} x}
+\item npm Add prepublish\+Only script for yarn
+\item npm\+: Update dev\+Deps (no impact on build)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13711}{}\doxysection{\texorpdfstring{2.\+1.\+0}{2.\+1.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13711}
+
+\begin{DoxyItemize}
+\item Enhancement\+: Throw descriptive {\ttfamily Type\+Error} rather than silently returning upon {\ttfamily process\+Canvas\+RGB}/{\ttfamily process\+Canvas\+RGBA} methods not supplying proper canvas (dependent methods will throw anyways, so shouldn\textquotesingle{}t be a breaking change)
+\item Enhancement\+: Update Type\+Script definition (@\+Jose Peleteiro)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13712}{}\doxysection{\texorpdfstring{2.\+0.\+0}{2.\+0.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13712}
+
+\begin{DoxyItemize}
+\item Breaking change\+: Remove now deprecated Bower
+\item Fix\+: Duck type with image or canvas in place of {\ttfamily instanceof} check (and a broken one)
+\item Enhancement\+: Add JSDoc comments
+\item Linting (ESLint)\+: Add ESLint with "{}standard"{} base
+\item Linting (Markdown)\+: Add {\ttfamily .remarkrc}
+\item Linting (package.\+json)\+: Add recommended properties
+\item Linting (HTML)\+: Add empty favicon to suppress console
+\item License\+: Change MIT license file name to reflect license type (MIT)
+\item Docs\+: Move changelog to own file\+: {\ttfamily \doxylink{_c_h_a_n_g_e_s_8md}{CHANGES.\+md}}
+\item Demo\+: Move demo to own directory (with static server to avoid Chrome security problems reaching out of folder)
+\item Demo\+: Move JS and CSS to separate files for easier linting/examination
+\item Build\+: Move from Grunt to Rollup, supporting ES6 Modules distribution as well as UMD
+\item Build\+: Add npm-\/recommended {\ttfamily package-\/lock.\+json}
+\item npm\+: Add start, eslint, rollup, open-\/docs, docs scripts
+\item npm\+: Add {\ttfamily module} for ES6 module discovery and switch {\ttfamily main} to point to {\ttfamily dist}
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13713}{}\doxysection{\texorpdfstring{1.\+4.\+1}{1.\+4.\+1}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13713}
+
+\begin{DoxyItemize}
+\item Moves {\ttfamily grunt-\/cli} to {\ttfamily dev\+Dependencies} (\#23)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13714}{}\doxysection{\texorpdfstring{1.\+4.\+0}{1.\+4.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13714}
+
+\begin{DoxyItemize}
+\item Allows the lib to be used with node-\/canvas
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13715}{}\doxysection{\texorpdfstring{1.\+3.\+0}{1.\+3.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13715}
+
+\begin{DoxyItemize}
+\item Type\+Script typings added
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13716}{}\doxysection{\texorpdfstring{1.\+2.\+1}{1.\+2.\+1}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13716}
+
+\begin{DoxyItemize}
+\item Includes built files in the NPM packgage
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13717}{}\doxysection{\texorpdfstring{1.\+2.\+0}{1.\+2.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13717}
+
+\begin{DoxyItemize}
+\item Remove alerts and obsolete {\ttfamily netscape.\+security.\+Privilege\+Manager}
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13718}{}\doxysection{\texorpdfstring{1.\+1.\+0}{1.\+1.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13718}
+
+\begin{DoxyItemize}
+\item Allow blur to be applied to {\ttfamily Image\+Data} directly (thanks @\+Web\+Seed)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13719}{}\doxysection{\texorpdfstring{1.\+0.\+0}{1.\+0.\+0}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2stackblur-canvas_2_c_h_a_n_g_e_s_autotoc_md13719}
+
+\begin{DoxyItemize}
+\item First Release 
+\end{DoxyItemize}

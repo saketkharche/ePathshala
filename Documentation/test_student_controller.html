@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprehensive Student Controller Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .test { margin: 15px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: white; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; }
+        pre { background-color: #f8f9fa; padding: 10px; overflow-x: auto; border-radius: 3px; }
+        .header { background-color: #007bff; color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .summary { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .endpoint-info { font-size: 12px; color: #666; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Comprehensive Student Controller Test</h1>
+            <p>Testing all endpoints with detailed analysis</p>
+        </div>
+        
+        <div class="summary" id="summary">
+            <h3>📊 Test Summary</h3>
+            <p>Click "Run All Tests" to start comprehensive testing</p>
+        </div>
+        
+        <button onclick="runAllTests()">🚀 Run All Tests</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8081';
+        const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MUBlcGF0aHNoYWxhLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiZXhwIjoxNzU0MDc5NDgwLCJpYXQiOjE3NTQwNDM0ODB9.nCI5-LBH8bpbPurAKsoUtdmf8Yqd6LZ_8zBh1Sv9Meo';
+
+        const headers = {
+            'Authorization': `Bearer ${BEARER_TOKEN}`,
+            'Content-Type': 'application/json'
+        };
+
+        let testResults = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            errors: 0
+        };
+
+        function updateSummary() {
+            const summary = document.getElementById('summary');
+            summary.innerHTML = `
+                <h3>📊 Test Summary</h3>
+                <p><strong>Total Tests:</strong> ${testResults.total}</p>
+                <p><strong>✅ Passed:</strong> ${testResults.passed}</p>
+                <p><strong>❌ Failed:</strong> ${testResults.failed}</p>
+                <p><strong>⚠️ Errors:</strong> ${testResults.errors}</p>
+                <p><strong>Success Rate:</strong> ${testResults.total > 0 ? Math.round((testResults.passed / testResults.total) * 100) : 0}%</p>
+            `;
+        }
+
+        async function testEndpoint(endpoint, description, expectedData = false) {
+            testResults.total++;
+            updateSummary();
+            
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.innerHTML = `
+                <h3>${description}</h3>
+                <p><strong>Endpoint:</strong> ${BASE_URL}${endpoint}</p>
+                <p><strong>Method:</strong> GET</p>
+                <div class="endpoint-info">Testing with Bearer Token: ${BEARER_TOKEN.substring(0, 50)}...</div>
+            `;
+            document.getElementById('results').appendChild(div);
+
+            try {
+                const response = await fetch(`${BASE_URL}${endpoint}`, { headers });
+                const data = await response.json();
+                
+                div.innerHTML += `
+                    <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                    <p><strong>Response Type:</strong> ${typeof data}</p>
+                    <p><strong>Response:</strong></p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+                if (response.ok) {
+                    // Check if data is empty array
+                    if (Array.isArray(data) && data.length === 0) {
+                        div.className += ' warning';
+                        div.innerHTML += '<p><strong>⚠️ WARNING: Empty array returned</strong></p>';
+                        testResults.failed++;
+                    } else if (expectedData && Array.isArray(data) && data.length > 0) {
+                        div.className += ' success';
+                        div.innerHTML += '<p><strong>✅ SUCCESS: Data found</strong></p>';
+                        testResults.passed++;
+                    } else if (!expectedData) {
+                        div.className += ' success';
+                        div.innerHTML += '<p><strong>✅ SUCCESS</strong></p>';
+                        testResults.passed++;
+                    } else {
+                        div.className += ' warning';
+                        div.innerHTML += '<p><strong>⚠️ WARNING: Expected data but got empty result</strong></p>';
+                        testResults.failed++;
+                    }
+                } else {
+                    div.className += ' error';
+                    div.innerHTML += '<p><strong>❌ FAILED: HTTP Error</strong></p>';
+                    testResults.failed++;
+                }
+            } catch (error) {
+                div.className += ' error';
+                div.innerHTML += `<p><strong>❌ ERROR:</strong> ${error.message}</p>`;
+                testResults.errors++;
+            }
+        }
+
+        async function runAllTests() {
+            document.getElementById('results').innerHTML = '';
+            testResults = { total: 0, passed: 0, failed: 0, errors: 0 };
+            updateSummary();
+            
+            console.log('🚀 Starting Comprehensive Student Controller Test');
+            
+            // Test 1: Database State
+            await testEndpoint('/api/student/test-db', '1. Database State Test', false);
+            
+            // Test 2: Authentication
+            await testEndpoint('/api/student/test-auth', '2. Authentication Test', false);
+            
+            // Test 3: Debug Database
+            await testEndpoint('/api/student/debug/database', '3. Debug Database - All Students', false);
+            
+            // Test 4: Student Details (User ID 1)
+            await testEndpoint('/api/student/details/1', '4. Student Details (User ID 1)', false);
+            
+            // Test 5: Student Details (User ID 2)
+            await testEndpoint('/api/student/details/2', '5. Student Details (User ID 2)', false);
+            
+            // Test 6: Student Details (User ID 3)
+            await testEndpoint('/api/student/details/3', '6. Student Details (User ID 3)', false);
+            
+            // Test 7: Attendance (User ID 1)
+            await testEndpoint('/api/student/attendance/1', '7. Attendance (User ID 1)', true);
+            
+            // Test 8: Attendance (User ID 2)
+            await testEndpoint('/api/student/attendance/2', '8. Attendance (User ID 2)', true);
+            
+            // Test 9: Attendance (User ID 3)
+            await testEndpoint('/api/student/attendance/3', '9. Attendance (User ID 3)', true);
+            
+            // Test 10: Grades (User ID 1)
+            await testEndpoint('/api/student/grades/1', '10. Grades (User ID 1)', true);
+            
+            // Test 11: Grades (User ID 2)
+            await testEndpoint('/api/student/grades/2', '11. Grades (User ID 2)', true);
+            
+            // Test 12: Grades (User ID 3)
+            await testEndpoint('/api/student/grades/3', '12. Grades (User ID 3)', true);
+            
+            // Test 13: Assignments (Class 10A)
+            await testEndpoint('/api/student/assignments/Class%2010A', '13. Assignments (Class 10A)', true);
+            
+            // Test 14: Assignments (Class 10B)
+            await testEndpoint('/api/student/assignments/Class%2010B', '14. Assignments (Class 10B)', true);
+            
+            // Test 15: Assignments (Class 9A)
+            await testEndpoint('/api/student/assignments/Class%209A', '15. Assignments (Class 9A)', true);
+            
+            // Test 16: Leave Status (User ID 1)
+            await testEndpoint('/api/student/leave/1', '16. Leave Status (User ID 1)', true);
+            
+            // Test 17: Leave Status (User ID 2)
+            await testEndpoint('/api/student/leave/2', '17. Leave Status (User ID 2)', true);
+            
+            // Test 18: Leave Status (User ID 3)
+            await testEndpoint('/api/student/leave/3', '18. Leave Status (User ID 3)', true);
+            
+            console.log('🎯 Comprehensive test completed!');
+            
+            // Add analysis
+            const analysisDiv = document.createElement('div');
+            analysisDiv.className = 'test';
+            analysisDiv.innerHTML = `
+                <h3>🔍 Analysis & Recommendations</h3>
+                <p><strong>Test Results:</strong></p>
+                <ul>
+                    <li>Total Tests: ${testResults.total}</li>
+                    <li>Passed: ${testResults.passed}</li>
+                    <li>Failed: ${testResults.failed}</li>
+                    <li>Errors: ${testResults.errors}</li>
+                </ul>
+                <p><strong>Next Steps:</strong></p>
+                <ul>
+                    <li>If Database Test shows 0 users/students → DataInitializer not running</li>
+                    <li>If Authentication fails → JWT token issue</li>
+                    <li>If Debug shows students but data endpoints return [] → User ID mapping issue</li>
+                    <li>If all tests pass but frontend shows [] → Frontend API call issue</li>
+                </ul>
+            `;
+            document.getElementById('results').appendChild(analysisDiv);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            testResults = { total: 0, passed: 0, failed: 0, errors: 0 };
+            updateSummary();
+        }
+    </script>
+</body>
+</html> 

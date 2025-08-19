@@ -1,0 +1,273 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/react-\/smooth Directory Reference}
+\hypertarget{dir_0fa5e869b69babac30d94a38b2a7379e}{}\label{dir_0fa5e869b69babac30d94a38b2a7379e}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/react-\/smooth Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/react-\/smooth Directory Reference}}
+Directory dependency graph for react-\/smooth\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{dir_0fa5e869b69babac30d94a38b2a7379e_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md12739}{}\doxysubsection{\texorpdfstring{react-\/smooth}{react-\/smooth}}\label{README.md_autotoc_md12739}
+react-\/smooth is a animation library work on React.
+
+\href{https://badge.fury.io/js/react-smooth}{\texttt{}} \href{https://travis-ci.org/recharts/react-smooth}{\texttt{}} \href{https://www.npmjs.com/package/react-smooth}{\texttt{}} \href{https://gitter.im/recharts/react-smooth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge}{\texttt{}}\hypertarget{README.md_autotoc_md12740}{}\doxysubsection{\texorpdfstring{install}{install}}\label{README.md_autotoc_md12740}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ -\/-\/save\ react-\/smooth}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12741}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md12741}
+simple animation
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<Animate\ to="{}0"{}\ from="{}1"{}\ attributeName="{}opacity"{}>}
+\DoxyCodeLine{\ \ <div\ />}
+\DoxyCodeLine{</Animate>}
+
+\end{DoxyCode}
+ steps animation
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ steps\ =\ [\{}
+\DoxyCodeLine{\ \ style:\ \{}
+\DoxyCodeLine{\ \ \ \ opacity:\ 0,}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ duration:\ 400,}
+\DoxyCodeLine{\},\ \{}
+\DoxyCodeLine{\ \ style:\ \{}
+\DoxyCodeLine{\ \ \ \ opacity:\ 1,}
+\DoxyCodeLine{\ \ \ \ transform:\ 'translate(0,\ 0)',}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ duration:\ 1000,}
+\DoxyCodeLine{\},\ \{}
+\DoxyCodeLine{\ \ style:\ \{}
+\DoxyCodeLine{\ \ \ \ transform:\ 'translate(100px,\ 100px)',}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ duration:\ 1200,}
+\DoxyCodeLine{\}];}
+\DoxyCodeLine{}
+\DoxyCodeLine{<Animate\ steps=\{steps\}>}
+\DoxyCodeLine{\ \ <div\ />}
+\DoxyCodeLine{</Animate>}
+
+\end{DoxyCode}
+ children can be a function
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<Animate\ from=\{\{\ opacity:\ 0\ \}\}}
+\DoxyCodeLine{\ \ to=\{\{\ opacity:\ 1\ \}\}}
+\DoxyCodeLine{\ \ easing="{}ease-\/in"{}}
+\DoxyCodeLine{\ \ >}
+\DoxyCodeLine{\ \ \{}
+\DoxyCodeLine{\ \ \ \ (\{\ opacity\ \})\ =>\ <div\ style=\{\{\ opacity\ \}\}></div>}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{</Animate>}
+
+\end{DoxyCode}
+
+
+you can configure js timing function
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ easing\ =\ configureBezier(0.1,\ 0.1,\ 0.5,\ 0.8);}
+\DoxyCodeLine{const\ easing\ =\ configureSpring(\{\ stiff:\ 170,\ damping:\ 20\ \});}
+
+\end{DoxyCode}
+
+
+group animation
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ appear\ =\ \{}
+\DoxyCodeLine{\ \ from:\ 0,}
+\DoxyCodeLine{\ \ to:\ 1,}
+\DoxyCodeLine{\ \ attributeName:\ 'opacity',}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ leave\ =\ \{}
+\DoxyCodeLine{\ \ steps:\ [\{}
+\DoxyCodeLine{\ \ \ \ style:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ transform:\ 'translateX(0)',}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \},\ \{}
+\DoxyCodeLine{\ \ \ \ duration:\ 1000,}
+\DoxyCodeLine{\ \ \ \ style:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ transform:\ 'translateX(300)',}
+\DoxyCodeLine{\ \ \ \ \ \ height:\ 50,}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \},\ \{}
+\DoxyCodeLine{\ \ \ \ duration:\ 2000,}
+\DoxyCodeLine{\ \ \ \ style:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ height:\ 0,}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \}]}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{<AnimateGroup\ appear=\{appear\}\ leave=\{leave\}>}
+\DoxyCodeLine{\ \ \{\ list\ \}}
+\DoxyCodeLine{</AnimateGroup>}
+\DoxyCodeLine{}
+\DoxyCodeLine{/*}
+\DoxyCodeLine{\ *\ \ @description:\ add\ compatible\ prefix\ in\ style}
+\DoxyCodeLine{\ *}
+\DoxyCodeLine{\ *\ \ style\ =\ \{\ transform:\ xxx,\ ...others\ \};}
+\DoxyCodeLine{\ *}
+\DoxyCodeLine{\ *\ \ translatedStyle\ =\ \{}
+\DoxyCodeLine{\ *\ \ \ \ WebkitTransform:\ xxx,}
+\DoxyCodeLine{\ *\ \ \ \ MozTransform:\ xxx,}
+\DoxyCodeLine{\ *\ \ \ \ OTransform:\ xxx,}
+\DoxyCodeLine{\ *\ \ \ \ msTransform:\ xxx,}
+\DoxyCodeLine{\ *\ \ \ \ ...others,}
+\DoxyCodeLine{\ *\ \ \};}
+\DoxyCodeLine{\ */}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ translatedStyle\ =\ translateStyle(style);}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12742}{}\doxysubsection{\texorpdfstring{API}{API}}\label{README.md_autotoc_md12742}
+\hypertarget{README.md_autotoc_md12743}{}\doxysubsubsection{\texorpdfstring{Animate}{Animate}}\label{README.md_autotoc_md12743}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ name}&\cellcolor{\tableheadbgcolor}\textbf{ type}&\cellcolor{\tableheadbgcolor}\textbf{ default}&\cellcolor{\tableheadbgcolor}\textbf{ description}\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ name}&\cellcolor{\tableheadbgcolor}\textbf{ type}&\cellcolor{\tableheadbgcolor}\textbf{ default}&\cellcolor{\tableheadbgcolor}\textbf{ description}\\\cline{1-4}
+\endhead
+\end{longtabu}
+
+
+from
+
+string or object
+
+\textquotesingle{}\textquotesingle{}
+
+set the initial style of the children
+
+to
+
+string or object
+
+\textquotesingle{}\textquotesingle{}
+
+set the final style of the children
+
+can\+Begin
+
+boolean
+
+true
+
+whether the animation is start
+
+begin
+
+number
+
+0
+
+animation delay time
+
+duration
+
+number
+
+1000
+
+animation duration
+
+steps
+
+array
+
+\mbox{[}\mbox{]}
+
+animation keyframes
+
+on\+Animation\+End
+
+function
+
+() =\texorpdfstring{$>$}{>} null
+
+called when animation finished
+
+attribute\+Name
+
+string
+
+\textquotesingle{}\textquotesingle{}
+
+style property
+
+easing
+
+string
+
+\textquotesingle{}ease\textquotesingle{}
+
+the animation timing function, support css timing function temporary
+
+is\+Active
+
+boolean
+
+true
+
+whether the animation is active
+
+children
+
+element
+
+support only child temporary\hypertarget{README.md_autotoc_md12744}{}\doxysubsubsection{\texorpdfstring{Animate\+Group}{Animate\+Group}}\label{README.md_autotoc_md12744}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ name}&\cellcolor{\tableheadbgcolor}\textbf{ type}&\cellcolor{\tableheadbgcolor}\textbf{ default}&\cellcolor{\tableheadbgcolor}\textbf{ description}\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ name}&\cellcolor{\tableheadbgcolor}\textbf{ type}&\cellcolor{\tableheadbgcolor}\textbf{ default}&\cellcolor{\tableheadbgcolor}\textbf{ description}\\\cline{1-4}
+\endhead
+\end{longtabu}
+
+
+appear
+
+object
+
+undefined
+
+configure element appear animation
+
+enter
+
+object
+
+undefined
+
+configure element appear animation
+
+leave
+
+object
+
+undefined
+
+configure element appear animation\hypertarget{README.md_autotoc_md12745}{}\doxysubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md12745}
+\href{http://opensource.org/licenses/MIT}{\texttt{MIT}}
+
+Copyright (c) 2015-\/2021 Recharts Group 

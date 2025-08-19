@@ -1,0 +1,101 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/yallist Directory Reference}
+\hypertarget{dir_1b752a557b095459451e7673c018103b}{}\label{dir_1b752a557b095459451e7673c018103b}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/yallist Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/yallist Directory Reference}}
+Directory dependency graph for yallist\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_1b752a557b095459451e7673c018103b_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md14347}{}\doxysubsection{\texorpdfstring{yallist}{yallist}}\label{README.md_autotoc_md14347}
+Yet Another Linked List
+
+There are many doubly-\/linked list implementations like it, but this one is mine.
+
+For when an array would be too big, and a Map can\textquotesingle{}t be iterated in reverse order.
+
+\href{https://travis-ci.org/isaacs/yallist}{\texttt{}} \href{https://coveralls.io/github/isaacs/yallist}{\texttt{}}\hypertarget{README.md_autotoc_md14348}{}\doxysubsection{\texorpdfstring{basic usage}{basic usage}}\label{README.md_autotoc_md14348}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{var\ yallist\ =\ require('yallist')}
+\DoxyCodeLine{var\ myList\ =\ yallist.create([1,\ 2,\ 3])}
+\DoxyCodeLine{myList.push('foo')}
+\DoxyCodeLine{myList.unshift('bar')}
+\DoxyCodeLine{//\ of\ course\ pop()\ and\ shift()\ are\ there,\ too}
+\DoxyCodeLine{console.log(myList.toArray())\ //\ ['bar',\ 1,\ 2,\ 3,\ 'foo']}
+\DoxyCodeLine{myList.forEach(function\ (k)\ \{}
+\DoxyCodeLine{\ \ //\ walk\ the\ list\ head\ to\ tail}
+\DoxyCodeLine{\})}
+\DoxyCodeLine{myList.forEachReverse(function\ (k,\ index,\ list)\ \{}
+\DoxyCodeLine{\ \ //\ walk\ the\ list\ tail\ to\ head}
+\DoxyCodeLine{\})}
+\DoxyCodeLine{var\ myDoubledList\ =\ myList.map(function\ (k)\ \{}
+\DoxyCodeLine{\ \ return\ k\ +\ k}
+\DoxyCodeLine{\})}
+\DoxyCodeLine{//\ now\ myDoubledList\ contains\ ['barbar',\ 2,\ 4,\ 6,\ 'foofoo']}
+\DoxyCodeLine{//\ mapReverse\ is\ also\ a\ thing}
+\DoxyCodeLine{var\ myDoubledListReverse\ =\ myList.mapReverse(function\ (k)\ \{}
+\DoxyCodeLine{\ \ return\ k\ +\ k}
+\DoxyCodeLine{\})\ //\ ['foofoo',\ 6,\ 4,\ 2,\ 'barbar']}
+\DoxyCodeLine{}
+\DoxyCodeLine{var\ reduced\ =\ myList.reduce(function\ (set,\ entry)\ \{}
+\DoxyCodeLine{\ \ set\ +=\ entry}
+\DoxyCodeLine{\ \ return\ set}
+\DoxyCodeLine{\},\ 'start')}
+\DoxyCodeLine{console.log(reduced)\ //\ 'startfoo123bar'}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14349}{}\doxysubsection{\texorpdfstring{api}{api}}\label{README.md_autotoc_md14349}
+The whole API is considered "{}public"{}.
+
+Functions with the same name as an Array method work more or less the same way.
+
+There\textquotesingle{}s reverse versions of most things because that\textquotesingle{}s the point.\hypertarget{README.md_autotoc_md14350}{}\doxysubsubsection{\texorpdfstring{Yallist}{Yallist}}\label{README.md_autotoc_md14350}
+Default export, the class that holds and manages a list.
+
+Call it with either a for\+Each-\/able (like an array) or a set of arguments, to initialize the list.
+
+The Array-\/ish methods all act like you\textquotesingle{}d expect. No magic length, though, so if you change that it won\textquotesingle{}t automatically prune or add empty spots.\hypertarget{README.md_autotoc_md14351}{}\doxysubsubsection{\texorpdfstring{Yallist.\+create(..)}{Yallist.\+create(..)}}\label{README.md_autotoc_md14351}
+Alias for Yallist function. Some people like factories.\hypertarget{README.md_autotoc_md14352}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+head}{yallist.\+head}}\label{README.md_autotoc_md14352}
+The first node in the list\hypertarget{README.md_autotoc_md14353}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+tail}{yallist.\+tail}}\label{README.md_autotoc_md14353}
+The last node in the list\hypertarget{README.md_autotoc_md14354}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+length}{yallist.\+length}}\label{README.md_autotoc_md14354}
+The number of nodes in the list. (Change this at your peril. It is not magic like Array length.)\hypertarget{README.md_autotoc_md14355}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+to\+Array()}{yallist.\+to\+Array()}}\label{README.md_autotoc_md14355}
+Convert the list to an array.\hypertarget{README.md_autotoc_md14356}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+for\+Each(fn, \mbox{[}thisp\mbox{]})}{yallist.\+for\+Each(fn, \mbox{[}thisp\mbox{]})}}\label{README.md_autotoc_md14356}
+Call a function on each item in the list.\hypertarget{README.md_autotoc_md14357}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+for\+Each\+Reverse(fn, \mbox{[}thisp\mbox{]})}{yallist.\+for\+Each\+Reverse(fn, \mbox{[}thisp\mbox{]})}}\label{README.md_autotoc_md14357}
+Call a function on each item in the list, in reverse order.\hypertarget{README.md_autotoc_md14358}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+get(n)}{yallist.\+get(n)}}\label{README.md_autotoc_md14358}
+Get the data at position {\ttfamily n} in the list. If you use this a lot, probably better off just using an Array.\hypertarget{README.md_autotoc_md14359}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+get\+Reverse(n)}{yallist.\+get\+Reverse(n)}}\label{README.md_autotoc_md14359}
+Get the data at position {\ttfamily n}, counting from the tail.\hypertarget{README.md_autotoc_md14360}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+map(fn, thisp)}{yallist.\+map(fn, thisp)}}\label{README.md_autotoc_md14360}
+Create a new Yallist with the result of calling the function on each item.\hypertarget{README.md_autotoc_md14361}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+map\+Reverse(fn, thisp)}{yallist.\+map\+Reverse(fn, thisp)}}\label{README.md_autotoc_md14361}
+Same as {\ttfamily map}, but in reverse.\hypertarget{README.md_autotoc_md14362}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+pop()}{yallist.\+pop()}}\label{README.md_autotoc_md14362}
+Get the data from the list tail, and remove the tail from the list.\hypertarget{README.md_autotoc_md14363}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+push(item, ...)}{yallist.\+push(item, ...)}}\label{README.md_autotoc_md14363}
+Insert one or more items to the tail of the list.\hypertarget{README.md_autotoc_md14364}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+reduce(fn, initial\+Value)}{yallist.\+reduce(fn, initial\+Value)}}\label{README.md_autotoc_md14364}
+Like Array.\+reduce.\hypertarget{README.md_autotoc_md14365}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+reduce\+Reverse}{yallist.\+reduce\+Reverse}}\label{README.md_autotoc_md14365}
+Like Array.\+reduce, but in reverse.\hypertarget{README.md_autotoc_md14366}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+reverse}{yallist.\+reverse}}\label{README.md_autotoc_md14366}
+Reverse the list in place.\hypertarget{README.md_autotoc_md14367}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+shift()}{yallist.\+shift()}}\label{README.md_autotoc_md14367}
+Get the data from the list head, and remove the head from the list.\hypertarget{README.md_autotoc_md14368}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+slice(\mbox{[}from\mbox{]}, \mbox{[}to\mbox{]})}{yallist.\+slice(\mbox{[}from\mbox{]}, \mbox{[}to\mbox{]})}}\label{README.md_autotoc_md14368}
+Just like Array.\+slice, but returns a new Yallist.\hypertarget{README.md_autotoc_md14369}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+slice\+Reverse(\mbox{[}from\mbox{]}, \mbox{[}to\mbox{]})}{yallist.\+slice\+Reverse(\mbox{[}from\mbox{]}, \mbox{[}to\mbox{]})}}\label{README.md_autotoc_md14369}
+Just like yallist.\+slice, but the result is returned in reverse.\hypertarget{README.md_autotoc_md14370}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+to\+Array()}{yallist.\+to\+Array()}}\label{README.md_autotoc_md14370}
+Create an array representation of the list.\hypertarget{README.md_autotoc_md14371}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+to\+Array\+Reverse()}{yallist.\+to\+Array\+Reverse()}}\label{README.md_autotoc_md14371}
+Create a reversed array representation of the list.\hypertarget{README.md_autotoc_md14372}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+unshift(item, ...)}{yallist.\+unshift(item, ...)}}\label{README.md_autotoc_md14372}
+Insert one or more items to the head of the list.\hypertarget{README.md_autotoc_md14373}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+unshift\+Node(node)}{yallist.\+unshift\+Node(node)}}\label{README.md_autotoc_md14373}
+Move a Node object to the front of the list. (That is, pull it out of wherever it lives, and make it the new head.)
+
+If the node belongs to a different list, then that list will remove it first.\hypertarget{README.md_autotoc_md14374}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+push\+Node(node)}{yallist.\+push\+Node(node)}}\label{README.md_autotoc_md14374}
+Move a Node object to the end of the list. (That is, pull it out of wherever it lives, and make it the new tail.)
+
+If the node belongs to a list already, then that list will remove it first.\hypertarget{README.md_autotoc_md14375}{}\doxysubsubsubsection{\texorpdfstring{yallist.\+remove\+Node(node)}{yallist.\+remove\+Node(node)}}\label{README.md_autotoc_md14375}
+Remove a node from the list, preserving referential integrity of head and tail and other nodes.
+
+Will throw an error if you try to have a list remove a node that doesn\textquotesingle{}t belong to it.\hypertarget{README.md_autotoc_md14376}{}\doxysubsubsection{\texorpdfstring{Yallist.\+Node}{Yallist.\+Node}}\label{README.md_autotoc_md14376}
+The class that holds the data and is actually the list.
+
+Call with {\ttfamily var n = new Node(value, previous\+Node, next\+Node)}
+
+Note that if you do direct operations on Nodes themselves, it\textquotesingle{}s very easy to get into weird states where the list is broken. Be careful \+:)\hypertarget{README.md_autotoc_md14377}{}\doxysubsubsubsection{\texorpdfstring{node.\+next}{node.\+next}}\label{README.md_autotoc_md14377}
+The next node in the list.\hypertarget{README.md_autotoc_md14378}{}\doxysubsubsubsection{\texorpdfstring{node.\+prev}{node.\+prev}}\label{README.md_autotoc_md14378}
+The previous node in the list.\hypertarget{README.md_autotoc_md14379}{}\doxysubsubsubsection{\texorpdfstring{node.\+value}{node.\+value}}\label{README.md_autotoc_md14379}
+The data the node contains.\hypertarget{README.md_autotoc_md14380}{}\doxysubsubsubsection{\texorpdfstring{node.\+list}{node.\+list}}\label{README.md_autotoc_md14380}
+The list to which this node belongs. (Null if it does not belong to any list.) 

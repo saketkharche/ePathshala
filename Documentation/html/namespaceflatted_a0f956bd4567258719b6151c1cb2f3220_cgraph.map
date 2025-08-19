@@ -1,0 +1,18 @@
+<map id="flatted.stringify" name="flatted.stringify">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,113,83"/>
+<area shape="rect" id="Node000002" href="$namespaceflatted.html#af05ab31f0e87d7cccd13bde6f8c4b0bf" title=" " alt="" coords="491,5,590,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,61,475,23,476,28,113,66"/>
+<area shape="rect" id="Node000003" href="$namespaceflatted.html#a41da9bdca5096c88843590ce405b907f" title=" " alt="" coords="161,81,284,108"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="113,75,146,80,145,85,113,80"/>
+<area shape="rect" id="Node000004" href="$namespaceflatted.html#aa9e0f6bdd410c981176fd35934135275" title=" " alt="" coords="483,157,598,184"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="249,106,288,126,333,143,402,157,468,165,468,170,401,163,331,148,285,131,247,111"/>
+<area shape="rect" id="Node000005" href="$namespaceflatted.html#af2ee527c66c20e7e38440129fa094067" title=" " alt="" coords="480,56,601,83"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="284,87,465,73,465,78,285,92"/>
+<area shape="rect" id="Node000006" href="$namespaceflatted.html#a1c57a34a7bf724a855bd3f2a1fd98fc7" title=" " alt="" coords="332,107,432,133"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="285,102,317,107,316,112,284,107"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="397,104,433,74,479,42,488,37,491,41,482,46,436,78,400,108"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="427,131,483,150,481,155,426,137"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="426,103,481,85,483,90,427,109"/>
+<area shape="rect" id="Node000007" href="$namespaceflatted.html#a2c64f13b3d861c205c821e03fcd4376f" title=" " alt="" coords="482,107,599,133"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="433,117,466,117,466,123,433,123"/>
+</map>

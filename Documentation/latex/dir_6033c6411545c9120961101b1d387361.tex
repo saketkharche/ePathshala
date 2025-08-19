@@ -1,0 +1,272 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/jspdf Directory Reference}
+\hypertarget{dir_6033c6411545c9120961101b1d387361}{}\label{dir_6033c6411545c9120961101b1d387361}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/jspdf Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/jspdf Directory Reference}}
+Directory dependency graph for jspdf\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_6033c6411545c9120961101b1d387361_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md11940}{}\doxysubsection{\texorpdfstring{!\mbox{[}js\+PDF\mbox{]}(\href{https://parall.ax/parallax-2016/img/svg/jspdf-logo.svg}{\texttt{https\+://parall.\+ax/parallax-\/2016/img/svg/jspdf-\/logo.\+svg}})}{!\mbox{[}js\+PDF\mbox{]}(\href{https://parall.ax/parallax-2016/img/svg/jspdf-logo.svg}{\texttt{https\+://parall.\+ax/parallax-\/2016/img/svg/jspdf-\/logo.\+svg}})}}\label{README.md_autotoc_md11940}
+\href{https://github.com/MrRio/jsPDF/actions/workflows/continuous-integration.yml?query=branch\%3Amaster}{\texttt{}} \href{https://codeclimate.com/repos/57f943855cdc43705e00592f/feed}{\texttt{}} \href{https://codeclimate.com/repos/57f943855cdc43705e00592f/coverage}{\texttt{}} \href{https://github.com/MrRio/jsPDF/blob/master/LICENSE}{\texttt{}} \href{https://lgtm.com/projects/g/MrRio/jsPDF/alerts/}{\texttt{}} \href{https://lgtm.com/projects/g/MrRio/jsPDF/context:javascript}{\texttt{}} \href{https://gitpod.io/from-referrer/}{\texttt{}}
+
+{\bfseries{A library to generate PDFs in Java\+Script.}}
+
+You can \href{http://twitter.com/MrRio}{\texttt{catch me on twitter}}\+: \href{http://twitter.com/MrRio}{\texttt{@\+Mr\+Rio}} or head over to \href{http://parall.ax}{\texttt{my company\textquotesingle{}s website}} for consultancy.
+
+js\+PDF is now co-\/maintained by \href{https://www.yworks.com/}{\texttt{y\+Works -\/ the diagramming experts}}.\hypertarget{README.md_autotoc_md11941}{}\doxysubsection{\texorpdfstring{\href{http://raw.githack.com/MrRio/jsPDF/master/}{\texttt{Live Demo}} \texorpdfstring{$\vert$}{|} \href{http://raw.githack.com/MrRio/jsPDF/master/docs/}{\texttt{Documentation}}}{\href{http://raw.githack.com/MrRio/jsPDF/master/}{\texttt{Live Demo}} \texorpdfstring{$\vert$}{|} \href{http://raw.githack.com/MrRio/jsPDF/master/docs/}{\texttt{Documentation}}}}\label{README.md_autotoc_md11941}
+\hypertarget{README.md_autotoc_md11942}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{README.md_autotoc_md11942}
+Recommended\+: get js\+PDF from npm\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ jspdf\ -\/-\/save}
+\DoxyCodeLine{\#\ or}
+\DoxyCodeLine{yarn\ add\ jspdf}
+
+\end{DoxyCode}
+
+
+Alternatively, load it from a CDN\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ src="{}https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"{}></script>}
+
+\end{DoxyCode}
+
+
+Or always get latest version via \href{https://unpkg.com/browse/jspdf/}{\texttt{unpkg}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ src="{}https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"{}></script>}
+
+\end{DoxyCode}
+
+
+The {\ttfamily dist} folder of this package contains different kinds of files\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{jspdf.\+es.\texorpdfstring{$\ast$}{*}.js}}\+: Modern ES2015 module format.
+\item {\bfseries{jspdf.\+node.\texorpdfstring{$\ast$}{*}.js}}\+: For running in Node. Uses file operations for loading/saving files instead of browser APIs.
+\item {\bfseries{jspdf.\+umd.\texorpdfstring{$\ast$}{*}.js}}\+: UMD module format. For AMD or script-\/tag loading.
+\item {\bfseries{polyfills\texorpdfstring{$\ast$}{*}.js}}\+: Required polyfills for older browsers like Internet Explorer. The es variant simply imports all required polyfills from {\ttfamily core-\/js}, the umd variant is self-\/contained.
+\end{DoxyItemize}
+
+Usually it is not necessary to specify the exact file in the import statement. Build tools or Node automatically figure out the right file, so importing "{}jspdf"{} is enough.\hypertarget{README.md_autotoc_md11943}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md11943}
+Then you\textquotesingle{}re ready to start making your document\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ jsPDF\ \}\ from\ "{}jspdf"{};}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Default\ export\ is\ a4\ paper,\ portrait,\ using\ millimeters\ for\ units}
+\DoxyCodeLine{const\ doc\ =\ new\ jsPDF();}
+\DoxyCodeLine{}
+\DoxyCodeLine{doc.text("{}Hello\ world!"{},\ 10,\ 10);}
+\DoxyCodeLine{doc.save("{}a4.pdf"{});}
+
+\end{DoxyCode}
+
+
+If you want to change the paper size, orientation, or units, you can do\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Landscape\ export,\ 2×4\ inches}
+\DoxyCodeLine{const\ doc\ =\ new\ jsPDF(\{}
+\DoxyCodeLine{\ \ orientation:\ "{}landscape"{},}
+\DoxyCodeLine{\ \ unit:\ "{}in"{},}
+\DoxyCodeLine{\ \ format:\ [4,\ 2]}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{doc.text("{}Hello\ world!"{},\ 1,\ 1);}
+\DoxyCodeLine{doc.save("{}two-\/by-\/four.pdf"{});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11944}{}\doxysubsubsection{\texorpdfstring{Running in Node.\+js}{Running in Node.\+js}}\label{README.md_autotoc_md11944}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ \{\ jsPDF\ \}\ =\ require("{}jspdf"{});\ //\ will\ automatically\ load\ the\ node\ version}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ doc\ =\ new\ jsPDF();}
+\DoxyCodeLine{doc.text("{}Hello\ world!"{},\ 10,\ 10);}
+\DoxyCodeLine{doc.save("{}a4.pdf"{});\ //\ will\ save\ the\ file\ in\ the\ current\ working\ directory}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11945}{}\doxysubsubsection{\texorpdfstring{Other Module Formats}{Other Module Formats}}\label{README.md_autotoc_md11945}
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+{\bfseries{AMD}} 
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{require(["{}jspdf"{}],\ (\{\ jsPDF\ \})\ =>\ \{}
+\DoxyCodeLine{\ \ const\ doc\ =\ new\ jsPDF();}
+\DoxyCodeLine{\ \ doc.text("{}Hello\ world!"{},\ 10,\ 10);}
+\DoxyCodeLine{\ \ doc.save("{}a4.pdf"{});}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+
+
+\end{adjustwidth}
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+{\bfseries{Globals}} 
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ \{\ jsPDF\ \}\ =\ window.jspdf;}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ doc\ =\ new\ jsPDF();}
+\DoxyCodeLine{doc.text("{}Hello\ world!"{},\ 10,\ 10);}
+\DoxyCodeLine{doc.save("{}a4.pdf"{});}
+
+\end{DoxyCode}
+
+
+\end{adjustwidth}
+\hypertarget{README.md_autotoc_md11946}{}\doxysubsubsection{\texorpdfstring{Optional dependencies}{Optional dependencies}}\label{README.md_autotoc_md11946}
+Some functions of js\+PDF require optional dependencies. E.\+g. the {\ttfamily html} method, which depends on {\ttfamily html2canvas} and, when supplied with a string HTML document, {\ttfamily dompurify}. Js\+PDF loads them dynamically when required (using the respective module format, e.\+g. dynamic imports). Build tools like Webpack will automatically create separate chunks for each of the optional dependencies. If your application does not use any of the optional dependencies, you can prevent Webpack from generating the chunks by defining them as external dependencies\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ webpack.config.js}
+\DoxyCodeLine{module.exports\ =\ \{}
+\DoxyCodeLine{\ \ //\ ...}
+\DoxyCodeLine{\ \ externals:\ \{}
+\DoxyCodeLine{\ \ \ \ //\ only\ define\ the\ dependencies\ you\ are\ NOT\ using\ as\ externals!}
+\DoxyCodeLine{\ \ \ \ canvg:\ "{}canvg"{},}
+\DoxyCodeLine{\ \ \ \ html2canvas:\ "{}html2canvas"{},}
+\DoxyCodeLine{\ \ \ \ dompurify:\ "{}dompurify"{}}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+In {\bfseries{Vue CLI}} projects, externals can be defined via the \href{https://cli.vuejs.org/config/\#configurewebpack}{\texttt{configure\+Webpack}} or \href{https://cli.vuejs.org/config/\#chainwebpack}{\texttt{chain\+Webpack}} properties of the {\ttfamily vue.\+config.\+js} file (needs to be created, first, in fresh projects).
+
+In {\bfseries{Angular}} projects, externals can be defined using \href{https://github.com/just-jeb/angular-builders/tree/master/packages/custom-webpack}{\texttt{custom webpack builders}}.
+
+In {\bfseries{React}} ({\ttfamily create-\/react-\/app}) projects, externals can be defined by either using \href{https://github.com/timarney/react-app-rewired}{\texttt{react-\/app-\/rewired}} or ejecting.\hypertarget{README.md_autotoc_md11947}{}\doxysubsubsection{\texorpdfstring{Type\+Script/\+Angular/\+Webpack/\+React/etc. Configuration\+:}{Type\+Script/\+Angular/\+Webpack/\+React/etc. Configuration\+:}}\label{README.md_autotoc_md11947}
+js\+PDF can be imported just like any other 3rd party library. This works with all major toolkits and frameworks. js\+PDF also offers a typings file for Type\+Script projects.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ jsPDF\ \}\ from\ "{}jspdf"{};}
+
+\end{DoxyCode}
+
+
+You can add js\+PDF to your meteor-\/project as follows\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{meteor\ add\ jspdf:core}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11948}{}\doxysubsubsection{\texorpdfstring{Polyfills}{Polyfills}}\label{README.md_autotoc_md11948}
+js\+PDF requires modern browser APIs in order to function. To use js\+PDF in older browsers like Internet Explorer, polyfills are required. You can load all required polyfills as follows\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ "{}jspdf/dist/polyfills.es.js"{};}
+
+\end{DoxyCode}
+
+
+Alternatively, you can load the prebundled polyfill file. This is not recommended, since you might end up loading polyfills multiple times. Might still be nifty for small applications or quick POCs.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ src="{}https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/polyfills.umd.js"{}></script>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11949}{}\doxysubsection{\texorpdfstring{Use of Unicode Characters / UTF-\/8\+:}{Use of Unicode Characters / UTF-\/8\+:}}\label{README.md_autotoc_md11949}
+The 14 standard fonts in PDF are limited to the ASCII-\/codepage. If you want to use UTF-\/8 you have to integrate a custom font, which provides the needed glyphs. js\+PDF supports .ttf-\/files. So if you want to have for example Chinese text in your pdf, your font has to have the necessary Chinese glyphs. So, check if your font supports the wanted glyphs or else it will show garbled characters instead of the right text.
+
+To add the font to js\+PDF use our fontconverter in \href{https://rawgit.com/MrRio/jsPDF/master/fontconverter/fontconverter.html}{\texttt{/fontconverter/fontconverter.html}}. The fontconverter will create a js-\/file with the content of the provided ttf-\/file as base64 encoded string and additional code for js\+PDF. You just have to add this generated js-\/\+File to your project. You are then ready to go to use set\+Font-\/method in your code and write your UTF-\/8 encoded text.
+
+Alternatively you can just load the content of the \texorpdfstring{$\ast$}{*}.ttf file as a binary string using {\ttfamily fetch} or {\ttfamily XMLHttp\+Request} and add the font to the PDF file\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ doc\ =\ new\ jsPDF();}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ myFont\ =\ ...\ //\ load\ the\ *.ttf\ font\ file\ as\ binary\ string}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ add\ the\ font\ to\ jsPDF}
+\DoxyCodeLine{doc.addFileToVFS("{}MyFont.ttf"{},\ myFont);}
+\DoxyCodeLine{doc.addFont("{}MyFont.ttf"{},\ "{}MyFont"{},\ "{}normal"{});}
+\DoxyCodeLine{doc.setFont("{}MyFont"{});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11950}{}\doxysubsection{\texorpdfstring{Advanced Functionality}{Advanced Functionality}}\label{README.md_autotoc_md11950}
+Since the merge with the \href{https://github.com/yWorks/jsPDF}{\texttt{y\+Works fork}} there are a lot of new features. However, some of them are API breaking, which is why there is an API-\/switch between two API modes\+:
+
+
+\begin{DoxyItemize}
+\item In "{}compat"{} API mode, js\+PDF has the same API as Mr\+Rio\textquotesingle{}s original version, which means full compatibility with plugins. However, some advanced features like transformation matrices and patterns won\textquotesingle{}t work. This is the default mode.
+\item In "{}advanced"{} API mode, js\+PDF has the API you\textquotesingle{}re used from the y\+Works-\/fork version. This means the availability of all advanced features like patterns, Form\+Objects, and transformation matrices.
+\end{DoxyItemize}
+
+You can switch between the two modes by calling
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{doc.advancedAPI(doc\ =>\ \{}
+\DoxyCodeLine{\ \ //\ your\ code}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{//\ or}
+\DoxyCodeLine{doc.compatAPI(doc\ =>\ \{}
+\DoxyCodeLine{\ \ //\ your\ code}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+
+
+Js\+PDF will automatically switch back to the original API mode after the callback has run.\hypertarget{README.md_autotoc_md11951}{}\doxysubsection{\texorpdfstring{Support}{Support}}\label{README.md_autotoc_md11951}
+Please check if your question is already handled at Stackoverflow \href{https://stackoverflow.com/questions/tagged/jspdf}{\texttt{https\+://stackoverflow.\+com/questions/tagged/jspdf}}. Feel free to ask a question there with the tag {\ttfamily jspdf}.
+
+Feature requests, bug reports, etc. are very welcome as issues. Note that bug reports should follow these guidelines\+:
+
+
+\begin{DoxyItemize}
+\item A bug should be reported as an \href{https://stackoverflow.com/help/mcve}{\texttt{mcve}}
+\item Make sure code is properly indented and \href{https://help.github.com/articles/basic-writing-and-formatting-syntax/\#quoting-code}{\texttt{formatted}} (Use \`{}\`{}\`{} around code blocks)
+\item Provide a runnable example.
+\item Try to make sure and show in your issue that the issue is actually related to jspdf and not your framework of choice.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md11952}{}\doxysubsection{\texorpdfstring{Contributing}{Contributing}}\label{README.md_autotoc_md11952}
+js\+PDF cannot live without help from the community! If you think a feature is missing or you found a bug, please consider if you can spare one or two hours and prepare a pull request. If you\textquotesingle{}re simply interested in this project and want to help, have a look at the open issues, especially those labeled with "{}bug"{}.
+
+You can find information about building and testing js\+PDF in the \href{https://github.com/MrRio/jsPDF/blob/master/CONTRIBUTING.md\#pull-requests}{\texttt{contribution guide}}\hypertarget{README.md_autotoc_md11953}{}\doxysubsection{\texorpdfstring{Credits}{Credits}}\label{README.md_autotoc_md11953}
+
+\begin{DoxyItemize}
+\item Big thanks to Daniel Dotsenko from \href{https://github.com/willowsystems}{\texttt{Willow Systems Corporation}} for making huge contributions to the codebase.
+\item Thanks to Ajaxian.\+com for \href{http://web.archive.org/web/20111011192314/http://ajaxian.com/archives/dynamically-generic-pdfs-with-javascript}{\texttt{featuring us back in 2009}}. (Internet Archive Wayback Machine reference)
+\item Our special thanks to GH Lee (\href{https://github.com/sphilee}{\texttt{sphilee}}) for programming the ttf-\/file-\/support and providing a large and long sought after feature
+\item Everyone else that\textquotesingle{}s contributed patches or bug reports. You rock.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md11954}{}\doxysubsection{\texorpdfstring{License (MIT)}{License (MIT)}}\label{README.md_autotoc_md11954}
+Copyright (c) 2010-\/2021 James Hall, \href{https://github.com/MrRio/jsPDF}{\texttt{https\+://github.\+com/\+Mr\+Rio/js\+PDF}} (c) 2015-\/2021 y\+Works GmbH, \href{https://www.yworks.com/}{\texttt{https\+://www.\+yworks.\+com/}}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "{}\+Software"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "{}\+AS IS"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 

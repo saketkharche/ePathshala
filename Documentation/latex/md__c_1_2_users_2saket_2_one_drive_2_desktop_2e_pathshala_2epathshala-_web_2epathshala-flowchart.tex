@@ -1,0 +1,471 @@
+\chapter{e\+Pathshala System Flow Chart }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart}\index{ePathshala System Flow Chart@{ePathshala System Flow Chart}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md38}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md38}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md39}{}\doxysection{\texorpdfstring{Complete System Architecture Flow}{Complete System Architecture Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md39}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{graph\ TB}
+\DoxyCodeLine{\ \ \ \ \%\%\ User\ Interface\ Layer}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Frontend\ (React\ +\ Material-\/UI)"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ UI[User\ Interface]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Login[Login\ Page]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Dashboard[Dashboard\ Pages]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Chat[Chat\ Interface]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Exam[Exam\ Interface]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Assign[Assignment\ Interface]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Calendar[Calendar\ Interface]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ API\ Gateway\ Layer}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}API\ Gateway"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Router[React\ Router]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AuthGuard[Protected\ Routes]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ API[API\ Service\ Layer]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Backend\ Services\ Layer}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Backend\ Services\ (Spring\ Boot)"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AuthController[Auth\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ TeacherController[Teacher\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ StudentController[Student\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ParentController[Parent\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AdminController[Admin\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ChatController[Chat\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ExamController[Exam\ Controller]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ FileController[File\ Controller]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Business\ Logic\ Layer}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Business\ Logic\ Layer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AuthService[Auth\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ TeacherService[Teacher\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ StudentService[Student\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ParentService[Parent\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AdminService[Admin\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ChatService[Chat\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ExamService[Exam\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ NotificationService[Notification\ Service]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Data\ Access\ Layer}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Data\ Access\ Layer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ UserRepo[User\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ StudentRepo[Student\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ TeacherRepo[Teacher\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AttendanceRepo[Attendance\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ GradeRepo[Grade\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ AssignmentRepo[Assignment\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ExamRepo[Exam\ Repository]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ChatRepo[Chat\ Repository]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Database\ Layer}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Database\ (MySQL)"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Users[(Users\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Students[(Students\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Teachers[(Teachers\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Parents[(Parents\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Attendance[(Attendance\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Grades[(Grades\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Assignments[(Assignments\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Submissions[(Submissions\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Exams[(Exams\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Questions[(Questions\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ChatMessages[(Chat\ Messages\ Table)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Notifications[(Notifications\ Table)]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ External\ Services}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}External\ Services"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ JWT[JWT\ Authentication]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ WebSocket[WebSocket\ Server]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ FileStorage[File\ Storage]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ EmailService[Email\ Service]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ User\ Flow\ Connections}
+\DoxyCodeLine{\ \ \ \ UI\ -\/-\/>\ Router}
+\DoxyCodeLine{\ \ \ \ Router\ -\/-\/>\ AuthGuard}
+\DoxyCodeLine{\ \ \ \ AuthGuard\ -\/-\/>\ API}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ AuthController}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ TeacherController}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ StudentController}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ ParentController}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ AdminController}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ ChatController}
+\DoxyCodeLine{\ \ \ \ API\ -\/-\/>\ ExamController}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Controller\ to\ Service\ Connections}
+\DoxyCodeLine{\ \ \ \ AuthController\ -\/-\/>\ AuthService}
+\DoxyCodeLine{\ \ \ \ TeacherController\ -\/-\/>\ TeacherService}
+\DoxyCodeLine{\ \ \ \ StudentController\ -\/-\/>\ StudentService}
+\DoxyCodeLine{\ \ \ \ ParentController\ -\/-\/>\ ParentService}
+\DoxyCodeLine{\ \ \ \ AdminController\ -\/-\/>\ AdminService}
+\DoxyCodeLine{\ \ \ \ ChatController\ -\/-\/>\ ChatService}
+\DoxyCodeLine{\ \ \ \ ExamController\ -\/-\/>\ ExamService}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Service\ to\ Repository\ Connections}
+\DoxyCodeLine{\ \ \ \ AuthService\ -\/-\/>\ UserRepo}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ TeacherRepo}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ AttendanceRepo}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ GradeRepo}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ AssignmentRepo}
+\DoxyCodeLine{\ \ \ \ StudentService\ -\/-\/>\ StudentRepo}
+\DoxyCodeLine{\ \ \ \ StudentService\ -\/-\/>\ AssignmentRepo}
+\DoxyCodeLine{\ \ \ \ StudentService\ -\/-\/>\ GradeRepo}
+\DoxyCodeLine{\ \ \ \ ParentService\ -\/-\/>\ ParentRepo}
+\DoxyCodeLine{\ \ \ \ AdminService\ -\/-\/>\ UserRepo}
+\DoxyCodeLine{\ \ \ \ ChatService\ -\/-\/>\ ChatRepo}
+\DoxyCodeLine{\ \ \ \ ExamService\ -\/-\/>\ ExamRepo}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Repository\ to\ Database\ Connections}
+\DoxyCodeLine{\ \ \ \ UserRepo\ -\/-\/>\ Users}
+\DoxyCodeLine{\ \ \ \ StudentRepo\ -\/-\/>\ Students}
+\DoxyCodeLine{\ \ \ \ TeacherRepo\ -\/-\/>\ Teachers}
+\DoxyCodeLine{\ \ \ \ ParentRepo\ -\/-\/>\ Parents}
+\DoxyCodeLine{\ \ \ \ AttendanceRepo\ -\/-\/>\ Attendance}
+\DoxyCodeLine{\ \ \ \ GradeRepo\ -\/-\/>\ Grades}
+\DoxyCodeLine{\ \ \ \ AssignmentRepo\ -\/-\/>\ Assignments}
+\DoxyCodeLine{\ \ \ \ AssignmentRepo\ -\/-\/>\ Submissions}
+\DoxyCodeLine{\ \ \ \ ExamRepo\ -\/-\/>\ Exams}
+\DoxyCodeLine{\ \ \ \ ExamRepo\ -\/-\/>\ Questions}
+\DoxyCodeLine{\ \ \ \ ChatRepo\ -\/-\/>\ ChatMessages}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ External\ Service\ Connections}
+\DoxyCodeLine{\ \ \ \ AuthService\ -\/-\/>\ JWT}
+\DoxyCodeLine{\ \ \ \ ChatService\ -\/-\/>\ WebSocket}
+\DoxyCodeLine{\ \ \ \ FileController\ -\/-\/>\ FileStorage}
+\DoxyCodeLine{\ \ \ \ NotificationService\ -\/-\/>\ EmailService}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Styling}
+\DoxyCodeLine{\ \ \ \ classDef\ frontend\ fill:\#e1f5fe}
+\DoxyCodeLine{\ \ \ \ classDef\ backend\ fill:\#f3e5f5}
+\DoxyCodeLine{\ \ \ \ classDef\ database\ fill:\#e8f5e8}
+\DoxyCodeLine{\ \ \ \ classDef\ external\ fill:\#fff3e0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ UI,Login,Dashboard,Chat,Exam,Assign,Calendar,Router,AuthGuard,API\ frontend}
+\DoxyCodeLine{\ \ \ \ class\ AuthController,TeacherController,StudentController,ParentController,AdminController,ChatController,ExamController,FileController,AuthService,TeacherService,StudentService,ParentService,AdminService,ChatService,ExamService,NotificationService,UserRepo,StudentRepo,TeacherRepo,AttendanceRepo,GradeRepo,AssignmentRepo,ExamRepo,ChatRepo\ backend}
+\DoxyCodeLine{\ \ \ \ class\ Users,Students,Teachers,Parents,Attendance,Grades,Assignments,Submissions,Exams,Questions,ChatMessages,Notifications\ database}
+\DoxyCodeLine{\ \ \ \ class\ JWT,WebSocket,FileStorage,EmailService\ external}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md40}{}\doxysection{\texorpdfstring{User Authentication Flow}{User Authentication Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md40}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sequenceDiagram}
+\DoxyCodeLine{\ \ \ \ participant\ U\ as\ User}
+\DoxyCodeLine{\ \ \ \ participant\ F\ as\ Frontend}
+\DoxyCodeLine{\ \ \ \ participant\ A\ as\ AuthController}
+\DoxyCodeLine{\ \ \ \ participant\ S\ as\ AuthService}
+\DoxyCodeLine{\ \ \ \ participant\ R\ as\ UserRepository}
+\DoxyCodeLine{\ \ \ \ participant\ D\ as\ Database}
+\DoxyCodeLine{\ \ \ \ participant\ J\ as\ JWT}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ U-\/>>F:\ Enter\ credentials}
+\DoxyCodeLine{\ \ \ \ F-\/>>A:\ POST\ /api/auth/login}
+\DoxyCodeLine{\ \ \ \ A-\/>>S:\ authenticateUser(credentials)}
+\DoxyCodeLine{\ \ \ \ S-\/>>R:\ findByEmail(email)}
+\DoxyCodeLine{\ \ \ \ R-\/>>D:\ SELECT\ *\ FROM\ users\ WHERE\ email\ =\ ?}
+\DoxyCodeLine{\ \ \ \ D-\/-\/>>R:\ User\ data}
+\DoxyCodeLine{\ \ \ \ R-\/-\/>>S:\ User\ object}
+\DoxyCodeLine{\ \ \ \ S-\/>>S:\ validatePassword(password)}
+\DoxyCodeLine{\ \ \ \ S-\/>>J:\ generateToken(user)}
+\DoxyCodeLine{\ \ \ \ J-\/-\/>>S:\ JWT\ token}
+\DoxyCodeLine{\ \ \ \ S-\/-\/>>A:\ LoginResponse(token,\ user)}
+\DoxyCodeLine{\ \ \ \ A-\/-\/>>F:\ 200\ OK\ +\ token}
+\DoxyCodeLine{\ \ \ \ F-\/>>F:\ Store\ token\ in\ localStorage}
+\DoxyCodeLine{\ \ \ \ F-\/-\/>>U:\ Redirect\ to\ dashboard}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md41}{}\doxysection{\texorpdfstring{Teacher Dashboard Flow}{Teacher Dashboard Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md41}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flowchart\ TD}
+\DoxyCodeLine{\ \ \ \ A[Teacher\ Login]\ -\/-\/>\ B[Teacher\ Dashboard]}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>\ C\{Select\ Action\}}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Mark\ Attendance|\ D[Attendance\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Manage\ Grades|\ E[Grades\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Create\ Assignment|\ F[Assignment\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Handle\ Leave\ Requests|\ G[Leave\ Requests\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Manage\ Exams|\ H[Exam\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Online\ Classes|\ I[Online\ Classes\ Page]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ D\ -\/-\/>\ J[Mark\ Student\ Attendance]}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>\ K[Enter\ Student\ Grades]}
+\DoxyCodeLine{\ \ \ \ F\ -\/-\/>\ L[Create\ New\ Assignment]}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>\ M[Approve/Reject\ Leave]}
+\DoxyCodeLine{\ \ \ \ H\ -\/-\/>\ N[Create/Manage\ Exams]}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>\ O[Schedule\ Online\ Class]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ J\ -\/-\/>\ P[Save\ to\ Database]}
+\DoxyCodeLine{\ \ \ \ K\ -\/-\/>\ P}
+\DoxyCodeLine{\ \ \ \ L\ -\/-\/>\ P}
+\DoxyCodeLine{\ \ \ \ M\ -\/-\/>\ P}
+\DoxyCodeLine{\ \ \ \ N\ -\/-\/>\ P}
+\DoxyCodeLine{\ \ \ \ O\ -\/-\/>\ P}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ P\ -\/-\/>\ Q[Update\ Dashboard]}
+\DoxyCodeLine{\ \ \ \ Q\ -\/-\/>\ B}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md42}{}\doxysection{\texorpdfstring{Student Dashboard Flow}{Student Dashboard Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md42}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flowchart\ TD}
+\DoxyCodeLine{\ \ \ \ A[Student\ Login]\ -\/-\/>\ B[Student\ Dashboard]}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>\ C\{Select\ Action\}}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|View\ Assignments|\ D[Assignments\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Take\ Exams|\ E[Exams\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Check\ Grades|\ F[Grades\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|View\ Attendance|\ G[Attendance\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Submit\ Leave\ Request|\ H[Leave\ Request\ Page]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|View\ Calendar|\ I[Calendar\ Page]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ D\ -\/-\/>\ J[View\ Assignment\ List]}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>\ K[Start\ Exam]}
+\DoxyCodeLine{\ \ \ \ F\ -\/-\/>\ L[View\ Grade\ Report]}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>\ M[View\ Attendance\ Record]}
+\DoxyCodeLine{\ \ \ \ H\ -\/-\/>\ N[Submit\ Leave\ Form]}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>\ O[View\ Academic\ Calendar]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ J\ -\/-\/>\ P[Submit\ Assignment]}
+\DoxyCodeLine{\ \ \ \ K\ -\/-\/>\ Q[Answer\ Questions]}
+\DoxyCodeLine{\ \ \ \ L\ -\/-\/>\ R[Download\ Report]}
+\DoxyCodeLine{\ \ \ \ M\ -\/-\/>\ S[Track\ Progress]}
+\DoxyCodeLine{\ \ \ \ N\ -\/-\/>\ T[Wait\ for\ Approval]}
+\DoxyCodeLine{\ \ \ \ O\ -\/-\/>\ U[View\ Events]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ P\ -\/-\/>\ V[Upload\ File]}
+\DoxyCodeLine{\ \ \ \ Q\ -\/-\/>\ W[Submit\ Exam]}
+\DoxyCodeLine{\ \ \ \ V\ -\/-\/>\ X[Save\ to\ Database]}
+\DoxyCodeLine{\ \ \ \ W\ -\/-\/>\ X}
+\DoxyCodeLine{\ \ \ \ X\ -\/-\/>\ Y[Update\ Dashboard]}
+\DoxyCodeLine{\ \ \ \ Y\ -\/-\/>\ B}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md43}{}\doxysection{\texorpdfstring{Real-\/time Chat Flow}{Real-\/time Chat Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md43}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sequenceDiagram}
+\DoxyCodeLine{\ \ \ \ participant\ U1\ as\ User\ 1}
+\DoxyCodeLine{\ \ \ \ participant\ F1\ as\ Frontend\ 1}
+\DoxyCodeLine{\ \ \ \ participant\ WS\ as\ WebSocket\ Server}
+\DoxyCodeLine{\ \ \ \ participant\ F2\ as\ Frontend\ 2}
+\DoxyCodeLine{\ \ \ \ participant\ U2\ as\ User\ 2}
+\DoxyCodeLine{\ \ \ \ participant\ DB\ as\ Database}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ U1-\/>>F1:\ Type\ message}
+\DoxyCodeLine{\ \ \ \ F1-\/>>WS:\ Send\ message\ via\ WebSocket}
+\DoxyCodeLine{\ \ \ \ WS-\/>>DB:\ Save\ message\ to\ database}
+\DoxyCodeLine{\ \ \ \ WS-\/>>F2:\ Broadcast\ message\ to\ User\ 2}
+\DoxyCodeLine{\ \ \ \ F2-\/>>U2:\ Display\ message}
+\DoxyCodeLine{\ \ \ \ U2-\/>>F2:\ Type\ reply}
+\DoxyCodeLine{\ \ \ \ F2-\/>>WS:\ Send\ reply\ via\ WebSocket}
+\DoxyCodeLine{\ \ \ \ WS-\/>>DB:\ Save\ reply\ to\ database}
+\DoxyCodeLine{\ \ \ \ WS-\/>>F1:\ Broadcast\ reply\ to\ User\ 1}
+\DoxyCodeLine{\ \ \ \ F1-\/>>U1:\ Display\ reply}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md44}{}\doxysection{\texorpdfstring{Exam Management Flow}{Exam Management Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md44}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flowchart\ TD}
+\DoxyCodeLine{\ \ \ \ A[Teacher\ Creates\ Exam]\ -\/-\/>\ B[Set\ Exam\ Details]}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>\ C[Add\ Questions]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>\ D[Set\ Time\ Limit]}
+\DoxyCodeLine{\ \ \ \ D\ -\/-\/>\ E[Publish\ Exam]}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>\ F[Students\ See\ Available\ Exams]}
+\DoxyCodeLine{\ \ \ \ F\ -\/-\/>\ G[Student\ Starts\ Exam]}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>\ H[Timer\ Starts]}
+\DoxyCodeLine{\ \ \ \ H\ -\/-\/>\ I[Student\ Answers\ Questions]}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>\ J\{Time\ Up?\}}
+\DoxyCodeLine{\ \ \ \ J\ -\/-\/>|No|\ I}
+\DoxyCodeLine{\ \ \ \ J\ -\/-\/>|Yes|\ K[Auto\ Submit]}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>\ L[Manual\ Submit]}
+\DoxyCodeLine{\ \ \ \ K\ -\/-\/>\ M[Grade\ Exam]}
+\DoxyCodeLine{\ \ \ \ L\ -\/-\/>\ M}
+\DoxyCodeLine{\ \ \ \ M\ -\/-\/>\ N[Calculate\ Score]}
+\DoxyCodeLine{\ \ \ \ N\ -\/-\/>\ O[Save\ Results]}
+\DoxyCodeLine{\ \ \ \ O\ -\/-\/>\ P[Notify\ Student]}
+\DoxyCodeLine{\ \ \ \ P\ -\/-\/>\ Q[Update\ Grade\ Report]}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md45}{}\doxysection{\texorpdfstring{File Upload Flow}{File Upload Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md45}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sequenceDiagram}
+\DoxyCodeLine{\ \ \ \ participant\ U\ as\ User}
+\DoxyCodeLine{\ \ \ \ participant\ F\ as\ Frontend}
+\DoxyCodeLine{\ \ \ \ participant\ C\ as\ FileController}
+\DoxyCodeLine{\ \ \ \ participant\ S\ as\ FileService}
+\DoxyCodeLine{\ \ \ \ participant\ FS\ as\ FileStorage}
+\DoxyCodeLine{\ \ \ \ participant\ DB\ as\ Database}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ U-\/>>F:\ Select\ file\ to\ upload}
+\DoxyCodeLine{\ \ \ \ F-\/>>C:\ POST\ /api/files/upload}
+\DoxyCodeLine{\ \ \ \ C-\/>>S:\ processFileUpload(file)}
+\DoxyCodeLine{\ \ \ \ S-\/>>FS:\ Save\ file\ to\ storage}
+\DoxyCodeLine{\ \ \ \ FS-\/-\/>>S:\ File\ URL}
+\DoxyCodeLine{\ \ \ \ S-\/>>DB:\ Save\ file\ metadata}
+\DoxyCodeLine{\ \ \ \ DB-\/-\/>>S:\ File\ record}
+\DoxyCodeLine{\ \ \ \ S-\/-\/>>C:\ File\ upload\ response}
+\DoxyCodeLine{\ \ \ \ C-\/-\/>>F:\ 200\ OK\ +\ file\ URL}
+\DoxyCodeLine{\ \ \ \ F-\/-\/>>U:\ Show\ upload\ success}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md46}{}\doxysection{\texorpdfstring{Notification System Flow}{Notification System Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md46}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flowchart\ TD}
+\DoxyCodeLine{\ \ \ \ A[System\ Event]\ -\/-\/>\ B[Notification\ Service]}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>\ C\{Event\ Type\}}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Assignment\ Created|\ D[Notify\ Students]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Grade\ Posted|\ E[Notify\ Student\ \&\ Parent]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Leave\ Request|\ F[Notify\ Teacher/Parent]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Exam\ Scheduled|\ G[Notify\ Students]}
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>|Chat\ Message|\ H[Notify\ Recipient]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ D\ -\/-\/>\ I[Send\ Email]}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>\ I}
+\DoxyCodeLine{\ \ \ \ F\ -\/-\/>\ I}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>\ I}
+\DoxyCodeLine{\ \ \ \ H\ -\/-\/>\ J[Real-\/time\ Notification]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>\ K[Update\ Notification\ Table]}
+\DoxyCodeLine{\ \ \ \ J\ -\/-\/>\ K}
+\DoxyCodeLine{\ \ \ \ K\ -\/-\/>\ L[Display\ in\ UI]}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md47}{}\doxysection{\texorpdfstring{Database Schema Relationships}{Database Schema Relationships}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md47}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{erDiagram}
+\DoxyCodeLine{\ \ \ \ USERS\ ||-\/-\/o\{\ STUDENTS\ :\ has}
+\DoxyCodeLine{\ \ \ \ USERS\ ||-\/-\/o\{\ TEACHERS\ :\ has}
+\DoxyCodeLine{\ \ \ \ USERS\ ||-\/-\/o\{\ PARENTS\ :\ has}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ STUDENTS\ ||-\/-\/o\{\ ATTENDANCE\ :\ tracks}
+\DoxyCodeLine{\ \ \ \ STUDENTS\ ||-\/-\/o\{\ GRADES\ :\ receives}
+\DoxyCodeLine{\ \ \ \ STUDENTS\ ||-\/-\/o\{\ ASSIGNMENT\_SUBMISSIONS\ :\ submits}
+\DoxyCodeLine{\ \ \ \ STUDENTS\ ||-\/-\/o\{\ LEAVE\_REQUESTS\ :\ requests}
+\DoxyCodeLine{\ \ \ \ STUDENTS\ ||-\/-\/o\{\ EXAM\_ATTEMPTS\ :\ takes}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ TEACHERS\ ||-\/-\/o\{\ ATTENDANCE\ :\ marks}
+\DoxyCodeLine{\ \ \ \ TEACHERS\ ||-\/-\/o\{\ GRADES\ :\ assigns}
+\DoxyCodeLine{\ \ \ \ TEACHERS\ ||-\/-\/o\{\ ASSIGNMENTS\ :\ creates}
+\DoxyCodeLine{\ \ \ \ TEACHERS\ ||-\/-\/o\{\ LEAVE\_REQUESTS\ :\ approves}
+\DoxyCodeLine{\ \ \ \ TEACHERS\ ||-\/-\/o\{\ EXAMS\ :\ creates}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ ASSIGNMENTS\ ||-\/-\/o\{\ ASSIGNMENT\_SUBMISSIONS\ :\ receives}
+\DoxyCodeLine{\ \ \ \ EXAMS\ ||-\/-\/o\{\ EXAM\_QUESTIONS\ :\ contains}
+\DoxyCodeLine{\ \ \ \ EXAMS\ ||-\/-\/o\{\ EXAM\_ATTEMPTS\ :\ has}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ CHAT\_ROOMS\ ||-\/-\/o\{\ CHAT\_MESSAGES\ :\ contains}
+\DoxyCodeLine{\ \ \ \ USERS\ ||-\/-\/o\{\ CHAT\_MESSAGES\ :\ sends}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ PARENTS\ ||-\/-\/o\{\ STUDENTS\ :\ monitors}
+\DoxyCodeLine{\ \ \ \ PARENTS\ ||-\/-\/o\{\ LEAVE\_REQUESTS\ :\ approves}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md48}{}\doxysection{\texorpdfstring{Security Flow}{Security Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md48}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flowchart\ TD}
+\DoxyCodeLine{\ \ \ \ A[Request]\ -\/-\/>\ B\{JWT\ Token\ Present?\}}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>|No|\ C[Redirect\ to\ Login]}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>|Yes|\ D[Validate\ JWT\ Token]}
+\DoxyCodeLine{\ \ \ \ D\ -\/-\/>\ E\{Token\ Valid?\}}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>|No|\ C}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>|Yes|\ F[Check\ User\ Role]}
+\DoxyCodeLine{\ \ \ \ F\ -\/-\/>\ G\{Has\ Permission?\}}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>|No|\ H[Return\ 403\ Forbidden]}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>|Yes|\ I[Process\ Request]}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>\ J[Return\ Response]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>\ K[User\ Login]}
+\DoxyCodeLine{\ \ \ \ K\ -\/-\/>\ L[Generate\ New\ JWT]}
+\DoxyCodeLine{\ \ \ \ L\ -\/-\/>\ M[Store\ Token]}
+\DoxyCodeLine{\ \ \ \ M\ -\/-\/>\ N[Redirect\ to\ Original\ Request]}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md49}{}\doxysection{\texorpdfstring{System Deployment Architecture}{System Deployment Architecture}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md49}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{graph\ TB}
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Client\ Layer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Browser[Web\ Browser]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Mobile[Mobile\ Browser]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Load\ Balancer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ LB[NGINX\ Load\ Balancer]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Frontend\ Layer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ React1[React\ App\ Instance\ 1]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ React2[React\ App\ Instance\ 2]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Backend\ Layer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Spring1[Spring\ Boot\ Instance\ 1]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Spring2[Spring\ Boot\ Instance\ 2]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}Database\ Layer"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ MySQL[(MySQL\ Database)]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Redis[(Redis\ Cache)]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ subgraph\ "{}External\ Services"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Email[Email\ Service]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Storage[File\ Storage]}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CDN[CDN]}
+\DoxyCodeLine{\ \ \ \ end}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ Browser\ -\/-\/>\ LB}
+\DoxyCodeLine{\ \ \ \ Mobile\ -\/-\/>\ LB}
+\DoxyCodeLine{\ \ \ \ LB\ -\/-\/>\ React1}
+\DoxyCodeLine{\ \ \ \ LB\ -\/-\/>\ React2}
+\DoxyCodeLine{\ \ \ \ React1\ -\/-\/>\ Spring1}
+\DoxyCodeLine{\ \ \ \ React1\ -\/-\/>\ Spring2}
+\DoxyCodeLine{\ \ \ \ React2\ -\/-\/>\ Spring1}
+\DoxyCodeLine{\ \ \ \ React2\ -\/-\/>\ Spring2}
+\DoxyCodeLine{\ \ \ \ Spring1\ -\/-\/>\ MySQL}
+\DoxyCodeLine{\ \ \ \ Spring2\ -\/-\/>\ MySQL}
+\DoxyCodeLine{\ \ \ \ Spring1\ -\/-\/>\ Redis}
+\DoxyCodeLine{\ \ \ \ Spring2\ -\/-\/>\ Redis}
+\DoxyCodeLine{\ \ \ \ Spring1\ -\/-\/>\ Email}
+\DoxyCodeLine{\ \ \ \ Spring2\ -\/-\/>\ Storage}
+\DoxyCodeLine{\ \ \ \ React1\ -\/-\/>\ CDN}
+\DoxyCodeLine{\ \ \ \ React2\ -\/-\/>\ CDN}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md50}{}\doxysection{\texorpdfstring{Error Handling Flow}{Error Handling Flow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-flowchart_autotoc_md50}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flowchart\ TD}
+\DoxyCodeLine{\ \ \ \ A[Request]\ -\/-\/>\ B\{Valid\ Request?\}}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>|No|\ C[Return\ 400\ Bad\ Request]}
+\DoxyCodeLine{\ \ \ \ B\ -\/-\/>|Yes|\ D[Process\ Request]}
+\DoxyCodeLine{\ \ \ \ D\ -\/-\/>\ E\{Database\ Error?\}}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>|Yes|\ F[Return\ 500\ Internal\ Server\ Error]}
+\DoxyCodeLine{\ \ \ \ E\ -\/-\/>|No|\ G\{Authentication\ Error?\}}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>|Yes|\ H[Return\ 401\ Unauthorized]}
+\DoxyCodeLine{\ \ \ \ G\ -\/-\/>|No|\ I\{Authorization\ Error?\}}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>|Yes|\ J[Return\ 403\ Forbidden]}
+\DoxyCodeLine{\ \ \ \ I\ -\/-\/>|No|\ K[Return\ Success\ Response]}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ C\ -\/-\/>\ L[Log\ Error]}
+\DoxyCodeLine{\ \ \ \ F\ -\/-\/>\ L}
+\DoxyCodeLine{\ \ \ \ H\ -\/-\/>\ L}
+\DoxyCodeLine{\ \ \ \ J\ -\/-\/>\ L}
+\DoxyCodeLine{\ \ \ \ K\ -\/-\/>\ M[Log\ Success]}
+
+\end{DoxyCode}
+
+
+This comprehensive flow chart demonstrates the complete architecture and data flow of the e\+Pathshala system, covering authentication, user interactions, real-\/time features, and system deployment. 

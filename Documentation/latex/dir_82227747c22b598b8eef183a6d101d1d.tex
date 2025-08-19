@@ -1,0 +1,165 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/svg-\/pathdata Directory Reference}
+\hypertarget{dir_82227747c22b598b8eef183a6d101d1d}{}\label{dir_82227747c22b598b8eef183a6d101d1d}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/svg-\/pathdata Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/svg-\/pathdata Directory Reference}}
+Directory dependency graph for svg-\/pathdata\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{dir_82227747c22b598b8eef183a6d101d1d_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md13802}{}\doxysubsection{\texorpdfstring{svg-\/pathdata}{svg-\/pathdata}}\label{README.md_autotoc_md13802}
+\begin{quote}
+Manipulate SVG path data (path\mbox{[}d\mbox{]} attribute content) simply and efficiently. \end{quote}
+
+
+\href{https://npmjs.org/package/svg-pathdata}{\texttt{}} \href{https://github.com/nfroidure/svg-pathdata/actions/workflows/test.yml}{\texttt{}} \href{https://david-dm.org/nfroidure/svg-pathdata}{\texttt{}} \href{https://david-dm.org/nfroidure/svg-pathdata\#info=devDependencies}{\texttt{}} \href{https://coveralls.io/r/nfroidure/svg-pathdata?branch=master}{\texttt{}} \href{https://codeclimate.com/github/nfroidure/svg-pathdata}{\texttt{}} \href{https://dependencyci.com/github/nfroidure/svg-pathdata}{\texttt{}}\hypertarget{README.md_autotoc_md13803}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md13803}
+Install the module\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ -\/-\/save\ svg-\/pathdata}
+
+\end{DoxyCode}
+ or add the \href{https://github.com/nfroidure/svg-pathdata/blob/master/lib/SVGPathData.js}{\texttt{bundle}} to a script in your HTML.
+
+Then in your Java\+Script files\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ \{SVGPathData,\ SVGPathDataTransformer,\ SVGPathDataEncoder,\ SVGPathDataParser\}\ =\ require('svg-\/pathdata');}
+
+\end{DoxyCode}
+
+
+With import syntax in Type\+Script/\+ES6\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{SVGPathData,\ SVGPathDataTransformer,\ SVGPathDataEncoder,\ SVGPathDataParser\}\ from\ 'svg-\/pathdata';}
+
+\end{DoxyCode}
+
+
+Without modules, using the global in the bundle\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ \{SVGPathData,\ SVGPathDataTransformer,\ SVGPathDataEncoder,\ SVGPathDataParser\}\ =\ svgpathdata;}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13804}{}\doxysubsection{\texorpdfstring{Reading Path\+Data}{Reading Path\+Data}}\label{README.md_autotoc_md13804}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ pathData\ =\ new\ SVGPathData\ (`}
+\DoxyCodeLine{\ \ M\ 10\ 10}
+\DoxyCodeLine{\ \ H\ 60}
+\DoxyCodeLine{\ \ V\ 60}
+\DoxyCodeLine{\ \ L\ 10\ 60}
+\DoxyCodeLine{\ \ Z`);}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{console.log(pathData.commands);}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ [\ \ \{type:\ SVGPathData.MOVE\_TO,\ \ \ \ \ \ \ relative:\ false,\ \ x:\ 10,\ \ y:\ 10\},}
+\DoxyCodeLine{//\ \ \ \ \{type:\ SVGPathData.HORIZ\_LINE\_TO,\ relative:\ false,\ \ x:\ 60\},}
+\DoxyCodeLine{//\ \ \ \ \{type:\ SVGPathData.VERT\_LINE\_TO,\ \ relative:\ false,\ \ \ \ \ \ \ \ \ \ y:\ 60\},}
+\DoxyCodeLine{//\ \ \ \ \{type:\ SVGPathData.LINE\_TO,\ \ \ \ \ \ \ relative:\ false,\ \ x:\ 10,\ \ y:\ 60\},}
+\DoxyCodeLine{//\ \ \ \ \{type:\ SVGPathData.CLOSE\_PATH\}]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13805}{}\doxysubsection{\texorpdfstring{Reading Path\+Data in chunks}{Reading Path\+Data in chunks}}\label{README.md_autotoc_md13805}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ parser\ =\ new\ SVGPathDataParser();}
+\DoxyCodeLine{}
+\DoxyCodeLine{parser.parse('\ \ \ ');\ //\ returns\ []}
+\DoxyCodeLine{parser.parse('M\ 10');\ //\ returns\ []}
+\DoxyCodeLine{parser.parse('\ 10');\ //\ returns\ [\{type:\ SVGPathData.MOVE\_TO,\ relative:\ false,\ x:\ 10,\ y:\ 10\ \}]}
+\DoxyCodeLine{}
+\DoxyCodeLine{parser.write('H\ 60');\ //\ returns\ [\{type:\ SVGPathData.HORIZ\_LINE\_TO,\ relative:\ false,\ x:\ 60\ \}]}
+\DoxyCodeLine{}
+\DoxyCodeLine{parser.write('V');\ //\ returns\ []}
+\DoxyCodeLine{parser.write('60');\ //\ returns\ [\{type:\ SVGPathData.VERT\_LINE\_TO,\ relative:\ false,\ y:\ 60\ \}]}
+\DoxyCodeLine{}
+\DoxyCodeLine{parser.write('L\ 10\ 60\ \(\backslash\)n\ \ Z');}
+\DoxyCodeLine{//\ returns\ [}
+\DoxyCodeLine{//\ \ \ \{type:\ SVGPathData.LINE\_TO,\ relative:\ false,\ x:\ 10,\ y:\ 60\ \},}
+\DoxyCodeLine{//\ \ \ \{type:\ SVGPathData.CLOSE\_PATH\ \}]}
+\DoxyCodeLine{}
+\DoxyCodeLine{parser.finish();\ //\ tell\ parser\ there\ is\ no\ more\ data:\ will\ throw\ if\ there\ are\ unfinished\ commands.}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13806}{}\doxysubsection{\texorpdfstring{Outputting Path\+Data}{Outputting Path\+Data}}\label{README.md_autotoc_md13806}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ pathData\ =\ new\ SVGPathData\ (`}
+\DoxyCodeLine{\ \ M\ 10\ 10}
+\DoxyCodeLine{\ \ H\ 60}
+\DoxyCodeLine{\ \ V\ 60}
+\DoxyCodeLine{\ \ L\ 10\ 60}
+\DoxyCodeLine{\ \ Z`);}
+\DoxyCodeLine{//\ returns\ "{}M10\ 10H60V60L10\ 60Z"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{encodeSVGPath(\{\ type:\ SVGPathData.MOVE\_TO,\ \ \ \ \ \ \ relative:\ false,\ x:\ 10,\ y:\ 10\ \});}
+\DoxyCodeLine{//\ returns\ "{}M10\ 10"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{encodeSVGPath(\{\ type:\ SVGPathData.HORIZ\_LINE\_TO,\ relative:\ false,\ x:\ 60\ \});}
+\DoxyCodeLine{//\ returns\ "{}H60"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{encodeSVGPath([}
+\DoxyCodeLine{\ \ \{\ type:\ SVGPathData.VERT\_LINE\_TO,\ \ relative:\ false,\ \ \ \ \ \ \ \ y:\ 60\ \},}
+\DoxyCodeLine{\ \ \{\ type:\ SVGPathData.LINE\_TO,\ \ \ \ \ \ \ relative:\ false,\ x:\ 10,\ y:\ 60\ \},}
+\DoxyCodeLine{\ \ \{\ type:\ SVGPathData.CLOSE\_PATH\}])}
+\DoxyCodeLine{//\ returns\ "{}V60L10\ 60Z"{}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13807}{}\doxysubsection{\texorpdfstring{Transforming Path\+Data}{Transforming Path\+Data}}\label{README.md_autotoc_md13807}
+This library can perform transformations on SVG paths. Here is \href{https://github.com/nfroidure/svgicons2svgfont/blob/aa6df0211419e9d61c417c63bcc353f0cb2ea0c8/src/index.js\#L192}{\texttt{an example of that kind of use}}.\hypertarget{README.md_autotoc_md13808}{}\doxysubsubsection{\texorpdfstring{Transforming entire paths}{Transforming entire paths}}\label{README.md_autotoc_md13808}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ new\ SVGPathData\ (`}
+\DoxyCodeLine{\ \ \ m\ 10,10}
+\DoxyCodeLine{\ \ \ h\ 60}
+\DoxyCodeLine{\ \ \ v\ 60}
+\DoxyCodeLine{\ \ \ l\ 10,60}
+\DoxyCodeLine{\ \ \ z`)}
+\DoxyCodeLine{\ \ .toAbs()}
+\DoxyCodeLine{\ \ .encode();}
+\DoxyCodeLine{//\ return\ s"{}M10,10\ H70\ V70\ L80,130\ Z"{}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13809}{}\doxysubsubsection{\texorpdfstring{Transforming partial data}{Transforming partial data}}\label{README.md_autotoc_md13809}
+Here, we take SVGPath\+Data from stdin and output it transformed to stdout. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ transformingParser\ =\ new\ SVGPathDataParser().toAbs().scale(2,\ 2);}
+\DoxyCodeLine{transformingParser.parse('m\ 0\ 0')\ //\ returns\ [\{\ type:\ SVGPathData.MOVE\_TO,\ \ \ \ \ \ \ relative:\ false,\ x:\ 0,\ y:\ 0\ \}]}
+\DoxyCodeLine{transformingParser.parse('l\ 2\ 3')\ //\ returns\ [\{\ type:\ SVGPathData.LINE\_TO,\ \ \ \ \ \ \ relative:\ false,\ x:\ 4,\ y:\ 6\ \}]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13810}{}\doxysubsection{\texorpdfstring{Supported transformations}{Supported transformations}}\label{README.md_autotoc_md13810}
+You can find all supported transformations in \href{https://github.com/nfroidure/SVGPathData/blob/master/src/SVGPathDataTransformer.ts\#L47}{\texttt{src/\+SVGPath\+Data\+Transformer.\+ts}}. Additionally, you can create your own by writing a function with the following signature\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{type\ TransformFunction\ =\ (command:\ SVGCommand)\ =>\ SVGCommand\ |\ SVGCommand[];}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ SET\_X\_TO(xValue\ =\ 10)\ \{}
+\DoxyCodeLine{\ \ return\ function(command)\ \{}
+\DoxyCodeLine{\ \ \ \ command.x\ =\ xValue;\ //\ transform\ command\ objects\ and\ return\ them}
+\DoxyCodeLine{\ \ \ \ return\ command;}
+\DoxyCodeLine{\ \ \};}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Synchronous\ usage}
+\DoxyCodeLine{new\ SVGPathData('...')}
+\DoxyCodeLine{\ \ .transform(SET\_X\_TO(25))}
+\DoxyCodeLine{\ \ .encode();}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Chunk\ usage}
+\DoxyCodeLine{new\ SVGPathDataParser().transform(SET\_X\_TO(25));}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13811}{}\doxysubsection{\texorpdfstring{Stats}{Stats}}\label{README.md_autotoc_md13811}
+\href{https://nodei.co/npm/svg-pathdata/}{\texttt{}} \href{https://nodei.co/npm/svg-pathdata/}{\texttt{}}\hypertarget{README.md_autotoc_md13812}{}\doxysubsection{\texorpdfstring{Contributing}{Contributing}}\label{README.md_autotoc_md13812}
+Clone this project, run\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install;\ npm\ test}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13813}{}\doxysubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md13813}
+\href{https://github.com/nfroidure/svg-pathdata/blob/master/LICENSE}{\texttt{MIT}} 

@@ -1,0 +1,155 @@
+\doxysection{flatted.\+py}
+\hypertarget{flatted_8py_source}{}\label{flatted_8py_source}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/flatted/python/flatted.py@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/flatted/python/flatted.py}}
+\mbox{\hyperlink{flatted_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00001}\mbox{\hyperlink{namespaceflatted}{00001}}\ \textcolor{comment}{\#\ ISC\ License}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00002}00002\ \textcolor{comment}{\#}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00003}00003\ \textcolor{comment}{\#\ Copyright\ (c)\ 2018-\/2025,\ Andrea\ Giammarchi,\ @WebReflection}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00004}00004\ \textcolor{comment}{\#}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00005}00005\ \textcolor{comment}{\#\ Permission\ to\ use,\ copy,\ modify,\ and/or\ distribute\ this\ software\ for\ any}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00006}00006\ \textcolor{comment}{\#\ purpose\ with\ or\ without\ fee\ is\ hereby\ granted,\ provided\ that\ the\ above}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00007}00007\ \textcolor{comment}{\#\ copyright\ notice\ and\ this\ permission\ notice\ appear\ in\ all\ copies.}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00008}00008\ \textcolor{comment}{\#}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00009}00009\ \textcolor{comment}{\#\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{}\ AND\ THE\ AUTHOR\ DISCLAIMS\ ALL\ WARRANTIES\ WITH}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00010}00010\ \textcolor{comment}{\#\ REGARD\ TO\ THIS\ SOFTWARE\ INCLUDING\ ALL\ IMPLIED\ WARRANTIES\ OF\ MERCHANTABILITY}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00011}00011\ \textcolor{comment}{\#\ AND\ FITNESS.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHOR\ BE\ LIABLE\ FOR\ ANY\ SPECIAL,\ DIRECT,}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00012}00012\ \textcolor{comment}{\#\ INDIRECT,\ OR\ CONSEQUENTIAL\ DAMAGES\ OR\ ANY\ DAMAGES\ WHATSOEVER\ RESULTING\ FROM}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00013}00013\ \textcolor{comment}{\#\ LOSS\ OF\ USE,\ DATA\ OR\ PROFITS,\ WHETHER\ IN\ AN\ ACTION\ OF\ CONTRACT,\ NEGLIGENCE}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00014}00014\ \textcolor{comment}{\#\ OR\ OTHER\ TORTIOUS\ ACTION,\ ARISING\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ USE\ OR}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00015}00015\ \textcolor{comment}{\#\ PERFORMANCE\ OF\ THIS\ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00017}00017\ \textcolor{keyword}{import}\ json\ \textcolor{keyword}{as}\ \_json}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00019}\mbox{\hyperlink{classflatted_1_1___known}{00019}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classflatted_1_1___known}{\_Known}}:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00020}\mbox{\hyperlink{classflatted_1_1___known_af37e768b506c96c82d2facf051cff120}{00020}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classflatted_1_1___known_af37e768b506c96c82d2facf051cff120}{\_\_init\_\_}}(self):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00021}\mbox{\hyperlink{classflatted_1_1___known_a1b21498b4518d5ce7abd49de25f8224c}{00021}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classflatted_1_1___known_a1b21498b4518d5ce7abd49de25f8224c}{key}}\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00022}\mbox{\hyperlink{classflatted_1_1___known_a70af08b644b5704c8cd7a7bca59ec1e7}{00022}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classflatted_1_1___known_a70af08b644b5704c8cd7a7bca59ec1e7}{value}}\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00024}\mbox{\hyperlink{classflatted_1_1___string}{00024}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classflatted_1_1___string}{\_String}}:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00025}\mbox{\hyperlink{classflatted_1_1___string_a8e27e39a29825a5909ba1b148b97cb7a}{00025}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classflatted_1_1___string_a8e27e39a29825a5909ba1b148b97cb7a}{\_\_init\_\_}}(self,\ value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00026}\mbox{\hyperlink{classflatted_1_1___string_a87ba5de748e831d3ac0bf9d34f581dee}{00026}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classflatted_1_1___string_a87ba5de748e831d3ac0bf9d34f581dee}{value}}\ =\ value}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00029}\mbox{\hyperlink{namespaceflatted_ac519e883b493d4a80b5e692279bc8cd5}{00029}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_ac519e883b493d4a80b5e692279bc8cd5}{\_array\_keys}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00030}00030\ \ \ \ \ keys\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00031}00031\ \ \ \ \ i\ =\ 0}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00032}00032\ \ \ \ \ \textcolor{keywordflow}{for}\ \_\ \textcolor{keywordflow}{in}\ value:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ keys.append(i)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ i\ +=\ 1}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00035}00035\ \ \ \ \ \textcolor{keywordflow}{return}\ keys}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00037}\mbox{\hyperlink{namespaceflatted_a48139942bd2d19d86710899061eacba8}{00037}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_a48139942bd2d19d86710899061eacba8}{\_object\_keys}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00038}00038\ \ \ \ \ keys\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{for}\ key\ \textcolor{keywordflow}{in}\ value:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ keys.append(key)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00041}00041\ \ \ \ \ \textcolor{keywordflow}{return}\ keys}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00043}\mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{00043}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{\_is\_array}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00044}00044\ \ \ \ \ \textcolor{keywordflow}{return}\ isinstance(value,\ (list,\ tuple))}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00046}\mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{00046}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{\_is\_object}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00047}00047\ \ \ \ \ \textcolor{keywordflow}{return}\ isinstance(value,\ dict)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00049}\mbox{\hyperlink{namespaceflatted_a2c64f13b3d861c205c821e03fcd4376f}{00049}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_a2c64f13b3d861c205c821e03fcd4376f}{\_is\_string}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{return}\ isinstance(value,\ str)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00052}\mbox{\hyperlink{namespaceflatted_af05ab31f0e87d7cccd13bde6f8c4b0bf}{00052}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_af05ab31f0e87d7cccd13bde6f8c4b0bf}{\_index}}(known,\ input,\ value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00053}00053\ \ \ \ \ input.append(value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00054}00054\ \ \ \ \ index\ =\ str(len(input)\ -\/\ 1)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00055}00055\ \ \ \ \ known.key.append(value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00056}00056\ \ \ \ \ known.value.append(index)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00057}00057\ \ \ \ \ \textcolor{keywordflow}{return}\ index}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00059}\mbox{\hyperlink{namespaceflatted_aecd75202b154514cfdaa0eee6a8dd8a0}{00059}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_aecd75202b154514cfdaa0eee6a8dd8a0}{\_loop}}(keys,\ input,\ known,\ output):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00060}00060\ \ \ \ \ \textcolor{keywordflow}{for}\ key\ \textcolor{keywordflow}{in}\ keys:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ value\ =\ output[key]}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ isinstance(value,\ \_String):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceflatted_af74e45c06efe798d934f5a9a643329ec}{\_ref}}(key,\ input[int(value.value)],\ input,\ known,\ output)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00065}00065\ \ \ \ \ \textcolor{keywordflow}{return}\ output}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00067}\mbox{\hyperlink{namespaceflatted_af74e45c06efe798d934f5a9a643329ec}{00067}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_af74e45c06efe798d934f5a9a643329ec}{\_ref}}(key,\ value,\ input,\ known,\ output):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00068}00068\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{\_is\_array}}(value)\ \textcolor{keywordflow}{and}\ value\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ known:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00069}00069\ \ \ \ \ \ \ \ \ known.append(value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ value\ =\ \mbox{\hyperlink{namespaceflatted_aecd75202b154514cfdaa0eee6a8dd8a0}{\_loop}}(\mbox{\hyperlink{namespaceflatted_ac519e883b493d4a80b5e692279bc8cd5}{\_array\_keys}}(value),\ input,\ known,\ value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00071}00071\ \ \ \ \ \textcolor{keywordflow}{elif}\ \mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{\_is\_object}}(value)\ \textcolor{keywordflow}{and}\ value\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ known:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00072}00072\ \ \ \ \ \ \ \ \ known.append(value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00073}00073\ \ \ \ \ \ \ \ \ value\ =\ \mbox{\hyperlink{namespaceflatted_aecd75202b154514cfdaa0eee6a8dd8a0}{\_loop}}(\mbox{\hyperlink{namespaceflatted_a48139942bd2d19d86710899061eacba8}{\_object\_keys}}(value),\ input,\ known,\ value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00075}00075\ \ \ \ \ output[key]\ =\ value}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00077}\mbox{\hyperlink{namespaceflatted_a1c57a34a7bf724a855bd3f2a1fd98fc7}{00077}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_a1c57a34a7bf724a855bd3f2a1fd98fc7}{\_relate}}(known,\ input,\ value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00078}00078\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_a2c64f13b3d861c205c821e03fcd4376f}{\_is\_string}}(value)\ \textcolor{keywordflow}{or}\ \mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{\_is\_array}}(value)\ \textcolor{keywordflow}{or}\ \mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{\_is\_object}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ known.value[known.key.index(value)]}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceflatted_af05ab31f0e87d7cccd13bde6f8c4b0bf}{\_index}}(known,\ input,\ value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00084}00084\ \ \ \ \ \textcolor{keywordflow}{return}\ value}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00086}\mbox{\hyperlink{namespaceflatted_a41da9bdca5096c88843590ce405b907f}{00086}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_a41da9bdca5096c88843590ce405b907f}{\_transform}}(known,\ input,\ value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{\_is\_array}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00088}00088\ \ \ \ \ \ \ \ \ output\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ val\ \textcolor{keywordflow}{in}\ value:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ output.append(\mbox{\hyperlink{namespaceflatted_a1c57a34a7bf724a855bd3f2a1fd98fc7}{\_relate}}(known,\ input,\ val))}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ output}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00093}00093\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{\_is\_object}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00094}00094\ \ \ \ \ \ \ \ \ obj\ =\ \{\}}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ key\ \textcolor{keywordflow}{in}\ value:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ obj[key]\ =\ \mbox{\hyperlink{namespaceflatted_a1c57a34a7bf724a855bd3f2a1fd98fc7}{\_relate}}(known,\ input,\ value[key])}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00097}00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ obj}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00099}00099\ \ \ \ \ \textcolor{keywordflow}{return}\ value}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00101}\mbox{\hyperlink{namespaceflatted_ac493ef170880e775025eb0b6f2bf3318}{00101}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_ac493ef170880e775025eb0b6f2bf3318}{\_wrap}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00102}00102\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_a2c64f13b3d861c205c821e03fcd4376f}{\_is\_string}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00103}00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classflatted_1_1___string}{\_String}}(value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00105}00105\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{\_is\_array}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00106}00106\ \ \ \ \ \ \ \ \ i\ =\ 0}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ val\ \textcolor{keywordflow}{in}\ value:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ value[i]\ =\ \mbox{\hyperlink{namespaceflatted_ac493ef170880e775025eb0b6f2bf3318}{\_wrap}}(val)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ i\ +=\ 1}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00111}00111\ \ \ \ \ \textcolor{keywordflow}{elif}\ \mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{\_is\_object}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ key\ \textcolor{keywordflow}{in}\ value:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ value[key]\ =\ \mbox{\hyperlink{namespaceflatted_ac493ef170880e775025eb0b6f2bf3318}{\_wrap}}(value[key])}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00115}00115\ \ \ \ \ \textcolor{keywordflow}{return}\ value}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00117}\mbox{\hyperlink{namespaceflatted_a8252c9a9e61809d65fc03c5bf815ad9e}{00117}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_a8252c9a9e61809d65fc03c5bf815ad9e}{parse}}(value,\ *args,\ **kwargs):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00118}00118\ \ \ \ \ json\ =\ \_json.loads(value,\ *args,\ **kwargs)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00119}00119\ \ \ \ \ wrapped\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{for}\ value\ \textcolor{keywordflow}{in}\ json:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00121}00121\ \ \ \ \ \ \ \ \ wrapped.append(\mbox{\hyperlink{namespaceflatted_ac493ef170880e775025eb0b6f2bf3318}{\_wrap}}(value))}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00123}00123\ \ \ \ \ input\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00124}00124\ \ \ \ \ \textcolor{keywordflow}{for}\ value\ \textcolor{keywordflow}{in}\ wrapped:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00125}00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ isinstance(value,\ \_String):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ input.append(value.value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ input.append(value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00130}00130\ \ \ \ \ value\ =\ input[0]}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00132}00132\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_aa9e0f6bdd410c981176fd35934135275}{\_is\_array}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00133}00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceflatted_aecd75202b154514cfdaa0eee6a8dd8a0}{\_loop}}(\mbox{\hyperlink{namespaceflatted_ac519e883b493d4a80b5e692279bc8cd5}{\_array\_keys}}(value),\ input,\ [value],\ value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00135}00135\ \ \ \ \ \textcolor{keywordflow}{if}\ \mbox{\hyperlink{namespaceflatted_af2ee527c66c20e7e38440129fa094067}{\_is\_object}}(value):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00136}00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceflatted_aecd75202b154514cfdaa0eee6a8dd8a0}{\_loop}}(\mbox{\hyperlink{namespaceflatted_a48139942bd2d19d86710899061eacba8}{\_object\_keys}}(value),\ input,\ [value],\ value)}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00138}00138\ \ \ \ \ \textcolor{keywordflow}{return}\ value}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00141}\mbox{\hyperlink{namespaceflatted_a0f956bd4567258719b6151c1cb2f3220}{00141}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceflatted_a0f956bd4567258719b6151c1cb2f3220}{stringify}}(value,\ *args,\ **kwargs):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00142}00142\ \ \ \ \ known\ =\ \mbox{\hyperlink{classflatted_1_1___known}{\_Known}}()}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00143}00143\ \ \ \ \ input\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00144}00144\ \ \ \ \ output\ =\ []}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00145}00145\ \ \ \ \ i\ =\ int(\mbox{\hyperlink{namespaceflatted_af05ab31f0e87d7cccd13bde6f8c4b0bf}{\_index}}(known,\ input,\ value))}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{while}\ i\ <\ len(input):}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00147}00147\ \ \ \ \ \ \ \ \ output.append(\mbox{\hyperlink{namespaceflatted_a41da9bdca5096c88843590ce405b907f}{\_transform}}(known,\ input,\ input[i]))}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00148}00148\ \ \ \ \ \ \ \ \ i\ +=\ 1}
+\DoxyCodeLine{\Hypertarget{flatted_8py_source_l00149}00149\ \ \ \ \ \textcolor{keywordflow}{return}\ \_json.dumps(output,\ *args,\ **kwargs)}
+
+\end{DoxyCode}

@@ -1,0 +1,356 @@
+\chapter{e\+Pathshala Class Diagram -\/ Part 1\+: Core Entities \& Controllers }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1}\index{ePathshala Class Diagram -\/ Part 1: Core Entities \& Controllers@{ePathshala Class Diagram -\/ Part 1: Core Entities \& Controllers}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1_autotoc_md21}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1_autotoc_md21}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1_autotoc_md22}{}\doxysection{\texorpdfstring{Core Entity Classes}{Core Entity Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1_autotoc_md22}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Base\ User\ Entity}
+\DoxyCodeLine{\ \ \ \ class\ User\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ password}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ firstName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ lastName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Role\ role}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ phoneNumber}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ updatedAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isActive}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +authenticate(password)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateProfile(profileData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deactivate()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Role\ Enum}
+\DoxyCodeLine{\ \ \ \ class\ Role\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<enumeration>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ADMIN}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ TEACHER}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ STUDENT}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ PARENT}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Student\ Entity}
+\DoxyCodeLine{\ \ \ \ class\ Student\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ rollNumber}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ section}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Parent\ parent}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ dateOfBirth}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ address}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ emergencyContact}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment(assignmentId,\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +requestLeave(leaveRequest)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Teacher\ Entity}
+\DoxyCodeLine{\ \ \ \ class\ Teacher\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ employeeId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ qualification}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ specialization}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ department}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ joiningDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ experience}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(studentId,\ date,\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade(studentId,\ subject,\ grade)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment(assignmentData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId,\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createExam(examData)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Parent\ Entity}
+\DoxyCodeLine{\ \ \ \ class\ Parent\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ relationship}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ occupation}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ address}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\ children}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildProgress(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildAttendance(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getNotifications()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Academic\ Entities}
+\DoxyCodeLine{\ \ \ \ class\ Attendance\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ student}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ date}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ markedAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(status,\ remarks)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateAttendance(status,\ remarks)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AttendanceStatus\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<enumeration>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ PRESENT}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ABSENT}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ LATE}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ HALF\_DAY}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Grade\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ student}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ grade}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ examDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +calculateGrade()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateGrade(newMarks)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Assignment\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ dueDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ fileUrl}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment(data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateAssignment(data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getSubmissions()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentStatus\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<enumeration>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ DRAFT}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ PUBLISHED}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CLOSED}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentSubmission\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Assignment\ assignment}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ student}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ fileUrl}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ submittedAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +SubmissionStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ score}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment(file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateSubmission(file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +gradeSubmission(score,\ remarks)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ SubmissionStatus\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<enumeration>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ SUBMITTED}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ LATE}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ GRADED}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ OVERDUE}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Leave\ Management}
+\DoxyCodeLine{\ \ \ \ class\ LeaveRequest\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ student}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Parent\ parent}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ startDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ endDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ reason}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +RequestStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitRequest()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveRequest(remarks)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +rejectRequest(remarks)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ LeaveType\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<enumeration>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ SICK\_LEAVE}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CASUAL\_LEAVE}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ EMERGENCY\_LEAVE}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ OTHER}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ RequestStatus\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<enumeration>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ PENDING}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ APPROVED}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REJECTED}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CANCELLED}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Relationships}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Student\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Teacher\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Parent\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ Attendance\ :\ "{}tracks"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ Grade\ :\ "{}receives"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ AssignmentSubmission\ :\ "{}submits"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ LeaveRequest\ :\ "{}requests"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Attendance\ :\ "{}marks"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Grade\ :\ "{}assigns"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Assignment\ :\ "{}creates"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ LeaveRequest\ :\ "{}approves"{}}
+\DoxyCodeLine{\ \ \ \ Parent\ ||-\/-\/o\{\ Student\ :\ "{}monitors"{}}
+\DoxyCodeLine{\ \ \ \ Parent\ ||-\/-\/o\{\ LeaveRequest\ :\ "{}approves"{}}
+\DoxyCodeLine{\ \ \ \ Assignment\ ||-\/-\/o\{\ AssignmentSubmission\ :\ "{}receives"{}}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1_autotoc_md23}{}\doxysection{\texorpdfstring{Controller Classes}{Controller Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part1_autotoc_md23}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Base\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ BaseController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ success(T\ data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ error(String\ message)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ notFound(String\ message)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ unauthorized(String\ message)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ forbidden(String\ message)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Authentication\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ AuthController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AuthService\ authService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~LoginResponse\string~\ login(LoginRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ forgotPassword(ForgotPasswordRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ verifyOtp(VerifyOtpRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ resetPassword(ResetPasswordRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ logout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~User\string~\ getCurrentUser()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Teacher\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ TeacherController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherService\ teacherService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~TeacherDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Attendance\string~\string~\ getAttendanceByDate(LocalDate\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Attendance\string~\ markAttendance(AttendanceDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Grade\string~\string~\ getGradesByStudent(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Grade\string~\ addGrade(GradeDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Assignment\string~\string~\ getAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Assignment\string~\ createAssignment(AssignmentDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Assignment\string~\ updateAssignment(Long\ id,\ AssignmentDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ deleteAssignment(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~LeaveRequest\string~\string~\ getLeaveRequests()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~LeaveRequest\string~\ approveLeaveRequest(Long\ id,\ LeaveApprovalDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Student\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ StudentController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentService\ studentService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~StudentDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Assignment\string~\string~\ getAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~AssignmentSubmission\string~\ submitAssignment(Long\ id,\ MultipartFile\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Grade\string~\string~\ getGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Attendance\string~\string~\ getAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~LeaveRequest\string~\ submitLeaveRequest(LeaveRequestDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~LeaveRequest\string~\string~\ getLeaveRequests()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Exam\string~\string~\ getAvailableExams()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamAttempt\string~\ startExam(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamResult\string~\ submitExam(Long\ examId,\ ExamSubmissionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Parent\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ ParentController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ParentService\ parentService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ParentDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Student\string~\string~\ getChildren()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ChildProgressDTO\string~\ getChildProgress(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Attendance\string~\string~\ getChildAttendance(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Grade\string~\string~\ getChildGrades(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~LeaveRequest\string~\string~\ getChildLeaveRequests(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~LeaveRequest\string~\ approveLeaveRequest(Long\ id,\ LeaveApprovalDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Notification\string~\string~\ getNotifications()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Admin\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ AdminController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AdminService\ adminService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~AdminDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~User\string~\string~\ getAllUsers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~User\string~\ createUser(CreateUserDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~User\string~\ updateUser(Long\ id,\ UpdateUserDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ deleteUser(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Student\string~\string~\ getAllStudents()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Teacher\string~\string~\ getAllTeachers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Parent\string~\string~\ getAllParents()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Student\string~\ assignTeacherToStudent(Long\ studentId,\ Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~AcademicCalendar\string~\ createCalendarEvent(AcademicCalendarDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~AcademicCalendar\string~\string~\ getCalendarEvents()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Chat\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ ChatController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatService\ chatService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~ChatMessage\string~\string~\ getMessages(Long\ userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ChatMessage\string~\ sendMessage(ChatMessageDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~User\string~\string~\ getChatUsers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~ChatRoom\string~\string~\ getChatRooms()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ChatRoom\string~\ createChatRoom(ChatRoomDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ deleteMessage(Long\ messageId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Exam\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ FacultyExamController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamService\ examService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Exam\string~\string~\ getExams()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Exam\string~\ createExam(ExamDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Exam\string~\ updateExam(Long\ id,\ ExamDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ deleteExam(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~ExamQuestion\string~\string~\ getExamQuestions(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamQuestion\string~\ addQuestion(Long\ examId,\ ExamQuestionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamQuestion\string~\ updateQuestion(Long\ questionId,\ ExamQuestionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ deleteQuestion(Long\ questionId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~ExamResult\string~\string~\ getExamResults(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentExamController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamService\ examService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Exam\string~\string~\ getAvailableExams()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Exam\string~\ getExamDetails(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamAttempt\string~\ startExam(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamResult\string~\ submitExam(Long\ examId,\ ExamSubmissionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~ExamResult\string~\string~\ getMyExamResults()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ExamResult\string~\ getExamResult(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ File\ Controller}
+\DoxyCodeLine{\ \ \ \ class\ FileController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +FileService\ fileService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ uploadFile(MultipartFile\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Resource\string~\ downloadFile(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ deleteFile(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~String\string~\string~\ getUploadedFiles()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Inheritance}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ AuthController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ TeacherController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ StudentController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ ParentController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ AdminController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ ChatController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ FacultyExamController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ StudentExamController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ FileController}
+
+\end{DoxyCode}
+ 

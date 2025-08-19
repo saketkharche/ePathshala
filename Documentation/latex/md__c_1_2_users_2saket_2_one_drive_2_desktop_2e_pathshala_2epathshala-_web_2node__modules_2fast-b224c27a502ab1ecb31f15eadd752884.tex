@@ -1,0 +1,31 @@
+\chapter{Legacy environment support for {\ttfamily Reg\+Exp} comparators }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-b224c27a502ab1ecb31f15eadd752884}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-b224c27a502ab1ecb31f15eadd752884}\index{Legacy environment support for $<$tt$>$RegExp$<$/tt$>$ comparators@{Legacy environment support for $<$tt$>$RegExp$<$/tt$>$ comparators}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-b224c27a502ab1ecb31f15eadd752884_autotoc_md11110}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-b224c27a502ab1ecb31f15eadd752884_autotoc_md11110}%
+
+
+Starting in {\ttfamily 4.\+x.\+x}, {\ttfamily Reg\+Exp.\+prototype.\+flags} is expected to be available in the environment. All modern browsers support this feature, however there may be situations where a legacy environmental support is required (example\+: IE11). If you need to support such an environment and polyfilling is not an option, creating a custom comparator that uses a more verbose comparison of all possible flags is a simple solution.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ createCustomEqual,\ sameValueZeroEqual\ \}\ from\ 'deep-\/Equals';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ areRegExpsEqual\ =\ (a:\ RegExp,\ b:\ RegExp)\ =>}
+\DoxyCodeLine{\ \ a.source\ ===\ b.source\ \&\&}
+\DoxyCodeLine{\ \ a.global\ ===\ b.global\ \&\&}
+\DoxyCodeLine{\ \ a.ignoreCase\ ===\ b.ignoreCase\ \&\&}
+\DoxyCodeLine{\ \ a.multiline\ ===\ b.multiline\ \&\&}
+\DoxyCodeLine{\ \ a.unicode\ ===\ b.unicode\ \&\&}
+\DoxyCodeLine{\ \ a.sticky\ ===\ b.sticky\ \&\&}
+\DoxyCodeLine{\ \ a.lastIndex\ ===\ b.lastIndex;}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ deepEqual\ =\ createCustomEqual(\{}
+\DoxyCodeLine{\ \ createCustomConfig:\ ()\ =>\ (\{\ areRegExpsEqual\ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{const\ shallowEqual\ =\ createCustomEqual(\{}
+\DoxyCodeLine{\ \ comparator:\ sameValueZero,}
+\DoxyCodeLine{\ \ createCustomConfig:\ ()\ =>\ (\{\ areRegExpsEqual\ \}),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+ 

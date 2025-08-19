@@ -1,0 +1,53 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/path-\/exists Directory Reference}
+\hypertarget{dir_6bf4b2647029da08f49d1f96a932c472}{}\label{dir_6bf4b2647029da08f49d1f96a932c472}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/path-\/exists Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/path-\/exists Directory Reference}}
+Directory dependency graph for path-\/exists\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{dir_6bf4b2647029da08f49d1f96a932c472_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{readme.md_autotoc_md12192}{}\doxysubsection{\texorpdfstring{path-\/exists \mbox{[}!\mbox{[}Build Status\mbox{]}(\href{https://travis-ci.org/sindresorhus/path-exists.svg?branch=master}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/path-\/exists.\+svg?branch=master}})\mbox{]}(\href{https://travis-ci.org/sindresorhus/path-exists}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/path-\/exists}})}{path-\/exists \mbox{[}!\mbox{[}Build Status\mbox{]}(\href{https://travis-ci.org/sindresorhus/path-exists.svg?branch=master}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/path-\/exists.\+svg?branch=master}})\mbox{]}(\href{https://travis-ci.org/sindresorhus/path-exists}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/path-\/exists}})}}\label{readme.md_autotoc_md12192}
+\begin{quote}
+Check if a path exists \end{quote}
+
+
+NOTE\+: {\ttfamily fs.\+exists\+Sync} has been un-\/deprecated in Node.\+js since 6.\+8.\+0. If you only need to check synchronously, this module is not needed.
+
+While \href{https://nodejs.org/api/fs.html\#fs_fs_exists_path_callback}{\texttt{{\ttfamily fs.\+exists()}}} is being \href{https://github.com/iojs/io.js/issues/103}{\texttt{deprecated}}, there\textquotesingle{}s still a genuine use-\/case of being able to check if a path exists for other purposes than doing IO with it.
+
+Never use this before handling a file though\+:
+
+\begin{quote}
+In particular, checking if a file exists before opening it is an anti-\/pattern that leaves you vulnerable to race conditions\+: another process may remove the file between the calls to {\ttfamily fs.\+exists()} and {\ttfamily fs.\+open()}. Just open the file and handle the error when it\textquotesingle{}s not there. \end{quote}
+\hypertarget{readme.md_autotoc_md12193}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{readme.md_autotoc_md12193}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ path-\/exists}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md12194}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{readme.md_autotoc_md12194}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ foo.js}
+\DoxyCodeLine{const\ pathExists\ =\ require('path-\/exists');}
+\DoxyCodeLine{}
+\DoxyCodeLine{(async\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ console.log(await\ pathExists('foo.js'));}
+\DoxyCodeLine{\ \ \ \ //=>\ true}
+\DoxyCodeLine{\})();}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md12195}{}\doxysubsection{\texorpdfstring{API}{API}}\label{readme.md_autotoc_md12195}
+\hypertarget{readme.md_autotoc_md12196}{}\doxysubsubsection{\texorpdfstring{path\+Exists(path)}{path\+Exists(path)}}\label{readme.md_autotoc_md12196}
+Returns a {\ttfamily Promise\texorpdfstring{$<$}{<}boolean\texorpdfstring{$>$}{>}} of whether the path exists.\hypertarget{readme.md_autotoc_md12197}{}\doxysubsubsection{\texorpdfstring{path\+Exists.\+sync(path)}{path\+Exists.\+sync(path)}}\label{readme.md_autotoc_md12197}
+Returns a {\ttfamily boolean} of whether the path exists.\hypertarget{readme.md_autotoc_md12198}{}\doxysubsection{\texorpdfstring{Related}{Related}}\label{readme.md_autotoc_md12198}
+
+\begin{DoxyItemize}
+\item \href{https://github.com/sindresorhus/path-exists-cli}{\texttt{path-\/exists-\/cli}} -\/ CLI for this module
+\end{DoxyItemize}\hypertarget{readme.md_autotoc_md12199}{}\doxysubsection{\texorpdfstring{License}{License}}\label{readme.md_autotoc_md12199}
+MIT © \href{https://sindresorhus.com}{\texttt{Sindre Sorhus}} 

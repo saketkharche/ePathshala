@@ -1,0 +1,156 @@
+\chapter{e\+Pathshala Simple Class Diagram }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple}\index{ePathshala Simple Class Diagram@{ePathshala Simple Class Diagram}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md30}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md30}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md31}{}\doxysection{\texorpdfstring{Core Entities}{Core Entities}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md31}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ class\ User\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ password}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ firstName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ lastName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Role\ role}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +authenticate(password)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateProfile(profileData)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Student\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ rollNumber}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getGrades()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Teacher\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ employeeId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ qualification}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(studentId,\ date,\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade(studentId,\ subject,\ grade)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Parent\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ relationship}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildProgress(studentId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Attendance\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ student}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ date}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceStatus\ status}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Grade\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ student}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +calculateGrade()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Assignment\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Teacher\ teacher}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ dueDate}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Student\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Teacher\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Parent\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ Attendance\ :\ "{}tracks"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ Grade\ :\ "{}receives"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Attendance\ :\ "{}marks"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Grade\ :\ "{}assigns"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Assignment\ :\ "{}creates"{}}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md32}{}\doxysection{\texorpdfstring{Controllers}{Controllers}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md32}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ class\ BaseController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ success(T\ data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~T\string~\ error(String\ message)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AuthController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AuthService\ authService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~LoginResponse\string~\ login(LoginRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~String\string~\ logout()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherService\ teacherService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~TeacherDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~Attendance\string~\ markAttendance(AttendanceDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentService\ studentService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~StudentDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Assignment\string~\string~\ getAssignments()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ParentService\ parentService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~ParentDashboardDTO\string~\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ResponseEntity\string~List\string~Student\string~\string~\ getChildren()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ AuthController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ TeacherController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ StudentController}
+\DoxyCodeLine{\ \ \ \ BaseController\ <|-\/-\/\ ParentController}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md33}{}\doxysection{\texorpdfstring{Services}{Services}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-simple_autotoc_md33}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ class\ BaseService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<interface>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +T\ findById(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~T\string~\ findAll()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +T\ save(T\ entity)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AuthService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +UserRepository\ userRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +JwtUtil\ jwtUtil}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LoginResponse\ authenticateUser(LoginRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateToken(User\ user)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherRepository\ teacherRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceRepository\ attendanceRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherDashboardDTO\ getDashboard(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Attendance\ markAttendance(AttendanceDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentRepository\ studentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentRepository\ assignmentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentDashboardDTO\ getDashboard(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\string~\ getAssignments(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ AuthService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ TeacherService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ StudentService}
+
+\end{DoxyCode}
+ 

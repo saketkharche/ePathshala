@@ -1,0 +1,62 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/@emotion/cache Directory Reference}
+\hypertarget{dir_c8a74e7d5afe4332c8e940542df52d8f}{}\label{dir_c8a74e7d5afe4332c8e940542df52d8f}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@emotion/cache Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@emotion/cache Directory Reference}}
+Directory dependency graph for cache\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=157pt]{dir_c8a74e7d5afe4332c8e940542df52d8f_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md456}{}\doxysubsection{\texorpdfstring{@emotion/cache}{@emotion/cache}}\label{README.md_autotoc_md456}
+\hypertarget{README.md_autotoc_md457}{}\doxysubsubsection{\texorpdfstring{create\+Cache}{create\+Cache}}\label{README.md_autotoc_md457}
+{\ttfamily create\+Cache} allows for low level customization of how styles get inserted by emotion. It\textquotesingle{}s intended to be used with the \href{https://emotion.sh/docs/cache-provider}{\texttt{{\ttfamily \texorpdfstring{$<$}{<}Cache\+Provider/\texorpdfstring{$>$}{>}}}} component to override the default cache, which is created with sensible defaults for most applications.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ createCache\ from\ '@emotion/cache'}
+\DoxyCodeLine{}
+\DoxyCodeLine{export\ const\ myCache\ =\ createCache(\{}
+\DoxyCodeLine{\ \ key:\ 'my-\/prefix-\/key',}
+\DoxyCodeLine{\ \ stylisPlugins:\ [}
+\DoxyCodeLine{\ \ \ \ /*\ your\ plugins\ here\ */}
+\DoxyCodeLine{\ \ ]}
+\DoxyCodeLine{\})}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md458}{}\doxysubsubsection{\texorpdfstring{Primary use cases}{Primary use cases}}\label{README.md_autotoc_md458}
+
+\begin{DoxyItemize}
+\item Using emotion in embedded contexts such as an {\ttfamily \texorpdfstring{$<$}{<}iframe/\texorpdfstring{$>$}{>}}
+\item Setting a nonce on any {\ttfamily \texorpdfstring{$<$}{<}style/\texorpdfstring{$>$}{>}} tag emotion creates for security purposes
+\item Using emotion with a developer defined {\ttfamily \texorpdfstring{$<$}{<}style/\texorpdfstring{$>$}{>}} tag
+\item Using emotion with custom Stylis plugins
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md459}{}\doxysubsection{\texorpdfstring{Options}{Options}}\label{README.md_autotoc_md459}
+\hypertarget{README.md_autotoc_md460}{}\doxysubsubsection{\texorpdfstring{{\ttfamily nonce}}{{\ttfamily nonce}}}\label{README.md_autotoc_md460}
+{\ttfamily string}
+
+A nonce that will be set on each style tag that emotion inserts for \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP}{\texttt{Content Security Policies}}.\hypertarget{README.md_autotoc_md461}{}\doxysubsubsection{\texorpdfstring{{\ttfamily stylis\+Plugins}}{{\ttfamily stylis\+Plugins}}}\label{README.md_autotoc_md461}
+{\ttfamily Array\texorpdfstring{$<$}{<}Function\texorpdfstring{$>$}{>}}
+
+A Stylis plugins that will be run by Stylis during preprocessing. \href{https://github.com/thysultan/stylis.js\#middleware}{\texttt{Read the Stylis docs to find out more}}. This can be used for many purposes such as RTL.
+
+\begin{quote}
+Note\+:
+
+Prefixer is just a plugin which happens to be put in default {\ttfamily stylis\+Plugins}. If you plan to use custom {\ttfamily stylis\+Plugins} and you want to have your styles prefixed automatically you must include prefixer in your custom {\ttfamily stylis\+Plugins}. You can import {\ttfamily prefixer} from the {\ttfamily stylis} module to do that (`import \{ prefixer \} from \textquotesingle{}stylis'{\ttfamily ); \texorpdfstring{$<$}{<}/blockquote\texorpdfstring{$>$}{>}\textbackslash{}ilinebr @subsection autotoc\+\_\+md462 }key\`{}
+
+{\ttfamily string (Pattern\+: \mbox{[}\texorpdfstring{$^\wedge$}{\string^}a-\/z-\/\mbox{]})}
+
+The prefix before class names. It will also be set as the value of the {\ttfamily data-\/emotion} attribute on the style tags that emotion inserts and it\textquotesingle{}s used in the attribute name that marks style elements in {\ttfamily render\+Styles\+To\+String} and {\ttfamily render\+Styles\+To\+Node\+Stream}. This is {\bfseries{required if using multiple emotion caches in the same app}}.
+
+\end{quote}
+\hypertarget{README.md_autotoc_md463}{}\doxysubsubsection{\texorpdfstring{{\ttfamily container}}{{\ttfamily container}}}\label{README.md_autotoc_md463}
+{\ttfamily Node}
+
+A DOM node that emotion will insert all of its style tags into. This is useful for inserting styles into iframes or windows.\hypertarget{README.md_autotoc_md464}{}\doxysubsubsection{\texorpdfstring{{\ttfamily prepend}}{{\ttfamily prepend}}}\label{README.md_autotoc_md464}
+{\ttfamily boolean}
+
+A boolean representing whether to prepend rather than append style tags into the specified container DOM node. 

@@ -1,0 +1,324 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/canvg Directory Reference}
+\hypertarget{dir_58cce810459a5381ead9ff154050e149}{}\label{dir_58cce810459a5381ead9ff154050e149}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/canvg Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/canvg Directory Reference}}
+Directory dependency graph for canvg\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_58cce810459a5381ead9ff154050e149_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md10380}{}\doxysubsection{\texorpdfstring{canvg}{canvg}}\label{README.md_autotoc_md10380}
+\href{https://npmjs.com/package/canvg}{\texttt{}} \href{https://david-dm.org/canvg/canvg}{\texttt{}} \href{https://github.com/canvg/canvg/actions}{\texttt{}} \href{https://coveralls.io/r/canvg/canvg}{\texttt{}} \href{https://dependabot.com/}{\texttt{}} \href{https://canvg.github.io/canvg}{\texttt{}}
+
+Java\+Script SVG parser and renderer on Canvas. It takes the URL to the SVG file or the text of the SVG file, parses it in Java\+Script and renders the result on Canvas.
+
+\href{https://canvg.github.io/canvg/demo/index.html}{\texttt{Demo}}
+
+\href{https://jsfiddle.net/0q1vrjxk/}{\texttt{Playground}}\hypertarget{README.md_autotoc_md10381}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{README.md_autotoc_md10381}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ i\ canvg}
+\DoxyCodeLine{\#\ or}
+\DoxyCodeLine{yarn\ add\ canvg}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10382}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md10382}
+Basic module exports\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{export\ default\ Canvg;}
+\DoxyCodeLine{export\ \{}
+\DoxyCodeLine{\ \ \ \ presets}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+\href{https://canvg.github.io/canvg/index.html}{\texttt{Description of all exports you can find in Documentation.}}\hypertarget{README.md_autotoc_md10383}{}\doxysubsubsection{\texorpdfstring{Example}{Example}}\label{README.md_autotoc_md10383}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ Canvg\ from\ 'canvg';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ v\ =\ null;}
+\DoxyCodeLine{}
+\DoxyCodeLine{window.onload\ =\ async\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ const\ canvas\ =\ document.querySelector('canvas');}
+\DoxyCodeLine{\ \ \ \ const\ ctx\ =\ canvas.getContext('2d');}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ v\ =\ await\ Canvg.from(ctx,\ './svgs/1.svg');}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ Start\ SVG\ rendering\ with\ animations\ and\ mouse\ handling.}
+\DoxyCodeLine{\ \ \ \ v.start();}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{window.onbeforeunload\ =\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ v.stop();}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+{\bfseries{Offscreen\+Canvas}} 
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ Canvg,\ \{}
+\DoxyCodeLine{\ \ \ \ presets}
+\DoxyCodeLine{\}\ from\ 'canvg';}
+\DoxyCodeLine{}
+\DoxyCodeLine{self.onmessage\ =\ async\ (event)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ const\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ width,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ height,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ svg}
+\DoxyCodeLine{\ \ \ \ \}\ =\ event.data;}
+\DoxyCodeLine{\ \ \ \ const\ canvas\ =\ new\ OffscreenCanvas(width,\ height);}
+\DoxyCodeLine{\ \ \ \ const\ ctx\ =\ canvas.getContext('2d');}
+\DoxyCodeLine{\ \ \ \ const\ v\ =\ await\ Canvg.from(ctx,\ svg,\ presets.offscreen());}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ Render\ only\ first\ frame,\ ignoring\ animations\ and\ mouse.}
+\DoxyCodeLine{\ \ \ \ await\ v.render();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ const\ blob\ =\ await\ canvas.convertToBlob();}
+\DoxyCodeLine{\ \ \ \ const\ pngUrl\ =\ URL.createObjectURL(blob);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ self.postMessage(\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ pngUrl}
+\DoxyCodeLine{\ \ \ \ \});}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+\href{https://caniuse.com/offscreencanvas}{\texttt{{\ttfamily Offscreen\+Canvas} browsers compatibility.}}
+
+\end{adjustwidth}
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+{\bfseries{Node\+JS}} 
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{}
+\DoxyCodeLine{\ \ \ \ promises\ as\ fs}
+\DoxyCodeLine{\}\ from\ 'fs';}
+\DoxyCodeLine{import\ \{}
+\DoxyCodeLine{\ \ \ \ DOMParser}
+\DoxyCodeLine{\}\ from\ 'xmldom';}
+\DoxyCodeLine{import\ *\ as\ canvas\ from\ 'canvas';}
+\DoxyCodeLine{import\ fetch\ from\ 'node-\/fetch';}
+\DoxyCodeLine{import\ Canvg,\ \{}
+\DoxyCodeLine{\ \ \ \ presets}
+\DoxyCodeLine{\}\ from\ 'canvg';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ preset\ =\ presets.node(\{}
+\DoxyCodeLine{\ \ \ \ DOMParser,}
+\DoxyCodeLine{\ \ \ \ canvas,}
+\DoxyCodeLine{\ \ \ \ fetch}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{(async\ (output,\ input)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ const\ svg\ =\ await\ fs.readFile(input,\ 'utf8');}
+\DoxyCodeLine{\ \ \ \ const\ canvas\ =\ preset.createCanvas(800,\ 600);}
+\DoxyCodeLine{\ \ \ \ const\ ctx\ =\ canvas.getContext('2d');}
+\DoxyCodeLine{\ \ \ \ const\ v\ =\ Canvg.fromString(ctx,\ svg,\ preset);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ Render\ only\ first\ frame,\ ignoring\ animations.}
+\DoxyCodeLine{\ \ \ \ await\ v.render();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ const\ png\ =\ canvas.toBuffer();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ await\ fs.writeFile(output,\ png);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\})(}
+\DoxyCodeLine{\ \ \ \ process.argv.pop(),}
+\DoxyCodeLine{\ \ \ \ process.argv.pop()}
+\DoxyCodeLine{);}
+
+\end{DoxyCode}
+
+
+\end{adjustwidth}
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+{\bfseries{Resize}} 
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ Canvg,\ \{}
+\DoxyCodeLine{\ \ \ \ presets}
+\DoxyCodeLine{\}\ from\ 'canvg';}
+\DoxyCodeLine{}
+\DoxyCodeLine{self.onmessage\ =\ async\ (event)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ const\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ width,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ height,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ svg}
+\DoxyCodeLine{\ \ \ \ \}\ =\ event.data;}
+\DoxyCodeLine{\ \ \ \ const\ canvas\ =\ new\ OffscreenCanvas(width,\ height);}
+\DoxyCodeLine{\ \ \ \ const\ ctx\ =\ canvas.getContext('2d');}
+\DoxyCodeLine{\ \ \ \ const\ v\ =\ await\ Canvg.from(ctx,\ svg,\ presets.offscreen());}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Resize\ SVG\ to\ fit\ in\ given\ size.}
+\DoxyCodeLine{\ \ \ \ \ *\ @param\ width}
+\DoxyCodeLine{\ \ \ \ \ *\ @param\ height}
+\DoxyCodeLine{\ \ \ \ \ *\ @param\ preserveAspectRatio}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ v.resize(width,\ height,\ 'xMidYMid\ meet');}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ Render\ only\ first\ frame,\ ignoring\ animations\ and\ mouse.}
+\DoxyCodeLine{\ \ \ \ await\ v.render();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ const\ blob\ =\ await\ canvas.convertToBlob();}
+\DoxyCodeLine{\ \ \ \ const\ pngUrl\ =\ URL.createObjectURL(blob);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ self.postMessage(\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ pngUrl}
+\DoxyCodeLine{\ \ \ \ \});}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+\end{adjustwidth}
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+{\bfseries{Browser}} 
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ type="{}text/javascript"{}\ src="{}https://unpkg.com/canvg@3.0.4/lib/umd.js"{}></script>}
+\DoxyCodeLine{<script\ type="{}text/javascript"{}>}
+\DoxyCodeLine{window.onload\ =\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ const\ canvas\ =\ document.querySelector('canvas');}
+\DoxyCodeLine{\ \ \ \ const\ ctx\ =\ canvas.getContext('2d');}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ v\ =\ canvg.Canvg.fromString(ctx,\ '<svg\ width="{}600"{}\ height="{}600"{}><text\ x="{}50"{}\ y="{}50"{}>Hello\ World!</text></svg>');}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ Start\ SVG\ rendering\ with\ animations\ and\ mouse\ handling.}
+\DoxyCodeLine{\ \ \ \ v.start();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{</script>}
+\DoxyCodeLine{<canvas\ />}
+
+\end{DoxyCode}
+
+
+\end{adjustwidth}
+\hypertarget{README.md_autotoc_md10384}{}\doxysubsubsection{\texorpdfstring{Options}{Options}}\label{README.md_autotoc_md10384}
+The third parameter of {\ttfamily new Canvg(...)}, {\ttfamily Canvg.\+from(...)} and {\ttfamily Canvg.\+from\+String(...)} is options\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{interface\ IOptions\ \{}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ WHATWG-\/compatible\ \`{}fetch`\ function.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ fetch?:\ typeof\ fetch;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ XML/HTML\ parser\ from\ string\ into\ DOM\ Document.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ DOMParser?:\ typeof\ DOMParser;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Window\ object.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ window?:\ Window;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Whether\ enable\ the\ redraw.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ enableRedraw?:\ boolean;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Ignore\ mouse\ events.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ ignoreMouse?:\ boolean;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Ignore\ animations.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ ignoreAnimation?:\ boolean;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Does\ not\ try\ to\ resize\ canvas.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ ignoreDimensions?:\ boolean;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Does\ not\ clear\ canvas.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ ignoreClear?:\ boolean;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Scales\ horizontally\ to\ width.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ scaleWidth?:\ number;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Scales\ vertically\ to\ height.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ scaleHeight?:\ number;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Draws\ at\ a\ x\ offset.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ offsetX?:\ number;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Draws\ at\ a\ y\ offset.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ offsetY?:\ number;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Will\ call\ the\ function\ on\ every\ frame,\ if\ it\ returns\ true,\ will\ redraw.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ forceRedraw?():\ boolean;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Default\ \`{}rem`\ size.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ rootEmSize?:\ number;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Default\ \`{}em`\ size.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ emSize?:\ number;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Function\ to\ create\ new\ canvas.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ createCanvas?:\ (width:\ number,\ height:\ number)\ =>\ HTMLCanvasElement\ |\ OffscreenCanvas;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Function\ to\ create\ new\ image.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ createImage?:\ (src:\ string,\ anonymousCrossOrigin?:\ boolean)\ =>\ Promise<CanvasImageSource>;}
+\DoxyCodeLine{\ \ \ \ /**}
+\DoxyCodeLine{\ \ \ \ \ *\ Load\ images\ anonymously.}
+\DoxyCodeLine{\ \ \ \ \ */}
+\DoxyCodeLine{\ \ \ \ anonymousCrossOrigin?:\ boolean;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10385}{}\doxysubsubsubsection{\texorpdfstring{Options presets}{Options presets}}\label{README.md_autotoc_md10385}
+There are two options presets\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily presets.\+offscreen()}\+: options for \href{https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas}{\texttt{{\ttfamily Offscreen\+Canvas}}};
+\item {\ttfamily presets.\+node(\{ DOMParser, canvas, fetch \})}\+: options for Node\+JS with \href{https://github.com/Automattic/node-canvas}{\texttt{{\ttfamily node-\/canvas}}}.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md10386}{}\doxysubsection{\texorpdfstring{What\textquotesingle{}s implemented?}{What\textquotesingle{}s implemented?}}\label{README.md_autotoc_md10386}
+The end goal is everything from the \href{http://www.w3.org/TR/SVG/}{\texttt{SVG spec}}. The majority of the rendering and animation is working. If you would like to see a feature implemented, don\textquotesingle{}t hesitate to add it to the issues list, or better is to create pull request 😎 

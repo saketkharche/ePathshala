@@ -1,0 +1,105 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/@jitsi/react-\/sdk Directory Reference}
+\hypertarget{dir_11d6d996cf0665582ad82f82826b0110}{}\label{dir_11d6d996cf0665582ad82f82826b0110}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@jitsi/react-\/sdk Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@jitsi/react-\/sdk Directory Reference}}
+Directory dependency graph for react-\/sdk\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=168pt]{dir_11d6d996cf0665582ad82f82826b0110_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md649}{}\doxysubsection{\texorpdfstring{Jitsi Meet React SDK}{Jitsi Meet React SDK}}\label{README.md_autotoc_md649}
+The Jitsi Meet React SDK provides the same user experience as the \href{https://github.com/jitsi/jitsi-meet}{\texttt{Jitsi Meet}} app, in a customizable way which you can embed in your apps.\hypertarget{README.md_autotoc_md650}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{README.md_autotoc_md650}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ @jitsi/react-\/sdk}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md651}{}\doxysubsubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md651}
+Import into React \texorpdfstring{$\vert$}{|} Next\+Js page for usage 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{JitsiMeeting\}\ from\ "{}@jitsi/react-\/sdk"{};}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md652}{}\doxysubsubsection{\texorpdfstring{Modules}{Modules}}\label{README.md_autotoc_md652}
+This library exposes two components with similar properties, intended for different use-\/cases. \hypertarget{README.md_autotoc_md653}{}\doxysubsubsubsection{\texorpdfstring{Jitsi\+Meeting}{Jitsi\+Meeting}}\label{README.md_autotoc_md653}
+To be used with custom domains as-\/it-\/is in React projects\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<JitsiMeeting}
+\DoxyCodeLine{\ \ \ \ domain\ =\ \{\ YOUR\_DOMAIN\ \}}
+\DoxyCodeLine{\ \ \ \ roomName\ =\ \{\ YOUR\_ROOM\_NAME\ \}}
+\DoxyCodeLine{/>}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md654}{}\doxysubsubsubsubsection{\texorpdfstring{Properties specific to the {\ttfamily Jitsi\+Meeting} component}{Properties specific to the {\ttfamily Jitsi\+Meeting} component}}\label{README.md_autotoc_md654}
+\hypertarget{README.md_autotoc_md655}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily domain}}{{\ttfamily domain}}}\label{README.md_autotoc_md655}
+Optional. Field used to retrieve the external\+\_\+api.\+js file that initializes the IFrame. If omitted, defaults to {\ttfamily meet.\+jit.\+si}.\hypertarget{README.md_autotoc_md656}{}\doxysubsubsubsection{\texorpdfstring{Jaa\+SMeeting}{Jaa\+SMeeting}}\label{README.md_autotoc_md656}
+To be used with the {\ttfamily 8x8.\+vc} domain as-\/it-\/is in React projects\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<JaaSMeeting}
+\DoxyCodeLine{\ \ \ \ appId\ =\ \{\ YOUR\_APP\_ID\ \}}
+\DoxyCodeLine{\ \ \ \ roomName\ =\ \{\ YOUR\_ROOM\_NAME\ \}}
+\DoxyCodeLine{/>}
+
+\end{DoxyCode}
+
+
+...or with the {\ttfamily stage.\+8x8.\+vc} domain\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<JaaSMeeting}
+\DoxyCodeLine{\ \ \ \ appId\ =\ \{\ YOUR\_APP\_ID\ \}}
+\DoxyCodeLine{\ \ \ \ roomName\ =\ \{\ YOUR\_ROOM\_NAME\ \}}
+\DoxyCodeLine{\ \ \ \ useStaging\ =\ \{\ true\ \}}
+\DoxyCodeLine{/>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md657}{}\doxysubsubsubsubsection{\texorpdfstring{Properties specific to the {\ttfamily Jaas\+Meeting} component}{Properties specific to the {\ttfamily Jaas\+Meeting} component}}\label{README.md_autotoc_md657}
+\hypertarget{README.md_autotoc_md658}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily app\+Id}}{{\ttfamily app\+Id}}}\label{README.md_autotoc_md658}
+Required. Provides an isolated context and prefixes the room name.\hypertarget{README.md_autotoc_md659}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily use\+Staging}}{{\ttfamily use\+Staging}}}\label{README.md_autotoc_md659}
+Optional. Tells whether to use the staging environment or not.\hypertarget{README.md_autotoc_md660}{}\doxysubsubsubsubsection{\texorpdfstring{Common properties}{Common properties}}\label{README.md_autotoc_md660}
+\hypertarget{README.md_autotoc_md661}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily room\+Name}}{{\ttfamily room\+Name}}}\label{README.md_autotoc_md661}
+Required. String used when joining the meeting.\hypertarget{README.md_autotoc_md662}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily get\+IFrame\+Ref}}{{\ttfamily get\+IFrame\+Ref}}}\label{README.md_autotoc_md662}
+Optional. Callback to retrieve the parent node of the IFrame for more control (e.\+g. styling). 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<JitsiMeeting}
+\DoxyCodeLine{\ \ \ \ ...}
+\DoxyCodeLine{\ \ \ \ getIFrameRef\ =\ \{\ iframeRef\ =>\ \{\ iframeRef.style.height\ =\ '700px';\ \}\ \}}
+\DoxyCodeLine{/>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md663}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily on\+Api\+Ready}}{{\ttfamily on\+Api\+Ready}}}\label{README.md_autotoc_md663}
+Optional. Callback triggered when the external API is loaded to expose it for events and commands. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<JitsiMeeting}
+\DoxyCodeLine{\ \ \ \ ...}
+\DoxyCodeLine{\ \ \ \ onApiReady\ =\ \{\ externalApi\ =>\ console.log('Jitsi\ Meet\ External\ API',\ externalApi)\ \}}
+\DoxyCodeLine{/>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md664}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily on\+Ready\+To\+Close}}{{\ttfamily on\+Ready\+To\+Close}}}\label{README.md_autotoc_md664}
+Optional. Callback triggered when the meeting is ready to be closed. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<JitsiMeeting}
+\DoxyCodeLine{\ \ \ \ ...}
+\DoxyCodeLine{\ \ \ \ onReadyToClose\ =\ \{\ ()\ =>\ console.log('Jitsi\ Meet\ is\ ready\ to\ be\ closed')\ \}}
+\DoxyCodeLine{/>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md665}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily config\+Overwrite}}{{\ttfamily config\+Overwrite}}}\label{README.md_autotoc_md665}
+Optional. Object used for options overrides.\hypertarget{README.md_autotoc_md666}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily interface\+Config\+Overwrite}}{{\ttfamily interface\+Config\+Overwrite}}}\label{README.md_autotoc_md666}
+Optional. Object used for more options overrides.\hypertarget{README.md_autotoc_md667}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily jwt}}{{\ttfamily jwt}}}\label{README.md_autotoc_md667}
+Optional. Token for authentication.\hypertarget{README.md_autotoc_md668}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily invitees}}{{\ttfamily invitees}}}\label{README.md_autotoc_md668}
+Optional. Participants list.\hypertarget{README.md_autotoc_md669}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily devices}}{{\ttfamily devices}}}\label{README.md_autotoc_md669}
+Optional. Information regarding the devices used during the call.\hypertarget{README.md_autotoc_md670}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily user\+Info}}{{\ttfamily user\+Info}}}\label{README.md_autotoc_md670}
+Optional. Details about the participant that started the meeting.\hypertarget{README.md_autotoc_md671}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily lang}}{{\ttfamily lang}}}\label{README.md_autotoc_md671}
+Optional. The default meeting language.\hypertarget{README.md_autotoc_md672}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily release}}{{\ttfamily release}}}\label{README.md_autotoc_md672}
+Optional. Information regarding the {\ttfamily stage.\+8x8.\+vc} or {\ttfamily 8x8.\+vc} release version. Expects the following format\+: {\ttfamily release-\/1234}.\hypertarget{README.md_autotoc_md673}{}\doxysubsubsubsubsubsection{\texorpdfstring{{\ttfamily spinner}}{{\ttfamily spinner}}}\label{README.md_autotoc_md673}
+Optional. Custom loading view while the IFrame is loading.\hypertarget{README.md_autotoc_md674}{}\doxysubsection{\texorpdfstring{Sample}{Sample}}\label{README.md_autotoc_md674}
+Install and run the project from the {\ttfamily example} directory to see the Jitsi\+Meeting module in action. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ run\ demo}
+
+\end{DoxyCode}
+ 

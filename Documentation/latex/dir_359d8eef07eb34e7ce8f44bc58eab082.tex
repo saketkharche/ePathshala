@@ -1,0 +1,185 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/stackblur-\/canvas Directory Reference}
+\hypertarget{dir_359d8eef07eb34e7ce8f44bc58eab082}{}\label{dir_359d8eef07eb34e7ce8f44bc58eab082}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/stackblur-\/canvas Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/stackblur-\/canvas Directory Reference}}
+Directory dependency graph for stackblur-\/canvas\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{dir_359d8eef07eb34e7ce8f44bc58eab082_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md13720}{}\doxysubsection{\texorpdfstring{Stack\+Blur.\+js}{Stack\+Blur.\+js}}\label{README.md_autotoc_md13720}
+\href{https://www.npmjs.com/package/stackblur-canvas}{\texttt{}} \href{https://github.com/flozz/StackBlur/blob/master/COPYING}{\texttt{}}
+
+Stack\+Blur.\+js is a fast, almost Gaussian blur created by Mario Klingemann.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{More informations\+:}} \href{http://incubator.quasimondo.com/processing/fast_blur_deluxe.php}{\texttt{http\+://incubator.\+quasimondo.\+com/processing/fast\+\_\+blur\+\_\+deluxe.\+php}}
+\item {\bfseries{Algorithm\+:}} \href{https://medium.com/better-programming/blurring-image-algorithm-example-in-android-cec81911cd5e}{\texttt{https\+://medium.\+com/better-\/programming/blurring-\/image-\/algorithm-\/example-\/in-\/android-\/cec81911cd5e}}
+\item {\bfseries{Demo\+:}} \href{http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html}{\texttt{http\+://www.\+quasimondo.\+com/\+Stack\+Blur\+For\+Canvas/\+Stack\+Blur\+Demo.\+html}}
+\end{DoxyItemize}
+
+Original source\+:
+
+
+\begin{DoxyItemize}
+\item \href{http://www.quasimondo.com/StackBlurForCanvas/StackBlur.js}{\texttt{http\+://www.\+quasimondo.\+com/\+Stack\+Blur\+For\+Canvas/\+Stack\+Blur.\+js}}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md13721}{}\doxysubsection{\texorpdfstring{Getting Started}{Getting Started}}\label{README.md_autotoc_md13721}
+\hypertarget{README.md_autotoc_md13722}{}\doxysubsubsection{\texorpdfstring{Standalone version}{Standalone version}}\label{README.md_autotoc_md13722}
+To use the standalone version,
+
+download the \href{https://github.com/flozz/StackBlur/archive/master.zip}{\texttt{latest zip}} from Github or clone the repository
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ clone\ git@github.com:flozz/StackBlur.git}
+
+\end{DoxyCode}
+
+
+and include the {\ttfamily dist/stackblur.\+js} or {\ttfamily dist/stackblur.\+min.\+js} file in your HTML page\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ src="{}StackBlur/dist/stackblur.js"{}></script>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13723}{}\doxysubsubsection{\texorpdfstring{Node}{Node}}\label{README.md_autotoc_md13723}
+To use the \href{https://www.npmjs.com/package/stackblur-canvas}{\texttt{NPM package}},
+
+install the package\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ -\/-\/save\ stackblur-\/canvas}
+
+\end{DoxyCode}
+
+
+and require it where needed
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ StackBlur\ =\ require('stackblur-\/canvas');}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13724}{}\doxysubsubsection{\texorpdfstring{Browsers}{Browsers}}\label{README.md_autotoc_md13724}
+If you are only supporting modern browsers, you may use ES6 Modules directly\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ *\ as\ StackBlur\ from}
+\DoxyCodeLine{\ \ './node\_modules/stackblur-\/canvas/dist/stackblur-\/es.min.js';}
+
+\end{DoxyCode}
+
+
+Or, if you are using Rollup in your own project, use the \href{https://github.com/rollup/rollup-plugin-node-resolve}{\texttt{node-\/resolve}} plugin, and import by just referencing the module\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ *\ as\ StackBlur\ from\ 'stackblur-\/canvas';}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13725}{}\doxysubsection{\texorpdfstring{API}{API}}\label{README.md_autotoc_md13725}
+See also the docs in \href{./docs/jsdoc/index.html}{\texttt{docs/jsdoc}}.
+
+{\bfseries{Image as source\+:}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{StackBlur.image(sourceImage,\ targetCanvas,\ radius,\ blurAlphaChannel);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily source\+Image}\+: the {\ttfamily HTMLImage\+Element} or its {\ttfamily id}.
+\item {\ttfamily target\+Canvas}\+: the {\ttfamily HTMLCanvas\+Element} or its {\ttfamily id}.
+\item {\ttfamily radius}\+: the radius of the blur.
+\item {\ttfamily blur\+Alpha\+Channel}\+: Set it to {\ttfamily true} if you want to blur a RGBA image (optional, default = {\ttfamily false})
+\end{DoxyItemize}
+
+{\bfseries{RGBA Canvas as source\+:}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{StackBlur.canvasRGBA(targetCanvas,\ top\_x,\ top\_y,\ width,\ height,\ radius);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily target\+Canvas}\+: the {\ttfamily HTMLCanvas\+Element}.
+\item {\ttfamily top\+\_\+x}\+: the horizontal coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily top\+\_\+y}\+: the vertical coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily width}\+: the width of the rectangle to blur.
+\item {\ttfamily height}\+: the height of the rectangle to blur.
+\item {\ttfamily radius}\+: the radius of the blur.
+\end{DoxyItemize}
+
+{\bfseries{RGB Canvas as source\+:}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{StackBlur.canvasRGB(targetCanvas,\ top\_x,\ top\_y,\ width,\ height,\ radius);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily target\+Canvas}\+: the {\ttfamily HTMLCanvas\+Element}.
+\item {\ttfamily top\+\_\+x}\+: the horizontal coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily top\+\_\+y}\+: the vertical coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily width}\+: the width of the rectangle to blur.
+\item {\ttfamily height}\+: the height of the rectangle to blur.
+\item {\ttfamily radius}\+: the radius of the blur.
+\end{DoxyItemize}
+
+{\bfseries{RGBA Image\+Data as source\+:}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{StackBlur.imageDataRGBA(imageData,\ top\_x,\ top\_y,\ width,\ height,\ radius);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily image\+Data}\+: the canvas\textquotesingle{} {\ttfamily Image\+Data}.
+\item {\ttfamily top\+\_\+x}\+: the horizontal coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily top\+\_\+y}\+: the vertical coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily width}\+: the width of the rectangle to blur.
+\item {\ttfamily height}\+: the height of the rectangle to blur.
+\item {\ttfamily radius}\+: the radius of the blur.
+\end{DoxyItemize}
+
+{\bfseries{RGB Image\+Data as source\+:}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{StackBlur.imageDataRGB(imageData,\ top\_x,\ top\_y,\ width,\ height,\ radius);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily image\+Data}\+: the canvas\textquotesingle{} {\ttfamily Image\+Data}.
+\item {\ttfamily top\+\_\+x}\+: the horizontal coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily top\+\_\+y}\+: the vertical coordinate of the top-\/left corner of the rectangle to blur.
+\item {\ttfamily width}\+: the width of the rectangle to blur.
+\item {\ttfamily height}\+: the height of the rectangle to blur.
+\item {\ttfamily radius}\+: the radius of the blur.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md13726}{}\doxysubsection{\texorpdfstring{Hacking}{Hacking}}\label{README.md_autotoc_md13726}
+\hypertarget{README.md_autotoc_md13727}{}\doxysubsubsection{\texorpdfstring{Building}{Building}}\label{README.md_autotoc_md13727}
+This library is built using \href{https://rollupjs.org/guide/en}{\texttt{Rollup}}. If you change something in the {\ttfamily src/} folder, use the following command to re-\/build the files in the {\ttfamily dist/} folder\+:
+
+{\ttfamily npm run rollup} 

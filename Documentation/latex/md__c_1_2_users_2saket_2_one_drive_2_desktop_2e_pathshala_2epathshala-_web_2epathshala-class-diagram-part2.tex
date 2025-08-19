@@ -1,0 +1,689 @@
+\chapter{e\+Pathshala Class Diagram -\/ Part 2\+: Services, Repositories \& Frontend }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2}\index{ePathshala Class Diagram -\/ Part 2: Services, Repositories \& Frontend@{ePathshala Class Diagram -\/ Part 2: Services, Repositories \& Frontend}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md24}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md24}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md25}{}\doxysection{\texorpdfstring{Service Layer Classes}{Service Layer Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md25}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Base\ Service\ Interface}
+\DoxyCodeLine{\ \ \ \ class\ BaseService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<interface>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +T\ findById(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~T\string~\ findAll()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +T\ save(T\ entity)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +T\ update(Long\ id,\ T\ entity)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ delete(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ existsById(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Authentication\ Service}
+\DoxyCodeLine{\ \ \ \ class\ AuthService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +UserRepository\ userRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +JwtUtil\ jwtUtil}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +PasswordUtility\ passwordUtility}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LoginResponse\ authenticateUser(LoginRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateOtp(String\ email)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ verifyOtp(String\ email,\ String\ otp)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ resetPassword(ResetPasswordRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ getCurrentUser()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateToken(User\ user)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ validateToken(String\ token)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ logout(String\ token)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Teacher\ Service}
+\DoxyCodeLine{\ \ \ \ class\ TeacherService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherRepository\ teacherRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceRepository\ attendanceRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +GradeRepository\ gradeRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentRepository\ assignmentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveRequestRepository\ leaveRequestRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherDashboardDTO\ getDashboard(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Attendance\ markAttendance(AttendanceDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Grade\ addGrade(GradeDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Assignment\ createAssignment(AssignmentDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Assignment\ updateAssignment(Long\ id,\ AssignmentDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteAssignment(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveRequest\ approveLeaveRequest(Long\ id,\ LeaveApprovalDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\string~\ getAttendanceByDate(LocalDate\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\string~\ getGradesByStudent(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\string~\ getAssignments(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~LeaveRequest\string~\string~\ getLeaveRequests(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Student\ Service}
+\DoxyCodeLine{\ \ \ \ class\ StudentService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentRepository\ studentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentRepository\ assignmentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +GradeRepository\ gradeRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceRepository\ attendanceRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveRequestRepository\ leaveRequestRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamRepository\ examRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentDashboardDTO\ getDashboard(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\string~\ getAssignments(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentSubmission\ submitAssignment(Long\ assignmentId,\ MultipartFile\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\string~\ getGrades(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\string~\ getAttendance(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveRequest\ submitLeaveRequest(LeaveRequestDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~LeaveRequest\string~\string~\ getLeaveRequests(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\string~\ getAvailableExams(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamAttempt\ startExam(Long\ examId,\ Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamResult\ submitExam(Long\ examId,\ ExamSubmissionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Parent\ Service}
+\DoxyCodeLine{\ \ \ \ class\ ParentService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ParentRepository\ parentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentRepository\ studentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +GradeRepository\ gradeRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceRepository\ attendanceRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveRequestRepository\ leaveRequestRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +NotificationRepository\ notificationRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ParentDashboardDTO\ getDashboard(Long\ parentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\string~\ getChildren(Long\ parentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChildProgressDTO\ getChildProgress(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\string~\ getChildAttendance(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\string~\ getChildGrades(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~LeaveRequest\string~\string~\ getChildLeaveRequests(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveRequest\ approveLeaveRequest(Long\ id,\ LeaveApprovalDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Notification\string~\string~\ getNotifications(Long\ parentId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Admin\ Service}
+\DoxyCodeLine{\ \ \ \ class\ AdminService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +UserRepository\ userRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentRepository\ studentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherRepository\ teacherRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ParentRepository\ parentRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AcademicCalendarRepository\ calendarRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AdminDashboardDTO\ getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ createUser(CreateUserDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ updateUser(Long\ id,\ UpdateUserDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteUser(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\string~\ getAllUsers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\string~\ getAllStudents()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Teacher\string~\string~\ getAllTeachers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Parent\string~\string~\ getAllParents()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Student\ assignTeacherToStudent(Long\ studentId,\ Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AcademicCalendar\ createCalendarEvent(AcademicCalendarDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~AcademicCalendar\string~\string~\ getCalendarEvents()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Chat\ Service}
+\DoxyCodeLine{\ \ \ \ class\ ChatService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatMessageRepository\ chatMessageRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatRoomRepository\ chatRoomRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +UserRepository\ userRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +WebSocketService\ webSocketService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatMessage\string~\string~\ getMessages(Long\ userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatMessage\ sendMessage(ChatMessageDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\string~\ getChatUsers(Long\ currentUserId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatRoom\string~\string~\ getChatRooms(Long\ userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatRoom\ createChatRoom(ChatRoomDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteMessage(Long\ messageId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ broadcastMessage(ChatMessage\ message)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Exam\ Service}
+\DoxyCodeLine{\ \ \ \ class\ ExamService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamRepository\ examRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamQuestionRepository\ questionRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamAttemptRepository\ attemptRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamResultRepository\ resultRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\string~\ getExams(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Exam\ createExam(ExamDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Exam\ updateExam(Long\ id,\ ExamDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteExam(Long\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ExamQuestion\string~\string~\ getExamQuestions(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamQuestion\ addQuestion(Long\ examId,\ ExamQuestionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamQuestion\ updateQuestion(Long\ questionId,\ ExamQuestionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteQuestion(Long\ questionId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\string~\ getAvailableExams(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamAttempt\ startExam(Long\ examId,\ Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamResult\ submitExam(Long\ examId,\ ExamSubmissionDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ExamResult\string~\string~\ getExamResults(Long\ examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamResult\ gradeExam(Long\ attemptId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ File\ Service}
+\DoxyCodeLine{\ \ \ \ class\ FileService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ uploadDirectory}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ uploadFile(MultipartFile\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Resource\ downloadFile(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteFile(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~String\string~\string~\ getUploadedFiles()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateFileName(String\ originalName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isValidFileType(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +long\ getFileSize(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Notification\ Service}
+\DoxyCodeLine{\ \ \ \ class\ NotificationService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +NotificationRepository\ notificationRepository}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +EmailService\ emailService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +WebSocketService\ webSocketService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ sendNotification(NotificationDTO\ dto)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ sendEmailNotification(String\ email,\ String\ subject,\ String\ message)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ sendRealTimeNotification(Long\ userId,\ String\ message)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Notification\string~\string~\ getUserNotifications(Long\ userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ markAsRead(Long\ notificationId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteNotification(Long\ notificationId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Inheritance}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ AuthService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ TeacherService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ StudentService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ ParentService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ AdminService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ ChatService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ ExamService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ FileService}
+\DoxyCodeLine{\ \ \ \ BaseService\ <|..\ NotificationService}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md26}{}\doxysection{\texorpdfstring{Repository Layer Classes}{Repository Layer Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md26}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Base\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ JpaRepository\string~T,\ ID\string~\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ <<interface>>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +T\ save(T\ entity)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~T\string~\ findById(ID\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~T\string~\ findAll()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteById(ID\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ existsById(ID\ id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +long\ count()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ User\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ UserRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~User\string~\ findByEmail(String\ email)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\ findByRole(Role\ role)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\ findByIsActive(boolean\ isActive)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~User\string~\ findByEmailAndIsActive(String\ email,\ boolean\ isActive)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\ findByCreatedAtBetween(LocalDateTime\ start,\ LocalDateTime\ end)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Student\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ StudentRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\ findByClassName(String\ className)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\ findByParentId(Long\ parentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~Student\string~\ findByRollNumber(String\ rollNumber)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\ findByClassNameAndSection(String\ className,\ String\ section)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\ findByDateOfBirthBetween(LocalDate\ start,\ LocalDate\ end)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Teacher\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ TeacherRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Teacher\string~\ findByDepartment(String\ department)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Teacher\string~\ findBySpecialization(String\ specialization)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~Teacher\string~\ findByEmployeeId(String\ employeeId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Teacher\string~\ findByJoiningDateAfter(LocalDate\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Teacher\string~\ findByExperienceGreaterThan(String\ experience)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Attendance\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ AttendanceRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\ findByStudentId(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\ findByTeacherId(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~Attendance\string~\ findByStudentIdAndDate(Long\ studentId,\ LocalDate\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\ findByDate(LocalDate\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\ findByStudentIdAndDateBetween(Long\ studentId,\ LocalDate\ start,\ LocalDate\ end)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +long\ countByStudentIdAndStatus(Long\ studentId,\ AttendanceStatus\ status)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Grade\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ GradeRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\ findByStudentId(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\ findByTeacherId(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\ findBySubject(String\ subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\ findByStudentIdAndSubject(Long\ studentId,\ String\ subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ getAverageGradeByStudent(Long\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\ findByExamDateBetween(LocalDate\ start,\ LocalDate\ end)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Assignment\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ findByTeacherId(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ findBySubject(String\ subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ findByClassName(String\ className)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ findByDueDateBefore(LocalDateTime\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ findByStatus(AssignmentStatus\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ findByTeacherIdAndStatus(Long\ teacherId,\ AssignmentStatus\ status)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Exam\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ ExamRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\ findByTeacherId(Long\ teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\ findBySubject(String\ subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\ findByStartDateAfter(LocalDateTime\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\ findByStatus(ExamStatus\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Optional\string~Exam\string~\ findByTitle(String\ title)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\ findByDurationLessThan(int\ duration)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Chat\ Repository}
+\DoxyCodeLine{\ \ \ \ class\ ChatMessageRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatMessage\string~\ findBySenderId(Long\ senderId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatMessage\string~\ findByReceiverId(Long\ receiverId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatMessage\string~\ findByChatRoomId(Long\ chatRoomId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatMessage\string~\ findBySenderIdAndReceiverId(Long\ senderId,\ Long\ receiverId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ChatMessage\string~\ findBySentAtBetween(LocalDateTime\ start,\ LocalDateTime\ end)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Inheritance}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ UserRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ StudentRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ TeacherRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ AttendanceRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ GradeRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ AssignmentRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ ExamRepository}
+\DoxyCodeLine{\ \ \ \ JpaRepository\ <|-\/-\/\ ChatMessageRepository}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md27}{}\doxysection{\texorpdfstring{DTO Classes}{DTO Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md27}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Authentication\ DTOs}
+\DoxyCodeLine{\ \ \ \ class\ LoginRequest\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ password}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Role\ role}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ LoginResponse\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ token}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ForgotPasswordRequest\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ResetPasswordRequest\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ otp}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ newPassword}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Dashboard\ DTOs}
+\DoxyCodeLine{\ \ \ \ class\ TeacherDashboardDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ teacherName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\string~\ recentAttendance}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\string~\ recentAssignments}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~LeaveRequest\string~\string~\ pendingLeaveRequests}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~String,\ Integer\string~\string~\ attendanceStats}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~String,\ Double\string~\string~\ gradeStats}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentDashboardDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ studentName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\string~\ pendingAssignments}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Grade\string~\string~\ recentGrades}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Attendance\string~\string~\ recentAttendance}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Exam\string~\string~\ upcomingExams}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~String,\ Double\string~\string~\ subjectAverages}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentDashboardDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ parentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ parentName}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\string~\ children}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~Long,\ ChildProgressDTO\string~\string~\ childProgress}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Notification\string~\string~\ recentNotifications}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~LeaveRequest\string~\string~\ pendingApprovals}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AdminDashboardDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ totalStudents}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ totalTeachers}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ totalParents}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~String,\ Integer\string~\string~\ userStats}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~AcademicCalendar\string~\string~\ upcomingEvents}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~String,\ Integer\string~\string~\ systemStats}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Academic\ DTOs}
+\DoxyCodeLine{\ \ \ \ class\ AttendanceDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ date}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ GradeDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ examDate}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ dueDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +MultipartFile\ file}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ LeaveRequestDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ startDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ endDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ reason}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveType\ type}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Exam\ DTOs}
+\DoxyCodeLine{\ \ \ \ class\ ExamDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ startTime}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ endTime}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +int\ duration}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +int\ totalMarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamStatus\ status}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamQuestionDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ question}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ optionA}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ optionB}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ optionC}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ optionD}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ correctAnswer}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +int\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +QuestionType\ type}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamSubmissionDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ examId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~ExamAnswerDTO\string~\string~\ answers}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ submittedAt}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Chat\ DTOs}
+\DoxyCodeLine{\ \ \ \ class\ ChatMessageDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ senderId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ receiverId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +MessageType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ fileUrl}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatRoomDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ name}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Long\string~\ participantIds}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatRoomType\ type}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md28}{}\doxysection{\texorpdfstring{Frontend Component Classes}{Frontend Component Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md28}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Base\ Components}
+\DoxyCodeLine{\ \ \ \ class\ BaseComponent\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +componentDidMount()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +componentDidUpdate()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +componentWillUnmount()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +setState()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Layout\ Components}
+\DoxyCodeLine{\ \ \ \ class\ DashboardLayout\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Sidebar\ sidebar}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Navbar\ navbar}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Content\ content}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Footer\ footer}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSidebarToggle()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleLogout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Sidebar\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~MenuItem\string~\ menuItems}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isCollapsed}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleMenuClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +toggleCollapse()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Navbar\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Notification\string~\ notifications}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleProfileClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleNotificationClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleLogout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Authentication\ Components}
+\DoxyCodeLine{\ \ \ \ class\ LoginPage\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LoginForm\ form}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isLoading}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ error}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSubmit()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleForgotPassword()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ LoginForm\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ password}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Role\ role}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ showPassword}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleInputChange()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSubmit()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +togglePasswordVisibility()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Dashboard\ Components}
+\DoxyCodeLine{\ \ \ \ class\ TeacherDashboard\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +TeacherOverview\ overview}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Component\string~\ sections}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSectionClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +loadDashboardData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentDashboard\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +StudentOverview\ overview}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Component\string~\ sections}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSectionClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +loadDashboardData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentDashboard\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ParentOverview\ overview}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Component\string~\ sections}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSectionClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +loadDashboardData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Feature\ Components}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentManager\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Assignment\string~\ assignments}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentForm\ form}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleCreateAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleEditAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleDeleteAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamInterface\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Exam\ exam}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Question\string~\ questions}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Map\string~Long,\ String\string~\ answers}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Timer\ timer}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleAnswerChange()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSubmit()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatInterface\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Message\string~\ messages}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\ users}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +WebSocket\ connection}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSendMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleUserSelect()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Utility\ Components}
+\DoxyCodeLine{\ \ \ \ class\ LoadingSpinner\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ size}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ color}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ErrorMessage\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleRetry()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ NotificationToast\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +int\ duration}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleClose()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Inheritance}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ DashboardLayout}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ Sidebar}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ Navbar}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ LoginPage}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ LoginForm}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ TeacherDashboard}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ StudentDashboard}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ ParentDashboard}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ AssignmentManager}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ ExamInterface}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ ChatInterface}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ LoadingSpinner}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ ErrorMessage}
+\DoxyCodeLine{\ \ \ \ BaseComponent\ <|-\/-\/\ NotificationToast}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md29}{}\doxysection{\texorpdfstring{Configuration \& Utility Classes}{Configuration \& Utility Classes}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram-part2_autotoc_md29}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Configuration\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ SecurityConfig\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +PasswordEncoder\ passwordEncoder()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +SecurityFilterChain\ filterChain()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +CorsConfiguration\ corsConfiguration()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +configure(HttpSecurity\ http)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ WebSocketConfig\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +MessageBrokerRegistry\ configureMessageBroker()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ registerStompEndpoints(StompEndpointRegistry\ registry)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ SwaggerConfig\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +OpenAPI\ customOpenAPI()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +GroupedOpenApi\ publicApi()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Utility\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ JwtUtil\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ secret}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +long\ expiration}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateToken(User\ user)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ getUsernameFromToken(String\ token)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Date\ getExpirationDateFromToken(String\ token)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ validateToken(String\ token)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ PasswordUtility\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ hashPassword(String\ password)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ verifyPassword(String\ password,\ String\ hash)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateRandomPassword()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isStrongPassword(String\ password)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ FileUtility\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ saveFile(MultipartFile\ file,\ String\ directory)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Resource\ loadFile(String\ fileName,\ String\ directory)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ deleteFile(String\ fileName,\ String\ directory)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isValidFileType(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ getFileExtension(String\ fileName)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ EmailUtility\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +JavaMailSender\ mailSender}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ sendEmail(String\ to,\ String\ subject,\ String\ content)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ sendHtmlEmail(String\ to,\ String\ subject,\ String\ htmlContent)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ generateOtp()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ sendOtpEmail(String\ email,\ String\ otp)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Interceptor\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ JwtFilter\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +JwtUtil\ jwtUtil}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +CustomUserDetailsService\ userDetailsService}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +doFilterInternal(HttpServletRequest\ request,\ HttpServletResponse\ response,\ FilterChain\ filterChain)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ getJwtFromRequest(HttpServletRequest\ request)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ SessionInterceptor\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ preHandle(HttpServletRequest\ request,\ HttpServletResponse\ response,\ Object\ handler)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ postHandle(HttpServletRequest\ request,\ HttpServletResponse\ response,\ Object\ handler,\ ModelAndView\ modelAndView)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ afterCompletion(HttpServletRequest\ request,\ HttpServletResponse\ response,\ Object\ handler,\ Exception\ ex)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ WebSocketInterceptor\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ preSend(Message\string~?\string~\ message,\ MessageChannel\ channel,\ MessageSendingOperations\string~?\string~\ messagingTemplate)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +void\ afterMessageHandled(Message\string~?\string~\ message,\ MessageChannel\ channel,\ MessageSendingOperations\string~?\string~\ messagingTemplate,\ boolean\ exception)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+This comprehensive class diagram in two parts provides a complete view of the e\+Pathshala system architecture, including\+:
+
+{\bfseries{Part 1\+:}}
+\begin{DoxyItemize}
+\item Core entities and their relationships
+\item Controller layer with all REST endpoints
+\item Authentication and authorization flow
+\end{DoxyItemize}
+
+{\bfseries{Part 2\+:}}
+\begin{DoxyItemize}
+\item Service layer with business logic
+\item Repository layer for data access
+\item DTOs for data transfer
+\item Frontend React components
+\item Configuration and utility classes
+\end{DoxyItemize}
+
+The diagrams show the complete object-\/oriented design of the system, making it easy to understand the relationships between different components and how they interact with each other. 

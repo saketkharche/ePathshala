@@ -1,0 +1,1036 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>backend</name>
+    </assembly>
+    <members>
+        <member name="T:Backend.Controllers.AdminController">
+            <summary>
+            Controller exposing administrative actions.  Only users in the
+            Admin role may access these endpoints.  Admins can create
+            students, teachers and parents, view and delete users and
+            configure academic events.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.CreateUser(Backend.DTOs.RegisterUserDto)">
+            <summary>
+            Registers a new user in the system.  The admin must specify
+            the role (Student, Teacher or Parent) and provide any
+            additional fields required for that role.  A unique
+            account number is generated automatically.  Passwords are
+            hashed using SHA‑256.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.GetStudents">
+            <summary>
+            Returns a list of all students.  Basic profile details are
+            returned without exposing passwords.  For a production
+            system you may implement pagination.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.GetTeachers">
+            <summary>
+            Returns a list of all teachers.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.GetParents">
+            <summary>
+            Returns a list of all parents.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.DeleteUser(System.Int32)">
+            <summary>
+            Deletes a user by ID.  This will cascade delete any related
+            records (e.g. grades, attendance, leave requests) due to
+            EF Core configuration.  Only call this endpoint if you are
+            sure you want to permanently remove the user.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.UpdateUser(System.Int32,Backend.DTOs.UpdateUserDto)">
+            <summary>
+            Updates an existing user.  The role determines which
+            properties are valid.  Fields that are null will be
+            ignored and leave the existing values unchanged.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.CreateEvent(Backend.Models.AcademicEvent)">
+            <summary>
+            Creates a new academic event such as a holiday, exam or
+            other calendar item.  Events are visible to all roles.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.GetEvents">
+            <summary>
+            Lists all academic events.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.AssignTeacher(System.Int32,System.String)">
+            <summary>
+            Assigns a teacher to a subject.  The teacher's Subject field
+            is updated.  Future versions might support assigning
+            multiple subjects or linking classes separately.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AdminController.GenerateAccountNumber">
+            <summary>
+            Generates a pseudo‑random account number.  This implementation
+            creates a 10‑digit numeric string based on the current
+            timestamp combined with a random suffix.  You can replace
+            this with your own logic to ensure uniqueness.
+            </summary>
+        </member>
+        <member name="T:Backend.Controllers.AuthController">
+            <summary>
+            Controller responsible for authentication.  Provides a login
+            endpoint that validates a user's credentials and returns a
+            signed JWT token.  Registration is handled by the AdminController.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AuthController.Login(Backend.DTOs.LoginDto)">
+            <summary>
+            Logs a user into the system.  Users must supply their email,
+            password and role.  If the credentials match an existing
+            user the endpoint returns a JWT token along with some basic
+            profile information.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.AuthController.ComputeHash(System.String)">
+            <summary>
+            Computes a SHA‑256 hash of the provided password.  This is a
+            basic example; in production you should use a stronger hashing
+            algorithm such as BCrypt or the ASP.NET Core Identity API.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetCurrentUserId">
+            <summary>
+            Get current user ID from JWT token
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetCurrentUserRole">
+            <summary>
+            Get current user role from JWT token
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.CreateExam(Backend.DTOs.CreateExamDto)">
+            <summary>
+            Create a new exam (Teachers only)
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetTeacherExams">
+            <summary>
+            Get all exams created by the current teacher
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetExamDetails(System.Int32)">
+            <summary>
+            Get detailed exam information (Teachers only)
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetExamSubmissions(System.Int32)">
+            <summary>
+            Get exam submissions and results (Teachers only)
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.ToggleExamStatus(System.Int32)">
+            <summary>
+            Toggle exam active status (Teachers only)
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetStudentExams">
+            <summary>
+            Get available exams for the current student
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.StartExam(System.Int32)">
+            <summary>
+            Start an exam (Students only)
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.SubmitExam(Backend.DTOs.SubmitExamDto)">
+            <summary>
+            Submit exam answers (Students only)
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetStudentResults">
+            <summary>
+            Get student's exam results
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ExamController.GetSubmissionResult(System.Int32)">
+            <summary>
+            Get exam result details (for both teachers and students)
+            </summary>
+        </member>
+        <member name="T:Backend.Controllers.ParentController">
+            <summary>
+            Controller exposing actions for the Parent role.  Parents can
+            view their child(ren)'s attendance and grades and approve or
+            reject leave requests.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ParentController.GetAttendance">
+            <summary>
+            Returns attendance records for all children linked to the
+            logged‑in parent.  Children are linked via the ParentId
+            foreign key on Student.  Each record includes the attendance
+            status (Present, Absent, Late) rather than a boolean.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ParentController.GetGrades">
+            <summary>
+            Returns grades for all children linked to the parent.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ParentController.GetLeaves">
+            <summary>
+            Returns leave requests for all children linked to the logged‑in
+            parent.  Each entry includes the approval statuses so the
+            parent can decide whether to approve or reject.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ParentController.GetMarks">
+            <summary>
+            Alias for retrieving marks.  Parents can also call
+            /parent/marks to fetch subject marks for their children.  This
+            method simply calls GetGrades internally.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ParentController.ApproveLeave(System.Int32,System.Boolean)">
+            <summary>
+            Approves or rejects a leave request.  The parent sets
+            ParentApproval accordingly and updates the final status if
+            both parent and teacher have approved.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.ParentController.GetProfile">
+            <summary>
+            Returns the profile of the logged‑in parent including a list
+            of child IDs.
+            </summary>
+        </member>
+        <member name="T:Backend.Controllers.StudentController">
+            <summary>
+            Controller exposing actions for the Student role.  Students can
+            view their grades, assignments, attendance records, submit
+            leave requests and view their own profile information.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.GetGrades">
+            <summary>
+            Returns all grades for the logged‑in student.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.GetMarks">
+            <summary>
+            Alias for retrieving marks.  Students can also call
+            /student/marks to fetch their subject marks.  This method
+            simply calls GetGrades.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.GetAssignments">
+            <summary>
+            Returns all assignments applicable to the student's class.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.GetAttendance">
+            <summary>
+            Returns attendance records for the student.  Each record
+            includes the attendance status (Present, Absent, Late) rather
+            than a simple boolean flag.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.GetLeaves">
+            <summary>
+            Returns all leave requests submitted by the student along with
+            their approval statuses.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.CreateLeave(Backend.DTOs.LeaveRequestDto)">
+            <summary>
+            Submits a new leave request.  Approval statuses are
+            initialised to Pending.  If the authenticated user does not
+            match the provided StudentId the request is rejected.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.SubmitAssignment(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Submits a file as the solution for a particular assignment.
+            The assignment ID is provided in the route.  The logged‑in
+            student must belong to the assignment’s class (this logic is not
+            enforced here but could be added).  The uploaded file is
+            stored on the server and an AssignmentSubmission record is
+            created linking the assignment, student and file path.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.StudentController.GetProfile">
+            <summary>
+            Returns the profile of the currently logged‑in student.  This
+            includes basic information such as name, email, account
+            number and class.
+            </summary>
+        </member>
+        <member name="T:Backend.Controllers.TeacherController">
+            <summary>
+            Controller exposing actions for the Teacher role.  Teachers can
+            view their students, record grades and attendance, approve
+            leave requests, upload assignments and view class averages.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetStudents">
+            <summary>
+            Returns a list of students.  In this simplified example
+            teachers can see all students.  You can implement logic to
+            filter students by class/subject based on teacher assignments.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.AddGrade(System.Int32,System.String,System.Decimal)">
+            <summary>
+            Records a grade for a student.  Teachers must specify the
+            student ID, subject and marks.  In practice you might
+            restrict the subject to the teacher's assigned subject.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.AddMarks(System.Int32,System.String,System.Decimal)">
+            <summary>
+            Alias for adding marks.  Teachers can also call /teacher/marks to
+            record a numeric mark for a student.  This simply calls
+            AddGrade internally to reuse the existing logic.  The route is
+            provided to use "marks" terminology in API paths without
+            changing the underlying entity.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.UpdateGrade(System.Int32,System.Decimal)">
+            <summary>
+            Updates an existing grade's marks.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.UpdateMarks(System.Int32,System.Decimal)">
+            <summary>
+            Alias for updating marks.  Mirrors the /teacher/grades/{id}
+            endpoint but uses "marks" in the path to align with the
+            terminology used on the front‑end.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetMarks">
+            <summary>
+            Returns all marks (grades) recorded in the system.  Each entry
+            includes the ID, student ID, student name, subject and marks.
+            Currently there is no teacher filtering because the Grade
+            entity does not track which teacher recorded it.  You can
+            extend the Grade model with a TeacherId property if
+            necessary.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetAssignmentsForTeacher">
+            <summary>
+            Returns a list of assignments created by the currently
+            authenticated teacher.  Each entry includes basic details
+            and the file path for download.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetAssignmentSubmissions(System.Int32)">
+            <summary>
+            Returns a list of student submissions for a particular assignment.
+            Teachers can use this endpoint to view all uploaded solutions
+            for an assignment they created.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.MarkAttendance(System.Int32,System.DateTime,System.String)">
+            <summary>
+            Marks attendance for a student on a given date.  The teacher
+            recording the attendance is inferred from the authenticated
+            user.  Instead of a boolean present flag this endpoint accepts
+            a status string (Present, Absent, Late) to allow more nuanced
+            tracking of attendance.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetAttendance">
+            <summary>
+            Returns attendance entries recorded by the teacher.  Each entry
+            includes the attendance status instead of a boolean present flag.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetLeaveRequests">
+            <summary>
+            Returns all leave requests in the system.  Teachers can view
+            the current approval status of each leave and decide whether
+            to approve or reject them.  In a more advanced system you
+            might filter leaves by class or subject, but here we return
+            every request.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetClassAverage(System.String)">
+            <summary>
+            Computes the average marks for the specified subject.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.UploadAssignment(System.String,System.DateTime,System.String,System.String,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Uploads a new assignment.  Teachers provide a title, due date,
+            subject, class and a file via multipart/form-data.  The file
+            is saved to the server and the assignment record stores the
+            relative file path so that students can download it later.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.DeleteAssignment(System.Int32)">
+            <summary>
+            Deletes an assignment created by the current teacher.  Any
+            associated submissions are also removed and the file on disk
+            is deleted.  Students will no longer see this assignment.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.ApproveLeave(System.Int32,System.Boolean)">
+            <summary>
+            Approves or rejects a leave request.  The teacher sets
+            TeacherApproval to Approved or Rejected and updates the final
+            status if both teacher and parent have approved.
+            </summary>
+        </member>
+        <member name="M:Backend.Controllers.TeacherController.GetProfile">
+            <summary>
+            Returns the profile of the logged‑in teacher.  Basic info
+            only.
+            </summary>
+        </member>
+        <member name="T:Backend.Data.ApplicationDbContext">
+            <summary>
+            Entity Framework Core database context.  It defines DbSet
+            properties for each entity and configures table-per-hierarchy
+            inheritance for users.  The context is configured in
+            Program.cs to use a MySQL provider.
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.CreateExamDto">
+            <summary>
+            DTO for creating a new exam
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.CreateExamQuestionDto">
+            <summary>
+            DTO for creating exam questions
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.ExamDetailsDto">
+            <summary>
+            DTO for exam details (for teachers)
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.ExamQuestionDto">
+            <summary>
+            DTO for exam questions (includes correct answer for teachers)
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.StudentExamDto">
+            <summary>
+            DTO for student exam view (without correct answers)
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.StudentExamQuestionDto">
+            <summary>
+            DTO for student exam questions (without correct answers)
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.SubmitExamDto">
+            <summary>
+            DTO for submitting exam answers
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.ExamAnswerDto">
+            <summary>
+            DTO for individual exam answers
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.ExamSubmissionResultDto">
+            <summary>
+            DTO for exam submission results
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.ExamAnswerResultDto">
+            <summary>
+            DTO for individual answer results
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.ExamListDto">
+            <summary>
+            DTO for exam list view
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.LeaveRequestDto">
+            <summary>
+            DTO used when a student submits a leave request.  The student
+            ID is inferred from the authenticated user, but it is included
+            here for flexibility and clarity.
+            </summary>
+        </member>
+        <member name="P:Backend.DTOs.LeaveRequestDto.StudentId">
+            <summary>
+            The ID of the student submitting the request.  This field is
+            ignored by the API when the student role is authenticated
+            because the user ID is derived from the JWT token.  It can
+            be used by admins or parents if they need to create
+            requests on behalf of a student.
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.LoginDto">
+            <summary>
+            Data Transfer Object used when a user attempts to log in.  The
+            role field allows the API to confirm that the user is logging
+            in with the correct role (e.g. a teacher cannot log in as a
+            student).
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.RegisterUserDto">
+            <summary>
+            DTO used by the Admin when creating a new user.  Depending on
+            the selected role, not all fields will be populated.  For
+            example, the Class property is used for students, while the
+            Subject property is used for teachers.  ParentId links a
+            parent to a student and is optional when creating a parent.
+            </summary>
+        </member>
+        <member name="P:Backend.DTOs.RegisterUserDto.TeacherId">
+            <summary>
+            Optional ID of the teacher to assign to a new student.  If
+            provided when creating a student, the student will be
+            linked to the specified teacher.  Ignored for other roles.
+            </summary>
+        </member>
+        <member name="T:Backend.DTOs.UpdateUserDto">
+            <summary>
+            DTO used for updating an existing user.  Any non‑null
+            properties will overwrite the existing values on the user.
+            Fields not supplied (null) will be left unchanged.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.AcademicEvent">
+            <summary>
+            Represents an item on the academic calendar such as a holiday,
+            exam, or school event.  Each event has a title, date and
+            description.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Admin">
+            <summary>
+            Represents an administrator.  Admins are responsible for
+            managing users, assigning teachers to classes/subjects and
+            setting up the academic calendar.  They inherit directly from
+            the User base class and do not define additional fields.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Assignment">
+            <summary>
+            Represents an assignment uploaded by a teacher for a specific
+            class and subject.  The FilePath field stores the relative
+            location of the uploaded file on the server.  In production
+            you might use a cloud storage service and store a URI instead.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Assignment.FilePath">
+            <summary>
+            Relative or absolute path to the uploaded assignment file.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Assignment.Subject">
+            <summary>
+            The subject for which the assignment is given (e.g. "Physics").
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Assignment.Class">
+            <summary>
+            The class to which this assignment applies (e.g. "12B").
+            </summary>
+        </member>
+        <member name="T:Backend.Models.AssignmentSubmission">
+            <summary>
+            Represents a student's submission for a particular assignment.  Each
+            submission links an assignment to a student and stores the
+            uploaded file path along with the submission timestamp.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Attendance">
+            <summary>
+            Represents an attendance entry for a student on a particular date.
+            The entry stores a status indicating whether the student was
+            present, absent or late and references the teacher who recorded
+            the attendance.  Additional statuses can be added without
+            changing the schema because the Status field is stored as a string.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Attendance.Status">
+            <summary>
+            Attendance status for the day.  Possible values include
+            "Present", "Absent" and "Late".  Using a string allows
+            easier extension of additional statuses in future.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Exam">
+            <summary>
+            Represents an MCQ exam created by a teacher with time constraints
+            and automatic scoring capabilities.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.Subject">
+            <summary>
+            The subject for which the exam is created (e.g., "Mathematics", "Physics")
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.Class">
+            <summary>
+            The class/grade for which this exam is intended (e.g., "10A", "12B")
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.StartTime">
+            <summary>
+            When the exam becomes available to students
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.DurationMinutes">
+            <summary>
+            Duration of the exam in minutes
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.TotalMarks">
+            <summary>
+            Maximum marks for the exam (calculated from questions)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.IsActive">
+            <summary>
+            Whether the exam is currently active and accepting submissions
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.CreatedAt">
+            <summary>
+            When the exam was created
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.TeacherId">
+            <summary>
+            Foreign key to the teacher who created this exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.Questions">
+            <summary>
+            Collection of questions for this exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.Submissions">
+            <summary>
+            Collection of student submissions for this exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.NowIST">
+            <summary>
+            Returns the current IST time
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.IsLive">
+            <summary>
+            Calculated property to determine if the exam is currently live (IST)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.HasEnded">
+            <summary>
+            Calculated property to determine if the exam has ended (IST)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.EndTime">
+            <summary>
+            Calculated end time of the exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Exam.StartTimeIST">
+            <summary>
+            Start time in IST (for display)
+            </summary>
+        </member>
+        <member name="T:Backend.Models.ExamAnswer">
+            <summary>
+            Represents a student's answer to a specific question in an exam submission
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamAnswer.SelectedAnswer">
+            <summary>
+            The student's selected answer (A, B, C, or D)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamAnswer.IsCorrect">
+            <summary>
+            Whether this answer is correct
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamAnswer.MarksAwarded">
+            <summary>
+            Marks awarded for this answer
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamAnswer.AnsweredAt">
+            <summary>
+            When this answer was recorded/last updated
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamAnswer.ExamSubmissionId">
+            <summary>
+            Foreign key to the exam submission this answer belongs to
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamAnswer.ExamQuestionId">
+            <summary>
+            Foreign key to the question this answer is for
+            </summary>
+        </member>
+        <member name="T:Backend.Models.ExamQuestion">
+            <summary>
+            Represents a multiple-choice question within an exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.QuestionText">
+            <summary>
+            The question text
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.OptionA">
+            <summary>
+            Option A text
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.OptionB">
+            <summary>
+            Option B text
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.OptionC">
+            <summary>
+            Option C text
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.OptionD">
+            <summary>
+            Option D text
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.CorrectAnswer">
+            <summary>
+            The correct answer (A, B, C, or D)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.Marks">
+            <summary>
+            Marks awarded for this question
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.QuestionOrder">
+            <summary>
+            Order/sequence of this question in the exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.Explanation">
+            <summary>
+            Optional explanation for the correct answer
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.ExamId">
+            <summary>
+            Foreign key to the exam this question belongs to
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamQuestion.StudentAnswers">
+            <summary>
+            Collection of student answers for this question
+            </summary>
+        </member>
+        <member name="T:Backend.Models.ExamSubmission">
+            <summary>
+            Represents a student's submission for an exam, including timing and scoring information
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.StartedAt">
+            <summary>
+            When the student started the exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.SubmittedAt">
+            <summary>
+            When the student submitted the exam (or auto-submitted)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.IsAutoSubmitted">
+            <summary>
+            Whether this submission was auto-submitted due to time expiry
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.Score">
+            <summary>
+            Total score achieved by the student
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.MaxScore">
+            <summary>
+            Maximum possible score for this exam
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.Percentage">
+            <summary>
+            Percentage score (calculated field)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.IsGraded">
+            <summary>
+            Whether the submission has been graded/evaluated
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.TimeTakenMinutes">
+            <summary>
+            Time taken to complete the exam in minutes
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.Remarks">
+            <summary>
+            Additional remarks from the teacher (optional)
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.StudentId">
+            <summary>
+            Foreign key to the student who made this submission
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.ExamId">
+            <summary>
+            Foreign key to the exam this submission is for
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.Answers">
+            <summary>
+            Collection of individual answers for each question
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.IsCompleted">
+            <summary>
+            Calculated property to check if submission is complete
+            </summary>
+        </member>
+        <member name="P:Backend.Models.ExamSubmission.IsWithinTimeLimit">
+            <summary>
+            Calculated property to check if submission is within time limit
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Grade">
+            <summary>
+            Represents a subject mark awarded to a student.  Each Grade
+            record links a student to a subject and stores the numeric
+            marks.  In a more advanced system you might include term
+            information, weightings or letter grades.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.LeaveRequest">
+            <summary>
+            Represents a leave request submitted by a student.  The request
+            contains a date range and a reason, along with the current
+            approval statuses from the teacher and parent.  When both the
+            teacher and parent approve, the final status becomes Approved.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.ApprovalStatus">
+            <summary>
+            Enumeration used to track the approval status of leave requests.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Notification">
+            <summary>
+            Represents a notification for a user (student or teacher).
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Parent">
+            <summary>
+            Represents a parent/guardian in the system.  Parents inherit
+            from the base User class and may be linked to one or more
+            students.  They also have leave approvals which track their
+            decisions on leave requests.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Student">
+            <summary>
+            Represents a student in the system.  Students inherit from the base
+            User class and contain additional properties such as class name,
+            grades, attendance records and linked parent.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Student.Class">
+            <summary>
+            The class (e.g. "10A") the student belongs to.  Optional.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Student.ParentId">
+            <summary>
+            Optional foreign key linking the student to a parent.  A
+            student may have multiple parents (for example, in the future
+            you might support guardians), but for simplicity we assume
+            one parent per student here.  The relationship is defined
+            further in ApplicationDbContext.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.Teacher">
+            <summary>
+            Represents a teacher in the system.  Teachers inherit from the
+            base User class and contain additional properties such as the
+            subject they teach and collections of assignments, attendance
+            records and leave approvals.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Teacher.Subject">
+            <summary>
+            The subject taught by this teacher (e.g. "Mathematics").
+            Optional; an admin may assign multiple subjects via a
+            mapping table in the future.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Teacher.LeaveApprovals">
+            <summary>
+            All leave requests that require teacher approval.  The
+            ApprovalStatus values on each LeaveRequest represent the
+            teacher's decision separately from the parent's decision.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.Teacher.Students">
+            <summary>
+            Collection of students assigned to this teacher.  An admin
+            assigns students to teachers, and teachers can only view
+            and manage the students in this collection.  The inverse
+            relationship is defined on Student via the TeacherId
+            property.
+            </summary>
+        </member>
+        <member name="T:Backend.Models.User">
+            <summary>
+            Base class for all user types.  Contains common properties such as
+            a unique account number, name, email and password hash.  This
+            abstract class is used by Entity Framework Core to implement
+            table-per-hierarchy (TPH) inheritance using the Role discriminator.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.User.AccountNumber">
+            <summary>
+            A human‑readable unique account number generated on user creation.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.User.PasswordHash">
+            <summary>
+            Hashed password.  Do not store plaintext passwords.
+            </summary>
+        </member>
+        <member name="P:Backend.Models.User.Role">
+            <summary>
+            Discriminator column used by EF Core for role‑based inheritance.
+            Valid values include "Student", "Teacher", "Parent", "Admin".
+            </summary>
+        </member>
+        <member name="T:Backend.Services.JwtService">
+            <summary>
+            Service responsible for issuing JSON Web Tokens (JWT) for
+            authenticated users.  The tokens contain claims such as the
+            user's ID, name and role and are signed using a symmetric
+            secret defined in the configuration.  Consumers must register
+            this service in the dependency injection container.
+            </summary>
+        </member>
+        <member name="M:Backend.Services.JwtService.GenerateToken(Backend.Models.User)">
+            <summary>
+            Generates a JWT for the specified user.  The token includes
+            the user's ID, name and role and is valid for the number of
+            minutes specified in JwtSettings.  If JwtSettings is not
+            configured, an ArgumentException will be thrown.
+            </summary>
+        </member>
+        <member name="T:Backend.Services.JwtSettings">
+            <summary>
+            Configuration class used to bind JWT settings from
+            appsettings.json.  Contains the secret key, issuer, audience and
+            token expiration.
+            </summary>
+        </member>
+        <member name="T:backend.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:backend.Migrations.AttendanceStatus">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AttendanceStatus.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AttendanceStatus.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AttendanceStatus.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:backend.Migrations.AddAssignmentSubmission">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddAssignmentSubmission.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddAssignmentSubmission.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddAssignmentSubmission.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:backend.Migrations.AddTeacherToStudent">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddTeacherToStudent.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddTeacherToStudent.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddTeacherToStudent.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:backend.Migrations.AddExamModule">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddExamModule.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddExamModule.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddExamModule.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:backend.Migrations.AddNotificationTable">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddNotificationTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddNotificationTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AddNotificationTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:backend.Migrations.AllowMultipleExamAttempts">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AllowMultipleExamAttempts.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AllowMultipleExamAttempts.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:backend.Migrations.AllowMultipleExamAttempts.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

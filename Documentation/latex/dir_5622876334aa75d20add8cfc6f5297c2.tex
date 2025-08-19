@@ -1,0 +1,103 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/property-\/expr Directory Reference}
+\hypertarget{dir_5622876334aa75d20add8cfc6f5297c2}{}\label{dir_5622876334aa75d20add8cfc6f5297c2}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/property-\/expr Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/property-\/expr Directory Reference}}
+Directory dependency graph for property-\/expr\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{dir_5622876334aa75d20add8cfc6f5297c2_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md12317}{}\doxysubsection{\texorpdfstring{expr}{expr}}\label{README.md_autotoc_md12317}
+Tiny property path utilities, including path parsing and metadata and deep property setters and getters \begin{DoxyVerb}npm install property-expr
+\end{DoxyVerb}
+\hypertarget{README.md_autotoc_md12318}{}\doxysubsection{\texorpdfstring{Use}{Use}}\label{README.md_autotoc_md12318}
+Setters and getters\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ expr\ =\ require('property-\/expr')}
+\DoxyCodeLine{let\ obj\ =\ \{}
+\DoxyCodeLine{\ \ foo:\ \{}
+\DoxyCodeLine{\ \ \ \ bar:\ ['hi',\ \{\ buz:\ \{\ baz:\ 'found\ me!'\ \}\ \}]}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ getBaz\ =\ expr.getter('foo.bar[1]["{}buz"{}].baz')}
+\DoxyCodeLine{let\ setBaz\ =\ expr.setter('foo.bar[1]["{}buz"{}].baz')}
+\DoxyCodeLine{}
+\DoxyCodeLine{console.log(getBaz(obj))\ //\ =>\ 'found\ me!'}
+\DoxyCodeLine{setBaz(obj,\ 'set\ me!')}
+\DoxyCodeLine{console.log(obj.foo.bar[1].buz.baz)\ //\ =>\ 'set\ me!'}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12319}{}\doxysubsubsection{\texorpdfstring{{\ttfamily getter(expression, \mbox{[} safe\+Access \mbox{]})}}{{\ttfamily getter(expression, \mbox{[} safe\+Access \mbox{]})}}}\label{README.md_autotoc_md12319}
+Returns a function that accepts an obj and returns the value at the supplied expression. You can create a "{}safe"{} getter, which won\textquotesingle{}t error out when accessing properties that don\textquotesingle{}t exist, reducing existance checks befroe property access\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{expr.getter('foo.bar.baz',\ true)(\{\ foo:\ \{\}\ \})\ //\ =>\ undefined}
+\DoxyCodeLine{//instead\ of\ val\ =\ foo.bar\ \&\&\ foo.bar.baz}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12320}{}\doxysubsubsection{\texorpdfstring{{\ttfamily setter(expression)}}{{\ttfamily setter(expression)}}}\label{README.md_autotoc_md12320}
+Returns a function that accepts an obj and a value and sets the property pointed to by the expression to the supplied value.\hypertarget{README.md_autotoc_md12321}{}\doxysubsubsection{\texorpdfstring{`expr(expression, \mbox{[} safe\+Access\mbox{]}, \mbox{[} param\+Name = \textquotesingle{}data'\mbox{]})\`{}}{`expr(expression, \mbox{[} safe\+Access\mbox{]}, \mbox{[} param\+Name = \textquotesingle{}data'\mbox{]})\`{}}}\label{README.md_autotoc_md12321}
+Returns a normalized expression string pointing to a property on root object {\ttfamily param\+Name}. \begin{DoxyVerb}expr.expr("foo['bar'][0].baz", true, 'obj') // => "(((obj.foo || {})['bar'] || {})[0])"
+\end{DoxyVerb}
+\hypertarget{README.md_autotoc_md12322}{}\doxysubsubsection{\texorpdfstring{{\ttfamily split(path) -\/\texorpdfstring{$>$}{>} Array}}{{\ttfamily split(path) -\/\texorpdfstring{$>$}{>} Array}}}\label{README.md_autotoc_md12322}
+Returns an array of each path segment.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{expr.split("{}foo['bar'][0].baz"{})\ //\ [\ "{}foo"{},\ "{}'bar'"{},\ "{}0"{},\ "{}baz"{}]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12323}{}\doxysubsubsection{\texorpdfstring{{\ttfamily for\+Each(path, iterator\mbox{[}, this\+Arg\mbox{]})}}{{\ttfamily for\+Each(path, iterator\mbox{[}, this\+Arg\mbox{]})}}}\label{README.md_autotoc_md12323}
+Iterate through a path but segment, with some additional helpful metadata about the segment. The iterator function is called with\+: {\ttfamily path\+Segment}, {\ttfamily is\+Bracket}, {\ttfamily is\+Array}, {\ttfamily idx}, {\ttfamily segments}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{expr.forEach('foo["{}bar"{}][1]',\ function(}
+\DoxyCodeLine{\ \ pathSegment,}
+\DoxyCodeLine{\ \ isBracket,}
+\DoxyCodeLine{\ \ isArray,}
+\DoxyCodeLine{\ \ idx,}
+\DoxyCodeLine{\ \ segments}
+\DoxyCodeLine{)\ \{}
+\DoxyCodeLine{\ \ //\ 'foo'\ \ \ -\/>\ isBracket\ =\ false,\ isArray\ =\ false,\ idx\ =\ 0}
+\DoxyCodeLine{\ \ //\ '"{}bar"{}'\ -\/>\ isBracket\ =\ true,\ \ isArray\ =\ false,\ idx\ =\ 1}
+\DoxyCodeLine{\ \ //\ '0'\ \ \ \ \ -\/>\ isBracket\ =\ false,\ isArray\ =\ true,\ \ idx\ =\ 2}
+\DoxyCodeLine{\})}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12324}{}\doxysubsubsection{\texorpdfstring{{\ttfamily normalize\+Path(path)}}{{\ttfamily normalize\+Path(path)}}}\label{README.md_autotoc_md12324}
+Returns an array of path segments without quotes and spaces.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{expr.normalizePath('foo["{}bar"{}][\ "{}1"{}\ ][2][\ "{}\ sss\ "{}\ ]')}
+\DoxyCodeLine{//\ ['foo',\ 'bar',\ '1',\ '2',\ '\ sss\ ']}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12325}{}\doxysubsubsection{\texorpdfstring{{\ttfamily new Cache(max\+Size)}}{{\ttfamily new Cache(max\+Size)}}}\label{README.md_autotoc_md12325}
+Just an utility class, returns an instance of cache. When the max size is exceeded, cache clears its storage.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{var\ cache\ =\ new\ Cache(2)}
+\DoxyCodeLine{cache.set('a',\ 123)\ //\ returns\ 123}
+\DoxyCodeLine{cache.get('a')\ //\ returns\ 123}
+\DoxyCodeLine{cache.clear()}
+\DoxyCodeLine{}
+\DoxyCodeLine{cache.set('a',\ 1)}
+\DoxyCodeLine{cache.set('b',\ 2)\ //\ cache\ contains\ 2\ values}
+\DoxyCodeLine{cache.set('c',\ 3)\ //\ cache\ was\ cleaned\ automatically\ and\ contains\ 1\ value}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12326}{}\doxysubsubsection{\texorpdfstring{CSP}{CSP}}\label{README.md_autotoc_md12326}
+This pacakge used to rely on {\ttfamily new Function} to compile setters and getters into fast reusable functions. Since {\ttfamily new Function} is forbidden by folks using Content Security Policy {\ttfamily unsafe-\/eval} we\textquotesingle{}ve moved away from that approach. I believe that for most cases the perf hit is not noticable but if it is in your case please reach out.
+
+If you really want to use the old version require {\ttfamily property-\/expr/compiler} instead 

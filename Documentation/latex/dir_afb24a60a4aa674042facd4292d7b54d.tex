@@ -1,0 +1,55 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/callsites Directory Reference}
+\hypertarget{dir_afb24a60a4aa674042facd4292d7b54d}{}\label{dir_afb24a60a4aa674042facd4292d7b54d}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/callsites Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/callsites Directory Reference}}
+Directory dependency graph for callsites\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_afb24a60a4aa674042facd4292d7b54d_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{readme.md_autotoc_md10373}{}\doxysubsection{\texorpdfstring{callsites \mbox{[}!\mbox{[}Build Status\mbox{]}(\href{https://travis-ci.org/sindresorhus/callsites.svg?branch=master}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/callsites.\+svg?branch=master}})\mbox{]}(\href{https://travis-ci.org/sindresorhus/callsites}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/callsites}})}{callsites \mbox{[}!\mbox{[}Build Status\mbox{]}(\href{https://travis-ci.org/sindresorhus/callsites.svg?branch=master}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/callsites.\+svg?branch=master}})\mbox{]}(\href{https://travis-ci.org/sindresorhus/callsites}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/callsites}})}}\label{readme.md_autotoc_md10373}
+\begin{quote}
+Get callsites from the \href{https://v8.dev/docs/stack-trace-api}{\texttt{V8 stack trace API}} \end{quote}
+\hypertarget{readme.md_autotoc_md10374}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{readme.md_autotoc_md10374}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ callsites}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10375}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{readme.md_autotoc_md10375}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ callsites\ =\ require('callsites');}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ unicorn()\ \{}
+\DoxyCodeLine{\ \ \ \ console.log(callsites()[0].getFileName());}
+\DoxyCodeLine{\ \ \ \ //=>\ '/Users/sindresorhus/dev/callsites/test.js'}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{unicorn();}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10376}{}\doxysubsection{\texorpdfstring{API}{API}}\label{readme.md_autotoc_md10376}
+Returns an array of callsite objects with the following methods\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily get\+This}\+: returns the value of {\ttfamily this}.
+\item {\ttfamily get\+Type\+Name}\+: returns the type of {\ttfamily this} as a string. This is the name of the function stored in the constructor field of {\ttfamily this}, if available, otherwise the object\textquotesingle{}s {\ttfamily \mbox{[}\mbox{[}Class\mbox{]}\mbox{]}} internal property.
+\item {\ttfamily get\+Function}\+: returns the current function.
+\item {\ttfamily get\+Function\+Name}\+: returns the name of the current function, typically its {\ttfamily name} property. If a name property is not available an attempt will be made to try to infer a name from the function\textquotesingle{}s context.
+\item {\ttfamily get\+Method\+Name}\+: returns the name of the property of {\ttfamily this} or one of its prototypes that holds the current function.
+\item {\ttfamily get\+File\+Name}\+: if this function was defined in a script returns the name of the script.
+\item {\ttfamily get\+Line\+Number}\+: if this function was defined in a script returns the current line number.
+\item {\ttfamily get\+Column\+Number}\+: if this function was defined in a script returns the current column number
+\item {\ttfamily get\+Eval\+Origin}\+: if this function was created using a call to {\ttfamily eval} returns a string representing the location where {\ttfamily eval} was called.
+\item {\ttfamily is\+Toplevel}\+: is this a top-\/level invocation, that is, is this the global object?
+\item {\ttfamily is\+Eval}\+: does this call take place in code defined by a call to {\ttfamily eval}?
+\item {\ttfamily is\+Native}\+: is this call in native V8 code?
+\item {\ttfamily is\+Constructor}\+: is this a constructor call?
+\end{DoxyItemize}\hypertarget{readme.md_autotoc_md10377}{}\doxysubsection{\texorpdfstring{License}{License}}\label{readme.md_autotoc_md10377}
+MIT © \href{https://sindresorhus.com}{\texttt{Sindre Sorhus}} 

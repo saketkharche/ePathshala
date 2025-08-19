@@ -1,0 +1,40 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/lines-\/and-\/columns Directory Reference}
+\hypertarget{dir_6948ebcee8ceffaaee5d04c67b6b9766}{}\label{dir_6948ebcee8ceffaaee5d04c67b6b9766}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/lines-\/and-\/columns Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/lines-\/and-\/columns Directory Reference}}
+Directory dependency graph for lines-\/and-\/columns\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{dir_6948ebcee8ceffaaee5d04c67b6b9766_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md12011}{}\doxysubsection{\texorpdfstring{lines-\/and-\/columns}{lines-\/and-\/columns}}\label{README.md_autotoc_md12011}
+Maps lines and columns to character offsets and back. This is useful for parsers and other text processors that deal in character ranges but process text with meaningful lines and columns.\hypertarget{README.md_autotoc_md12012}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{README.md_autotoc_md12012}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ [-\/-\/save]\ lines-\/and-\/columns}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12013}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md12013}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ LinesAndColumns\ \}\ from\ 'lines-\/and-\/columns'}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ lines\ =\ new\ LinesAndColumns(}
+\DoxyCodeLine{\ \ \`{}table\ \{}
+\DoxyCodeLine{\ \ border:\ 0}
+\DoxyCodeLine{\}`}
+\DoxyCodeLine{)}
+\DoxyCodeLine{}
+\DoxyCodeLine{lines.locationForIndex(9)}
+\DoxyCodeLine{//\ \{\ line:\ 1,\ column:\ 1\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{lines.indexForLocation(\{\ line:\ 1,\ column:\ 2\ \})}
+\DoxyCodeLine{//\ 10}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12014}{}\doxysubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md12014}
+MIT 

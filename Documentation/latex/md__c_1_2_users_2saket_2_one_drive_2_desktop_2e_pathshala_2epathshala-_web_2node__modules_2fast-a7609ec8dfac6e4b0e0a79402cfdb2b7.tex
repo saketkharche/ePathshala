@@ -1,0 +1,55 @@
+\chapter{Non-\/standard properties }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-a7609ec8dfac6e4b0e0a79402cfdb2b7}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-a7609ec8dfac6e4b0e0a79402cfdb2b7}\index{Non-\/standard properties@{Non-\/standard properties}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-a7609ec8dfac6e4b0e0a79402cfdb2b7_autotoc_md11111}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2node__modules_2fast-a7609ec8dfac6e4b0e0a79402cfdb2b7_autotoc_md11111}%
+
+
+Sometimes, objects require a comparison that extend beyond its own keys, or even its own properties or symbols. Using a custom object comparator with {\ttfamily create\+Custom\+Equal} allows these kinds of comparisons.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ createCustomEqual\ \}\ from\ 'fast-\/equals';}
+\DoxyCodeLine{import\ type\ \{\ TypeEqualityComparator\ \}\ from\ 'fast-\/equals';}
+\DoxyCodeLine{}
+\DoxyCodeLine{type\ AreObjectsEqual\ =\ TypeEqualityComparator<Record<any,\ any>,\ undefined>;}
+\DoxyCodeLine{}
+\DoxyCodeLine{class\ HiddenProperty\ \{}
+\DoxyCodeLine{\ \ visible:\ boolean;}
+\DoxyCodeLine{\ \ \#hidden:\ string;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ constructor(value:\ string)\ \{}
+\DoxyCodeLine{\ \ \ \ this.visible\ =\ true;}
+\DoxyCodeLine{\ \ \ \ this.\#hidden\ =\ value;}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ get\ hidden()\ \{}
+\DoxyCodeLine{\ \ \ \ return\ this.\#hidden;}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ createAreObjectsEqual(}
+\DoxyCodeLine{\ \ areObjectsEqual:\ AreObjectsEqual,}
+\DoxyCodeLine{):\ AreObjectsEqual\ \{}
+\DoxyCodeLine{\ \ return\ function\ (a,\ b,\ state)\ \{}
+\DoxyCodeLine{\ \ \ \ if\ (!areObjectsEqual(a,\ b,\ state))\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ return\ false;}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ const\ aInstance\ =\ a\ instanceof\ HiddenProperty;}
+\DoxyCodeLine{\ \ \ \ const\ bInstance\ =\ b\ instanceof\ HiddenProperty;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ if\ (aInstance\ ||\ bInstance)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ return\ aInstance\ \&\&\ bInstance\ \&\&\ a.hidden\ ===\ b.hidden;}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ return\ true;}
+\DoxyCodeLine{\ \ \};}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ deepEqual\ =\ createCustomEqual(\{}
+\DoxyCodeLine{\ \ createCustomConfig:\ (\{\ areObjectsEqual\ \})\ =>}
+\DoxyCodeLine{\ \ \ \ createAreObjectsEqual(areObjectsEqual),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+ 

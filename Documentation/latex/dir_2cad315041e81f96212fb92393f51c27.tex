@@ -1,0 +1,103 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/toposort Directory Reference}
+\hypertarget{dir_2cad315041e81f96212fb92393f51c27}{}\label{dir_2cad315041e81f96212fb92393f51c27}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/toposort Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/toposort Directory Reference}}
+Directory dependency graph for toposort\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_2cad315041e81f96212fb92393f51c27_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md13849}{}\doxysubsection{\texorpdfstring{Toposort}{Toposort}}\label{README.md_autotoc_md13849}
+Sort directed acyclic graphs
+
+\href{https://travis-ci.org/marcelklehr/toposort}{\texttt{}}\hypertarget{README.md_autotoc_md13850}{}\doxysubsection{\texorpdfstring{Installation}{Installation}}\label{README.md_autotoc_md13850}
+{\ttfamily npm install toposort} or {\ttfamily component install marcelklehr/toposort} ~\newline
+
+
+then in your code\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{toposort\ =\ require('toposort')}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13851}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md13851}
+We want to sort the following graph.
+
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ First,\ we\ define\ our\ edges.}
+\DoxyCodeLine{var\ graph\ =\ [}
+\DoxyCodeLine{\ \ ['put\ on\ your\ shoes',\ 'tie\ your\ shoes']}
+\DoxyCodeLine{,\ ['put\ on\ your\ shirt',\ 'put\ on\ your\ jacket']}
+\DoxyCodeLine{,\ ['put\ on\ your\ shorts',\ 'put\ on\ your\ jacket']}
+\DoxyCodeLine{,\ ['put\ on\ your\ shorts',\ 'put\ on\ your\ shoes']}
+\DoxyCodeLine{]}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Now,\ sort\ the\ vertices\ topologically,\ to\ reveal\ a\ legal\ execution\ order.}
+\DoxyCodeLine{toposort(graph)}
+\DoxyCodeLine{//\ [\ 'put\ on\ your\ shirt'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shorts'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ jacket'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shoes'}
+\DoxyCodeLine{//\ ,\ 'tie\ your\ shoes'\ ]}
+
+\end{DoxyCode}
+
+
+(Note that there is no defined order for graph parts that are not connected -- you could also put on your jacket after having tied your shoes...)\hypertarget{README.md_autotoc_md13852}{}\doxysubsubsection{\texorpdfstring{Sorting dependencies}{Sorting dependencies}}\label{README.md_autotoc_md13852}
+It is usually more convenient to specify {\itshape dependencies} instead of "{}sequences"{}. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ This\ time,\ edges\ represent\ dependencies.}
+\DoxyCodeLine{var\ graph\ =\ [}
+\DoxyCodeLine{\ \ ['tie\ your\ shoes',\ 'put\ on\ your\ shoes']}
+\DoxyCodeLine{,\ ['put\ on\ your\ jacket',\ 'put\ on\ your\ shirt']}
+\DoxyCodeLine{,\ ['put\ on\ your\ shoes',\ 'put\ on\ your\ shorts']}
+\DoxyCodeLine{,\ ['put\ on\ your\ jacket',\ 'put\ on\ your\ shorts']}
+\DoxyCodeLine{]}
+\DoxyCodeLine{}
+\DoxyCodeLine{toposort(graph)\ }
+\DoxyCodeLine{//\ [\ 'tie\ your\ shoes'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shoes'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ jacket'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shirt'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shorts'\ ]}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Now,\ reversing\ the\ list\ will\ reveal\ a\ legal\ execution\ order.}
+\DoxyCodeLine{toposort(graph).reverse()\ }
+\DoxyCodeLine{//\ [\ 'put\ on\ your\ shorts'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shirt'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ jacket'}
+\DoxyCodeLine{//\ ,\ 'put\ on\ your\ shoes'}
+\DoxyCodeLine{//\ ,\ 'tie\ your\ shoes'\ ]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13853}{}\doxysubsection{\texorpdfstring{API}{API}}\label{README.md_autotoc_md13853}
+\hypertarget{README.md_autotoc_md13854}{}\doxysubsubsection{\texorpdfstring{toposort(edges)}{toposort(edges)}}\label{README.md_autotoc_md13854}
+
+\begin{DoxyItemize}
+\item edges \{Array\} An array of directed edges describing a graph. An edge looks like this\+: {\ttfamily \mbox{[}node1, node2\mbox{]}} (vertices needn\textquotesingle{}t be strings but can be of any type).
+\end{DoxyItemize}
+
+Returns\+: \{Array\} a list of vertices, sorted from "{}start"{} to "{}end"{}
+
+Throws an error if there are any cycles in the graph.\hypertarget{README.md_autotoc_md13855}{}\doxysubsubsection{\texorpdfstring{toposort.\+array(nodes, edges)}{toposort.\+array(nodes, edges)}}\label{README.md_autotoc_md13855}
+
+\begin{DoxyItemize}
+\item nodes \{Array\} An array of nodes
+\item edges \{Array\} An array of directed edges. You don\textquotesingle{}t need to mention all {\ttfamily nodes} here.
+\end{DoxyItemize}
+
+This is a convenience method that allows you to define nodes that may or may not be connected to any other nodes. The ordering of unconnected nodes is not defined.
+
+Returns\+: \{Array\} a list of vertices, sorted from "{}start"{} to "{}end"{}
+
+Throws an error if there are any cycles in the graph.\hypertarget{README.md_autotoc_md13856}{}\doxysubsection{\texorpdfstring{Tests}{Tests}}\label{README.md_autotoc_md13856}
+Run the tests with {\ttfamily node test.\+js}.\hypertarget{README.md_autotoc_md13857}{}\doxysubsection{\texorpdfstring{Legal}{Legal}}\label{README.md_autotoc_md13857}
+MIT License 

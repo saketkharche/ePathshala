@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Exam API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; }
+        pre { background-color: #f8f9fa; padding: 10px; overflow-x: auto; }
+        .api-test { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Complete Exam API Test</h1>
+    
+    <div class="test-section info">
+        <h2>🔍 API Structure Verification</h2>
+        <p><strong>Backend Base URL:</strong> http://localhost:8081</p>
+        <p><strong>Frontend Base URL:</strong> http://localhost:3000</p>
+        <p><strong>Student Token:</strong> <span id="studentToken">Loading...</span></p>
+        <p><strong>Admin Token:</strong> <span id="adminToken">Loading...</span></p>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Available Exams Test</h2>
+        <button onclick="testAvailableExams()">Test Get Available Exams</button>
+        <div id="availableExamsResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Start Exam Test</h2>
+        <button onclick="testStartExam()">Test Start Exam (ID: 4)</button>
+        <div id="startExamResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>❓ Get Questions Test</h2>
+        <button onclick="testGetQuestions()">Test Get Questions (ID: 4)</button>
+        <div id="getQuestionsResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Exam History Test</h2>
+        <button onclick="testExamHistory()">Test Get Exam History</button>
+        <div id="examHistoryResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>⏱️ Timer Test</h2>
+        <button onclick="testExamTimer()">Test Get Exam Timer (ID: 4)</button>
+        <div id="examTimerResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Complete Exam Flow Test</h2>
+        <button onclick="testCompleteExamFlow()">Test Complete Exam Flow</button>
+        <div id="completeFlowResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8081';
+        const FRONTEND_BASE = 'http://localhost:3000';
+        
+        // Sample tokens (you may need to get these from your login)
+        const STUDENT_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MUBlcGF0aHNoYWxhLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiZXhwIjoxNzU0NDg2ODA2LCJpYXQiOjE3NTQ0NTA4MDZ9.example';
+        const ADMIN_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlcGF0aHNoYWxhLmNvbSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTc1NDQ4NjgwNiwiaWF0IjoxNzU0NDUwODA2fQ.example';
+
+        // Update token display
+        document.getElementById('studentToken').textContent = STUDENT_TOKEN.substring(0, 50) + '...';
+        document.getElementById('adminToken').textContent = ADMIN_TOKEN.substring(0, 50) + '...';
+
+        async function apiCall(url, options = {}) {
+            const config = {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${STUDENT_TOKEN}`,
+                    ...options.headers,
+                },
+            };
+
+            const response = await fetch(`${API_BASE}${url}`, config);
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+                throw new Error(errorData.error || errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            return response.json();
+        }
+
+        async function testAvailableExams() {
+            const resultDiv = document.getElementById('availableExamsResult');
+            resultDiv.innerHTML = '<p>Testing available exams...</p>';
+            
+            try {
+                const response = await apiCall('/api/student/exams/available', { method: 'GET' });
+
+                resultDiv.className = 'test-section success';
+                resultDiv.innerHTML = `
+                    <h3>✅ Available Exams Test Successful!</h3>
+                    <p><strong>Found ${response.length} exams:</strong></p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error Getting Available Exams</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testStartExam() {
+            const resultDiv = document.getElementById('startExamResult');
+            resultDiv.innerHTML = '<p>Testing exam start...</p>';
+            
+            try {
+                const response = await apiCall('/api/student/exams/4/start', { method: 'POST' });
+
+                resultDiv.className = 'test-section success';
+                resultDiv.innerHTML = `
+                    <h3>✅ Exam Start Test Successful!</h3>
+                    <p><strong>Exam Data:</strong></p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error Starting Exam</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testGetQuestions() {
+            const resultDiv = document.getElementById('getQuestionsResult');
+            resultDiv.innerHTML = '<p>Testing get questions...</p>';
+            
+            try {
+                const response = await apiCall('/api/student/exams/4/questions', { method: 'GET' });
+
+                resultDiv.className = 'test-section success';
+                resultDiv.innerHTML = `
+                    <h3>✅ Get Questions Test Successful!</h3>
+                    <p><strong>Questions Count:</strong> ${response.questions ? response.questions.length : 0}</p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error Getting Questions</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testExamHistory() {
+            const resultDiv = document.getElementById('examHistoryResult');
+            resultDiv.innerHTML = '<p>Testing exam history...</p>';
+            
+            try {
+                const response = await apiCall('/api/student/exams/history', { method: 'GET' });
+
+                resultDiv.className = 'test-section success';
+                resultDiv.innerHTML = `
+                    <h3>✅ Exam History Test Successful!</h3>
+                    <p><strong>History Count:</strong> ${response.length}</p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error Getting Exam History</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testExamTimer() {
+            const resultDiv = document.getElementById('examTimerResult');
+            resultDiv.innerHTML = '<p>Testing exam timer...</p>';
+            
+            try {
+                const response = await apiCall('/api/student/exams/4/timer', { method: 'GET' });
+
+                resultDiv.className = 'test-section success';
+                resultDiv.innerHTML = `
+                    <h3>✅ Exam Timer Test Successful!</h3>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error Getting Exam Timer</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testCompleteExamFlow() {
+            const resultDiv = document.getElementById('completeFlowResult');
+            resultDiv.innerHTML = '<p>Testing complete exam flow...</p>';
+            
+            try {
+                // Step 1: Get available exams
+                const availableExams = await apiCall('/api/student/exams/available', { method: 'GET' });
+                
+                // Step 2: Start exam
+                const examData = await apiCall('/api/student/exams/4/start', { method: 'POST' });
+                
+                // Step 3: Get questions
+                const questionsData = await apiCall('/api/student/exams/4/questions', { method: 'GET' });
+                
+                // Step 4: Get timer
+                const timerData = await apiCall('/api/student/exams/4/timer', { method: 'GET' });
+
+                resultDiv.className = 'test-section success';
+                resultDiv.innerHTML = `
+                    <h3>✅ Complete Exam Flow Test Successful!</h3>
+                    <div class="api-test">
+                        <h4>Step 1: Available Exams</h4>
+                        <p>Found ${availableExams.length} exams</p>
+                    </div>
+                    <div class="api-test">
+                        <h4>Step 2: Exam Started</h4>
+                        <p>Exam ID: ${examData.id}, Title: ${examData.title}</p>
+                    </div>
+                    <div class="api-test">
+                        <h4>Step 3: Questions Retrieved</h4>
+                        <p>Questions Count: ${questionsData.questions ? questionsData.questions.length : 0}</p>
+                    </div>
+                    <div class="api-test">
+                        <h4>Step 4: Timer Retrieved</h4>
+                        <p>Remaining Seconds: ${timerData.remainingSeconds}</p>
+                    </div>
+                    <h4>Complete Flow Summary:</h4>
+                    <pre>${JSON.stringify({
+                        availableExams: availableExams.length,
+                        examStarted: examData.id,
+                        questionsCount: questionsData.questions ? questionsData.questions.length : 0,
+                        timer: timerData
+                    }, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error in Complete Exam Flow</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

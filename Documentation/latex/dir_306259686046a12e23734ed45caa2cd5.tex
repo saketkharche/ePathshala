@@ -1,0 +1,78 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/tinyglobby Directory Reference}
+\hypertarget{dir_306259686046a12e23734ed45caa2cd5}{}\label{dir_306259686046a12e23734ed45caa2cd5}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/tinyglobby Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/tinyglobby Directory Reference}}
+Directory dependency graph for tinyglobby\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_306259686046a12e23734ed45caa2cd5_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md13844}{}\doxysubsection{\texorpdfstring{tinyglobby}{tinyglobby}}\label{README.md_autotoc_md13844}
+\href{https://npmjs.com/package/tinyglobby}{\texttt{}} \href{https://npmjs.com/package/tinyglobby}{\texttt{}}
+
+A fast and minimal alternative to globby and fast-\/glob, meant to behave the same way.
+
+Both globby and fast-\/glob present some behavior no other globbing lib has, which makes it hard to manually replace with something smaller and better.
+
+This library uses only two subdependencies, compared to {\ttfamily globby}\textquotesingle{}s \href{https://npmgraph.js.org/?q=globby@14.1.0}{\texttt{23}} and {\ttfamily fast-\/glob}\textquotesingle{}s \href{https://npmgraph.js.org/?q=fast-glob@3.3.3}{\texttt{17}}.\hypertarget{README.md_autotoc_md13845}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md13845}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ glob,\ globSync\ \}\ from\ 'tinyglobby';}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ glob(['files/*.ts',\ '!**/*.d.ts'],\ \{\ cwd:\ 'src'\ \});}
+\DoxyCodeLine{globSync(['src/**/*.ts'],\ \{\ ignore:\ ['**/*.d.ts']\ \});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13846}{}\doxysubsection{\texorpdfstring{API}{API}}\label{README.md_autotoc_md13846}
+
+\begin{DoxyItemize}
+\item {\ttfamily glob(patterns\+: string \texorpdfstring{$\vert$}{|} string\mbox{[}\mbox{]}, options\+: Glob\+Options)\+: Promise\texorpdfstring{$<$}{<}string\mbox{[}\mbox{]}\texorpdfstring{$>$}{>}}\+: Returns a promise with an array of matches.
+\item {\ttfamily glob\+Sync(patterns\+: string \texorpdfstring{$\vert$}{|} string\mbox{[}\mbox{]}, options\+: Glob\+Options)\+: string\mbox{[}\mbox{]}}\+: Returns an array of matches.
+\item {\ttfamily convert\+Path\+To\+Pattern(path\+: string)\+: string}\+: Converts a path to a pattern depending on the platform.
+\item {\ttfamily escape\+Path(path\+: string)\+: string}\+: Escapes a path\textquotesingle{}s special characters depending on the platform.
+\item {\ttfamily is\+Dynamic\+Pattern(pattern\+: string, options?\+: Glob\+Options)\+: boolean}\+: Checks if a pattern is dynamic.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md13847}{}\doxysubsection{\texorpdfstring{Options}{Options}}\label{README.md_autotoc_md13847}
+
+\begin{DoxyItemize}
+\item {\ttfamily patterns}\+: An array of glob patterns to search for. Defaults to `\mbox{[}'\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}/\texorpdfstring{$\ast$}{*}\textquotesingle{}\mbox{]}{\ttfamily .}
+\item {\ttfamily }ignore{\ttfamily \+: An array of glob patterns to ignore.}
+\item {\ttfamily }cwd{\ttfamily \+: The current working directory in which to search. Defaults to }process.\+cwd(){\ttfamily .}
+\item {\ttfamily }absolute{\ttfamily \+: Whether to return absolute paths. Defaults to }false{\ttfamily .}
+\item {\ttfamily }dot{\ttfamily \+: Whether to allow entries starting with a dot. Defaults to }false{\ttfamily .}
+\item {\ttfamily }deep{\ttfamily \+: Maximum depth of a directory. Defaults to }Infinity{\ttfamily .}
+\item {\ttfamily }follow\+Symbolic\+Links{\ttfamily \+: Whether to traverse and include symbolic links. Defaults to }true{\ttfamily .}
+\item {\ttfamily }case\+Sensitive\+Match{\ttfamily \+: Whether to match in case-\/sensitive mode. Defaults to }true{\ttfamily .}
+\item {\ttfamily }expand\+Directories{\ttfamily \+: Whether to expand directories. Disable to best match }fast-\/glob{\ttfamily . Defaults to }true{\ttfamily .}
+\item {\ttfamily }only\+Directories{\ttfamily \+: Enable to only return directories. Disables }only\+Files{\ttfamily  if set. Defaults to }false{\ttfamily .}
+\item {\ttfamily }only\+Files{\ttfamily \+: Enable to only return files. Defaults to }true{\ttfamily .}
+\item {\ttfamily }debug\`{}\+: Enable debug logs. Useful for development purposes.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md13848}{}\doxysubsection{\texorpdfstring{Used by}{Used by}}\label{README.md_autotoc_md13848}
+{\ttfamily tinyglobby} is downloaded many times by projects all around the world. Here\textquotesingle{}s a partial list of notable projects that use it\+:
+
+
+\begin{DoxyItemize}
+\item \href{https://github.com/vitejs/vite}{\texttt{{\ttfamily vite}}}
+\item \href{https://github.com/pnpm/pnpm}{\texttt{{\ttfamily pnpm}}}
+\item \href{https://github.com/nodejs/node-gyp}{\texttt{{\ttfamily node-\/gyp}}}
+\item \href{https://github.com/import-js/eslint-import-resolver-typescript}{\texttt{{\ttfamily eslint-\/import-\/resolver-\/typescript}}}
+\item \href{https://github.com/vitest-dev/vitest}{\texttt{{\ttfamily vitest}}}
+\item \href{https://github.com/webpack-contrib/copy-webpack-plugin}{\texttt{{\ttfamily copy-\/webpack-\/plugin}}}
+\item \href{https://github.com/storybookjs/storybook}{\texttt{{\ttfamily storybook}}}
+\item \href{https://github.com/dsherret/ts-morph}{\texttt{{\ttfamily ts-\/morph}}}
+\item \href{https://github.com/nrwl/nx}{\texttt{{\ttfamily nx}}}
+\item \href{https://github.com/keithamus/sort-package-json}{\texttt{{\ttfamily sort-\/package-\/json}}}
+\item \href{https://github.com/unjs/unimport}{\texttt{{\ttfamily unimport}}}
+\item \href{https://github.com/egoist/tsup}{\texttt{{\ttfamily tsup}}}
+\item \href{https://github.com/lerna/lerna}{\texttt{{\ttfamily lerna}}}
+\item \href{https://github.com/streetsidesoftware/cspell}{\texttt{{\ttfamily cspell}}}
+\item \href{https://github.com/nuxt/nuxt}{\texttt{{\ttfamily nuxt}}}
+\item \href{https://github.com/postcss/postcss-mixins}{\texttt{{\ttfamily postcss-\/mixins}}}
+\item \href{https://github.com/withastro/astro}{\texttt{{\ttfamily astro}}}
+\item \href{https://github.com/unocss/unocss}{\texttt{{\ttfamily unocss}}}
+\item \href{https://github.com/vuejs/vitepress}{\texttt{{\ttfamily vitepress}}}
+\item \href{https://github.com/stackblitz-labs/pkg.pr.new}{\texttt{{\ttfamily pkg-\/pr-\/new}}}
+\item Your own project? \href{https://github.com/SuperchupuDev/tinyglobby/issues}{\texttt{Open an issue}} if you feel like this list is incomplete. 
+\end{DoxyItemize}

@@ -1,0 +1,230 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/deepmerge Directory Reference}
+\hypertarget{dir_9b3ef41739ae8f88fb8762149986fdef}{}\label{dir_9b3ef41739ae8f88fb8762149986fdef}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/deepmerge Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/deepmerge Directory Reference}}
+Directory dependency graph for deepmerge\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{dir_9b3ef41739ae8f88fb8762149986fdef_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{readme.md_autotoc_md10704}{}\doxysubsection{\texorpdfstring{deepmerge}{deepmerge}}\label{readme.md_autotoc_md10704}
+Merges the enumerable attributes of two or more objects deeply.
+
+\begin{quote}
+UMD bundle is 567B minified+gzipped \end{quote}
+\hypertarget{readme.md_autotoc_md10705}{}\doxysubsubsection{\texorpdfstring{Migration from 1.\+x to 2.\+0.\+0}{Migration from 1.\+x to 2.\+0.\+0}}\label{readme.md_autotoc_md10705}
+\href{https://github.com/KyleAMathews/deepmerge/blob/master/changelog.md\#200}{\texttt{{\itshape {\bfseries{Check out the changes from version 1.\+x to 2.\+0.\+0}}}}}
+
+For the legacy array element-\/merging algorithm, see the \`{}array\+Merge\`{} option below.\hypertarget{readme.md_autotoc_md10706}{}\doxysubsubsection{\texorpdfstring{Webpack bug}{Webpack bug}}\label{readme.md_autotoc_md10706}
+If you have `require(\textquotesingle{}deepmerge'){\ttfamily  (as opposed to }import merge from \textquotesingle{}deepmerge\textquotesingle{}\`{}) anywhere in your codebase, Webpack 3 and 4 have a bug that \href{https://github.com/webpack/webpack/issues/6584}{\texttt{breaks bundling}}.
+
+If you see {\ttfamily Error\+: merge is not a function}, add this alias to your Webpack config\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{alias:\ \{}
+\DoxyCodeLine{\ \ \ \ deepmerge\$:\ path.resolve(\_\_dirname,\ 'node\_modules/deepmerge/dist/umd.js'),}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10707}{}\doxysubsection{\texorpdfstring{Getting Started}{Getting Started}}\label{readme.md_autotoc_md10707}
+\hypertarget{readme.md_autotoc_md10708}{}\doxysubsubsection{\texorpdfstring{Example Usage}{Example Usage}}\label{readme.md_autotoc_md10708}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{var\ x\ =\ \{}
+\DoxyCodeLine{\ \ \ \ foo:\ \{\ bar:\ 3\ \},}
+\DoxyCodeLine{\ \ \ \ array:\ [\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ does:\ 'work',}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ too:\ [\ 1,\ 2,\ 3\ ]}
+\DoxyCodeLine{\ \ \ \ \}]}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{var\ y\ =\ \{}
+\DoxyCodeLine{\ \ \ \ foo:\ \{\ baz:\ 4\ \},}
+\DoxyCodeLine{\ \ \ \ quux:\ 5,}
+\DoxyCodeLine{\ \ \ \ array:\ [\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ does:\ 'work',}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ too:\ [\ 4,\ 5,\ 6\ ]}
+\DoxyCodeLine{\ \ \ \ \},\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ really:\ 'yes'}
+\DoxyCodeLine{\ \ \ \ \}]}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{var\ expected\ =\ \{}
+\DoxyCodeLine{\ \ \ \ foo:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ bar:\ 3,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ baz:\ 4}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ array:\ [\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ does:\ 'work',}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ too:\ [\ 1,\ 2,\ 3\ ]}
+\DoxyCodeLine{\ \ \ \ \},\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ does:\ 'work',}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ too:\ [\ 4,\ 5,\ 6\ ]}
+\DoxyCodeLine{\ \ \ \ \},\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ really:\ 'yes'}
+\DoxyCodeLine{\ \ \ \ \}],}
+\DoxyCodeLine{\ \ \ \ quux:\ 5}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{merge(x,\ y)\ //\ =>\ expected}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10709}{}\doxysubsubsection{\texorpdfstring{Installation}{Installation}}\label{readme.md_autotoc_md10709}
+With \href{http://npmjs.org}{\texttt{npm}} do\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ deepmerge}
+
+\end{DoxyCode}
+
+
+deepmerge can be used directly in the browser without the use of package managers/bundlers as well\+: \href{https://unpkg.com/deepmerge/dist/umd.js}{\texttt{UMD version from unpkg.\+com}}.\hypertarget{readme.md_autotoc_md10710}{}\doxysubsubsection{\texorpdfstring{Includes}{Includes}}\label{readme.md_autotoc_md10710}
+Common\+JS\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{var\ merge\ =\ require('deepmerge')}
+
+\end{DoxyCode}
+
+
+ES Modules\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ merge\ from\ 'deepmerge'}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10711}{}\doxysubsection{\texorpdfstring{API}{API}}\label{readme.md_autotoc_md10711}
+\hypertarget{readme.md_autotoc_md10712}{}\doxysubsubsection{\texorpdfstring{{\ttfamily merge(x, y, \mbox{[}options\mbox{]})}}{{\ttfamily merge(x, y, \mbox{[}options\mbox{]})}}}\label{readme.md_autotoc_md10712}
+Merge two objects {\ttfamily x} and {\ttfamily y} deeply, returning a new merged object with the elements from both {\ttfamily x} and {\ttfamily y}.
+
+If an element at the same key is present for both {\ttfamily x} and {\ttfamily y}, the value from {\ttfamily y} will appear in the result.
+
+Merging creates a new object, so that neither {\ttfamily x} or {\ttfamily y} is modified.
+
+{\bfseries{Note\+:}} By default, arrays are merged by concatenating them.\hypertarget{readme.md_autotoc_md10713}{}\doxysubsubsection{\texorpdfstring{{\ttfamily merge.\+all(array\+Of\+Objects, \mbox{[}options\mbox{]})}}{{\ttfamily merge.\+all(array\+Of\+Objects, \mbox{[}options\mbox{]})}}}\label{readme.md_autotoc_md10713}
+Merges any number of objects into a single result object.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{var\ x\ =\ \{\ foo:\ \{\ bar:\ 3\ \}\ \}}
+\DoxyCodeLine{var\ y\ =\ \{\ foo:\ \{\ baz:\ 4\ \}\ \}}
+\DoxyCodeLine{var\ z\ =\ \{\ bar:\ 'yay!'\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{var\ expected\ =\ \{\ foo:\ \{\ bar:\ 3,\ baz:\ 4\ \},\ bar:\ 'yay!'\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{merge.all([x,\ y,\ z])\ //\ =>\ expected}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10714}{}\doxysubsubsection{\texorpdfstring{Options}{Options}}\label{readme.md_autotoc_md10714}
+\hypertarget{readme.md_autotoc_md10715}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array\+Merge}}{{\ttfamily array\+Merge}}}\label{readme.md_autotoc_md10715}
+There are multiple ways to merge two arrays, below are a few examples but you can also create your own custom function.\hypertarget{readme.md_autotoc_md10716}{}\doxysubsubsubsubsection{\texorpdfstring{Overwrite Array}{Overwrite Array}}\label{readme.md_autotoc_md10716}
+Overwrites the existing array values completely rather than concatenating them
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ overwriteMerge\ =\ (destinationArray,\ sourceArray,\ options)\ =>\ sourceArray}
+\DoxyCodeLine{}
+\DoxyCodeLine{merge(}
+\DoxyCodeLine{\ \ \ \ [1,\ 2,\ 3],}
+\DoxyCodeLine{\ \ \ \ [3,\ 2,\ 1],}
+\DoxyCodeLine{\ \ \ \ \{\ arrayMerge:\ overwriteMerge\ \}}
+\DoxyCodeLine{)\ //\ =>\ [3,\ 2,\ 1]}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10717}{}\doxysubsubsubsubsection{\texorpdfstring{Combine Array}{Combine Array}}\label{readme.md_autotoc_md10717}
+Combine arrays, such as overwriting existing defaults while also adding/keeping values that are different names
+
+To use the legacy (pre-\/version-\/2.\+0.\+0) array merging algorithm, use the following\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ emptyTarget\ =\ value\ =>\ Array.isArray(value)\ ?\ []\ :\ \{\}}
+\DoxyCodeLine{const\ clone\ =\ (value,\ options)\ =>\ merge(emptyTarget(value),\ value,\ options)}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ combineMerge(target,\ source,\ options)\ \{}
+\DoxyCodeLine{\ \ \ \ const\ destination\ =\ target.slice()}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ source.forEach(function(e,\ i)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ if\ (typeof\ destination[i]\ ===\ 'undefined')\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ const\ cloneRequested\ =\ options.clone\ !==\ false}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ const\ shouldClone\ =\ cloneRequested\ \&\&\ options.isMergeableObject(e)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ destination[i]\ =\ shouldClone\ ?\ clone(e,\ options)\ :\ e}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}\ else\ if\ (options.isMergeableObject(e))\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ destination[i]\ =\ merge(target[i],\ e,\ options)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}\ else\ if\ (target.indexOf(e)\ ===\ -\/1)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ destination.push(e)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \})}
+\DoxyCodeLine{\ \ \ \ return\ destination}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{merge(}
+\DoxyCodeLine{\ \ \ \ [\{\ a:\ true\ \}],}
+\DoxyCodeLine{\ \ \ \ [\{\ b:\ true\ \},\ 'ah\ yup'],}
+\DoxyCodeLine{\ \ \ \ \{\ arrayMerge:\ combineMerge\ \}}
+\DoxyCodeLine{)\ //\ =>\ [\{\ a:\ true,\ b:\ true\ \},\ 'ah\ yup']}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10718}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily is\+Mergeable\+Object}}{{\ttfamily is\+Mergeable\+Object}}}\label{readme.md_autotoc_md10718}
+By default, deepmerge clones every property from almost every kind of object.
+
+You may not want this, if your objects are of special types, and you want to copy the whole object instead of just copying its properties.
+
+You can accomplish this by passing in a function for the {\ttfamily is\+Mergeable\+Object} option.
+
+If you only want to clone properties of plain objects, and ignore all "{}special"{} kinds of instantiated objects, you probably want to drop in \href{https://github.com/jonschlinkert/is-plain-object}{\texttt{{\ttfamily is-\/plain-\/object}}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ isPlainObject\ =\ require('is-\/plain-\/object')}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ SuperSpecial()\ \{}
+\DoxyCodeLine{\ \ \ \ this.special\ =\ 'oh\ yeah\ man\ totally'}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ instantiatedSpecialObject\ =\ new\ SuperSpecial()}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ target\ =\ \{}
+\DoxyCodeLine{\ \ \ \ someProperty:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ cool:\ 'oh\ for\ sure'}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ source\ =\ \{}
+\DoxyCodeLine{\ \ \ \ someProperty:\ instantiatedSpecialObject}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ defaultOutput\ =\ merge(target,\ source)}
+\DoxyCodeLine{}
+\DoxyCodeLine{defaultOutput.someProperty.cool\ //\ =>\ 'oh\ for\ sure'}
+\DoxyCodeLine{defaultOutput.someProperty.special\ //\ =>\ 'oh\ yeah\ man\ totally'}
+\DoxyCodeLine{defaultOutput.someProperty\ instanceof\ SuperSpecial\ //\ =>\ false}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ customMergeOutput\ =\ merge(target,\ source,\ \{}
+\DoxyCodeLine{\ \ \ \ isMergeableObject:\ isPlainObject}
+\DoxyCodeLine{\})}
+\DoxyCodeLine{}
+\DoxyCodeLine{customMergeOutput.someProperty.cool\ //\ =>\ undefined}
+\DoxyCodeLine{customMergeOutput.someProperty.special\ //\ =>\ 'oh\ yeah\ man\ totally'}
+\DoxyCodeLine{customMergeOutput.someProperty\ instanceof\ SuperSpecial\ //\ =>\ true}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10719}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily clone}}{{\ttfamily clone}}}\label{readme.md_autotoc_md10719}
+{\itshape Deprecated.}
+
+Defaults to {\ttfamily true}.
+
+If {\ttfamily clone} is {\ttfamily false} then child objects will be copied directly instead of being cloned. This was the default behavior before version 2.\+x.\hypertarget{readme.md_autotoc_md10720}{}\doxysubsection{\texorpdfstring{Testing}{Testing}}\label{readme.md_autotoc_md10720}
+With \href{http://npmjs.org}{\texttt{npm}} do\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ test}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md10721}{}\doxysubsection{\texorpdfstring{License}{License}}\label{readme.md_autotoc_md10721}
+MIT 

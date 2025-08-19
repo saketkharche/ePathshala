@@ -1,0 +1,1589 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/yup Directory Reference}
+\hypertarget{dir_d57a065853207b324bfdf69d83a75ef0}{}\label{dir_d57a065853207b324bfdf69d83a75ef0}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/yup Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/yup Directory Reference}}
+Directory dependency graph for yup\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_d57a065853207b324bfdf69d83a75ef0_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md14391}{}\doxysubsection{\texorpdfstring{Yup}{Yup}}\label{README.md_autotoc_md14391}
+Yup is a schema builder for runtime value parsing and validation. Define a schema, transform a value to match, assert the shape of an existing value, or both. Yup schema are extremely expressive and allow modeling complex, interdependent validations, or value transformation.
+
+\begin{quote}
+{\bfseries{You are viewing docs for the v1.\+0.\+0 of yup, pre-\/v1 docs are available\+: \href{https://github.com/jquense/yup/tree/pre-v1}{\texttt{here}}}} \end{quote}
+
+
+{\bfseries{Killer Features}}\+:
+
+
+\begin{DoxyItemize}
+\item Concise yet expressive schema interface, equipped to model simple to complex data models
+\item Powerful Type\+Script support. Infer static types from schema, or ensure schema correctly implement a type
+\item Built-\/in async validation support. Model server-\/side and client-\/side validation equally well
+\item Extensible\+: add your own type-\/safe methods and schema
+\item Rich error details, make debugging a breeze
+\item Compatible with \href{https://github.com/standard-schema/standard-schema}{\texttt{Standard Schema}}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md14392}{}\doxysubsection{\texorpdfstring{Getting Started}{Getting Started}}\label{README.md_autotoc_md14392}
+Schema are comprised of parsing actions (transforms) as well as assertions (tests) about the input value. Validate an input value to parse it and run the configured set of assertions. Chain together methods to build a schema.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ object,\ string,\ number,\ date,\ InferType\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ userSchema\ =\ object(\{}
+\DoxyCodeLine{\ \ name:\ string().required(),}
+\DoxyCodeLine{\ \ age:\ number().required().positive().integer(),}
+\DoxyCodeLine{\ \ email:\ string().email(),}
+\DoxyCodeLine{\ \ website:\ string().url().nullable(),}
+\DoxyCodeLine{\ \ createdOn:\ date().default(()\ =>\ new\ Date()),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ parse\ and\ assert\ validity}
+\DoxyCodeLine{let\ user\ =\ await\ userSchema.validate(await\ fetchUser());}
+\DoxyCodeLine{}
+\DoxyCodeLine{type\ User\ =\ InferType<typeof\ userSchema>;}
+\DoxyCodeLine{/*\ \{}
+\DoxyCodeLine{\ \ name:\ string;}
+\DoxyCodeLine{\ \ age:\ number;}
+\DoxyCodeLine{\ \ email?:\ string\ |\ undefined}
+\DoxyCodeLine{\ \ website?:\ string\ |\ null\ |\ undefined}
+\DoxyCodeLine{\ \ createdOn:\ Date}
+\DoxyCodeLine{\}*/}
+
+\end{DoxyCode}
+
+
+Use a schema to coerce or "{}cast"{} an input value into the correct type, and optionally transform that value into more concrete and specific values, without making further assertions.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Attempts\ to\ coerce\ values\ to\ the\ correct\ type}
+\DoxyCodeLine{let\ parsedUser\ =\ userSchema.cast(\{}
+\DoxyCodeLine{\ \ name:\ 'jimmy',}
+\DoxyCodeLine{\ \ age:\ '24',}
+\DoxyCodeLine{\ \ createdOn:\ '2014-\/09-\/23T19:25:25Z',}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{//\ ✅\ \ \{\ name:\ 'jimmy',\ age:\ 24,\ createdOn:\ Date\ \}}
+
+\end{DoxyCode}
+
+
+Know that your input value is already parsed? You can "{}strictly"{} validate an input, and avoid the overhead of running parsing logic.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ ❌\ \ ValidationError\ "{}age\ is\ not\ a\ number"{}}
+\DoxyCodeLine{let\ parsedUser\ =\ await\ userSchema.validate(}
+\DoxyCodeLine{\ \ \{}
+\DoxyCodeLine{\ \ \ \ name:\ 'jimmy',}
+\DoxyCodeLine{\ \ \ \ age:\ '24',}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ \{\ strict:\ true\ \},}
+\DoxyCodeLine{);}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14393}{}\doxysubsection{\texorpdfstring{Table of Contents}{Table of Contents}}\label{README.md_autotoc_md14393}
+
+\begin{DoxyItemize}
+\item Schema basics
+\begin{DoxyItemize}
+\item Parsing\+: Transforms
+\item Validation\+: Tests
+\begin{DoxyItemize}
+\item Customizing errors
+\end{DoxyItemize}
+\item Composition and Reuse
+\end{DoxyItemize}
+\item Type\+Script integration
+\begin{DoxyItemize}
+\item Schema defaults
+\item Ensuring a schema matches an existing type
+\item Extending built-\/in schema with new methods
+\item Type\+Script configuration
+\end{DoxyItemize}
+\item Error message customization
+\begin{DoxyItemize}
+\item localization and i18n
+\end{DoxyItemize}
+\item Standard Schema Support
+\item API
+\begin{DoxyItemize}
+\item \`{}yup\`{}
+\begin{DoxyItemize}
+\item \`{}reach(schema\+: Schema, path\+: string, value?\+: object, context?\+: object)\+: Schema\`{}
+\item \`{}add\+Method(schema\+Type\+: Schema, name\+: string, method\+: ()=\texorpdfstring{$>$}{>} Schema)\+: void\`{}
+\item \`{}ref(path\+: string, options\+: \{ context\+Prefix\+: string \})\+: Ref\`{}
+\item \`{}lazy((value\+: any) =\texorpdfstring{$>$}{>} Schema)\+: Lazy\`{}
+\item \`{}\+Validation\+Error(errors\+: string \texorpdfstring{$\vert$}{|} Array\texorpdfstring{$<$}{<}string\texorpdfstring{$>$}{>}, value\+: any, path\+: string)\`{}
+\end{DoxyItemize}
+\item \`{}\+Schema\`{}
+\begin{DoxyItemize}
+\item \`{}\+Schema.clone()\+: Schema\`{}
+\item \`{}\+Schema.label(label\+: string)\+: Schema\`{}
+\item \`{}\+Schema.meta(metadata\+: Schema\+Metadata)\+: Schema\`{}
+\item \`{}\+Schema.describe(options?\+: Resolve\+Options)\+: Schema\+Description\`{}
+\item \`{}\+Schema.concat(schema\+: Schema)\+: Schema\`{}
+\item \`{}\+Schema.validate(value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}, Validation\+Error\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.validate\+Sync(value\+: any, options?\+: object)\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.validate\+At(path\+: string, value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}, Validation\+Error\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.validate\+Sync\+At(path\+: string, value\+: any, options?\+: object)\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.is\+Valid(value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}boolean\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.is\+Valid\+Sync(value\+: any, options?\+: object)\+: boolean\`{}
+\item \`{}\+Schema.cast(value\+: any, options = \{\})\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.is\+Type(value\+: any)\+: value is Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}\`{}
+\item \`{}\+Schema.strict(enabled\+: boolean = false)\+: Schema\`{}
+\item \`{}\+Schema.strip(enabled\+: boolean = true)\+: Schema\`{}
+\item \`{}\+Schema.with\+Mutation(builder\+: (current\+: Schema) =\texorpdfstring{$>$}{>} void)\+: void\`{}
+\item \`{}\+Schema.default(value\+: any)\+: Schema\`{}
+\item \`{}\+Schema.get\+Default(options?\+: object)\+: Any\`{}
+\item \`{}\+Schema.nullable(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}\+Schema.non\+Nullable(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}\+Schema.defined()\+: Schema\`{}
+\item \`{}\+Schema.optional()\+: Schema\`{}
+\item \`{}\+Schema.required(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}\+Schema.not\+Required()\+: Schema\`{}
+\item \`{}\+Schema.type\+Error(message\+: string)\+: Schema\`{}
+\item \`{}\+Schema.one\+Of(array\+Of\+Values\+: Array\texorpdfstring{$<$}{<}any\texorpdfstring{$>$}{>}, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{} Alias\+: \`{}equals\`{}
+\item \`{}\+Schema.not\+One\+Of(array\+Of\+Values\+: Array\texorpdfstring{$<$}{<}any\texorpdfstring{$>$}{>}, message?\+: string \texorpdfstring{$\vert$}{|} function)\`{}
+\item \`{}\+Schema.when(keys\+: string \texorpdfstring{$\vert$}{|} string\mbox{[}\mbox{]}, builder\+: object \texorpdfstring{$\vert$}{|} (values\+: any\mbox{[}\mbox{]}, schema) =\texorpdfstring{$>$}{>} Schema)\+: Schema\`{}
+\item \`{}\+Schema.test(name\+: string, message\+: string \texorpdfstring{$\vert$}{|} function \texorpdfstring{$\vert$}{|} any, test\+: function)\+: Schema\`{}
+\item \`{}\+Schema.test(options\+: object)\+: Schema\`{}
+\item \`{}\+Schema.transform((current\+Value\+: any, original\+Value\+: any) =\texorpdfstring{$>$}{>} any)\+: Schema\`{}
+\end{DoxyItemize}
+\item mixed
+\item string
+\begin{DoxyItemize}
+\item \`{}string.required(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.length(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.matches(regex\+: Regex, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.matches(regex\+: Regex, options\+: \{ message\+: string, exclude\+Empty\+String\+: bool \})\+: Schema\`{}
+\item \`{}string.email(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.url(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.uuid(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.datetime(options?\+: \{message?\+: string \texorpdfstring{$\vert$}{|} function, allow\+Offset?\+: boolean, precision?\+: number\})\`{}
+\item \`{}string.datetime(message?\+: string \texorpdfstring{$\vert$}{|} function)\`{}
+\item \`{}string.ensure()\+: Schema\`{}
+\item \`{}string.trim(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.lowercase(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}string.uppercase(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\end{DoxyItemize}
+\item number
+\begin{DoxyItemize}
+\item \`{}number.min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.less\+Than(max\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.more\+Than(min\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.positive(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.negative(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.integer(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}number.truncate()\+: Schema\`{}
+\item \`{}number.round(type\+: \textquotesingle{}floor\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}ceil\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}trunc\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}round\textquotesingle{} = \textquotesingle{}round\textquotesingle{})\+: Schema\`{}
+\end{DoxyItemize}
+\item boolean
+\item date
+\begin{DoxyItemize}
+\item \`{}date.min(limit\+: Date \texorpdfstring{$\vert$}{|} string \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}date.max(limit\+: Date \texorpdfstring{$\vert$}{|} string \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\end{DoxyItemize}
+\item array
+\begin{DoxyItemize}
+\item \`{}array.of(type\+: Schema)\+: this\`{}
+\item \`{}array.json()\+: this\`{}
+\item \`{}array.length(length\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this\`{}
+\item \`{}array.min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this\`{}
+\item \`{}array.max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this\`{}
+\item \`{}array.ensure()\+: this\`{}
+\item \`{}array.compact(rejector\+: (value) =\texorpdfstring{$>$}{>} boolean)\+: Schema\`{}
+\end{DoxyItemize}
+\item tuple
+\item object
+\begin{DoxyItemize}
+\item Object schema defaults
+\item \`{}object.shape(fields\+: object, no\+Sort\+Edges?\+: Array\texorpdfstring{$<$}{<}\mbox{[}string, string\mbox{]}\texorpdfstring{$>$}{>})\+: Schema\`{}
+\item \`{}object.json()\+: this\`{}
+\item \`{}object.concat(schemaB\+: Object\+Schema)\+: Object\+Schema\`{}
+\item \`{}object.pick(keys\+: string\mbox{[}\mbox{]})\+: Schema\`{}
+\item \`{}object.omit(keys\+: string\mbox{[}\mbox{]})\+: Schema\`{}
+\item \`{}object.from(from\+Key\+: string, to\+Key\+: string, alias\+: boolean = false)\+: this\`{}
+\item \`{}object.exact(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}object.strip\+Unknown()\+: Schema\`{}
+\item \`{}object.no\+Unknown(only\+Known\+Keys\+: boolean = true, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema\`{}
+\item \`{}object.camel\+Case()\+: Schema\`{}
+\item \`{}object.constant\+Case()\+: Schema\`{}
+\end{DoxyItemize}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md14394}{}\doxysubsection{\texorpdfstring{Schema basics}{Schema basics}}\label{README.md_autotoc_md14394}
+Schema definitions, are comprised of parsing "{}transforms"{} which manipulate inputs into the desired shape and type, "{}tests"{}, which make assertions over parsed data. Schema also store a bunch of "{}metadata"{}, details about the schema itself, which can be used to improve error messages, build tools that dynamically consume schema, or serialize schema into another format.
+
+In order to be maximally flexible yup allows running both parsing and assertions separately to match specific needs\hypertarget{README.md_autotoc_md14395}{}\doxysubsubsection{\texorpdfstring{Parsing\+: Transforms}{Parsing\+: Transforms}}\label{README.md_autotoc_md14395}
+Each built-\/in type implements basic type parsing, which comes in handy when parsing serialized data, such as JSON. Additionally types implement type specific transforms that can be enabled.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ num\ =\ number().cast('1');\ //\ 1}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ obj\ =\ object(\{}
+\DoxyCodeLine{\ \ firstName:\ string().lowercase().trim(),}
+\DoxyCodeLine{\})}
+\DoxyCodeLine{\ \ .json()}
+\DoxyCodeLine{\ \ .camelCase()}
+\DoxyCodeLine{\ \ .cast('\{"{}first\_name"{}:\ "{}jAnE\ "{}\}');\ //\ \{\ firstName:\ 'jane'\ \}}
+
+\end{DoxyCode}
+
+
+Custom transforms can be added
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ reversedString\ =\ string()}
+\DoxyCodeLine{\ \ .transform((currentValue)\ =>\ currentValue.split('').reverse().join(''))}
+\DoxyCodeLine{\ \ .cast('dlrow\ olleh');\ //\ "{}hello\ world"{}}
+
+\end{DoxyCode}
+
+
+Transforms form a "{}pipeline"{}, where the value of a previous transform is piped into the next one. When an input value is {\ttfamily undefined} yup will apply the schema default if it\textquotesingle{}s configured.
+
+\begin{quote}
+Watch out! values are not guaranteed to be valid types in transform functions. Previous transforms may have failed. For example a number transform may be receive the input value, {\ttfamily NaN}, or a number. \end{quote}
+\hypertarget{README.md_autotoc_md14396}{}\doxysubsubsection{\texorpdfstring{Validation\+: Tests}{Validation\+: Tests}}\label{README.md_autotoc_md14396}
+Yup schema run "{}tests"{} over input values. Tests assert that inputs conform to some criteria. Tests are distinct from transforms, in that they do not change or alter the input (or its type) and are usually reserved for checks that are hard, if not impossible, to represent in static types.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{string()}
+\DoxyCodeLine{\ \ .min(3,\ 'must\ be\ at\ least\ 3\ characters\ long')}
+\DoxyCodeLine{\ \ .email('must\ be\ a\ valid\ email')}
+\DoxyCodeLine{\ \ .validate('no');\ //\ ValidationError}
+
+\end{DoxyCode}
+
+
+As with transforms, tests can be customized on the fly
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ jamesSchema\ =\ string().test(}
+\DoxyCodeLine{\ \ 'is-\/james',}
+\DoxyCodeLine{\ \ (d)\ =>\ \`{}\$\{d.path\}\ is\ not\ James`,}
+\DoxyCodeLine{\ \ (value)\ =>\ value\ ==\ null\ ||\ value\ ===\ 'James',}
+\DoxyCodeLine{);}
+\DoxyCodeLine{}
+\DoxyCodeLine{jamesSchema.validateSync('James');\ //\ "{}James"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{jamesSchema.validateSync('Jane');\ //\ ValidationError\ "{}this\ is\ not\ James"{}}
+
+\end{DoxyCode}
+
+
+\begin{quote}
+Heads up\+: unlike transforms, {\ttfamily value} in a custom test is guaranteed to be the correct type (in this case an optional string). It still may be {\ttfamily undefined} or {\ttfamily null} depending on your schema in those cases, you may want to return {\ttfamily true} for absent values unless your transform makes presence related assertions. The test option {\ttfamily skip\+Absent} will do this for you if set. \end{quote}
+\hypertarget{README.md_autotoc_md14397}{}\doxysubsubsubsection{\texorpdfstring{Customizing errors}{Customizing errors}}\label{README.md_autotoc_md14397}
+In the simplest case a test function returns {\ttfamily true} or {\ttfamily false} depending on the whether the check passed. In the case of a failing test, yup will throw a \`{}\+Validation\+Error\`{} with your (or the default) message for that test. Validation\+Errors also contain a bunch of other metadata about the test, including it\textquotesingle{}s name, what arguments (if any) it was called with, and the path to the failing field in the case of a nested validation.
+
+Error messages can also be constructed on the fly to customize how the schema fails.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ order\ =\ object(\{}
+\DoxyCodeLine{\ \ no:\ number().required(),}
+\DoxyCodeLine{\ \ sku:\ string().test(\{}
+\DoxyCodeLine{\ \ \ \ name:\ 'is-\/sku',}
+\DoxyCodeLine{\ \ \ \ skipAbsent:\ true,}
+\DoxyCodeLine{\ \ \ \ test(value,\ ctx)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ if\ (!value.startsWith('s-\/'))\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ return\ ctx.createError(\{\ message:\ 'SKU\ missing\ correct\ prefix'\ \});}
+\DoxyCodeLine{\ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ if\ (!value.endsWith('-\/42a'))\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ return\ ctx.createError(\{\ message:\ 'SKU\ missing\ correct\ suffix'\ \});}
+\DoxyCodeLine{\ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ if\ (value.length\ <\ 10)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ return\ ctx.createError(\{\ message:\ 'SKU\ is\ not\ the\ right\ length'\ \});}
+\DoxyCodeLine{\ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ return\ true;}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{order.validate(\{\ no:\ 1234,\ sku:\ 's-\/1a45-\/14a'\ \});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14398}{}\doxysubsubsection{\texorpdfstring{Composition and Reuse}{Composition and Reuse}}\label{README.md_autotoc_md14398}
+Schema are immutable, each method call returns a new schema object. Reuse and pass them around without fear of mutating another instance.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ optionalString\ =\ string().optional();}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ definedString\ =\ optionalString.defined();}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ value\ =\ undefined;}
+\DoxyCodeLine{optionalString.isValid(value);\ //\ true}
+\DoxyCodeLine{definedString.isValid(value);\ //\ false}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14399}{}\doxysubsection{\texorpdfstring{Type\+Script integration}{Type\+Script integration}}\label{README.md_autotoc_md14399}
+Yup schema produce static Type\+Script interfaces. Use {\ttfamily Infer\+Type} to extract that interface\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ *\ as\ yup\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ personSchema\ =\ yup.object(\{}
+\DoxyCodeLine{\ \ firstName:\ yup.string().defined(),}
+\DoxyCodeLine{\ \ nickName:\ yup.string().default('').nullable(),}
+\DoxyCodeLine{\ \ sex:\ yup}
+\DoxyCodeLine{\ \ \ \ .mixed()}
+\DoxyCodeLine{\ \ \ \ .oneOf(['male',\ 'female',\ 'other']\ as\ const)}
+\DoxyCodeLine{\ \ \ \ .defined(),}
+\DoxyCodeLine{\ \ email:\ yup.string().nullable().email(),}
+\DoxyCodeLine{\ \ birthDate:\ yup.date().nullable().min(new\ Date(1900,\ 0,\ 1)),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ Person\ extends\ yup.InferType<typeof\ personSchema>\ \{}
+\DoxyCodeLine{\ \ //\ using\ interface\ instead\ of\ type\ generally\ gives\ nicer\ editor\ feedback}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14400}{}\doxysubsubsection{\texorpdfstring{Schema defaults}{Schema defaults}}\label{README.md_autotoc_md14400}
+A schema\textquotesingle{}s default is used when casting produces an {\ttfamily undefined} output value. Because of this, setting a default affects the output type of the schema, essentially marking it as "{}defined()"{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ string\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ value:\ string\ =\ string().default('hi').validate(undefined);}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ vs}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ value:\ string\ |\ undefined\ =\ string().validate(undefined);}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14401}{}\doxysubsubsection{\texorpdfstring{Ensuring a schema matches an existing type}{Ensuring a schema matches an existing type}}\label{README.md_autotoc_md14401}
+In some cases a Type\+Script type already exists, and you want to ensure that your schema produces a compatible type\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ object,\ number,\ string,\ ObjectSchema\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ Person\ \{}
+\DoxyCodeLine{\ \ name:\ string;}
+\DoxyCodeLine{\ \ age?:\ number;}
+\DoxyCodeLine{\ \ sex:\ 'male'\ |\ 'female'\ |\ 'other'\ |\ null;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ will\ raise\ a\ compile-\/time\ type\ error\ if\ the\ schema\ does\ not\ produce\ a\ valid\ Person}
+\DoxyCodeLine{let\ schema:\ ObjectSchema<Person>\ =\ object(\{}
+\DoxyCodeLine{\ \ name:\ string().defined(),}
+\DoxyCodeLine{\ \ age:\ number().optional(),}
+\DoxyCodeLine{\ \ sex:\ string<'male'\ |\ 'female'\ |\ 'other'>().nullable().defined(),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ ❌\ errors:}
+\DoxyCodeLine{//\ "{}Type\ 'number\ |\ undefined'\ is\ not\ assignable\ to\ type\ 'string'."{}}
+\DoxyCodeLine{let\ badSchema:\ ObjectSchema<Person>\ =\ object(\{}
+\DoxyCodeLine{\ \ name:\ number(),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14402}{}\doxysubsubsection{\texorpdfstring{Extending built-\/in schema with new methods}{Extending built-\/in schema with new methods}}\label{README.md_autotoc_md14402}
+You can use Type\+Script\textquotesingle{}s interface merging behavior to extend the schema types if needed. Type extensions should go in an "{}ambient"{} type definition file such as your {\ttfamily globals.\+d.\+ts}. Remember to actually extend the yup type in your application code!
+
+\begin{quote}
+Watch out! merging only works if the type definition is {\itshape exactly} the same, including generics. Consult the yup source code for each type to ensure you are defining it correctly \end{quote}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ globals.d.ts}
+\DoxyCodeLine{declare\ module\ 'yup'\ \{}
+\DoxyCodeLine{\ \ interface\ StringSchema<TType,\ TContext,\ TDefault,\ TFlags>\ \{}
+\DoxyCodeLine{\ \ \ \ append(appendStr:\ string):\ this;}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ app.ts}
+\DoxyCodeLine{import\ \{\ addMethod,\ string\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{addMethod(string,\ 'append',\ function\ append(appendStr:\ string)\ \{}
+\DoxyCodeLine{\ \ return\ this.transform((value)\ =>\ \`{}\$\{value\}\$\{appendStr\}`);}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{string().append('\string~\string~\string~\string~').cast('hi');\ //\ 'hi\string~\string~\string~\string~'}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14403}{}\doxysubsubsection{\texorpdfstring{Type\+Script configuration}{Type\+Script configuration}}\label{README.md_autotoc_md14403}
+You {\bfseries{must}} have the {\ttfamily strict\+Null\+Checks} compiler option enabled for type inference to work.
+
+We also recommend settings {\ttfamily strict\+Function\+Types} to {\ttfamily false}, for functionally better types. Yes this reduces overall soundness, however Type\+Script already disables this check for methods and constructors (note from TS docs)\+:
+
+\begin{quote}
+During development of this feature, we discovered a large number of inherently unsafe class hierarchies, including some in the DOM. Because of this, the setting only applies to functions written in function syntax, not to those in method syntax\+: \end{quote}
+
+
+Your mileage will vary, but we\textquotesingle{}ve found that this check doesn\textquotesingle{}t prevent many of real bugs, while increasing the amount of onerous explicit type casting in apps.\hypertarget{README.md_autotoc_md14404}{}\doxysubsection{\texorpdfstring{Error message customization}{Error message customization}}\label{README.md_autotoc_md14404}
+Default error messages can be customized for when no message is provided with a validation test. If any message is missing in the custom dictionary the error message will default to Yup\textquotesingle{}s one.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ setLocale\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{setLocale(\{}
+\DoxyCodeLine{\ \ mixed:\ \{}
+\DoxyCodeLine{\ \ \ \ default:\ 'Não\ é\ válido',}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ number:\ \{}
+\DoxyCodeLine{\ \ \ \ min:\ 'Deve\ ser\ maior\ que\ \$\{min\}',}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ now\ use\ Yup\ schemas\ AFTER\ you\ defined\ your\ custom\ dictionary}
+\DoxyCodeLine{let\ schema\ =\ yup.object().shape(\{}
+\DoxyCodeLine{\ \ name:\ yup.string(),}
+\DoxyCodeLine{\ \ age:\ yup.number().min(18),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{try\ \{}
+\DoxyCodeLine{\ \ await\ schema.validate(\{\ name:\ 'jimmy',\ age:\ 11\ \});}
+\DoxyCodeLine{\}\ catch\ (err)\ \{}
+\DoxyCodeLine{\ \ err.name;\ //\ =>\ 'ValidationError'}
+\DoxyCodeLine{\ \ err.errors;\ //\ =>\ ['Deve\ ser\ maior\ que\ 18']}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14405}{}\doxysubsubsection{\texorpdfstring{localization and i18n}{localization and i18n}}\label{README.md_autotoc_md14405}
+If you need multi-\/language support, yup has got you covered. The function {\ttfamily set\+Locale} accepts functions that can be used to generate error objects with translation keys and values. These can be fed it into your favorite i18n library.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ setLocale\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{setLocale(\{}
+\DoxyCodeLine{\ \ //\ use\ constant\ translation\ keys\ for\ messages\ without\ values}
+\DoxyCodeLine{\ \ mixed:\ \{}
+\DoxyCodeLine{\ \ \ \ default:\ 'field\_invalid',}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ //\ use\ functions\ to\ generate\ an\ error\ object\ that\ includes\ the\ value\ from\ the\ schema}
+\DoxyCodeLine{\ \ number:\ \{}
+\DoxyCodeLine{\ \ \ \ min:\ (\{\ min\ \})\ =>\ (\{\ key:\ 'field\_too\_short',\ values:\ \{\ min\ \}\ \}),}
+\DoxyCodeLine{\ \ \ \ max:\ (\{\ max\ \})\ =>\ (\{\ key:\ 'field\_too\_big',\ values:\ \{\ max\ \}\ \}),}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ ...}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ schema\ =\ yup.object().shape(\{}
+\DoxyCodeLine{\ \ name:\ yup.string(),}
+\DoxyCodeLine{\ \ age:\ yup.number().min(18),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{try\ \{}
+\DoxyCodeLine{\ \ await\ schema.validate(\{\ name:\ 'jimmy',\ age:\ 11\ \});}
+\DoxyCodeLine{\}\ catch\ (err)\ \{}
+\DoxyCodeLine{\ \ messages\ =\ err.errors.map((err)\ =>\ i18next.t(err.key));}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14406}{}\doxysubsection{\texorpdfstring{Standard Schema Support}{Standard Schema Support}}\label{README.md_autotoc_md14406}
+Yup is compatible with \href{https://github.com/standard-schema/standard-schema}{\texttt{Standard Schema}}.\hypertarget{README.md_autotoc_md14407}{}\doxysubsection{\texorpdfstring{API}{API}}\label{README.md_autotoc_md14407}
+\hypertarget{README.md_autotoc_md14408}{}\doxysubsubsection{\texorpdfstring{{\ttfamily yup}}{{\ttfamily yup}}}\label{README.md_autotoc_md14408}
+The module export.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ core\ schema}
+\DoxyCodeLine{import\ \{}
+\DoxyCodeLine{\ \ mixed,}
+\DoxyCodeLine{\ \ string,}
+\DoxyCodeLine{\ \ number,}
+\DoxyCodeLine{\ \ boolean,}
+\DoxyCodeLine{\ \ bool,}
+\DoxyCodeLine{\ \ date,}
+\DoxyCodeLine{\ \ object,}
+\DoxyCodeLine{\ \ array,}
+\DoxyCodeLine{\ \ ref,}
+\DoxyCodeLine{\ \ lazy,}
+\DoxyCodeLine{\}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Classes}
+\DoxyCodeLine{import\ \{}
+\DoxyCodeLine{\ \ Schema,}
+\DoxyCodeLine{\ \ MixedSchema,}
+\DoxyCodeLine{\ \ StringSchema,}
+\DoxyCodeLine{\ \ NumberSchema,}
+\DoxyCodeLine{\ \ BooleanSchema,}
+\DoxyCodeLine{\ \ DateSchema,}
+\DoxyCodeLine{\ \ ArraySchema,}
+\DoxyCodeLine{\ \ ObjectSchema,}
+\DoxyCodeLine{\}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Types}
+\DoxyCodeLine{import\ type\ \{\ InferType,\ ISchema,\ AnySchema,\ AnyObjectSchema\ \}\ from\ 'yup';}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14409}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily reach(schema\+: Schema, path\+: string, value?\+: object, context?\+: object)\+: Schema}}{{\ttfamily reach(schema\+: Schema, path\+: string, value?\+: object, context?\+: object)\+: Schema}}}\label{README.md_autotoc_md14409}
+For nested schemas, {\ttfamily reach} will retrieve an inner schema based on the provided path.
+
+For nested schemas that need to resolve dynamically, you can provide a {\ttfamily value} and optionally a {\ttfamily context} object.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ reach\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ nested:\ object(\{}
+\DoxyCodeLine{\ \ \ \ arr:\ array(object(\{\ num:\ number().max(4)\ \})),}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{reach(schema,\ 'nested.arr.num');}
+\DoxyCodeLine{reach(schema,\ 'nested.arr[].num');}
+\DoxyCodeLine{reach(schema,\ 'nested.arr[1].num');}
+\DoxyCodeLine{reach(schema,\ 'nested["{}arr"{}][1].num');}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14410}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily add\+Method(schema\+Type\+: Schema, name\+: string, method\+: ()=\texorpdfstring{$>$}{>} Schema)\+: void}}{{\ttfamily add\+Method(schema\+Type\+: Schema, name\+: string, method\+: ()=\texorpdfstring{$>$}{>} Schema)\+: void}}}\label{README.md_autotoc_md14410}
+Adds a new method to the core schema types. A friendlier convenience method for {\ttfamily schema\+Type.\+prototype\mbox{[}name\mbox{]} = method}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ addMethod,\ date\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{addMethod(date,\ 'format',\ function\ format(formats,\ parseStrict)\ \{}
+\DoxyCodeLine{\ \ return\ this.transform((value,\ originalValue,\ ctx)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ if\ (ctx.isType(value))\ return\ value;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ value\ =\ Moment(originalValue,\ formats,\ parseStrict);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ return\ value.isValid()\ ?\ value.toDate()\ :\ new\ Date('');}
+\DoxyCodeLine{\ \ \});}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+
+
+If you want to add a method to ALL schema types, extend the abstract base class\+: {\ttfamily Schema}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ addMethod,\ Schema\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{addMethod(Schema,\ 'myMethod',\ ...)}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14411}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily ref(path\+: string, options\+: \{ context\+Prefix\+: string \})\+: Ref}}{{\ttfamily ref(path\+: string, options\+: \{ context\+Prefix\+: string \})\+: Ref}}}\label{README.md_autotoc_md14411}
+Creates a reference to another sibling or sibling descendant field. Refs are resolved at {\itshape validation/cast time} and supported where specified. Refs are evaluated in the proper order so that the ref value is resolved before the field using the ref (be careful of circular dependencies!).
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ ref,\ object,\ string\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ baz:\ ref('foo.bar'),}
+\DoxyCodeLine{\ \ foo:\ object(\{}
+\DoxyCodeLine{\ \ \ \ bar:\ string(),}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\ \ x:\ ref('\$x'),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(\{\ foo:\ \{\ bar:\ 'boom'\ \}\ \},\ \{\ context:\ \{\ x:\ 5\ \}\ \});}
+\DoxyCodeLine{//\ =>\ \{\ baz:\ 'boom',\ \ x:\ 5,\ foo:\ \{\ bar:\ 'boom'\ \}\ \}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14412}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily lazy((value\+: any) =\texorpdfstring{$>$}{>} Schema)\+: Lazy}}{{\ttfamily lazy((value\+: any) =\texorpdfstring{$>$}{>} Schema)\+: Lazy}}}\label{README.md_autotoc_md14412}
+Creates a schema that is evaluated at validation/cast time. Useful for creating recursive schema like Trees, for polymorphic fields and arrays.
+
+{\bfseries{CAUTION!}} When defining parent-\/child recursive object schema, you want to reset the {\ttfamily default()} to {\ttfamily null} on the child—otherwise the object will infinitely nest itself when you cast it!
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ node\ =\ object(\{}
+\DoxyCodeLine{\ \ id:\ number(),}
+\DoxyCodeLine{\ \ child:\ yup.lazy(()\ =>\ node.default(undefined)),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ renderable\ =\ yup.lazy((value)\ =>\ \{}
+\DoxyCodeLine{\ \ switch\ (typeof\ value)\ \{}
+\DoxyCodeLine{\ \ \ \ case\ 'number':}
+\DoxyCodeLine{\ \ \ \ \ \ return\ number();}
+\DoxyCodeLine{\ \ \ \ case\ 'string':}
+\DoxyCodeLine{\ \ \ \ \ \ return\ string();}
+\DoxyCodeLine{\ \ \ \ default:}
+\DoxyCodeLine{\ \ \ \ \ \ return\ mixed();}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ renderables\ =\ array().of(renderable);}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14413}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Validation\+Error(errors\+: string \texorpdfstring{$\vert$}{|} Array\texorpdfstring{$<$}{<}string\texorpdfstring{$>$}{>}, value\+: any, path\+: string)}}{{\ttfamily Validation\+Error(errors\+: string \texorpdfstring{$\vert$}{|} Array\texorpdfstring{$<$}{<}string\texorpdfstring{$>$}{>}, value\+: any, path\+: string)}}}\label{README.md_autotoc_md14413}
+Thrown on failed validations, with the following properties
+
+
+\begin{DoxyItemize}
+\item {\ttfamily name}\+: "{}\+Validation\+Error"{}
+\item {\ttfamily type}\+: the specific test type or test "{}name"{}, that failed.
+\item {\ttfamily value}\+: The field value that was tested;
+\item {\ttfamily params}?\+: The test inputs, such as max value, regex, etc;
+\item {\ttfamily path}\+: a string, indicating where there error was thrown. {\ttfamily path} is empty at the root level.
+\item {\ttfamily errors}\+: array of error messages
+\item {\ttfamily inner}\+: in the case of aggregate errors, inner is an array of {\ttfamily Validation\+Errors} throw earlier in the validation chain. When the {\ttfamily abort\+Early} option is {\ttfamily false} this is where you can inspect each error thrown, alternatively, {\ttfamily errors} will have all of the messages from each inner error.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md14414}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Schema}}{{\ttfamily Schema}}}\label{README.md_autotoc_md14414}
+{\ttfamily Schema} is the abstract base class that all schema type inherit from. It provides a number of base methods and properties to all other schema types.
+
+\begin{quote}
+Note\+: unless you are creating a custom schema type, Schema should never be used directly. For unknown/any types use \`{}mixed()\`{} \end{quote}
+\hypertarget{README.md_autotoc_md14415}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+clone()\+: Schema}}{{\ttfamily Schema.\+clone()\+: Schema}}}\label{README.md_autotoc_md14415}
+Creates a deep copy of the schema. Clone is used internally to return a new schema with every schema state change.\hypertarget{README.md_autotoc_md14416}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+label(label\+: string)\+: Schema}}{{\ttfamily Schema.\+label(label\+: string)\+: Schema}}}\label{README.md_autotoc_md14416}
+Overrides the key name which is used in error messages.\hypertarget{README.md_autotoc_md14417}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+meta(metadata\+: Schema\+Metadata)\+: Schema}}{{\ttfamily Schema.\+meta(metadata\+: Schema\+Metadata)\+: Schema}}}\label{README.md_autotoc_md14417}
+Adds to a metadata object, useful for storing data with a schema, that doesn\textquotesingle{}t belong to the cast object itself.
+
+A custom {\ttfamily Schema\+Metadata} interface can be defined through \href{https://www.typescriptlang.org/docs/handbook/declaration-merging.html\#merging-interfaces}{\texttt{merging}} with the {\ttfamily Custom\+Schema\+Metadata} interface. Start by creating a {\ttfamily yup.\+d.\+ts} file in your package and creating your desired {\ttfamily Custom\+Schema\+Metadata} interface\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ yup.d.ts}
+\DoxyCodeLine{import\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{declare\ module\ 'yup'\ \{}
+\DoxyCodeLine{\ \ //\ Define\ your\ desired\ \`{}SchemaMetadata`\ interface\ by\ merging\ the}
+\DoxyCodeLine{\ \ //\ \`{}CustomSchemaMetadata`\ interface.}
+\DoxyCodeLine{\ \ export\ interface\ CustomSchemaMetadata\ \{}
+\DoxyCodeLine{\ \ \ \ placeholderText?:\ string;}
+\DoxyCodeLine{\ \ \ \ tooltipText?:\ string;}
+\DoxyCodeLine{\ \ \ \ //\ …}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14418}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+describe(options?\+: Resolve\+Options)\+: Schema\+Description}}{{\ttfamily Schema.\+describe(options?\+: Resolve\+Options)\+: Schema\+Description}}}\label{README.md_autotoc_md14418}
+Collects schema details (like meta, labels, and active tests) into a serializable description object.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ name:\ string().required(),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ description\ =\ schema.describe();}
+
+\end{DoxyCode}
+
+
+For schema with dynamic components (references, lazy, or conditions), describe requires more context to accurately return the schema description. In these cases provide {\ttfamily options}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ ref,\ object,\ string,\ boolean\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ isBig:\ boolean(),}
+\DoxyCodeLine{\ \ count:\ number().when('isBig',\ \{}
+\DoxyCodeLine{\ \ \ \ is:\ true,}
+\DoxyCodeLine{\ \ \ \ then:\ (schema)\ =>\ schema.min(5),}
+\DoxyCodeLine{\ \ \ \ otherwise:\ (schema)\ =>\ schema.min(0),}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.describe(\{\ value:\ \{\ isBig:\ true\ \}\ \});}
+
+\end{DoxyCode}
+
+
+And below are the description types, which differ a bit depending on the schema type.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{interface\ SchemaDescription\ \{}
+\DoxyCodeLine{\ \ type:\ string;}
+\DoxyCodeLine{\ \ label?:\ string;}
+\DoxyCodeLine{\ \ meta:\ object\ |\ undefined;}
+\DoxyCodeLine{\ \ oneOf:\ unknown[];}
+\DoxyCodeLine{\ \ notOneOf:\ unknown[];}
+\DoxyCodeLine{\ \ default?:\ unknown;}
+\DoxyCodeLine{\ \ nullable:\ boolean;}
+\DoxyCodeLine{\ \ optional:\ boolean;}
+\DoxyCodeLine{\ \ tests:\ Array<\{\ name?:\ string;\ params:\ ExtraParams\ |\ undefined\ \}>;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ //\ Present\ on\ object\ schema\ descriptions}
+\DoxyCodeLine{\ \ fields:\ Record<string,\ SchemaFieldDescription>;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ //\ Present\ on\ array\ schema\ descriptions}
+\DoxyCodeLine{\ \ innerType?:\ SchemaFieldDescription;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{type\ SchemaFieldDescription\ =}
+\DoxyCodeLine{\ \ |\ SchemaDescription}
+\DoxyCodeLine{\ \ |\ SchemaRefDescription}
+\DoxyCodeLine{\ \ |\ SchemaLazyDescription;}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ SchemaRefDescription\ \{}
+\DoxyCodeLine{\ \ type:\ 'ref';}
+\DoxyCodeLine{\ \ key:\ string;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ SchemaLazyDescription\ \{}
+\DoxyCodeLine{\ \ type:\ string;}
+\DoxyCodeLine{\ \ label?:\ string;}
+\DoxyCodeLine{\ \ meta:\ object\ |\ undefined;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14419}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+concat(schema\+: Schema)\+: Schema}}{{\ttfamily Schema.\+concat(schema\+: Schema)\+: Schema}}}\label{README.md_autotoc_md14419}
+Creates a new instance of the schema by combining two schemas. Only schemas of the same type can be concatenated. {\ttfamily concat} is not a "{}merge"{} function in the sense that all settings from the provided schema, override ones in the base, including type, presence and nullability.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mixed<string>().defined().concat(mixed<number>().nullable());}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ produces\ the\ equivalent\ to:}
+\DoxyCodeLine{}
+\DoxyCodeLine{mixed<number>().defined().nullable();}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14420}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+validate(value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}, Validation\+Error\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+validate(value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}, Validation\+Error\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14420}
+Returns the parses and validates an input value, returning the parsed value or throwing an error. This method is {\bfseries{asynchronous}} and returns a Promise object, that is fulfilled with the value, or rejected with a {\ttfamily Validation\+Error}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{value\ =\ await\ schema.validate(\{\ name:\ 'jimmy',\ age:\ 24\ \});}
+
+\end{DoxyCode}
+
+
+Provide {\ttfamily options} to more specifically control the behavior of {\ttfamily validate}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{interface\ Options\ \{}
+\DoxyCodeLine{\ \ //\ when\ true,\ parsing\ is\ skipped\ and\ the\ input\ is\ validated\ "{}as-\/is"{}}
+\DoxyCodeLine{\ \ strict:\ boolean\ =\ false;}
+\DoxyCodeLine{\ \ //\ Throw\ on\ the\ first\ error\ or\ collect\ and\ return\ all}
+\DoxyCodeLine{\ \ abortEarly:\ boolean\ =\ true;}
+\DoxyCodeLine{\ \ //\ Remove\ unspecified\ keys\ from\ objects}
+\DoxyCodeLine{\ \ stripUnknown:\ boolean\ =\ false;}
+\DoxyCodeLine{\ \ //\ when\ \`{}false`\ validations\ will\ be\ performed\ shallowly}
+\DoxyCodeLine{\ \ recursive:\ boolean\ =\ true;}
+\DoxyCodeLine{\ \ //\ External\ values\ that\ can\ be\ provided\ to\ validations\ and\ conditionals}
+\DoxyCodeLine{\ \ context?:\ object;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14421}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+validate\+Sync(value\+: any, options?\+: object)\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+validate\+Sync(value\+: any, options?\+: object)\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14421}
+Runs validatations synchronously {\itshape if possible} and returns the resulting value, or throws a Validation\+Error. Accepts all the same options as {\ttfamily validate}.
+
+Synchronous validation only works if there are no configured async tests, e.\+g tests that return a Promise. For instance this will work\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ number().test(}
+\DoxyCodeLine{\ \ 'is-\/42',}
+\DoxyCodeLine{\ \ "{}this\ isn't\ the\ number\ i\ want"{},}
+\DoxyCodeLine{\ \ (value)\ =>\ value\ !=\ 42,}
+\DoxyCodeLine{);}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.validateSync(23);\ //\ throws\ ValidationError}
+
+\end{DoxyCode}
+
+
+however this will not\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ number().test('is-\/42',\ "{}this\ isn't\ the\ number\ i\ want"{},\ (value)\ =>}
+\DoxyCodeLine{\ \ Promise.resolve(value\ !=\ 42),}
+\DoxyCodeLine{);}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.validateSync(42);\ //\ throws\ Error}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14422}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+validate\+At(path\+: string, value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}, Validation\+Error\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+validate\+At(path\+: string, value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}, Validation\+Error\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14422}
+Validate a deeply nested path within the schema. Similar to how {\ttfamily reach} works, but uses the resulting schema as the subject for validation.
+
+\begin{quote}
+Note! The {\ttfamily value} here is the {\itshape root} value relative to the starting schema, not the value at the nested path. \end{quote}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ foo:\ array().of(}
+\DoxyCodeLine{\ \ \ \ object(\{}
+\DoxyCodeLine{\ \ \ \ \ \ loose:\ boolean(),}
+\DoxyCodeLine{\ \ \ \ \ \ bar:\ string().when('loose',\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ is:\ true,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ otherwise:\ (schema)\ =>\ schema.strict(),}
+\DoxyCodeLine{\ \ \ \ \ \ \}),}
+\DoxyCodeLine{\ \ \ \ \}),}
+\DoxyCodeLine{\ \ ),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ rootValue\ =\ \{}
+\DoxyCodeLine{\ \ foo:\ [\{\ bar:\ 1\ \},\ \{\ bar:\ 1,\ loose:\ true\ \}],}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validateAt('foo[0].bar',\ rootValue);\ //\ =>\ ValidationError:\ must\ be\ a\ string}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validateAt('foo[1].bar',\ rootValue);\ //\ =>\ '1'}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14423}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+validate\+Sync\+At(path\+: string, value\+: any, options?\+: object)\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+validate\+Sync\+At(path\+: string, value\+: any, options?\+: object)\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14423}
+Same as {\ttfamily validate\+At} but synchronous.\hypertarget{README.md_autotoc_md14424}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+is\+Valid(value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}boolean\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+is\+Valid(value\+: any, options?\+: object)\+: Promise\texorpdfstring{$<$}{<}boolean\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14424}
+Returns {\ttfamily true} when the passed in value matches the schema. {\ttfamily is\+Valid} is {\bfseries{asynchronous}} and returns a Promise object.
+
+Takes the same options as {\ttfamily validate()}.\hypertarget{README.md_autotoc_md14425}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+is\+Valid\+Sync(value\+: any, options?\+: object)\+: boolean}}{{\ttfamily Schema.\+is\+Valid\+Sync(value\+: any, options?\+: object)\+: boolean}}}\label{README.md_autotoc_md14425}
+Synchronously returns {\ttfamily true} when the passed in value matches the schema.
+
+Takes the same options as {\ttfamily validate\+Sync()} and has the same caveats around async tests.\hypertarget{README.md_autotoc_md14426}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+cast(value\+: any, options = \{\})\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+cast(value\+: any, options = \{\})\+: Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14426}
+Attempts to coerce the passed in value to a value that matches the schema. For example\+: `\textquotesingle{}5'{\ttfamily  will cast to }5{\ttfamily  when using the }number(){\ttfamily  type. Failed casts generally return }null{\ttfamily , but may also return results like }Na\+N\`{} and unexpected strings.
+
+Provide {\ttfamily options} to more specifically control the behavior of {\ttfamily validate}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{interface\ CastOptions<TContext\ extends\ \{\}>\ \{}
+\DoxyCodeLine{\ \ //\ Remove\ undefined\ properties\ from\ objects}
+\DoxyCodeLine{\ \ stripUnknown:\ boolean\ =\ false;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ //\ Throws\ a\ TypeError\ if\ casting\ doesn't\ produce\ a\ valid\ type}
+\DoxyCodeLine{\ \ //\ note\ that\ the\ TS\ return\ type\ is\ inaccurate\ when\ this\ is\ \`{}false`,\ use\ with\ caution}
+\DoxyCodeLine{\ \ assert?:\ boolean\ =\ true;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ //\ External\ values\ that\ used\ to\ resolve\ conditions\ and\ references}
+\DoxyCodeLine{\ \ context?:\ TContext;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14427}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+is\+Type(value\+: any)\+: value is Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}{{\ttfamily Schema.\+is\+Type(value\+: any)\+: value is Infer\+Type\texorpdfstring{$<$}{<}Schema\texorpdfstring{$>$}{>}}}}\label{README.md_autotoc_md14427}
+Runs a type check against the passed in {\ttfamily value}. It returns true if it matches, it does not cast the value. When {\ttfamily nullable()} is set {\ttfamily null} is considered a valid value of the type. You should use {\ttfamily is\+Type} for all Schema type checks.\hypertarget{README.md_autotoc_md14428}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+strict(enabled\+: boolean = false)\+: Schema}}{{\ttfamily Schema.\+strict(enabled\+: boolean = false)\+: Schema}}}\label{README.md_autotoc_md14428}
+Sets the {\ttfamily strict} option to {\ttfamily true}. Strict schemas skip coercion and transformation attempts, validating the value "{}as is"{}.\hypertarget{README.md_autotoc_md14429}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+strip(enabled\+: boolean = true)\+: Schema}}{{\ttfamily Schema.\+strip(enabled\+: boolean = true)\+: Schema}}}\label{README.md_autotoc_md14429}
+Marks a schema to be removed from an output object. Only works as a nested schema.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ useThis:\ number(),}
+\DoxyCodeLine{\ \ notThis:\ string().strip(),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(\{\ notThis:\ 'foo',\ useThis:\ 4\ \});\ //\ =>\ \{\ useThis:\ 4\ \}}
+
+\end{DoxyCode}
+
+
+Schema with {\ttfamily strip} enabled have an inferred type of {\ttfamily never}, allowing them to be removed from the overall type\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ useThis:\ number(),}
+\DoxyCodeLine{\ \ notThis:\ string().strip(),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>;\ /*}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ useThis?:\ number\ |\ undefined}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{*/}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14430}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+with\+Mutation(builder\+: (current\+: Schema) =\texorpdfstring{$>$}{>} void)\+: void}}{{\ttfamily Schema.\+with\+Mutation(builder\+: (current\+: Schema) =\texorpdfstring{$>$}{>} void)\+: void}}}\label{README.md_autotoc_md14430}
+First the legally required Rich Hickey quote\+:
+
+\begin{quote}
+If a tree falls in the woods, does it make a sound?
+
+If a pure function mutates some local data in order to produce an immutable return value, is that ok? \end{quote}
+
+
+{\ttfamily with\+Mutation} allows you to mutate the schema in place, instead of the default behavior which clones before each change. Generally this isn\textquotesingle{}t necessary since the vast majority of schema changes happen during the initial declaration, and only happen once over the lifetime of the schema, so performance isn\textquotesingle{}t an issue. However certain mutations {\itshape do} occur at cast/validation time, (such as conditional schema using \`{}when()\`{}), or when instantiating a schema object.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{object()}
+\DoxyCodeLine{\ \ .shape(\{\ key:\ string()\ \})}
+\DoxyCodeLine{\ \ .withMutation((schema)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ return\ arrayOfObjectTests.forEach((test)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ schema.test(test);}
+\DoxyCodeLine{\ \ \ \ \});}
+\DoxyCodeLine{\ \ \});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14431}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+default(value\+: any)\+: Schema}}{{\ttfamily Schema.\+default(value\+: any)\+: Schema}}}\label{README.md_autotoc_md14431}
+Sets a default value to use when the value is {\ttfamily undefined}. Defaults are created after transformations are executed, but before validations, to help ensure that safe defaults are specified. The default value will be cloned on each use, which can incur performance penalty for objects and arrays. To avoid this overhead you can also pass a function that returns a new default. Note that {\ttfamily null} is considered a separate non-\/empty value.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{yup.string.default('nothing');}
+\DoxyCodeLine{}
+\DoxyCodeLine{yup.object.default(\{\ number:\ 5\ \});\ //\ object\ will\ be\ cloned\ every\ time\ a\ default\ is\ needed}
+\DoxyCodeLine{}
+\DoxyCodeLine{yup.object.default(()\ =>\ (\{\ number:\ 5\ \}));\ //\ this\ is\ cheaper}
+\DoxyCodeLine{}
+\DoxyCodeLine{yup.date.default(()\ =>\ new\ Date());\ //\ also\ helpful\ for\ defaults\ that\ change\ over\ time}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14432}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+get\+Default(options?\+: object)\+: Any}}{{\ttfamily Schema.\+get\+Default(options?\+: object)\+: Any}}}\label{README.md_autotoc_md14432}
+Retrieve a previously set default value. {\ttfamily get\+Default} will resolve any conditions that may alter the default. Optionally pass {\ttfamily options} with {\ttfamily context} (for more info on {\ttfamily context} see {\ttfamily Schema.\+validate}).\hypertarget{README.md_autotoc_md14433}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+nullable(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily Schema.\+nullable(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14433}
+Indicates that {\ttfamily null} is a valid value for the schema. Without {\ttfamily nullable()} {\ttfamily null} is treated as a different type and will fail {\ttfamily Schema.\+is\+Type()} checks.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ number().nullable();}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(null);\ //\ null}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>;\ //\ number\ |\ null}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14434}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+non\+Nullable(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily Schema.\+non\+Nullable(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14434}
+The opposite of {\ttfamily nullable}, removes {\ttfamily null} from valid type values for the schema. {\bfseries{Schema are non nullable by default}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ number().nonNullable();}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(null);\ //\ TypeError}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>;\ //\ number}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14435}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+defined()\+: Schema}}{{\ttfamily Schema.\+defined()\+: Schema}}}\label{README.md_autotoc_md14435}
+Require a value for the schema. All field values apart from {\ttfamily undefined} meet this requirement.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ string().defined();}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(undefined);\ //\ TypeError}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>;\ //\ string}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14436}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+optional()\+: Schema}}{{\ttfamily Schema.\+optional()\+: Schema}}}\label{README.md_autotoc_md14436}
+The opposite of {\ttfamily defined()} allows {\ttfamily undefined} values for the given type.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ string().optional();}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(undefined);\ //\ undefined}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>;\ //\ string\ |\ undefined}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14437}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+required(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily Schema.\+required(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14437}
+Mark the schema as required, which will not allow {\ttfamily undefined} or {\ttfamily null} as a value. {\ttfamily required} negates the effects of calling {\ttfamily optional()} and {\ttfamily nullable()}
+
+\begin{quote}
+Watch out! \`{}string().required\`{}) works a little different and additionally prevents empty string values (`'\textquotesingle{}{\ttfamily ) when required. \texorpdfstring{$<$}{<}/blockquote\texorpdfstring{$>$}{>}\textbackslash{}ilinebr @subsubsection autotoc\+\_\+md14438 }Schema.\+not\+Required()\+: Schema\`{}
+
+Mark the schema as not required. This is a shortcut for {\ttfamily schema.\+nullable().optional()};
+
+\end{quote}
+\hypertarget{README.md_autotoc_md14439}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+type\+Error(message\+: string)\+: Schema}}{{\ttfamily Schema.\+type\+Error(message\+: string)\+: Schema}}}\label{README.md_autotoc_md14439}
+Define an error message for failed type checks. The {\ttfamily \$\{value\}} and {\ttfamily \$\{type\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14440}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+one\+Of(array\+Of\+Values\+: Array\texorpdfstring{$<$}{<}any\texorpdfstring{$>$}{>}, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema} Alias\+: {\ttfamily equals}}{{\ttfamily Schema.\+one\+Of(array\+Of\+Values\+: Array\texorpdfstring{$<$}{<}any\texorpdfstring{$>$}{>}, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema} Alias\+: {\ttfamily equals}}}\label{README.md_autotoc_md14440}
+Only allow values from set of values. Values added are removed from any {\ttfamily not\+One\+Of} values if present. The {\ttfamily \$\{values\}} interpolation can be used in the {\ttfamily message} argument. If a ref or refs are provided, the {\ttfamily \$\{resolved\}} interpolation can be used in the message argument to get the resolved values that were checked at validation time.
+
+Note that {\ttfamily undefined} does not fail this validator, even when {\ttfamily undefined} is not included in {\ttfamily array\+Of\+Values}. If you don\textquotesingle{}t want {\ttfamily undefined} to be a valid value, you can use {\ttfamily Schema.\+required}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.mixed().oneOf(['jimmy',\ 42]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid(42);\ //\ =>\ true}
+\DoxyCodeLine{await\ schema.isValid('jimmy');\ //\ =>\ true}
+\DoxyCodeLine{await\ schema.isValid(new\ Date());\ //\ =>\ false}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14441}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+not\+One\+Of(array\+Of\+Values\+: Array\texorpdfstring{$<$}{<}any\texorpdfstring{$>$}{>}, message?\+: string \texorpdfstring{$\vert$}{|} function)}}{{\ttfamily Schema.\+not\+One\+Of(array\+Of\+Values\+: Array\texorpdfstring{$<$}{<}any\texorpdfstring{$>$}{>}, message?\+: string \texorpdfstring{$\vert$}{|} function)}}}\label{README.md_autotoc_md14441}
+Disallow values from a set of values. Values added are removed from {\ttfamily one\+Of} values if present. The {\ttfamily \$\{values\}} interpolation can be used in the {\ttfamily message} argument. If a ref or refs are provided, the {\ttfamily \$\{resolved\}} interpolation can be used in the message argument to get the resolved values that were checked at validation time.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.mixed().notOneOf(['jimmy',\ 42]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid(42);\ //\ =>\ false}
+\DoxyCodeLine{await\ schema.isValid(new\ Date());\ //\ =>\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14442}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+when(keys\+: string \texorpdfstring{$\vert$}{|} string\mbox{[}\mbox{]}, builder\+: object \texorpdfstring{$\vert$}{|} (values\+: any\mbox{[}\mbox{]}, schema) =\texorpdfstring{$>$}{>} Schema)\+: Schema}}{{\ttfamily Schema.\+when(keys\+: string \texorpdfstring{$\vert$}{|} string\mbox{[}\mbox{]}, builder\+: object \texorpdfstring{$\vert$}{|} (values\+: any\mbox{[}\mbox{]}, schema) =\texorpdfstring{$>$}{>} Schema)\+: Schema}}}\label{README.md_autotoc_md14442}
+Adjust the schema based on a sibling or sibling children fields. You can provide an object literal where the key {\ttfamily is} is value or a matcher function, {\ttfamily then} provides the true schema and/or {\ttfamily otherwise} for the failure condition.
+
+{\ttfamily is} conditions are strictly compared ({\ttfamily ===}) if you want to use a different form of equality you can provide a function like\+: {\ttfamily is\+: (value) =\texorpdfstring{$>$}{>} value == true}.
+
+You can also prefix properties with {\ttfamily \$} to specify a property that is dependent on {\ttfamily context} passed in by {\ttfamily validate()} or {\ttfamily cast} instead of the input value.
+
+{\ttfamily when} conditions are additive.
+
+{\ttfamily then} and {\ttfamily otherwise} are specified functions {\ttfamily (schema\+: Schema) =\texorpdfstring{$>$}{>} Schema}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ isBig:\ boolean(),}
+\DoxyCodeLine{\ \ count:\ number()}
+\DoxyCodeLine{\ \ \ \ .when('isBig',\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ is:\ true,\ //\ alternatively:\ (val)\ =>\ val\ ==\ true}
+\DoxyCodeLine{\ \ \ \ \ \ then:\ (schema)\ =>\ schema.min(5),}
+\DoxyCodeLine{\ \ \ \ \ \ otherwise:\ (schema)\ =>\ schema.min(0),}
+\DoxyCodeLine{\ \ \ \ \})}
+\DoxyCodeLine{\ \ \ \ .when('\$other',\ ([other],\ schema)\ =>}
+\DoxyCodeLine{\ \ \ \ \ \ other\ ===\ 4\ ?\ schema.max(6)\ :\ schema,}
+\DoxyCodeLine{\ \ \ \ ),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validate(value,\ \{\ context:\ \{\ other:\ 4\ \}\ \});}
+
+\end{DoxyCode}
+
+
+You can also specify more than one dependent key, in which case each value will be spread as an argument.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ isSpecial:\ boolean(),}
+\DoxyCodeLine{\ \ isBig:\ boolean(),}
+\DoxyCodeLine{\ \ count:\ number().when(['isBig',\ 'isSpecial'],\ \{}
+\DoxyCodeLine{\ \ \ \ is:\ true,\ //\ alternatively:\ (isBig,\ isSpecial)\ =>\ isBig\ \&\&\ isSpecial}
+\DoxyCodeLine{\ \ \ \ then:\ (schema)\ =>\ schema.min(5),}
+\DoxyCodeLine{\ \ \ \ otherwise:\ (schema)\ =>\ schema.min(0),}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validate(\{}
+\DoxyCodeLine{\ \ isBig:\ true,}
+\DoxyCodeLine{\ \ isSpecial:\ true,}
+\DoxyCodeLine{\ \ count:\ 10,}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+
+
+Alternatively you can provide a function that returns a schema, called with an array of values for each provided key the current schema.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.object(\{}
+\DoxyCodeLine{\ \ isBig:\ yup.boolean(),}
+\DoxyCodeLine{\ \ count:\ yup.number().when('isBig',\ ([isBig],\ schema)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ return\ isBig\ ?\ schema.min(5)\ :\ schema.min(0);}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validate(\{\ isBig:\ false,\ count:\ 4\ \});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14443}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+test(name\+: string, message\+: string \texorpdfstring{$\vert$}{|} function \texorpdfstring{$\vert$}{|} any, test\+: function)\+: Schema}}{{\ttfamily Schema.\+test(name\+: string, message\+: string \texorpdfstring{$\vert$}{|} function \texorpdfstring{$\vert$}{|} any, test\+: function)\+: Schema}}}\label{README.md_autotoc_md14443}
+Adds a test function to the validation chain. Tests are run after any object is cast. Many types have some tests built in, but you can create custom ones easily. In order to allow asynchronous custom validations {\itshape all} (or no) tests are run asynchronously. A consequence of this is that test execution order cannot be guaranteed.
+
+All tests must provide a {\ttfamily name}, an error {\ttfamily message} and a validation function that must return {\ttfamily true} when the current {\ttfamily value} is valid and {\ttfamily false} or a {\ttfamily Validation\+Error} otherwise. To make a test async return a promise that resolves {\ttfamily true} or {\ttfamily false} or a {\ttfamily Validation\+Error}.
+
+For the {\ttfamily message} argument you can provide a string which will interpolate certain values if specified using the {\ttfamily \$\{param\}} syntax. By default all test messages are passed a {\ttfamily path} value which is valuable in nested schemas.
+
+The {\ttfamily test} function is called with the current {\ttfamily value}. For more advanced validations you can use the alternate signature to provide more options (see below)\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ jimmySchema\ =\ string().test(}
+\DoxyCodeLine{\ \ 'is-\/jimmy',}
+\DoxyCodeLine{\ \ '\$\{path\}\ is\ not\ Jimmy',}
+\DoxyCodeLine{\ \ (value,\ context)\ =>\ value\ ===\ 'jimmy',}
+\DoxyCodeLine{);}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ or\ make\ it\ async\ by\ returning\ a\ promise}
+\DoxyCodeLine{let\ asyncJimmySchema\ =\ string()}
+\DoxyCodeLine{\ \ .label('First\ name')}
+\DoxyCodeLine{\ \ .test(}
+\DoxyCodeLine{\ \ \ \ 'is-\/jimmy',}
+\DoxyCodeLine{\ \ \ \ (\{\ label\ \})\ =>\ \`{}\$\{label\}\ is\ not\ Jimmy`,\ //\ a\ message\ can\ also\ be\ a\ function}
+\DoxyCodeLine{\ \ \ \ async\ (value,\ testContext)\ =>}
+\DoxyCodeLine{\ \ \ \ \ \ (await\ fetch('/is-\/jimmy/'\ +\ value)).responseText\ ===\ 'true',}
+\DoxyCodeLine{\ \ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid('jimmy');\ //\ =>\ true}
+\DoxyCodeLine{await\ schema.isValid('john');\ //\ =>\ false}
+
+\end{DoxyCode}
+
+
+Test functions are called with a special context value, as the second argument, that exposes some useful metadata and functions. For non arrow functions, the test context is also set as the function {\ttfamily this}. Watch out, if you access it via {\ttfamily this} it won\textquotesingle{}t work in an arrow function.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily test\+Context.\+path}\+: the string path of the current validation
+\item {\ttfamily test\+Context.\+schema}\+: the resolved schema object that the test is running against.
+\item {\ttfamily test\+Context.\+options}\+: the {\ttfamily options} object that validate() or is\+Valid() was called with
+\item {\ttfamily test\+Context.\+parent}\+: in the case of nested schema, this is the value of the parent object
+\item {\ttfamily test\+Context.\+original\+Value}\+: the original value that is being tested
+\item {\ttfamily test\+Context.\+create\+Error(Object\+: \{ path\+: String, message\+: String, params\+: Object \})}\+: create and return a validation error. Useful for dynamically setting the {\ttfamily path}, {\ttfamily params}, or more likely, the error {\ttfamily message}. If either option is omitted it will use the current path, or default message.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md14444}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+test(options\+: object)\+: Schema}}{{\ttfamily Schema.\+test(options\+: object)\+: Schema}}}\label{README.md_autotoc_md14444}
+Alternative {\ttfamily test(..)} signature. {\ttfamily options} is an object containing some of the following options\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Options\ =\ \{}
+\DoxyCodeLine{\ \ //\ unique\ name\ identifying\ the\ test}
+\DoxyCodeLine{\ \ name:\ string;}
+\DoxyCodeLine{\ \ //\ test\ function,\ determines\ schema\ validity}
+\DoxyCodeLine{\ \ test:\ (value:\ any)\ =>\ boolean;}
+\DoxyCodeLine{\ \ //\ the\ validation\ error\ message}
+\DoxyCodeLine{\ \ message:\ string;}
+\DoxyCodeLine{\ \ //\ values\ passed\ to\ message\ for\ interpolation}
+\DoxyCodeLine{\ \ params:\ ?object;}
+\DoxyCodeLine{\ \ //\ mark\ the\ test\ as\ exclusive,\ meaning\ only\ one\ test\ of\ the\ same\ name\ can\ be\ active\ at\ once}
+\DoxyCodeLine{\ \ exclusive:\ boolean\ =\ false;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+In the case of mixing exclusive and non-\/exclusive tests the following logic is used. If a non-\/exclusive test is added to a schema with an exclusive test of the same name the exclusive test is removed and further tests of the same name will be stacked.
+
+If an exclusive test is added to a schema with non-\/exclusive tests of the same name the previous tests are removed and further tests of the same name will replace each other.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ max\ =\ 64;}
+\DoxyCodeLine{let\ schema\ =\ yup.string().test(\{}
+\DoxyCodeLine{\ \ name:\ 'max',}
+\DoxyCodeLine{\ \ exclusive:\ true,}
+\DoxyCodeLine{\ \ params:\ \{\ max\ \},}
+\DoxyCodeLine{\ \ message:\ '\$\{path\}\ must\ be\ less\ than\ \$\{max\}\ characters',}
+\DoxyCodeLine{\ \ test:\ (value)\ =>\ value\ ==\ null\ ||\ value.length\ <=\ max,}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14445}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily Schema.\+transform((current\+Value\+: any, original\+Value\+: any) =\texorpdfstring{$>$}{>} any)\+: Schema}}{{\ttfamily Schema.\+transform((current\+Value\+: any, original\+Value\+: any) =\texorpdfstring{$>$}{>} any)\+: Schema}}}\label{README.md_autotoc_md14445}
+Adds a transformation to the transform chain. Transformations are central to the casting process, default transforms for each type coerce values to the specific type (as verified by \`{}is\+Type()\`{}). transforms are run before validations and only applied when the schema is not marked as {\ttfamily strict} (the default). Some types have built in transformations.
+
+Transformations are useful for arbitrarily altering how the object is cast, {\bfseries{however, you should take care not to mutate the passed in value.}} Transforms are run sequentially so each {\ttfamily value} represents the current state of the cast, you can use the {\ttfamily original\+Value} param if you need to work on the raw initial value.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ string().transform((value,\ originalValue)\ =>\ \{}
+\DoxyCodeLine{\ \ return\ this.isType(value)\ \&\&\ value\ !==\ null\ ?\ value.toUpperCase()\ :\ value;}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast('jimmy');\ //\ =>\ 'JIMMY'}
+
+\end{DoxyCode}
+
+
+Each types will handle basic coercion of values to the proper type for you, but occasionally you may want to adjust or refine the default behavior. For example, if you wanted to use a different date parsing strategy than the default one you could do that with a transform.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{module.exports\ =\ function\ (formats\ =\ 'MMM\ dd,\ yyyy')\ \{}
+\DoxyCodeLine{\ \ return\ date().transform((value,\ originalValue,\ context)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ //\ check\ to\ see\ if\ the\ previous\ transform\ already\ parsed\ the\ date}
+\DoxyCodeLine{\ \ \ \ if\ (context.isType(value))\ return\ value;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ the\ default\ coercion\ failed\ so\ let's\ try\ it\ with\ Moment.js\ instead}
+\DoxyCodeLine{\ \ \ \ value\ =\ Moment(originalValue,\ formats);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ //\ if\ it's\ valid\ return\ the\ date\ object,\ otherwise\ return\ an\ \`{}InvalidDate`}
+\DoxyCodeLine{\ \ \ \ return\ value.isValid()\ ?\ value.toDate()\ :\ new\ Date('');}
+\DoxyCodeLine{\ \ \});}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14446}{}\doxysubsubsection{\texorpdfstring{mixed}{mixed}}\label{README.md_autotoc_md14446}
+Creates a schema that matches all types, or just the ones you configure. Inherits from \`{}\+Schema\`{}. Mixed types extends {\ttfamily \{\}} by default instead of {\ttfamily any} or {\ttfamily unknown}. This is because in Type\+Script {\ttfamily \{\}} means anything that isn\textquotesingle{}t {\ttfamily null} or {\ttfamily undefined} which yup treats distinctly.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ mixed,\ InferType\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ schema\ =\ mixed().nullable();}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.validateSync('string');\ //\ 'string';}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.validateSync(1);\ //\ 1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.validateSync(new\ Date());\ //\ Date;}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>;\ //\ \{\}\ |\ undefined}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema.nullable().defined()>;\ //\ \{\}\ |\ null}
+
+\end{DoxyCode}
+
+
+Custom types can be implemented by passing a type {\ttfamily check} function. This will also narrow the Type\+Script type for the schema.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ mixed,\ InferType\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ objectIdSchema\ =\ yup}
+\DoxyCodeLine{\ \ .mixed((input):\ input\ is\ ObjectId\ =>\ input\ instanceof\ ObjectId)}
+\DoxyCodeLine{\ \ .transform((value:\ any,\ input,\ ctx)\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ if\ (ctx.isType(value))\ return\ value;}
+\DoxyCodeLine{\ \ \ \ return\ new\ ObjectId(value);}
+\DoxyCodeLine{\ \ \});}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ objectIdSchema.validate(ObjectId('507f1f77bcf86cd799439011'));\ //\ ObjectId("{}507f1f77bcf86cd799439011"{})}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ objectIdSchema.validate('507f1f77bcf86cd799439011');\ //\ ObjectId("{}507f1f77bcf86cd799439011"{})}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ objectIdSchema>;\ //\ ObjectId}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14447}{}\doxysubsubsection{\texorpdfstring{string}{string}}\label{README.md_autotoc_md14447}
+Define a string schema. Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.string();}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid('hello');\ //\ =>\ true}
+
+\end{DoxyCode}
+
+
+By default, the {\ttfamily cast} logic of {\ttfamily string} is to call {\ttfamily to\+String} on the value if it exists.
+
+empty values are not coerced (use {\ttfamily ensure()} to coerce empty values to empty strings).
+
+Failed casts return the input value.\hypertarget{README.md_autotoc_md14448}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+required(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+required(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14448}
+The same as the {\ttfamily mixed()} schema required, {\bfseries{except}} that empty strings are also considered \textquotesingle{}missing\textquotesingle{} values.\hypertarget{README.md_autotoc_md14449}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+length(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+length(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14449}
+Set a required length for the string value. The {\ttfamily \$\{length\}} interpolation can be used in the {\ttfamily message} argument\hypertarget{README.md_autotoc_md14450}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14450}
+Set a minimum length limit for the string value. The {\ttfamily \$\{min\}} interpolation can be used in the {\ttfamily message} argument\hypertarget{README.md_autotoc_md14451}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14451}
+Set a maximum length limit for the string value. The {\ttfamily \$\{max\}} interpolation can be used in the {\ttfamily message} argument\hypertarget{README.md_autotoc_md14452}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+matches(regex\+: Regex, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+matches(regex\+: Regex, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14452}
+Provide an arbitrary {\ttfamily regex} to match the value against.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ string().matches(/(hi|bye)/);}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid('hi');\ //\ =>\ true}
+\DoxyCodeLine{await\ schema.isValid('nope');\ //\ =>\ false}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14453}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+matches(regex\+: Regex, options\+: \{ message\+: string, exclude\+Empty\+String\+: bool \})\+: Schema}}{{\ttfamily string.\+matches(regex\+: Regex, options\+: \{ message\+: string, exclude\+Empty\+String\+: bool \})\+: Schema}}}\label{README.md_autotoc_md14453}
+An alternate signature for {\ttfamily string.\+matches} with an options object. {\ttfamily exclude\+Empty\+String}, when true, short circuits the regex test when the value is an empty string, making it a easier to avoid matching nothing without complicating the regex.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ string().matches(/(hi|bye)/,\ \{\ excludeEmptyString:\ true\ \});}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid('');\ //\ =>\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14454}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+email(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+email(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14454}
+Validates the value as an email address using the same regex as defined by the HTML spec.
+
+WATCH OUT\+: Validating email addresses is nearly impossible with just code. Different clients and servers accept different things and many diverge from the various specs defining "{}valid"{} emails. The ONLY real way to validate an email address is to send a verification email to it and check that the user got it. With that in mind, yup picks a relatively simple regex that does not cover all cases, but aligns with browser input validation behavior since HTML forms are a common use case for yup.
+
+If you have more specific needs please override the email method with your own logic or regex\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{yup.addMethod(yup.string,\ 'email',\ function\ validateEmail(message)\ \{}
+\DoxyCodeLine{\ \ return\ this.matches(myEmailRegex,\ \{}
+\DoxyCodeLine{\ \ \ \ message,}
+\DoxyCodeLine{\ \ \ \ name:\ 'email',}
+\DoxyCodeLine{\ \ \ \ excludeEmptyString:\ true,}
+\DoxyCodeLine{\ \ \});}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14455}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+url(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+url(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14455}
+Validates the value as a valid URL via a regex.\hypertarget{README.md_autotoc_md14456}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+uuid(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+uuid(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14456}
+Validates the value as a valid UUID via a regex.\hypertarget{README.md_autotoc_md14457}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+datetime(options?\+: \{message?\+: string \texorpdfstring{$\vert$}{|} function, allow\+Offset?\+: boolean, precision?\+: number\})}}{{\ttfamily string.\+datetime(options?\+: \{message?\+: string \texorpdfstring{$\vert$}{|} function, allow\+Offset?\+: boolean, precision?\+: number\})}}}\label{README.md_autotoc_md14457}
+Validates the value as an ISO datetime via a regex. Defaults to UTC validation; timezone offsets are not permitted (see {\ttfamily options.\+allow\+Offset}).
+
+Unlike {\ttfamily .date()}, {\ttfamily datetime} will not convert the string to a {\ttfamily Date} object. {\ttfamily datetime} also provides greater customization over the required format of the datetime string than {\ttfamily date} does.
+
+{\ttfamily options.\+allow\+Offset}\+: Allow a time zone offset. False requires UTC \textquotesingle{}Z\textquotesingle{} timezone. {\itshape (default\+: false)} {\ttfamily options.\+precision}\+: Require a certain sub-\/second precision on the date. {\itshape (default\+: null -- any (or no) sub-\/second precision)}\hypertarget{README.md_autotoc_md14458}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+datetime(message?\+: string \texorpdfstring{$\vert$}{|} function)}}{{\ttfamily string.\+datetime(message?\+: string \texorpdfstring{$\vert$}{|} function)}}}\label{README.md_autotoc_md14458}
+An alternate signature for {\ttfamily string.\+datetime} that can be used when you don\textquotesingle{}t need to pass options other than {\ttfamily message}.\hypertarget{README.md_autotoc_md14459}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+ensure()\+: Schema}}{{\ttfamily string.\+ensure()\+: Schema}}}\label{README.md_autotoc_md14459}
+Transforms {\ttfamily undefined} and {\ttfamily null} values to an empty string along with setting the {\ttfamily default} to an empty string.\hypertarget{README.md_autotoc_md14460}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+trim(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+trim(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14460}
+Transforms string values by removing leading and trailing whitespace. If {\ttfamily strict()} is set it will only validate that the value is trimmed.\hypertarget{README.md_autotoc_md14461}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+lowercase(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+lowercase(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14461}
+Transforms the string value to lowercase. If {\ttfamily strict()} is set it will only validate that the value is lowercase.\hypertarget{README.md_autotoc_md14462}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily string.\+uppercase(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily string.\+uppercase(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14462}
+Transforms the string value to uppercase. If {\ttfamily strict()} is set it will only validate that the value is uppercase.\hypertarget{README.md_autotoc_md14463}{}\doxysubsubsection{\texorpdfstring{number}{number}}\label{README.md_autotoc_md14463}
+Define a number schema. Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.number();}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid(10);\ //\ =>\ true}
+
+\end{DoxyCode}
+
+
+The default {\ttfamily cast} logic of {\ttfamily number} is\+: \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat}{\texttt{{\ttfamily parse\+Float}}}.
+
+Failed casts return {\ttfamily NaN}.\hypertarget{README.md_autotoc_md14464}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14464}
+Set the minimum value allowed. The {\ttfamily \$\{min\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14465}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14465}
+Set the maximum value allowed. The {\ttfamily \$\{max\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14466}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+less\+Than(max\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+less\+Than(max\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14466}
+Value must be less than {\ttfamily max}. The {\ttfamily \$\{less\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14467}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+more\+Than(min\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+more\+Than(min\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14467}
+Value must be strictly greater than {\ttfamily min}. The {\ttfamily \$\{more\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14468}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+positive(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+positive(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14468}
+Value must be a positive number.\hypertarget{README.md_autotoc_md14469}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+negative(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+negative(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14469}
+Value must be a negative number.\hypertarget{README.md_autotoc_md14470}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+integer(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily number.\+integer(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14470}
+Validates that a number is an integer.\hypertarget{README.md_autotoc_md14471}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily number.\+truncate()\+: Schema}}{{\ttfamily number.\+truncate()\+: Schema}}}\label{README.md_autotoc_md14471}
+Transformation that coerces the value to an integer by stripping off the digits to the right of the decimal point.\hypertarget{README.md_autotoc_md14472}{}\doxysubsubsubsection{\texorpdfstring{`number.\+round(type\+: \textquotesingle{}floor' \texorpdfstring{$\vert$}{|} \textquotesingle{}ceil\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}trunc\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}round\textquotesingle{} = \textquotesingle{}round\textquotesingle{})\+: Schema\`{}}{`number.\+round(type\+: \textquotesingle{}floor' \texorpdfstring{$\vert$}{|} \textquotesingle{}ceil\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}trunc\textquotesingle{} \texorpdfstring{$\vert$}{|} \textquotesingle{}round\textquotesingle{} = \textquotesingle{}round\textquotesingle{})\+: Schema\`{}}}\label{README.md_autotoc_md14472}
+Adjusts the value via the specified method of {\ttfamily Math} (defaults to \textquotesingle{}round\textquotesingle{}).\hypertarget{README.md_autotoc_md14473}{}\doxysubsubsection{\texorpdfstring{boolean}{boolean}}\label{README.md_autotoc_md14473}
+Define a boolean schema. Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.boolean();}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid(true);\ //\ =>\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14474}{}\doxysubsubsection{\texorpdfstring{date}{date}}\label{README.md_autotoc_md14474}
+Define a Date schema. By default ISO date strings will parse correctly, for more robust parsing options see the extending schema types at the end of the readme. Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.date();}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid(new\ Date());\ //\ =>\ true}
+
+\end{DoxyCode}
+
+
+The default {\ttfamily cast} logic of {\ttfamily date} is pass the value to the {\ttfamily Date} constructor, failing that, it will attempt to parse the date as an ISO date string.
+
+\begin{quote}
+If you would like ISO strings to not be cast to a {\ttfamily Date} object, use {\ttfamily .datetime()} instead. \end{quote}
+
+
+Failed casts return an invalid Date.\hypertarget{README.md_autotoc_md14475}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily date.\+min(limit\+: Date \texorpdfstring{$\vert$}{|} string \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily date.\+min(limit\+: Date \texorpdfstring{$\vert$}{|} string \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14475}
+Set the minimum date allowed. When a string is provided it will attempt to cast to a date first and use the result as the limit.\hypertarget{README.md_autotoc_md14476}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily date.\+max(limit\+: Date \texorpdfstring{$\vert$}{|} string \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily date.\+max(limit\+: Date \texorpdfstring{$\vert$}{|} string \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14476}
+Set the maximum date allowed, When a string is provided it will attempt to cast to a date first and use the result as the limit.\hypertarget{README.md_autotoc_md14477}{}\doxysubsubsection{\texorpdfstring{array}{array}}\label{README.md_autotoc_md14477}
+Define an array schema. Arrays can be typed or not, When specifying the element type, {\ttfamily cast} and {\ttfamily is\+Valid} will apply to the elements as well. Options passed into {\ttfamily is\+Valid} are also passed to child schemas.
+
+Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ yup.array().of(yup.number().min(2));}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.isValid([2,\ 3]);\ //\ =>\ true}
+\DoxyCodeLine{await\ schema.isValid([1,\ -\/24]);\ //\ =>\ false}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(['2',\ '3']);\ //\ =>\ [2,\ 3]}
+
+\end{DoxyCode}
+
+
+You can also pass a subtype schema to the array constructor as a convenience.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{array().of(yup.number());}
+\DoxyCodeLine{//\ or}
+\DoxyCodeLine{array(yup.number());}
+
+\end{DoxyCode}
+
+
+Arrays have no default casting behavior.\hypertarget{README.md_autotoc_md14478}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+of(type\+: Schema)\+: this}}{{\ttfamily array.\+of(type\+: Schema)\+: this}}}\label{README.md_autotoc_md14478}
+Specify the schema of array elements. {\ttfamily of()} is optional and when omitted the array schema will not validate its contents.\hypertarget{README.md_autotoc_md14479}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+json()\+: this}}{{\ttfamily array.\+json()\+: this}}}\label{README.md_autotoc_md14479}
+Attempt to parse input string values as JSON using \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse}{\texttt{{\ttfamily JSON.\+parse}}}.\hypertarget{README.md_autotoc_md14480}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+length(length\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this}}{{\ttfamily array.\+length(length\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this}}}\label{README.md_autotoc_md14480}
+Set a specific length requirement for the array. The {\ttfamily \$\{length\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14481}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this}}{{\ttfamily array.\+min(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this}}}\label{README.md_autotoc_md14481}
+Set a minimum length limit for the array. The {\ttfamily \$\{min\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14482}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this}}{{\ttfamily array.\+max(limit\+: number \texorpdfstring{$\vert$}{|} Ref, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: this}}}\label{README.md_autotoc_md14482}
+Set a maximum length limit for the array. The {\ttfamily \$\{max\}} interpolation can be used in the {\ttfamily message} argument.\hypertarget{README.md_autotoc_md14483}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+ensure()\+: this}}{{\ttfamily array.\+ensure()\+: this}}}\label{README.md_autotoc_md14483}
+Ensures that the value is an array, by setting the default to {\ttfamily \mbox{[}\mbox{]}} and transforming {\ttfamily null} and {\ttfamily undefined} values to an empty array as well. Any non-\/empty, non-\/array value will be wrapped in an array.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{array().ensure().cast(null);\ //\ =>\ []}
+\DoxyCodeLine{array().ensure().cast(1);\ //\ =>\ [1]}
+\DoxyCodeLine{array().ensure().cast([1]);\ //\ =>\ [1]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14484}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily array.\+compact(rejector\+: (value) =\texorpdfstring{$>$}{>} boolean)\+: Schema}}{{\ttfamily array.\+compact(rejector\+: (value) =\texorpdfstring{$>$}{>} boolean)\+: Schema}}}\label{README.md_autotoc_md14484}
+Removes falsey values from the array. Providing a rejecter function lets you specify the rejection criteria yourself.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{array().compact().cast(['',\ 1,\ 0,\ 4,\ false,\ null]);\ //\ =>\ [1,\ 4]}
+\DoxyCodeLine{}
+\DoxyCodeLine{array()}
+\DoxyCodeLine{\ \ .compact(function\ (v)\ \{}
+\DoxyCodeLine{\ \ \ \ return\ v\ ==\ null;}
+\DoxyCodeLine{\ \ \})}
+\DoxyCodeLine{\ \ .cast(['',\ 1,\ 0,\ 4,\ false,\ null]);\ //\ =>\ ['',\ 1,\ 0,\ 4,\ false]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14485}{}\doxysubsubsection{\texorpdfstring{tuple}{tuple}}\label{README.md_autotoc_md14485}
+Tuples, are fixed length arrays where each item has a distinct type.
+
+Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ tuple,\ string,\ number,\ InferType\ \}\ from\ 'yup';}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ schema\ =\ tuple([}
+\DoxyCodeLine{\ \ string().label('name'),}
+\DoxyCodeLine{\ \ number().label('age').positive().integer(),}
+\DoxyCodeLine{]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validate(['James',\ 3]);\ //\ ['James',\ 3]}
+\DoxyCodeLine{}
+\DoxyCodeLine{await\ schema.validate(['James',\ -\/24]);\ //\ =>\ ValidationError:\ age\ must\ be\ a\ positive\ number}
+\DoxyCodeLine{}
+\DoxyCodeLine{InferType<typeof\ schema>\ //\ [string,\ number]\ |\ undefined}
+
+\end{DoxyCode}
+
+
+tuples have no default casting behavior.\hypertarget{README.md_autotoc_md14486}{}\doxysubsubsection{\texorpdfstring{object}{object}}\label{README.md_autotoc_md14486}
+Define an object schema. Options passed into {\ttfamily is\+Valid} are also passed to child schemas. Inherits from \`{}\+Schema\`{}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{yup.object(\{}
+\DoxyCodeLine{\ \ name:\ string().required(),}
+\DoxyCodeLine{\ \ age:\ number().required().positive().integer(),}
+\DoxyCodeLine{\ \ email:\ string().email(),}
+\DoxyCodeLine{\ \ website:\ string().url(),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+
+
+object schema do not have any default transforms applied.\hypertarget{README.md_autotoc_md14487}{}\doxysubsubsubsection{\texorpdfstring{Object schema defaults}{Object schema defaults}}\label{README.md_autotoc_md14487}
+Object schema come with a default value already set, which "{}builds"{} out the object shape, a sets any defaults for fields\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ name:\ string().default(''),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.default();\ //\ -\/>\ \{\ name:\ ''\ \}}
+
+\end{DoxyCode}
+
+
+This may be a bit surprising, but is usually helpful since it allows large, nested schema to create default values that fill out the whole shape and not just the root object. There is one gotcha! though. For nested object schema that are optional but include non optional fields may fail in unexpected ways\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ id:\ string().required(),}
+\DoxyCodeLine{\ \ names:\ object(\{}
+\DoxyCodeLine{\ \ \ \ first:\ string().required(),}
+\DoxyCodeLine{\ \ \}),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.isValid(\{\ id:\ 1\ \});\ //\ false!\ names.first\ is\ required}
+
+\end{DoxyCode}
+
+
+This is because yup casts the input object before running validation which will produce\+:
+
+\begin{quote}
+`\{ id\+: \textquotesingle{}1', names\+: \{ first\+: undefined \}\}{\ttfamily  \texorpdfstring{$<$}{<}/blockquote\texorpdfstring{$>$}{>}\textbackslash{}ilinebr During the validation phase }names{\ttfamily  exists, and is validated, finding }names.\+first\`{} missing. If you wish to avoid this behavior do one of the following\+:
+
+
+\begin{DoxyItemize}
+\item Set the nested default to undefined\+: {\ttfamily names.\+default(undefined)}
+\item mark it nullable and default to null\+: {\ttfamily names.\+nullable().default(null)}
+\end{DoxyItemize}
+
+\end{quote}
+\hypertarget{README.md_autotoc_md14488}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+shape(fields\+: object, no\+Sort\+Edges?\+: Array\texorpdfstring{$<$}{<}\mbox{[}string, string\mbox{]}\texorpdfstring{$>$}{>})\+: Schema}}{{\ttfamily object.\+shape(fields\+: object, no\+Sort\+Edges?\+: Array\texorpdfstring{$<$}{<}\mbox{[}string, string\mbox{]}\texorpdfstring{$>$}{>})\+: Schema}}}\label{README.md_autotoc_md14488}
+Define the keys of the object and the schemas for said keys.
+
+Note that you can chain {\ttfamily shape} method, which acts like {\ttfamily Object.\+assign}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{object(\{}
+\DoxyCodeLine{\ \ a:\ string(),}
+\DoxyCodeLine{\ \ b:\ number(),}
+\DoxyCodeLine{\}).shape(\{}
+\DoxyCodeLine{\ \ b:\ string(),}
+\DoxyCodeLine{\ \ c:\ number(),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+
+
+would be exactly the same as\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{object(\{}
+\DoxyCodeLine{\ \ a:\ string(),}
+\DoxyCodeLine{\ \ b:\ string(),}
+\DoxyCodeLine{\ \ c:\ number(),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14489}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+json()\+: this}}{{\ttfamily object.\+json()\+: this}}}\label{README.md_autotoc_md14489}
+Attempt to parse input string values as JSON using \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse}{\texttt{{\ttfamily JSON.\+parse}}}.\hypertarget{README.md_autotoc_md14490}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+concat(schema\+B\+: Object\+Schema)\+: Object\+Schema}}{{\ttfamily object.\+concat(schema\+B\+: Object\+Schema)\+: Object\+Schema}}}\label{README.md_autotoc_md14490}
+Creates a object schema, by applying all settings and fields from {\ttfamily schemaB} to the base, producing a new schema. The object shape is shallowly merged with common fields from {\ttfamily schemaB} taking precedence over the base fields.\hypertarget{README.md_autotoc_md14491}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+pick(keys\+: string\mbox{[}$\,$\mbox{]})\+: Schema}}{{\ttfamily object.\+pick(keys\+: string\mbox{[}$\,$\mbox{]})\+: Schema}}}\label{README.md_autotoc_md14491}
+Create a new schema from a subset of the original\textquotesingle{}s fields.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ person\ =\ object(\{}
+\DoxyCodeLine{\ \ age:\ number().default(30).required(),}
+\DoxyCodeLine{\ \ name:\ string().default('pat').required(),}
+\DoxyCodeLine{\ \ color:\ string().default('red').required(),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ nameAndAge\ =\ person.pick(['name',\ 'age']);}
+\DoxyCodeLine{nameAndAge.getDefault();\ //\ =>\ \{\ age:\ 30,\ name:\ 'pat'\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14492}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+omit(keys\+: string\mbox{[}$\,$\mbox{]})\+: Schema}}{{\ttfamily object.\+omit(keys\+: string\mbox{[}$\,$\mbox{]})\+: Schema}}}\label{README.md_autotoc_md14492}
+Create a new schema with fields omitted.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ person\ =\ object(\{}
+\DoxyCodeLine{\ \ age:\ number().default(30).required(),}
+\DoxyCodeLine{\ \ name:\ string().default('pat').required(),}
+\DoxyCodeLine{\ \ color:\ string().default('red').required(),}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{let\ nameAndAge\ =\ person.omit(['color']);}
+\DoxyCodeLine{nameAndAge.getDefault();\ //\ =>\ \{\ age:\ 30,\ name:\ 'pat'\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14493}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+from(from\+Key\+: string, to\+Key\+: string, alias\+: boolean = false)\+: this}}{{\ttfamily object.\+from(from\+Key\+: string, to\+Key\+: string, alias\+: boolean = false)\+: this}}}\label{README.md_autotoc_md14493}
+Transforms the specified key to a new key. If {\ttfamily alias} is {\ttfamily true} then the old key will be left.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{let\ schema\ =\ object(\{}
+\DoxyCodeLine{\ \ myProp:\ mixed(),}
+\DoxyCodeLine{\ \ Other:\ mixed(),}
+\DoxyCodeLine{\})}
+\DoxyCodeLine{\ \ .from('prop',\ 'myProp')}
+\DoxyCodeLine{\ \ .from('other',\ 'Other',\ true);}
+\DoxyCodeLine{}
+\DoxyCodeLine{schema.cast(\{\ prop:\ 5,\ other:\ 6\ \});\ //\ =>\ \{\ myProp:\ 5,\ other:\ 6,\ Other:\ 6\ \}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md14494}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+exact(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily object.\+exact(message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14494}
+Validates that the object does not contain extra or unknown properties\hypertarget{README.md_autotoc_md14495}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+strip\+Unknown()\+: Schema}}{{\ttfamily object.\+strip\+Unknown()\+: Schema}}}\label{README.md_autotoc_md14495}
+The same as {\ttfamily object().validate(value, \{ strip\+Unknown\+: true\})}, but as a transform method. When set any unknown properties will be removed.\hypertarget{README.md_autotoc_md14496}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+no\+Unknown(only\+Known\+Keys\+: boolean = true, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}{{\ttfamily object.\+no\+Unknown(only\+Known\+Keys\+: boolean = true, message?\+: string \texorpdfstring{$\vert$}{|} function)\+: Schema}}}\label{README.md_autotoc_md14496}
+Validate that the object value only contains keys specified in {\ttfamily shape}, pass {\ttfamily false} as the first argument to disable the check. Restricting keys to known, also enables {\ttfamily strip\+Unknown} option, when not in strict mode.
+
+\begin{quote}
+Watch Out!\+: this method performs a transform and a validation, which may produce unexpected results. For more explicit behavior use {\ttfamily object().strip\+Unknown} and {\ttfamily object().exact()} \end{quote}
+\hypertarget{README.md_autotoc_md14497}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+camel\+Case()\+: Schema}}{{\ttfamily object.\+camel\+Case()\+: Schema}}}\label{README.md_autotoc_md14497}
+Transforms all object keys to camel\+Case\hypertarget{README.md_autotoc_md14498}{}\doxysubsubsubsection{\texorpdfstring{{\ttfamily object.\+constant\+Case()\+: Schema}}{{\ttfamily object.\+constant\+Case()\+: Schema}}}\label{README.md_autotoc_md14498}
+Transforms all object keys to CONSTANT\+\_\+\+CASE. 

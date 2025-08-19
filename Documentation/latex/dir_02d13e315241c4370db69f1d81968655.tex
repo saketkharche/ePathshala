@@ -1,0 +1,55 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/object-\/assign Directory Reference}
+\hypertarget{dir_02d13e315241c4370db69f1d81968655}{}\label{dir_02d13e315241c4370db69f1d81968655}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/object-\/assign Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/object-\/assign Directory Reference}}
+Directory dependency graph for object-\/assign\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{dir_02d13e315241c4370db69f1d81968655_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{readme.md_autotoc_md12092}{}\doxysubsection{\texorpdfstring{object-\/assign \mbox{[}!\mbox{[}Build Status\mbox{]}(\href{https://travis-ci.org/sindresorhus/object-assign.svg?branch=master}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/object-\/assign.\+svg?branch=master}})\mbox{]}(\href{https://travis-ci.org/sindresorhus/object-assign}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/object-\/assign}})}{object-\/assign \mbox{[}!\mbox{[}Build Status\mbox{]}(\href{https://travis-ci.org/sindresorhus/object-assign.svg?branch=master}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/object-\/assign.\+svg?branch=master}})\mbox{]}(\href{https://travis-ci.org/sindresorhus/object-assign}{\texttt{https\+://travis-\/ci.\+org/sindresorhus/object-\/assign}})}}\label{readme.md_autotoc_md12092}
+\begin{quote}
+ES2015 \href{http://www.2ality.com/2014/01/object-assign.html}{\texttt{{\ttfamily Object.\+assign()}}} \href{https://ponyfill.com}{\texttt{ponyfill}} \end{quote}
+\hypertarget{readme.md_autotoc_md12093}{}\doxysubsection{\texorpdfstring{Use the built-\/in}{Use the built-\/in}}\label{readme.md_autotoc_md12093}
+Node.\+js 4 and up, as well as every evergreen browser (Chrome, Edge, Firefox, Opera, Safari), support {\ttfamily Object.\+assign()} \+:tada\+:. If you target only those environments, then by all means, use {\ttfamily Object.\+assign()} instead of this package.\hypertarget{readme.md_autotoc_md12094}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{readme.md_autotoc_md12094}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ -\/-\/save\ object-\/assign}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md12095}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{readme.md_autotoc_md12095}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ objectAssign\ =\ require('object-\/assign');}
+\DoxyCodeLine{}
+\DoxyCodeLine{objectAssign(\{foo:\ 0\},\ \{bar:\ 1\});}
+\DoxyCodeLine{//=>\ \{foo:\ 0,\ bar:\ 1\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ multiple\ sources}
+\DoxyCodeLine{objectAssign(\{foo:\ 0\},\ \{bar:\ 1\},\ \{baz:\ 2\});}
+\DoxyCodeLine{//=>\ \{foo:\ 0,\ bar:\ 1,\ baz:\ 2\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ overwrites\ equal\ keys}
+\DoxyCodeLine{objectAssign(\{foo:\ 0\},\ \{foo:\ 1\},\ \{foo:\ 2\});}
+\DoxyCodeLine{//=>\ \{foo:\ 2\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ ignores\ null\ and\ undefined\ sources}
+\DoxyCodeLine{objectAssign(\{foo:\ 0\},\ null,\ \{bar:\ 1\},\ undefined);}
+\DoxyCodeLine{//=>\ \{foo:\ 0,\ bar:\ 1\}}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md12096}{}\doxysubsection{\texorpdfstring{API}{API}}\label{readme.md_autotoc_md12096}
+\hypertarget{readme.md_autotoc_md12097}{}\doxysubsubsection{\texorpdfstring{object\+Assign(target, \mbox{[}source, ...\mbox{]})}{object\+Assign(target, \mbox{[}source, ...\mbox{]})}}\label{readme.md_autotoc_md12097}
+Assigns enumerable own properties of {\ttfamily source} objects to the {\ttfamily target} object and returns the {\ttfamily target} object. Additional {\ttfamily source} objects will overwrite previous ones.\hypertarget{readme.md_autotoc_md12098}{}\doxysubsection{\texorpdfstring{Resources}{Resources}}\label{readme.md_autotoc_md12098}
+
+\begin{DoxyItemize}
+\item \href{https://people.mozilla.org/~jorendorff/es6-draft.html\#sec-object.assign}{\texttt{ES2015 spec -\/ Object.\+assign}}
+\end{DoxyItemize}\hypertarget{readme.md_autotoc_md12099}{}\doxysubsection{\texorpdfstring{Related}{Related}}\label{readme.md_autotoc_md12099}
+
+\begin{DoxyItemize}
+\item \href{https://github.com/sindresorhus/deep-assign}{\texttt{deep-\/assign}} -\/ Recursive {\ttfamily Object.\+assign()}
+\end{DoxyItemize}\hypertarget{readme.md_autotoc_md12100}{}\doxysubsection{\texorpdfstring{License}{License}}\label{readme.md_autotoc_md12100}
+MIT © \href{https://sindresorhus.com}{\texttt{Sindre Sorhus}} 

@@ -1,0 +1,44 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/btoa Directory Reference}
+\hypertarget{dir_aafea42e2b664618fabef3f92cfaf575}{}\label{dir_aafea42e2b664618fabef3f92cfaf575}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/btoa Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/btoa Directory Reference}}
+Directory dependency graph for btoa\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_aafea42e2b664618fabef3f92cfaf575_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\texorpdfstring{$\vert$}{|} \href{https://git.coolaj86.com/coolaj86/atob.js}{\texttt{atob}} \texorpdfstring{$\vert$}{|} {\bfseries{btoa}} \texorpdfstring{$\vert$}{|} \href{https://git.coolaj86.com/coolaj86/unibabel.js}{\texttt{unibabel.\+js}} \texorpdfstring{$\vert$}{|} Sponsored by \href{https://ppl.family}{\texttt{ppl}}
+
+A port of the browser\textquotesingle{}s {\ttfamily btoa} function.
+
+Uses {\ttfamily Buffer} to emulate the exact functionality of the browser\textquotesingle{}s btoa (except that it supports some unicode that the browser may not).
+
+It turns {\bfseries{b}}inary data {\bfseries{to}} base64-\/encoded {\bfseries{a}}scii.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(function\ ()\ \{}
+\DoxyCodeLine{\ \ "{}use\ strict"{};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ var\ btoa\ =\ require('btoa');}
+\DoxyCodeLine{\ \ var\ bin\ =\ "{}Hello,\ 世界"{};}
+\DoxyCodeLine{\ \ var\ b64\ =\ btoa(bin);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ console.log(b64);\ //\ "{}SGVsbG8sIBZM"{}}
+\DoxyCodeLine{\}());}
+
+\end{DoxyCode}
+
+
+{\bfseries{Note}}\+: Unicode may or may not be handled incorrectly. This module is intended to provide exact compatibility with the browser.\hypertarget{README.md_autotoc_md10372}{}\doxysubsection{\texorpdfstring{Copyright and License}{Copyright and License}}\label{README.md_autotoc_md10372}
+Code copyright 2012-\/2018 AJ ONeal
+
+Dual-\/licensed MIT and Apache-\/2.\+0
+
+Docs copyright 2012-\/2018 AJ ONeal
+
+Docs released under \href{https://git.coolaj86.com/coolaj86/btoa.js/blob/master/LICENSE.DOCS}{\texttt{Creative Commons}}. 

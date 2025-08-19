@@ -1,0 +1,55 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/requires-\/port Directory Reference}
+\hypertarget{dir_3a3d0eea4abb957e8c87e1f3fc475284}{}\label{dir_3a3d0eea4abb957e8c87e1f3fc475284}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/requires-\/port Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/requires-\/port Directory Reference}}
+Directory dependency graph for requires-\/port\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=182pt]{dir_3a3d0eea4abb957e8c87e1f3fc475284_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md13295}{}\doxysubsection{\texorpdfstring{requires-\/port}{requires-\/port}}\label{README.md_autotoc_md13295}
+\href{http://unshift.io}{\texttt{}}\href{http://browsenpm.org/package/requires-port}{\texttt{}}\href{https://travis-ci.org/unshiftio/requires-port}{\texttt{}}\href{https://david-dm.org/unshiftio/requires-port}{\texttt{}}\href{https://coveralls.io/r/unshiftio/requires-port?branch=master}{\texttt{}}\href{http://webchat.freenode.net/?channels=unshift}{\texttt{}}
+
+The module name says it all, check if a protocol requires a given port.\hypertarget{README.md_autotoc_md13296}{}\doxysubsection{\texorpdfstring{Installation}{Installation}}\label{README.md_autotoc_md13296}
+This module is intended to be used with browserify or Node.\+js and is distributed in the public npm registry. To install it simply run the following command from your CLI\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ -\/-\/save\ requires-\/port}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13297}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md13297}
+The module exports it self as function and requires 2 arguments\+:
+
+
+\begin{DoxyEnumerate}
+\item The port number, can be a string or number.
+\item Protocol, can be {\ttfamily http}, {\ttfamily http\+:} or even {\ttfamily \href{https://yomoma.com}{\texttt{https\+://yomoma.\+com}}}. We just split it at {\ttfamily \+:} and use the first result. We currently accept the following protocols\+:
+\begin{DoxyItemize}
+\item {\ttfamily http}
+\item {\ttfamily https}
+\item {\ttfamily ws}
+\item {\ttfamily wss}
+\item {\ttfamily ftp}
+\item {\ttfamily gopher}
+\item {\ttfamily file}
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+It returns a boolean that indicates if protocol requires this port to be added to your URL.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{'use\ strict';}
+\DoxyCodeLine{}
+\DoxyCodeLine{var\ required\ =\ require('requires-\/port');}
+\DoxyCodeLine{}
+\DoxyCodeLine{console.log(required('8080',\ 'http'))\ //\ true}
+\DoxyCodeLine{console.log(required('80',\ 'http'))\ \ \ //\ false}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13298}{}\doxysubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md13298}
+MIT 

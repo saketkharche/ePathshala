@@ -1,0 +1,319 @@
+\chapter{Layout Optimization Guide }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e}\index{Layout Optimization Guide@{Layout Optimization Guide}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md188}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md188}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md189}{}\doxysection{\texorpdfstring{Overview}{Overview}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md189}
+This guide explains the comprehensive layout optimization system implemented to prevent overlapping issues and ensure proper responsive design across all devices.\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md190}{}\doxysection{\texorpdfstring{Key Features}{Key Features}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md190}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md191}{}\doxysubsection{\texorpdfstring{✅ {\bfseries{Overlap Prevention}}}{✅ {\bfseries{Overlap Prevention}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md191}
+
+\begin{DoxyItemize}
+\item Fixed navbar positioning with proper z-\/index
+\item Responsive sidebar that doesn\textquotesingle{}t overlap content
+\item Proper content margins and padding
+\item Mobile backdrop for sidebar overlay
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md192}{}\doxysubsection{\texorpdfstring{✅ {\bfseries{Responsive Design}}}{✅ {\bfseries{Responsive Design}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md192}
+
+\begin{DoxyItemize}
+\item Mobile-\/first approach
+\item Tablet and desktop optimizations
+\item Proper breakpoint handling
+\item Flexible grid and flexbox layouts
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md193}{}\doxysubsection{\texorpdfstring{✅ {\bfseries{Performance Optimization}}}{✅ {\bfseries{Performance Optimization}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md193}
+
+\begin{DoxyItemize}
+\item Smooth transitions and animations
+\item Efficient re-\/rendering with React.\+memo
+\item Optimized CSS-\/in-\/\+JS usage
+\item Proper overflow handling
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md194}{}\doxysection{\texorpdfstring{Components}{Components}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md194}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md195}{}\doxysubsection{\texorpdfstring{1. Dashboard\+Layout}{1. Dashboard\+Layout}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md195}
+The main layout wrapper that orchestrates the entire page structure.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ DashboardLayout\ from\ './components/layout/DashboardLayout';}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ MyPage()\ \{}
+\DoxyCodeLine{\ \ return\ (}
+\DoxyCodeLine{\ \ \ \ <DashboardLayout>}
+\DoxyCodeLine{\ \ \ \ \ \ <YourContent\ />}
+\DoxyCodeLine{\ \ \ \ </DashboardLayout>}
+\DoxyCodeLine{\ \ );}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+{\bfseries{Features\+:}}
+\begin{DoxyItemize}
+\item Responsive sidebar behavior
+\item Fixed navbar positioning
+\item Mobile backdrop overlay
+\item Proper content spacing
+\item Smooth transitions
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md196}{}\doxysubsection{\texorpdfstring{2. Responsive\+Container}{2. Responsive\+Container}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md196}
+A utility component for preventing overlapping and ensuring responsive design.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ ResponsiveContainer\ from\ './components/layout/ResponsiveContainer';}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Content\ container}
+\DoxyCodeLine{<ResponsiveContainer\ variant="{}content"{}>}
+\DoxyCodeLine{\ \ <YourContent\ />}
+\DoxyCodeLine{</ResponsiveContainer>}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Card\ container}
+\DoxyCodeLine{<ResponsiveContainer\ variant="{}card"{}>}
+\DoxyCodeLine{\ \ <CardContent\ />}
+\DoxyCodeLine{</ResponsiveContainer>}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Form\ container}
+\DoxyCodeLine{<ResponsiveContainer\ variant="{}form"{}>}
+\DoxyCodeLine{\ \ <FormContent\ />}
+\DoxyCodeLine{</ResponsiveContainer>}
+
+\end{DoxyCode}
+
+
+{\bfseries{Variants\+:}}
+\begin{DoxyItemize}
+\item {\ttfamily content} -\/ Main content area
+\item {\ttfamily card} -\/ Card-\/style containers
+\item {\ttfamily form} -\/ Form layouts
+\item {\ttfamily table} -\/ Table containers
+\item {\ttfamily sidebar} -\/ Sidebar components
+\item {\ttfamily navbar} -\/ Navigation bars
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md197}{}\doxysection{\texorpdfstring{Responsive Utilities}{Responsive Utilities}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md197}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md198}{}\doxysubsection{\texorpdfstring{use\+Responsive Hook}{use\+Responsive Hook}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md198}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ useResponsive\ \}\ from\ './utils/responsive';}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ MyComponent()\ \{}
+\DoxyCodeLine{\ \ const\ \{\ isMobile,\ isTablet,\ isDesktop,\ getSpacing\ \}\ =\ useResponsive();}
+\DoxyCodeLine{\ \ }
+\DoxyCodeLine{\ \ return\ (}
+\DoxyCodeLine{\ \ \ \ <Box\ sx=\{\{\ p:\ getSpacing('padding')\ \}\}>}
+\DoxyCodeLine{\ \ \ \ \ \ \{isMobile\ \&\&\ <MobileView\ />\}}
+\DoxyCodeLine{\ \ \ \ \ \ \{isTablet\ \&\&\ <TabletView\ />\}}
+\DoxyCodeLine{\ \ \ \ \ \ \{isDesktop\ \&\&\ <DesktopView\ />\}}
+\DoxyCodeLine{\ \ \ \ </Box>}
+\DoxyCodeLine{\ \ );}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md199}{}\doxysubsection{\texorpdfstring{Layout Optimization Constants}{Layout Optimization Constants}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md199}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ layoutOptimization,\ layoutHelpers\ \}\ from\ './utils/responsive';}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Use\ predefined\ spacing}
+\DoxyCodeLine{const\ styles\ =\ \{}
+\DoxyCodeLine{\ \ ...layoutOptimization.contentContainer,}
+\DoxyCodeLine{\ \ ...layoutHelpers.preventOverlap,}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md200}{}\doxysection{\texorpdfstring{Best Practices}{Best Practices}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md200}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md201}{}\doxysubsection{\texorpdfstring{1. Always Use Responsive\+Container}{1. Always Use Responsive\+Container}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md201}
+Instead of raw Box components, use Responsive\+Container for consistent spacing and overlap prevention\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ ❌\ Don't\ do\ this}
+\DoxyCodeLine{<Box\ sx=\{\{\ p:\ 2,\ m:\ 2\ \}\}>}
+\DoxyCodeLine{\ \ <Content\ />}
+\DoxyCodeLine{</Box>}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ ✅\ Do\ this}
+\DoxyCodeLine{<ResponsiveContainer\ variant="{}content"{}>}
+\DoxyCodeLine{\ \ <Content\ />}
+\DoxyCodeLine{</ResponsiveContainer>}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md202}{}\doxysubsection{\texorpdfstring{2. Use Proper Z-\/\+Index Stacking}{2. Use Proper Z-\/\+Index Stacking}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md202}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Navbar:\ 1400}
+\DoxyCodeLine{//\ Sidebar:\ 1300}
+\DoxyCodeLine{//\ Content:\ 1}
+\DoxyCodeLine{//\ Modal:\ 1500}
+\DoxyCodeLine{//\ Tooltip:\ 1600}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md203}{}\doxysubsection{\texorpdfstring{3. Handle Mobile Responsiveness}{3. Handle Mobile Responsiveness}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md203}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ isMobile\ =\ useMediaQuery(theme.breakpoints.down('md'));}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Mobile-\/specific\ styles}
+\DoxyCodeLine{const\ mobileStyles\ =\ isMobile\ ?\ \{}
+\DoxyCodeLine{\ \ px:\ 2,}
+\DoxyCodeLine{\ \ py:\ 2,}
+\DoxyCodeLine{\ \ overflowX:\ 'hidden'}
+\DoxyCodeLine{\}\ :\ \{\};}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md204}{}\doxysubsection{\texorpdfstring{4. Prevent Text Overflow}{4. Prevent Text Overflow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md204}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ textStyles\ =\ \{}
+\DoxyCodeLine{\ \ overflow:\ 'hidden',}
+\DoxyCodeLine{\ \ textOverflow:\ 'ellipsis',}
+\DoxyCodeLine{\ \ whiteSpace:\ 'nowrap'}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md205}{}\doxysection{\texorpdfstring{Layout Structure}{Layout Structure}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md205}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{DashboardLayout}
+\DoxyCodeLine{├──\ Sidebar\ (fixed,\ z-\/index:\ 1300)}
+\DoxyCodeLine{├──\ Main\ Content\ Area}
+\DoxyCodeLine{│\ \ \ ├──\ Navbar\ (fixed,\ z-\/index:\ 1400)}
+\DoxyCodeLine{│\ \ \ ├──\ Content\ Container}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ Page\ Content}
+\DoxyCodeLine{│\ \ \ │\ \ \ └──\ Footer}
+\DoxyCodeLine{│\ \ \ └──\ Mobile\ Backdrop\ (z-\/index:\ 1299)}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md206}{}\doxysection{\texorpdfstring{Responsive Breakpoints}{Responsive Breakpoints}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md206}
+
+\begin{DoxyItemize}
+\item {\bfseries{xs}}\+: 0px -\/ 599px (Mobile)
+\item {\bfseries{sm}}\+: 600px -\/ 899px (Large Mobile/\+Small Tablet)
+\item {\bfseries{md}}\+: 900px -\/ 1199px (Tablet)
+\item {\bfseries{lg}}\+: 1200px -\/ 1535px (Desktop)
+\item {\bfseries{xl}}\+: 1536px+ (Large Desktop)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md207}{}\doxysection{\texorpdfstring{Common Issues \& Solutions}{Common Issues \& Solutions}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md207}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md208}{}\doxysubsection{\texorpdfstring{1. Content Overlapping Navbar}{1. Content Overlapping Navbar}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md208}
+{\bfseries{Problem\+:}} Content appears behind the fixed navbar.
+
+{\bfseries{Solution\+:}} Use proper top padding in content containers\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<Box\ sx=\{\{\ pt:\ \{\ xs:\ '56px',\ sm:\ '64px',\ md:\ '72px'\ \}\ \}\}>}
+\DoxyCodeLine{\ \ <Content\ />}
+\DoxyCodeLine{</Box>}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md209}{}\doxysubsection{\texorpdfstring{2. Sidebar Overlapping Content}{2. Sidebar Overlapping Content}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md209}
+{\bfseries{Problem\+:}} Sidebar overlaps main content on desktop.
+
+{\bfseries{Solution\+:}} Use responsive margins\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<Box\ sx=\{\{\ ml:\ \{\ xs:\ 0,\ md:\ sidebarWidth\ \}\ \}\}>}
+\DoxyCodeLine{\ \ <Content\ />}
+\DoxyCodeLine{</Box>}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md210}{}\doxysubsection{\texorpdfstring{3. Mobile Sidebar Issues}{3. Mobile Sidebar Issues}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md210}
+{\bfseries{Problem\+:}} Sidebar doesn\textquotesingle{}t work properly on mobile.
+
+{\bfseries{Solution\+:}} Use temporary drawer with backdrop\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<Drawer\ variant="{}temporary"{}\ open=\{open\}\ onClose=\{onClose\}>}
+\DoxyCodeLine{\ \ <SidebarContent\ />}
+\DoxyCodeLine{</Drawer>}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md211}{}\doxysubsection{\texorpdfstring{4. Text Overflow}{4. Text Overflow}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md211}
+{\bfseries{Problem\+:}} Long text breaks layout.
+
+{\bfseries{Solution\+:}} Use text overflow utilities\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<Typography\ sx=\{\{\ ...layoutHelpers.preventTextOverflow\ \}\}>}
+\DoxyCodeLine{\ \ Long\ text\ content}
+\DoxyCodeLine{</Typography>}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md212}{}\doxysection{\texorpdfstring{Performance Tips}{Performance Tips}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md212}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md213}{}\doxysubsection{\texorpdfstring{1. Use React.\+memo for Layout Components}{1. Use React.\+memo for Layout Components}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md213}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{export\ default\ React.memo(DashboardLayout);}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md214}{}\doxysubsection{\texorpdfstring{2. Optimize Re-\/renders}{2. Optimize Re-\/renders}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md214}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ [sidebarCollapsed,\ setSidebarCollapsed]\ =\ useState(()\ =>\ \{}
+\DoxyCodeLine{\ \ const\ stored\ =\ localStorage.getItem('mainSidebarCollapsed');}
+\DoxyCodeLine{\ \ return\ stored\ ===\ 'true';}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md215}{}\doxysubsection{\texorpdfstring{3. Efficient Style Calculations}{3. Efficient Style Calculations}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md215}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Pre-\/calculate\ responsive\ values}
+\DoxyCodeLine{const\ sidebarWidth\ =\ sidebarCollapsed\ ?\ 60\ :\ 280;}
+\DoxyCodeLine{const\ mainContentMargin\ =\ isMobile\ ?\ 0\ :\ sidebarWidth;}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md216}{}\doxysection{\texorpdfstring{Testing}{Testing}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md216}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md217}{}\doxysubsection{\texorpdfstring{1. Test on Multiple Devices}{1. Test on Multiple Devices}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md217}
+
+\begin{DoxyItemize}
+\item Mobile (320px -\/ 599px)
+\item Tablet (600px -\/ 1199px)
+\item Desktop (1200px+)
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md218}{}\doxysubsection{\texorpdfstring{2. Test Edge Cases}{2. Test Edge Cases}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md218}
+
+\begin{DoxyItemize}
+\item Very long content
+\item Very short content
+\item Dynamic content loading
+\item Orientation changes
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md219}{}\doxysubsection{\texorpdfstring{3. Performance Testing}{3. Performance Testing}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md219}
+
+\begin{DoxyItemize}
+\item Check for layout thrashing
+\item Monitor re-\/render frequency
+\item Test smooth scrolling
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md220}{}\doxysection{\texorpdfstring{Migration Guide}{Migration Guide}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md220}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md221}{}\doxysubsection{\texorpdfstring{From Old Layout System}{From Old Layout System}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md221}
+
+\begin{DoxyEnumerate}
+\item Replace raw Box components with Responsive\+Container
+\item Update z-\/index values to use the new stack
+\item Replace custom responsive logic with use\+Responsive hook
+\item Update spacing to use layout\+Optimization constants
+\end{DoxyEnumerate}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md222}{}\doxysubsection{\texorpdfstring{Example Migration}{Example Migration}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md222}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Old\ way}
+\DoxyCodeLine{<Box\ sx=\{\{\ p:\ 3,\ ml:\ sidebarWidth,\ pt:\ navbarHeight\ \}\}>}
+\DoxyCodeLine{\ \ <Content\ />}
+\DoxyCodeLine{</Box>}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ New\ way}
+\DoxyCodeLine{<ResponsiveContainer\ variant="{}content"{}>}
+\DoxyCodeLine{\ \ <Content\ />}
+\DoxyCodeLine{</ResponsiveContainer>}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md223}{}\doxysection{\texorpdfstring{Troubleshooting}{Troubleshooting}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md223}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md224}{}\doxysubsection{\texorpdfstring{Common Problems}{Common Problems}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md224}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Content still overlapping\+:}} Check z-\/index values
+\item {\bfseries{Sidebar not responsive\+:}} Verify breakpoint logic
+\item {\bfseries{Mobile layout broken\+:}} Check mobile-\/specific styles
+\item {\bfseries{Performance issues\+:}} Use React.\+memo and optimize re-\/renders
+\end{DoxyEnumerate}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md225}{}\doxysubsection{\texorpdfstring{Debug Tools}{Debug Tools}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md225}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Browser Dev\+Tools\+:}} Check computed styles
+\item {\bfseries{React Dev\+Tools\+:}} Monitor component re-\/renders
+\item {\bfseries{Performance Profiler\+:}} Identify bottlenecks
+\end{DoxyEnumerate}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md226}{}\doxysection{\texorpdfstring{Conclusion}{Conclusion}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_l_a_y_o_u_t___o_p_t_i_m_i_z_a_t_i_o_n___g_u_i_d_e_autotoc_md226}
+This layout optimization system provides a robust foundation for responsive design while preventing common overlapping issues. By following the best practices outlined in this guide, you can ensure consistent, performant layouts across all devices. 

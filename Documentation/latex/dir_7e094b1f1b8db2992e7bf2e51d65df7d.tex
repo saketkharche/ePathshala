@@ -1,0 +1,65 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/css-\/line-\/break Directory Reference}
+\hypertarget{dir_7e094b1f1b8db2992e7bf2e51d65df7d}{}\label{dir_7e094b1f1b8db2992e7bf2e51d65df7d}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/css-\/line-\/break Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/css-\/line-\/break Directory Reference}}
+Directory dependency graph for css-\/line-\/break\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{dir_7e094b1f1b8db2992e7bf2e51d65df7d_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+ \href{https://www.npmjs.org/package/css-line-break}{\texttt{}} \href{https://www.npmjs.org/package/css-line-break}{\texttt{}}
+
+A Java\+Script library for Line Breaking and identifying Word Boundaries, \href{http://unicode.org/reports/tr14/}{\texttt{implementing the Unicode Line Breaking Algorithm (UAX \#14)}} ~\newline
+
+
+\begin{quote}
+\begin{quote}
+Line breaking, also known as word wrapping, is the process of breaking a section of text into lines such that it will fit in the available width of a page, window or other display area. The Unicode Line Breaking Algorithm performs part of this process. Given an input text, it produces a set of positions called "{}break opportunities"{} that are appropriate points to begin a new line. The selection of actual line break positions from the set of break opportunities is not covered by the Unicode Line Breaking Algorithm, but is in the domain of higher level software with knowledge of the available width and the display size of the text. \end{quote}
+\end{quote}
+
+
+In addition, the module implements CSS specific tailoring options to line breaking as defined in \href{https://www.w3.org/TR/css-text-3/\#line-breaking}{\texttt{CSS Text Module Level 3}}.\hypertarget{README.md_autotoc_md10533}{}\doxysubsubsection{\texorpdfstring{Installing}{Installing}}\label{README.md_autotoc_md10533}
+You can install the module via npm\+: \begin{DoxyVerb}npm install css-line-break
+\end{DoxyVerb}
+\hypertarget{README.md_autotoc_md10534}{}\doxysubsubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md10534}
+The {\ttfamily Line\+Breaker} creates an \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators}{\texttt{iterator}} that returns {\ttfamily Break}s for a given text. \begin{DoxyVerb}LineBreaker(text, [options]);
+\end{DoxyVerb}
+\hypertarget{README.md_autotoc_md10535}{}\doxysubsubsection{\texorpdfstring{Example}{Example}}\label{README.md_autotoc_md10535}
+\href{https://jsfiddle.net/ofd3752k}{\texttt{JSFiddle}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{LineBreaker\}\ from\ 'css-\/line-\/break';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ breaker\ =\ LineBreaker('Lorem\ ipsum\ lol.',\ \{}
+\DoxyCodeLine{\ \ \ \ lineBreak:\ 'strict',}
+\DoxyCodeLine{\ \ \ \ wordBreak:\ 'normal'}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ words\ =\ [];}
+\DoxyCodeLine{let\ bk;}
+\DoxyCodeLine{}
+\DoxyCodeLine{while\ (!(bk\ =\ breaker.next()).done)\ \{}
+\DoxyCodeLine{\ \ \ \ words.push(bk.value.slice());}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{assert.deepEqual(words,\ ['Lorem\ ',\ 'ipsum\ ',\ 'lol.']);}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md10536}{}\doxysubsubsection{\texorpdfstring{Options}{Options}}\label{README.md_autotoc_md10536}
+The following parameters are available for the options\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily line\+Break}\+: {\ttfamily normal} \texorpdfstring{$\vert$}{|} {\ttfamily strict}
+\item {\ttfamily word\+Break}\+: {\ttfamily normal} \texorpdfstring{$\vert$}{|} {\ttfamily break-\/all} \texorpdfstring{$\vert$}{|} {\ttfamily break-\/word} \texorpdfstring{$\vert$}{|} {\ttfamily keep-\/all}
+\end{DoxyItemize}
+
+For more information how they affect the line breaking algorithms, check out \href{https://www.w3.org/TR/css-text-3/\#line-breaking}{\texttt{CSS Text Module Level 3}}.\hypertarget{README.md_autotoc_md10537}{}\doxysubsubsection{\texorpdfstring{Testing}{Testing}}\label{README.md_autotoc_md10537}
+You can run the test suite with\+: \begin{DoxyVerb}npm test
+\end{DoxyVerb}
+
+
+The library implements all the \href{http://www.unicode.org/Public/10.0.0/ucd/auxiliary/LineBreakTest.txt}{\texttt{Line\+Break\+Test.\+txt tests}} and a number of CSS web-\/platform-\/tests. 

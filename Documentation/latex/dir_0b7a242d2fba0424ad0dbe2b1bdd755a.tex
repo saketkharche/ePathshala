@@ -1,0 +1,81 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/tiny-\/warning Directory Reference}
+\hypertarget{dir_0b7a242d2fba0424ad0dbe2b1bdd755a}{}\label{dir_0b7a242d2fba0424ad0dbe2b1bdd755a}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/tiny-\/warning Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/tiny-\/warning Directory Reference}}
+Directory dependency graph for tiny-\/warning\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{dir_0b7a242d2fba0424ad0dbe2b1bdd755a_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md13838}{}\doxysubsection{\texorpdfstring{tiny-\/warning 🔬⚠️}{tiny-\/warning 🔬⚠️}}\label{README.md_autotoc_md13838}
+\href{https://travis-ci.org/alexreardon/tiny-warning}{\texttt{}} \href{https://www.npmjs.com/package/tiny-warning}{\texttt{}} \href{https://www.npmjs.com/package/tiny-warning}{\texttt{}} \href{https://david-dm.org/alexreardon/tiny-warning}{\texttt{}} \href{https://www.npmjs.com/package/tiny-warning}{\texttt{}} \href{https://www.npmjs.com/package/tiny-warning}{\texttt{}}
+
+A tiny \href{https://www.npmjs.com/package/warning}{\texttt{{\ttfamily warning}}} alternative.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ warning\ from\ 'tiny-\/warning';}
+\DoxyCodeLine{}
+\DoxyCodeLine{warning(truthyValue,\ 'This\ should\ not\ log\ a\ warning');}
+\DoxyCodeLine{}
+\DoxyCodeLine{warning(falsyValue,\ 'This\ should\ log\ a\ warning');}
+\DoxyCodeLine{//\ console.warn('Warning:\ This\ should\ log\ a\ warning');}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md13839}{}\doxysubsection{\texorpdfstring{API\+: {\ttfamily (condition\+: mixed, message\+: string) =\texorpdfstring{$>$}{>} void}}{API\+: {\ttfamily (condition\+: mixed, message\+: string) =\texorpdfstring{$>$}{>} void}}}\label{README.md_autotoc_md13839}
+
+\begin{DoxyItemize}
+\item {\ttfamily condition} is required and can be anything
+\item {\ttfamily message} is an required string that will be passed onto {\ttfamily console.\+warn}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md13840}{}\doxysubsection{\texorpdfstring{Why {\ttfamily tiny-\/warning}?}{Why {\ttfamily tiny-\/warning}?}}\label{README.md_autotoc_md13840}
+The \href{https://www.npmjs.com/package/warning}{\texttt{{\ttfamily library\+: warning}}} supports passing in arguments to the {\ttfamily warning} function in a sprintf style {\ttfamily (condition, format, a, b, c, d, e, f)}. It has internal logic to execute the sprintf substitutions. {\ttfamily tiny-\/warning} has dropped all of the sprintf logic. {\ttfamily tiny-\/warning} allows you to pass a single string message. With \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals}{\texttt{template literals}} there is really no need for a custom message formatter to be built into the library. If you need a multi part message you can just do this\+: `warning(condition, \textquotesingle{}Hello, \$\{name\} -\/ how are you today?')\`{}\hypertarget{README.md_autotoc_md13841}{}\doxysubsection{\texorpdfstring{Dropping your {\ttfamily warning} for kb savings!}{Dropping your {\ttfamily warning} for kb savings!}}\label{README.md_autotoc_md13841}
+We recommend using \href{https://www.npmjs.com/package/babel-plugin-dev-expression}{\texttt{{\ttfamily babel-\/plugin-\/dev-\/expression}}} to remove {\ttfamily warning} calls from your production build. This saves you kb\textquotesingle{}s as well as avoids logging warnings to the console for production.
+
+What it does it turn your code that looks like this\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{warning(condition,\ 'My\ cool\ message\ that\ takes\ up\ a\ lot\ of\ kbs');}
+
+\end{DoxyCode}
+
+
+Into this
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{if\ ('production'\ !==\ process.env.NODE\_ENV)\ \{}
+\DoxyCodeLine{\ \ warning(condition,\ 'My\ cool\ message\ that\ takes\ up\ a\ lot\ of\ kbs');}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Your bundler can then drop the code in the {\ttfamily "{}production"{} !== process.\+env.\+NODE\+\_\+\+ENV} block for your production builds
+
+Final result\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ nothing\ to\ see\ here!\ 👍}
+
+\end{DoxyCode}
+
+
+\begin{quote}
+For {\ttfamily rollup} use \href{https://github.com/rollup/rollup-plugin-replace}{\texttt{rollup-\/plugin-\/replace}} and set {\ttfamily NODE\+\_\+\+ENV} to {\ttfamily production} and then {\ttfamily rollup} will treeshake out the unused code
+
+\href{https://webpack.js.org/guides/production/\#specify-the-mode}{\texttt{{\ttfamily Webpack} instructions}} \end{quote}
+\hypertarget{README.md_autotoc_md13842}{}\doxysubsection{\texorpdfstring{Builds}{Builds}}\label{README.md_autotoc_md13842}
+
+\begin{DoxyItemize}
+\item We have a {\ttfamily es} (Ecma\+Script module) build (because you {\itshape know} you want to deduplicate this super heavy library)
+\item We have a {\ttfamily cjs} (Common\+JS) build
+\item We have a {\ttfamily umd} (Universal module definition) build in case you needed it
+\end{DoxyItemize}
+
+We expect {\ttfamily process.\+env.\+NODE\+\_\+\+ENV} to be available at module compilation. We cache this value\hypertarget{README.md_autotoc_md13843}{}\doxysubsection{\texorpdfstring{That\textquotesingle{}s it!}{That\textquotesingle{}s it!}}\label{README.md_autotoc_md13843}
+🤘 

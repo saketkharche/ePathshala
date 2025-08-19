@@ -1,0 +1,79 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/p-\/limit Directory Reference}
+\hypertarget{dir_84804f0858a720a270b8845436e5d934}{}\label{dir_84804f0858a720a270b8845436e5d934}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/p-\/limit Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/p-\/limit Directory Reference}}
+Directory dependency graph for p-\/limit\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_84804f0858a720a270b8845436e5d934_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{readme.md_autotoc_md12144}{}\doxysubsection{\texorpdfstring{p-\/limit}{p-\/limit}}\label{readme.md_autotoc_md12144}
+\begin{quote}
+Run multiple promise-\/returning \& async functions with limited concurrency \end{quote}
+\hypertarget{readme.md_autotoc_md12145}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{readme.md_autotoc_md12145}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ p-\/limit}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md12146}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{readme.md_autotoc_md12146}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ pLimit\ =\ require('p-\/limit');}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ limit\ =\ pLimit(1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ input\ =\ [}
+\DoxyCodeLine{\ \ \ \ limit(()\ =>\ fetchSomething('foo')),}
+\DoxyCodeLine{\ \ \ \ limit(()\ =>\ fetchSomething('bar')),}
+\DoxyCodeLine{\ \ \ \ limit(()\ =>\ doSomething())}
+\DoxyCodeLine{];}
+\DoxyCodeLine{}
+\DoxyCodeLine{(async\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ //\ Only\ one\ promise\ is\ run\ at\ once}
+\DoxyCodeLine{\ \ \ \ const\ result\ =\ await\ Promise.all(input);}
+\DoxyCodeLine{\ \ \ \ console.log(result);}
+\DoxyCodeLine{\})();}
+
+\end{DoxyCode}
+\hypertarget{readme.md_autotoc_md12147}{}\doxysubsection{\texorpdfstring{API}{API}}\label{readme.md_autotoc_md12147}
+\hypertarget{readme.md_autotoc_md12148}{}\doxysubsubsection{\texorpdfstring{p\+Limit(concurrency)}{p\+Limit(concurrency)}}\label{readme.md_autotoc_md12148}
+Returns a {\ttfamily limit} function.\hypertarget{readme.md_autotoc_md12149}{}\doxysubsubsubsection{\texorpdfstring{concurrency}{concurrency}}\label{readme.md_autotoc_md12149}
+Type\+: {\ttfamily number}\textbackslash{} Minimum\+: {\ttfamily 1}\textbackslash{} Default\+: {\ttfamily Infinity}
+
+Concurrency limit.\hypertarget{readme.md_autotoc_md12150}{}\doxysubsubsection{\texorpdfstring{limit(fn, ...\+args)}{limit(fn, ...\+args)}}\label{readme.md_autotoc_md12150}
+Returns the promise returned by calling {\ttfamily fn(...\+args)}.\hypertarget{readme.md_autotoc_md12151}{}\doxysubsubsubsection{\texorpdfstring{fn}{fn}}\label{readme.md_autotoc_md12151}
+Type\+: {\ttfamily Function}
+
+Promise-\/returning/async function.\hypertarget{readme.md_autotoc_md12152}{}\doxysubsubsubsection{\texorpdfstring{args}{args}}\label{readme.md_autotoc_md12152}
+Any arguments to pass through to {\ttfamily fn}.
+
+Support for passing arguments on to the {\ttfamily fn} is provided in order to be able to avoid creating unnecessary closures. You probably don\textquotesingle{}t need this optimization unless you\textquotesingle{}re pushing a {\itshape lot} of functions.\hypertarget{readme.md_autotoc_md12153}{}\doxysubsubsection{\texorpdfstring{limit.\+active\+Count}{limit.\+active\+Count}}\label{readme.md_autotoc_md12153}
+The number of promises that are currently running.\hypertarget{readme.md_autotoc_md12154}{}\doxysubsubsection{\texorpdfstring{limit.\+pending\+Count}{limit.\+pending\+Count}}\label{readme.md_autotoc_md12154}
+The number of promises that are waiting to run (i.\+e. their internal {\ttfamily fn} was not called yet).\hypertarget{readme.md_autotoc_md12155}{}\doxysubsubsection{\texorpdfstring{limit.\+clear\+Queue()}{limit.\+clear\+Queue()}}\label{readme.md_autotoc_md12155}
+Discard pending promises that are waiting to run.
+
+This might be useful if you want to teardown the queue at the end of your program\textquotesingle{}s lifecycle or discard any function calls referencing an intermediary state of your app.
+
+Note\+: This does not cancel promises that are already running.\hypertarget{readme.md_autotoc_md12156}{}\doxysubsection{\texorpdfstring{FAQ}{FAQ}}\label{readme.md_autotoc_md12156}
+\hypertarget{readme.md_autotoc_md12157}{}\doxysubsubsection{\texorpdfstring{How is this different from the \href{https://github.com/sindresorhus/p-queue}{\texttt{{\ttfamily p-\/queue}}} package?}{How is this different from the \href{https://github.com/sindresorhus/p-queue}{\texttt{{\ttfamily p-\/queue}}} package?}}\label{readme.md_autotoc_md12157}
+This package is only about limiting the number of concurrent executions, while {\ttfamily p-\/queue} is a fully featured queue implementation with lots of different options, introspection, and ability to pause the queue.\hypertarget{readme.md_autotoc_md12158}{}\doxysubsection{\texorpdfstring{Related}{Related}}\label{readme.md_autotoc_md12158}
+
+\begin{DoxyItemize}
+\item \href{https://github.com/sindresorhus/p-queue}{\texttt{p-\/queue}} -\/ Promise queue with concurrency control
+\item \href{https://github.com/sindresorhus/p-throttle}{\texttt{p-\/throttle}} -\/ Throttle promise-\/returning \& async functions
+\item \href{https://github.com/sindresorhus/p-debounce}{\texttt{p-\/debounce}} -\/ Debounce promise-\/returning \& async functions
+\item \href{https://github.com/sindresorhus/p-all}{\texttt{p-\/all}} -\/ Run promise-\/returning \& async functions concurrently with optional limited concurrency
+\item \href{https://github.com/sindresorhus/promise-fun}{\texttt{More…}}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+
+
+ {\bfseries{ \href{https://tidelift.com/subscription/pkg/npm-p-limit?utm_source=npm-p-limit&utm_medium=referral&utm_campaign=readme}{\texttt{Get professional support for this package with a Tidelift subscription}} }} ~\newline
+ \textsubscript{ Tidelift helps make open source sustainable for maintainers while giving companies~\newline
+assurances about security, maintenance, and licensing for their dependencies. }  

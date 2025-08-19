@@ -1,0 +1,197 @@
+
+PROJECT TITLE:
+--------------
+Student ERP System
+
+DESCRIPTION:
+-------------
+I want to create a centralized web application which will manage the academic and administrative activities of an educational institution through role-based dashboards and workflows.
+
+TECH STACK:
+------------
+Frontend: React.js, dont use typescript, only js
+Backend: .NET Core Web API with Entity Framework Core
+Database: MySQL
+Authentication: JWT (JSON Web Token) with Role-Based Authorization
+Architecture: RESTful API 
+
+USER ROLES:
+------------
+1. Admin
+2. Student
+3. Teacher
+4. Parent
+
+Each role has a separate dashboard, accessible after login.
+
+AUTHENTICATION & REGISTRATION:
+-------------------------------
+- Only Admin can add Students, Teachers, and Parents.
+- Login page includes role selection (Admin / Student / Teacher / Parent).
+- Unique account number is generated on addition.
+- Passwords are hashed securely.
+- JWT token includes role claims.
+- Role-based API access is enforced using [Authorize(Roles = "...")].
+
+STUDENT DASHBOARD FEATURES:
+
+
+ View Grades
+   - Student can see subject-wise marks entered by teachers.
+
+ View Assignments
+   - Uploaded by teachers, visible by class and subject.
+
+ Check Attendance
+   - View daily/monthly attendance marked by assigned teachers.
+
+ Submit Leave Application
+   - Student can apply for leave.
+   - Leave must be approved by both Teacher and Parent to be fully approved.
+
+ View Profile
+   - Displays student info like name, class, email, account number.
+
+ Logout
+   - Ends session and redirects to login.
+
+
+TEACHER DASHBOARD FEATURES:
+
+
+ View Students 
+   - Displays students from the assigned classes.
+
+ Enter Student Grades
+   - Teachers can add marks per subject for their students.
+
+ mark Attendance
+   - Mark daily attendance by class and subject.
+
+ Approve Leave Requests
+   - Teachers approve/reject student leave requests.
+
+ View Class Average
+   - Subject-wise average marks per class.
+
+ Upload Assignments
+   - Assignments with title, due date, file upload, subject/class.
+
+ View Profile
+ Logout
+
+
+PARENT DASHBOARD FEATURES:
+
+ View Child’s Attendance
+   - See attendance records of linked child.
+
+ View Child’s Grades
+   - Subject-wise marks and grades.
+
+ Approve Leave Request
+   - Parent must approve leave along with the teacher.
+
+ View Profile
+ Logout
+
+LEAVE APPROVAL FLOW:
+---------------------
+- Leave submitted by Student or Parent.
+- Status stays "Pending" until BOTH Teacher and Parent approve.
+- Table Example:
+
+  TeacherApproval: Pending / Approved / Rejected
+  ParentApproval: Pending / Approved / Rejected
+  Final Status: Computed as "Approved" only if both approved
+
+
+ADMIN DASHBOARD FEATURES:
+
+
+ add Users
+   - Register Students, Teachers, Parents with role and assignment.
+
+ View/Edit/Delete Users
+   - Full CRUD operations on users.
+
+ Assign Teacher to Class/Subject
+   - Map teachers to specific subjects.
+
+
+ Academic Calendar Setup
+   - Add school events, holidays, exams.
+
+ Dashboard Summary (Optional)
+   - Count of total students, teachers, etc.
+
+ View Profile
+ Logout
+
+
+website flow:
+1st page
+for navbar:logo will come on left side and contact us about us will be on right side 
+login page fields:
+email, password and role
+
+admin role:
+for navbar: logo will come on left side and profile and logout will be on right side
+
+only admin will have creation operation for student, teacher and parent, keep an option of add student, add teacher and add parent, after which it gets added to view students, view teachers and view parents.
+for adding students and its parent , please figure out the logic by yourself
+for teacher, admin will assign the subject, which will show up in teachers profile aswell.
+view student list
+view teachers list
+view parents list
+academic calender setup, where admin can enter highlight important dates , which will be visible in students and teachers calender aswell.
+
+only admin will have the access for deteting student,teacher and parent account.
+
+profile
+logout.
+
+teachers role:
+navbar: logo will come on left side and profile and logout will be on right side
+view student list
+enter attendance(figure out this logic by yourself and it should also be seen by student and parent)
+enter students marks which will also be visible to student.
+approve student leaves
+upload assignments, which will be visible to students also
+academic calender
+
+students role:
+navbar: logo will come on left side and profile and logout will be on right side
+
+view attendace
+view marks, which can be exported to pdf,
+view and download assignment , which is uploaded by teacher.
+write leave application, which will be sent to teacher and parent for approval, and then it will show status of approved.
+academic calender
+
+
+parent role:
+navbar: logo will come on left side and profile and logout will be on right side
+
+child's attendance
+child's marks
+leave approval request
+
+
+
+ABOUT US PAGE:
+---------------
+- 5 cards explaining what the ERP does.
+- 1 card: "Know Our Team" opens team member cards with name, photo, and role.
+
+CONTACT US PAGE:
+-----------------
+- 3 cards layout:
+  1. Institute Address and Contact Info
+  2. Feedback form (Name, Email, Message)
+  3. Google Map showing location
+
+PROFILE PAGE (All Roles):
+--------------------------
+- Shows name, role, account number, email, and class/subject if applicable.
+

@@ -1,0 +1,233 @@
+\chapter{Responsive Sidebar Implementation }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964}\index{Responsive Sidebar Implementation@{Responsive Sidebar Implementation}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14574}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14574}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14575}{}\doxysection{\texorpdfstring{Overview}{Overview}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14575}
+This document outlines the comprehensive responsive sidebar implementation for the e\+Pathshala application. All role-\/based sidebars (Admin, Student, Teacher, Parent) have been updated to be fully responsive and properly collapsible.\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14576}{}\doxysection{\texorpdfstring{Key Features Implemented}{Key Features Implemented}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14576}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14577}{}\doxysubsection{\texorpdfstring{1. {\bfseries{Fully Responsive Design}}}{1. {\bfseries{Fully Responsive Design}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14577}
+
+\begin{DoxyItemize}
+\item {\bfseries{Mobile-\/first approach}}\+: Sidebars automatically collapse on mobile devices
+\item {\bfseries{Breakpoint-\/aware}}\+: Different behaviors for xs, sm, md, lg, xl screens
+\item {\bfseries{Touch-\/friendly}}\+: Optimized for touch interactions on mobile devices
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14578}{}\doxysubsection{\texorpdfstring{2. {\bfseries{Collapsible Sidebars}}}{2. {\bfseries{Collapsible Sidebars}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14578}
+
+\begin{DoxyItemize}
+\item {\bfseries{Desktop}}\+: Permanent sidebar with collapse/expand functionality
+\item {\bfseries{Mobile}}\+: Temporary drawer that slides in from the left
+\item {\bfseries{Smooth transitions}}\+: 0.\+3s ease-\/in-\/out animations for all state changes
+\item {\bfseries{State persistence}}\+: Sidebar collapse state saved in local\+Storage
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14579}{}\doxysubsection{\texorpdfstring{3. {\bfseries{Enhanced UI/\+UX}}}{3. {\bfseries{Enhanced UI/\+UX}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14579}
+
+\begin{DoxyItemize}
+\item {\bfseries{Modern design}}\+: Clean, modern interface with proper spacing and typography
+\item {\bfseries{Visual feedback}}\+: Hover effects, active states, and smooth transitions
+\item {\bfseries{Accessibility}}\+: Proper ARIA labels, keyboard navigation, and screen reader support
+\item {\bfseries{Tooltips}}\+: Helpful tooltips when sidebar is collapsed
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14580}{}\doxysubsection{\texorpdfstring{4. {\bfseries{Role-\/\+Specific Features}}}{4. {\bfseries{Role-\/\+Specific Features}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14580}
+
+\begin{DoxyItemize}
+\item {\bfseries{Admin Sidebar}}\+: Comprehensive admin management sections
+\item {\bfseries{Student Sidebar}}\+: Academic functions and communication tools
+\item {\bfseries{Teacher Sidebar}}\+: Teaching tools and student management
+\item {\bfseries{Parent Sidebar}}\+: Child monitoring and communication features
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14581}{}\doxysection{\texorpdfstring{Technical Implementation}{Technical Implementation}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14581}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14582}{}\doxysubsection{\texorpdfstring{1. {\bfseries{Responsive Utilities}}}{1. {\bfseries{Responsive Utilities}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14582}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ New\ responsive\ utilities\ added\ to\ utils/responsive.js}
+\DoxyCodeLine{export\ const\ sidebarStyles\ =\ \{}
+\DoxyCodeLine{\ \ collapsed:\ \{\ width:\ 60,\ transition:\ 'width\ 0.3s\ ease-\/in-\/out'\ \},}
+\DoxyCodeLine{\ \ expanded:\ \{\ width:\ 280,\ transition:\ 'width\ 0.3s\ ease-\/in-\/out'\ \},}
+\DoxyCodeLine{\ \ mobile:\ \{\ width:\ 280,\ boxShadow:\ 8,\ border:\ 'none'\ \},}
+\DoxyCodeLine{\ \ desktop:\ \{\ boxShadow:\ 2,\ border:\ 'none',\ overflowX:\ 'hidden'\ \},}
+\DoxyCodeLine{\ \ //\ ...\ more\ styles}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14583}{}\doxysubsection{\texorpdfstring{2. {\bfseries{Sidebar Components}}}{2. {\bfseries{Sidebar Components}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14583}
+
+\begin{DoxyItemize}
+\item {\bfseries{Base Sidebar}}\+: Generic sidebar with role-\/based content
+\item {\bfseries{Student\+Sidebar}}\+: Student-\/specific navigation and features
+\item {\bfseries{Teacher\+Sidebar}}\+: Teacher-\/specific navigation and features
+\item {\bfseries{Parent\+Sidebar}}\+: Parent-\/specific navigation and features
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14584}{}\doxysubsection{\texorpdfstring{3. {\bfseries{Dashboard Layouts}}}{3. {\bfseries{Dashboard Layouts}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14584}
+
+\begin{DoxyItemize}
+\item {\bfseries{Admin\+Dashboard\+Layout}}\+: Admin-\/specific layout with sidebar
+\item {\bfseries{Student\+Dashboard\+Layout}}\+: Student-\/specific layout with sidebar
+\item {\bfseries{Teacher\+Dashboard\+Layout}}\+: Teacher-\/specific layout with sidebar
+\item {\bfseries{Parent\+Dashboard\+Layout}}\+: Parent-\/specific layout with sidebar
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14585}{}\doxysection{\texorpdfstring{Responsive Breakpoints}{Responsive Breakpoints}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14585}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14586}{}\doxysubsection{\texorpdfstring{Mobile (xs\+: 0-\/599px)}{Mobile (xs\+: 0-\/599px)}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14586}
+
+\begin{DoxyItemize}
+\item Sidebar is hidden by default
+\item Temporary drawer that slides in from left
+\item Full-\/width content area
+\item Hamburger menu button in header
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14587}{}\doxysubsection{\texorpdfstring{Tablet (sm\+: 600-\/899px)}{Tablet (sm\+: 600-\/899px)}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14587}
+
+\begin{DoxyItemize}
+\item Sidebar can be toggled
+\item Collapsed sidebar (60px width) by default
+\item Responsive typography and spacing
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14588}{}\doxysubsection{\texorpdfstring{Desktop (md\+: 900px+)}{Desktop (md\+: 900px+)}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14588}
+
+\begin{DoxyItemize}
+\item Permanent sidebar visible
+\item Expandable/collapsible functionality
+\item Full sidebar width (280px) when expanded
+\item Smooth transitions between states
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14589}{}\doxysection{\texorpdfstring{Key Components Updated}{Key Components Updated}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14589}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14590}{}\doxysubsection{\texorpdfstring{1. {\bfseries{Sidebar Components}}}{1. {\bfseries{Sidebar Components}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14590}
+
+\begin{DoxyItemize}
+\item {\ttfamily src/components/layout/\+Sidebar.\+jsx} -\/ Base sidebar with admin features
+\item {\ttfamily src/components/layout/\+Student\+Sidebar.\+jsx} -\/ Student-\/specific sidebar
+\item {\ttfamily src/components/layout/\+Teacher\+Sidebar.\+jsx} -\/ Teacher-\/specific sidebar
+\item {\ttfamily src/components/layout/\+Parent\+Sidebar.\+jsx} -\/ Parent-\/specific sidebar
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14591}{}\doxysubsection{\texorpdfstring{2. {\bfseries{Dashboard Layouts}}}{2. {\bfseries{Dashboard Layouts}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14591}
+
+\begin{DoxyItemize}
+\item {\ttfamily src/components/layout/\+Admin\+Dashboard\+Layout.\+jsx} -\/ Admin layout
+\item {\ttfamily src/components/layout/\+Student\+Dashboard\+Layout.\+jsx} -\/ Student layout
+\item {\ttfamily src/components/layout/\+Teacher\+Dashboard\+Layout.\+jsx} -\/ Teacher layout
+\item {\ttfamily src/components/layout/\+Parent\+Dashboard\+Layout.\+jsx} -\/ Parent layout
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14592}{}\doxysubsection{\texorpdfstring{3. {\bfseries{Responsive Utilities}}}{3. {\bfseries{Responsive Utilities}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14592}
+
+\begin{DoxyItemize}
+\item {\ttfamily src/utils/responsive.\+js} -\/ Enhanced with sidebar-\/specific styles
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14593}{}\doxysection{\texorpdfstring{Features by Role}{Features by Role}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14593}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14594}{}\doxysubsection{\texorpdfstring{Admin Sidebar}{Admin Sidebar}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14594}
+
+\begin{DoxyItemize}
+\item {\bfseries{Admin Management}}\+: Summary, Add Student/\+Teacher/\+Parent, Assign Teacher, Reset Password
+\item {\bfseries{Academic Calendar}}\+: Calendar management
+\item {\bfseries{Online Classes}}\+: Class management
+\item {\bfseries{Session Management}}\+: User sessions
+\item {\bfseries{Communication}}\+: Forum, Notifications
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14595}{}\doxysubsection{\texorpdfstring{Student Sidebar}{Student Sidebar}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14595}
+
+\begin{DoxyItemize}
+\item {\bfseries{Dashboard Overview}}\+: Main dashboard view
+\item {\bfseries{My Assignments}}\+: View and submit assignments
+\item {\bfseries{My Exams}}\+: Take exams and view results
+\item {\bfseries{My Grades}}\+: View academic performance
+\item {\bfseries{My Attendance}}\+: Check attendance records
+\item {\bfseries{Leave Requests}}\+: Submit and track leave requests
+\item {\bfseries{Academic Calendar}}\+: View academic events
+\item {\bfseries{Communication}}\+: Forum, Chat, Notifications
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14596}{}\doxysubsection{\texorpdfstring{Teacher Sidebar}{Teacher Sidebar}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14596}
+
+\begin{DoxyItemize}
+\item {\bfseries{Dashboard Overview}}\+: Main dashboard view
+\item {\bfseries{Attendance Management}}\+: Mark and view student attendance
+\item {\bfseries{Grade Management}}\+: Enter and manage student grades
+\item {\bfseries{Assignment Management}}\+: Create and manage assignments
+\item {\bfseries{Leave Requests}}\+: Approve student leave requests
+\item {\bfseries{Academic Calendar}}\+: View academic events
+\item {\bfseries{Online Classes}}\+: Manage online class sessions
+\item {\bfseries{Exam Management}}\+: Create and manage exams
+\item {\bfseries{Communication}}\+: Forum, Chat, Notifications
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14597}{}\doxysubsection{\texorpdfstring{Parent Sidebar}{Parent Sidebar}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14597}
+
+\begin{DoxyItemize}
+\item {\bfseries{Dashboard Overview}}\+: Main dashboard view
+\item {\bfseries{Child Progress}}\+: Monitor child academic progress
+\item {\bfseries{Leave Approvals}}\+: Approve child leave requests
+\item {\bfseries{Academic Calendar}}\+: View academic events
+\item {\bfseries{Communication}}\+: Forum, Chat, Notifications
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14598}{}\doxysection{\texorpdfstring{Responsive Design Principles}{Responsive Design Principles}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14598}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14599}{}\doxysubsection{\texorpdfstring{1. {\bfseries{Mobile-\/\+First Approach}}}{1. {\bfseries{Mobile-\/\+First Approach}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14599}
+
+\begin{DoxyItemize}
+\item Design for mobile devices first
+\item Progressive enhancement for larger screens
+\item Touch-\/friendly interface elements
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14600}{}\doxysubsection{\texorpdfstring{2. {\bfseries{Flexible Layouts}}}{2. {\bfseries{Flexible Layouts}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14600}
+
+\begin{DoxyItemize}
+\item CSS Grid and Flexbox for responsive layouts
+\item Fluid typography and spacing
+\item Adaptive content areas
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14601}{}\doxysubsection{\texorpdfstring{3. {\bfseries{Performance Optimization}}}{3. {\bfseries{Performance Optimization}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14601}
+
+\begin{DoxyItemize}
+\item Lazy loading of sidebar content
+\item Efficient state management
+\item Smooth animations and transitions
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14602}{}\doxysubsection{\texorpdfstring{4. {\bfseries{Accessibility}}}{4. {\bfseries{Accessibility}}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14602}
+
+\begin{DoxyItemize}
+\item Keyboard navigation support
+\item Screen reader compatibility
+\item High contrast ratios
+\item Focus management
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14603}{}\doxysection{\texorpdfstring{Usage Examples}{Usage Examples}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14603}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14604}{}\doxysubsection{\texorpdfstring{Basic Sidebar Usage}{Basic Sidebar Usage}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14604}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ useResponsive\ \}\ from\ '../../utils/responsive';}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ MyComponent()\ \{}
+\DoxyCodeLine{\ \ const\ \{\ isMobile,\ isTablet,\ isDesktop\ \}\ =\ useResponsive();}
+\DoxyCodeLine{\ \ }
+\DoxyCodeLine{\ \ return\ (}
+\DoxyCodeLine{\ \ \ \ <Box\ sx=\{\{\ display:\ 'flex',\ minHeight:\ '100vh'\ \}\}>}
+\DoxyCodeLine{\ \ \ \ \ \ <Sidebar}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ open=\{sidebarOpen\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ onClose=\{handleSidebarToggle\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ collapsed=\{sidebarCollapsed\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ onCollapse=\{handleSidebarCollapse\}}
+\DoxyCodeLine{\ \ \ \ \ \ />}
+\DoxyCodeLine{\ \ \ \ \ \ <Box\ sx=\{\{\ flexGrow:\ 1,\ ml:\ \{\ md:\ sidebarWidth\ \}\ \}\}>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{/*\ Content\ */\}}
+\DoxyCodeLine{\ \ \ \ \ \ </Box>}
+\DoxyCodeLine{\ \ \ \ </Box>}
+\DoxyCodeLine{\ \ );}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14605}{}\doxysubsection{\texorpdfstring{Responsive Styling}{Responsive Styling}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14605}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ sidebarStyles,\ layoutStyles\ \}\ from\ '../../utils/responsive';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ styles\ =\ \{}
+\DoxyCodeLine{\ \ sidebar:\ \{}
+\DoxyCodeLine{\ \ \ \ ...sidebarStyles.expanded,}
+\DoxyCodeLine{\ \ \ \ ...(isMobile\ \&\&\ sidebarStyles.mobile),}
+\DoxyCodeLine{\ \ \ \ ...(isDesktop\ \&\&\ sidebarStyles.desktop),}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ content:\ \{}
+\DoxyCodeLine{\ \ \ \ ...layoutStyles.content,}
+\DoxyCodeLine{\ \ \ \ p:\ \{\ xs:\ 2,\ sm:\ 3,\ md:\ 4\ \},}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14606}{}\doxysection{\texorpdfstring{Browser Support}{Browser Support}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14606}
+
+\begin{DoxyItemize}
+\item {\bfseries{Modern browsers}}\+: Full support for all features
+\item {\bfseries{Mobile browsers}}\+: Optimized for i\+OS Safari and Chrome Mobile
+\item {\bfseries{Progressive enhancement}}\+: Graceful degradation for older browsers
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14607}{}\doxysection{\texorpdfstring{Performance Considerations}{Performance Considerations}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14607}
+
+\begin{DoxyItemize}
+\item {\bfseries{Lazy loading}}\+: Sidebar content loaded on demand
+\item {\bfseries{State management}}\+: Efficient state updates and persistence
+\item {\bfseries{Animation optimization}}\+: Hardware-\/accelerated transitions
+\item {\bfseries{Memory management}}\+: Proper cleanup of event listeners
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14608}{}\doxysection{\texorpdfstring{Future Enhancements}{Future Enhancements}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14608}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Theme customization}}\+: User-\/selectable themes
+\item {\bfseries{Advanced animations}}\+: More sophisticated transition effects
+\item {\bfseries{Gesture support}}\+: Swipe gestures for mobile
+\item {\bfseries{Keyboard shortcuts}}\+: Quick navigation shortcuts
+\item {\bfseries{Search functionality}}\+: Search within sidebar items
+\end{DoxyEnumerate}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14609}{}\doxysection{\texorpdfstring{Conclusion}{Conclusion}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_r_e_s_p_o_n_s_i_v_e27efb1051f925944329d023f5a2e0964_autotoc_md14609}
+The responsive sidebar implementation provides a modern, accessible, and user-\/friendly navigation experience across all devices and screen sizes. The implementation follows best practices for responsive design and ensures optimal performance and usability. 

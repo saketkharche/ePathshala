@@ -1,0 +1,142 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/eslint-\/visitor-\/keys Directory Reference}
+\hypertarget{dir_3e4b61c4d0a7bb95061505b538dc0f5e}{}\label{dir_3e4b61c4d0a7bb95061505b538dc0f5e}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/eslint-\/visitor-\/keys Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/eslint-\/visitor-\/keys Directory Reference}}
+Directory dependency graph for eslint-\/visitor-\/keys\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{dir_3e4b61c4d0a7bb95061505b538dc0f5e_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md10850}{}\doxysubsection{\texorpdfstring{eslint-\/visitor-\/keys}{eslint-\/visitor-\/keys}}\label{README.md_autotoc_md10850}
+\href{https://www.npmjs.com/package/eslint-visitor-keys}{\texttt{}} \href{http://www.npmtrends.com/eslint-visitor-keys}{\texttt{}} \href{https://github.com/eslint/js/actions}{\texttt{}}
+
+Constants and utilities about visitor keys to traverse AST.\hypertarget{README.md_autotoc_md10851}{}\doxysubsection{\texorpdfstring{💿 Installation}{💿 Installation}}\label{README.md_autotoc_md10851}
+Use \href{https://www.npmjs.com/}{\texttt{npm}} to install.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ eslint-\/visitor-\/keys}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10852}{}\doxysubsubsection{\texorpdfstring{Requirements}{Requirements}}\label{README.md_autotoc_md10852}
+
+\begin{DoxyItemize}
+\item \href{https://nodejs.org/}{\texttt{Node.\+js}} {\ttfamily \texorpdfstring{$^\wedge$}{\string^}18.18.\+0}, {\ttfamily \texorpdfstring{$^\wedge$}{\string^}20.9.\+0}, or {\ttfamily \texorpdfstring{$>$}{>}=21.\+1.\+0}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md10853}{}\doxysubsection{\texorpdfstring{📖 Usage}{📖 Usage}}\label{README.md_autotoc_md10853}
+To use in an ESM file\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ *\ as\ evk\ from\ "{}eslint-\/visitor-\/keys"{}}
+
+\end{DoxyCode}
+
+
+To use in a Common\+JS file\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ evk\ =\ require("{}eslint-\/visitor-\/keys"{})}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10854}{}\doxysubsubsection{\texorpdfstring{evk.\+KEYS}{evk.\+KEYS}}\label{README.md_autotoc_md10854}
+\begin{quote}
+type\+: {\ttfamily \{ \mbox{[}type\+: string\mbox{]}\+: string\mbox{[}\mbox{]} \texorpdfstring{$\vert$}{|} undefined \}} \end{quote}
+
+
+Visitor keys. This keys are frozen.
+
+This is an object. Keys are the type of \href{https://github.com/estree/estree}{\texttt{ESTree}} nodes. Their values are an array of property names which have child nodes.
+
+For example\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{console.log(evk.KEYS.AssignmentExpression)\ //\ →\ ["{}left"{},\ "{}right"{}]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10855}{}\doxysubsubsection{\texorpdfstring{evk.\+get\+Keys(node)}{evk.\+get\+Keys(node)}}\label{README.md_autotoc_md10855}
+\begin{quote}
+type\+: {\ttfamily (node\+: object) =\texorpdfstring{$>$}{>} string\mbox{[}\mbox{]}} \end{quote}
+
+
+Get the visitor keys of a given AST node.
+
+This is similar to {\ttfamily Object.\+keys(node)} of ES Standard, but some keys are excluded\+: {\ttfamily parent}, {\ttfamily leading\+Comments}, {\ttfamily trailing\+Comments}, and names which start with {\ttfamily \+\_\+}.
+
+This will be used to traverse unknown nodes.
+
+For example\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ node\ =\ \{}
+\DoxyCodeLine{\ \ \ \ type:\ "{}AssignmentExpression"{},}
+\DoxyCodeLine{\ \ \ \ left:\ \{\ type:\ "{}Identifier"{},\ name:\ "{}foo"{}\ \},}
+\DoxyCodeLine{\ \ \ \ right:\ \{\ type:\ "{}Literal"{},\ value:\ 0\ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{console.log(evk.getKeys(node))\ //\ →\ ["{}type"{},\ "{}left"{},\ "{}right"{}]}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10856}{}\doxysubsubsection{\texorpdfstring{evk.\+union\+With(additional\+Keys)}{evk.\+union\+With(additional\+Keys)}}\label{README.md_autotoc_md10856}
+\begin{quote}
+type\+: {\ttfamily (additional\+Keys\+: object) =\texorpdfstring{$>$}{>} \{ \mbox{[}type\+: string\mbox{]}\+: string\mbox{[}\mbox{]} \texorpdfstring{$\vert$}{|} undefined \}} \end{quote}
+
+
+Make the union set with {\ttfamily evk.\+KEYS} and the given keys.
+
+
+\begin{DoxyItemize}
+\item The order of keys is, {\ttfamily additional\+Keys} is at first, then {\ttfamily evk.\+KEYS} is concatenated after that.
+\item It removes duplicated keys as keeping the first one.
+\end{DoxyItemize}
+
+For example\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{console.log(evk.unionWith(\{}
+\DoxyCodeLine{\ \ \ \ MethodDefinition:\ ["{}decorators"{}]}
+\DoxyCodeLine{\}))\ //\ →\ \{\ ...,\ MethodDefinition:\ ["{}decorators"{},\ "{}key"{},\ "{}value"{}],\ ...\ \}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10857}{}\doxysubsection{\texorpdfstring{📰 Change log}{📰 Change log}}\label{README.md_autotoc_md10857}
+See \href{https://github.com/eslint/js/releases}{\texttt{Git\+Hub releases}}.\hypertarget{README.md_autotoc_md10858}{}\doxysubsection{\texorpdfstring{🍻 Contributing}{🍻 Contributing}}\label{README.md_autotoc_md10858}
+Welcome. See \href{https://eslint.org/docs/developer-guide/contributing/}{\texttt{ESLint contribution guidelines}}.\hypertarget{README.md_autotoc_md10859}{}\doxysubsubsection{\texorpdfstring{Development commands}{Development commands}}\label{README.md_autotoc_md10859}
+
+\begin{DoxyItemize}
+\item {\ttfamily npm test} runs tests and measures code coverage.
+\item {\ttfamily npm run lint} checks source codes with ESLint.
+\item {\ttfamily npm run test\+:open-\/coverage} opens the code coverage report of the previous test with your default browser.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md10860}{}\doxysubsection{\texorpdfstring{Sponsors}{Sponsors}}\label{README.md_autotoc_md10860}
+The following companies, organizations, and individuals support ESLint\textquotesingle{}s ongoing maintenance and development. \href{https://eslint.org/donate}{\texttt{Become a Sponsor}} to get your logo on our READMEs and \href{https://eslint.org/sponsors}{\texttt{website}}.
+
+\doxysubsubsubsection*{Diamond Sponsors}
+
+\href{https://www.ag-grid.com/}{\texttt{}}
+
+\doxysubsubsubsection*{Platinum Sponsors}
+
+\href{https://automattic.com}{\texttt{}} \href{https://www.airbnb.com/}{\texttt{}}
+
+\doxysubsubsubsection*{Gold Sponsors}
+
+\href{https://qlty.sh/}{\texttt{}} \href{https://trunk.io/}{\texttt{}} \href{https://shopify.engineering/}{\texttt{}}
+
+\doxysubsubsubsection*{Silver Sponsors}
+
+\href{https://vite.dev/}{\texttt{}} \href{https://liftoff.io/}{\texttt{}} \href{https://americanexpress.io}{\texttt{}} \href{https://stackblitz.com}{\texttt{}}
+
+\doxysubsubsubsection*{Bronze Sponsors}
+
+\href{https://sentry.io}{\texttt{}} \href{https://syntax.fm}{\texttt{}} \href{https://cybozu.co.jp/}{\texttt{}} \href{https://www.crosswordsolver.org/anagram-solver/}{\texttt{}} \href{https://icons8.com/}{\texttt{}} \href{https://discord.com}{\texttt{}} \href{https://www.gitbook.com}{\texttt{}} \href{https://nolebase.ayaka.io}{\texttt{}} \href{https://nx.dev}{\texttt{}} \href{https://opensource.mercedes-benz.com/}{\texttt{}} \href{https://herocoders.com}{\texttt{}} \href{https://www.lambdatest.com}{\texttt{}}
+
+\doxysubsubsubsection*{Technology Sponsors}
+
+Technology sponsors allow us to use their products and services for free as part of a contribution to the open source ecosystem and our work. 
+
+\href{https://netlify.com}{\texttt{}} \href{https://algolia.com}{\texttt{}} \href{https://1password.com}{\texttt{}}

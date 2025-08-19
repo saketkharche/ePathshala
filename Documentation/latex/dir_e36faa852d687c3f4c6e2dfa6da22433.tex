@@ -1,0 +1,68 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/hoist-\/non-\/react-\/statics Directory Reference}
+\hypertarget{dir_e36faa852d687c3f4c6e2dfa6da22433}{}\label{dir_e36faa852d687c3f4c6e2dfa6da22433}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/hoist-\/non-\/react-\/statics Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/hoist-\/non-\/react-\/statics Directory Reference}}
+Directory dependency graph for hoist-\/non-\/react-\/statics\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{dir_e36faa852d687c3f4c6e2dfa6da22433_dep}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Directories}
+\begin{DoxyCompactItemize}
+\item 
+directory \mbox{\hyperlink{dir_9064719b306db63991bd3fce240d1313}{node\+\_\+modules}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md11386}{}\doxysubsection{\texorpdfstring{hoist-\/non-\/react-\/statics}{hoist-\/non-\/react-\/statics}}\label{README.md_autotoc_md11386}
+\href{http://badge.fury.io/js/hoist-non-react-statics}{\texttt{}} \href{https://travis-ci.org/mridgway/hoist-non-react-statics}{\texttt{}} \href{https://coveralls.io/r/mridgway/hoist-non-react-statics?branch=master}{\texttt{}} \href{https://david-dm.org/mridgway/hoist-non-react-statics}{\texttt{}} \href{https://david-dm.org/mridgway/hoist-non-react-statics\#info=devDependencies}{\texttt{}}
+
+Copies non-\/react specific statics from a child component to a parent component. Similar to {\ttfamily Object.\+assign}, but with React static keywords blacklisted from being overridden.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ -\/-\/save\ hoist-\/non-\/react-\/statics}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11387}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md11387}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ hoistNonReactStatics\ from\ 'hoist-\/non-\/react-\/statics';}
+\DoxyCodeLine{}
+\DoxyCodeLine{hoistNonReactStatics(targetComponent,\ sourceComponent);}
+
+\end{DoxyCode}
+
+
+If you have specific statics that you don\textquotesingle{}t want to be hoisted, you can also pass a third parameter to exclude them\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{hoistNonReactStatics(targetComponent,\ sourceComponent,\ \{\ myStatic:\ true,\ myOtherStatic:\ true\ \});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11388}{}\doxysubsection{\texorpdfstring{What does this module do?}{What does this module do?}}\label{README.md_autotoc_md11388}
+See this \href{https://facebook.github.io/react/docs/higher-order-components.html\#static-methods-must-be-copied-over}{\texttt{explanation}} from the React docs.\hypertarget{README.md_autotoc_md11389}{}\doxysubsection{\texorpdfstring{Compatible React Versions}{Compatible React Versions}}\label{README.md_autotoc_md11389}
+Please use latest 3.\+x. Versions prior to 3.\+x will not support Forward\+Refs.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ hoist-\/non-\/react-\/statics Version  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Compatible React Version  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ hoist-\/non-\/react-\/statics Version  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Compatible React Version  }\\\cline{1-2}
+\endhead
+3.\+x  &0.\+13-\/16.\+x With Forward\+Ref Support  \\\cline{1-2}
+2.\+x  &0.\+13-\/16.\+x Without Forward\+Ref Support  \\\cline{1-2}
+1.\+x  &0.\+13-\/16.\+2  \\\cline{1-2}
+\end{longtabu}
+\hypertarget{README.md_autotoc_md11390}{}\doxysubsection{\texorpdfstring{Browser Support}{Browser Support}}\label{README.md_autotoc_md11390}
+This package uses {\ttfamily Object.\+define\+Property} which has a broken implementation in IE8. In order to use this package in IE8, you will need a polyfill that fixes this method.\hypertarget{README.md_autotoc_md11391}{}\doxysubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md11391}
+This software is free to use under the Yahoo Inc. BSD license. See the \href{https://github.com/mridgway/hoist-non-react-statics/blob/master/LICENSE.md}{\texttt{LICENSE file}} for license text and copyright information.
+
+Third-\/party open source code used are listed in our \href{https://github.com/mridgway/hoist-non-react-statics/blob/master/package.json}{\texttt{package.\+json file}}. 

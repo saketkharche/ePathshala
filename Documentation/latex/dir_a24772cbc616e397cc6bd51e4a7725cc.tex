@@ -1,0 +1,105 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/@types/hoist-\/non-\/react-\/statics Directory Reference}
+\hypertarget{dir_a24772cbc616e397cc6bd51e4a7725cc}{}\label{dir_a24772cbc616e397cc6bd51e4a7725cc}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@types/hoist-\/non-\/react-\/statics Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@types/hoist-\/non-\/react-\/statics Directory Reference}}
+Directory dependency graph for hoist-\/non-\/react-\/statics\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{dir_a24772cbc616e397cc6bd51e4a7725cc_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md9869}{}\doxysubsection{\texorpdfstring{Installation}{Installation}}\label{README.md_autotoc_md9869}
+\begin{quote}
+{\ttfamily npm install -\/-\/save @types/hoist-\/non-\/react-\/statics} \end{quote}
+\hypertarget{README.md_autotoc_md9870}{}\doxysubsection{\texorpdfstring{Summary}{Summary}}\label{README.md_autotoc_md9870}
+This package contains type definitions for hoist-\/non-\/react-\/statics (\href{https://github.com/mridgway/hoist-non-react-statics\#readme}{\texttt{https\+://github.\+com/mridgway/hoist-\/non-\/react-\/statics\#readme}}).\hypertarget{README.md_autotoc_md9871}{}\doxysubsection{\texorpdfstring{Details}{Details}}\label{README.md_autotoc_md9871}
+Files were exported from \href{https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/hoist-non-react-statics}{\texttt{https\+://github.\+com/\+Definitely\+Typed/\+Definitely\+Typed/tree/master/types/hoist-\/non-\/react-\/statics}}. \hypertarget{README.md_autotoc_md9872}{}\doxysubsubsection{\texorpdfstring{\href{https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/hoist-non-react-statics/index.d.ts}{\texttt{index.\+d.\+ts}}}{\href{https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/hoist-non-react-statics/index.d.ts}{\texttt{index.\+d.\+ts}}}}\label{README.md_autotoc_md9872}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ *\ as\ React\ from\ "{}react"{};}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ REACT\_STATICS\ \{}
+\DoxyCodeLine{\ \ \ \ childContextTypes:\ true;}
+\DoxyCodeLine{\ \ \ \ contextType:\ true;}
+\DoxyCodeLine{\ \ \ \ contextTypes:\ true;}
+\DoxyCodeLine{\ \ \ \ defaultProps:\ true;}
+\DoxyCodeLine{\ \ \ \ displayName:\ true;}
+\DoxyCodeLine{\ \ \ \ getDefaultProps:\ true;}
+\DoxyCodeLine{\ \ \ \ getDerivedStateFromError:\ true;}
+\DoxyCodeLine{\ \ \ \ getDerivedStateFromProps:\ true;}
+\DoxyCodeLine{\ \ \ \ mixins:\ true;}
+\DoxyCodeLine{\ \ \ \ propTypes:\ true;}
+\DoxyCodeLine{\ \ \ \ type:\ true;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ KNOWN\_STATICS\ \{}
+\DoxyCodeLine{\ \ \ \ name:\ true;}
+\DoxyCodeLine{\ \ \ \ length:\ true;}
+\DoxyCodeLine{\ \ \ \ prototype:\ true;}
+\DoxyCodeLine{\ \ \ \ caller:\ true;}
+\DoxyCodeLine{\ \ \ \ callee:\ true;}
+\DoxyCodeLine{\ \ \ \ arguments:\ true;}
+\DoxyCodeLine{\ \ \ \ arity:\ true;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ MEMO\_STATICS\ \{}
+\DoxyCodeLine{\ \ \ \ "{}\$\$typeof"{}:\ true;}
+\DoxyCodeLine{\ \ \ \ compare:\ true;}
+\DoxyCodeLine{\ \ \ \ defaultProps:\ true;}
+\DoxyCodeLine{\ \ \ \ displayName:\ true;}
+\DoxyCodeLine{\ \ \ \ propTypes:\ true;}
+\DoxyCodeLine{\ \ \ \ type:\ true;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{interface\ FORWARD\_REF\_STATICS\ \{}
+\DoxyCodeLine{\ \ \ \ "{}\$\$typeof"{}:\ true;}
+\DoxyCodeLine{\ \ \ \ render:\ true;}
+\DoxyCodeLine{\ \ \ \ defaultProps:\ true;}
+\DoxyCodeLine{\ \ \ \ displayName:\ true;}
+\DoxyCodeLine{\ \ \ \ propTypes:\ true;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{declare\ namespace\ hoistNonReactStatics\ \{}
+\DoxyCodeLine{\ \ \ \ type\ NonReactStatics<}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ Source,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ C\ extends\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ [key:\ string]:\ true;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}\ =\ \{\},}
+\DoxyCodeLine{\ \ \ \ >\ =\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ [}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ key\ in\ Exclude<}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ keyof\ Source,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Source\ extends\ React.MemoExoticComponent<any>\ ?\ keyof\ MEMO\_STATICS\ |\ keyof\ C}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ Source\ extends\ React.ForwardRefExoticComponent<any>\ ?\ keyof\ FORWARD\_REF\_STATICS\ |\ keyof\ C}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ keyof\ REACT\_STATICS\ |\ keyof\ KNOWN\_STATICS\ |\ keyof\ C}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ >}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ]:\ Source[key];}
+\DoxyCodeLine{\ \ \ \ \};}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{declare\ function\ hoistNonReactStatics<}
+\DoxyCodeLine{\ \ \ \ Target,}
+\DoxyCodeLine{\ \ \ \ Source,}
+\DoxyCodeLine{\ \ \ \ CustomStatic\ extends\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ [key:\ string]:\ true;}
+\DoxyCodeLine{\ \ \ \ \}\ =\ \{\},}
+\DoxyCodeLine{>(}
+\DoxyCodeLine{\ \ \ \ TargetComponent:\ Target,}
+\DoxyCodeLine{\ \ \ \ SourceComponent:\ Source,}
+\DoxyCodeLine{\ \ \ \ customStatic?:\ CustomStatic,}
+\DoxyCodeLine{):\ Target\ \&\ hoistNonReactStatics.NonReactStatics<Source,\ CustomStatic>;}
+\DoxyCodeLine{}
+\DoxyCodeLine{export\ =\ hoistNonReactStatics;}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md9873}{}\doxysubsubsubsection{\texorpdfstring{Additional Details}{Additional Details}}\label{README.md_autotoc_md9873}
+
+\begin{DoxyItemize}
+\item Last updated\+: Mon, 21 Jul 2025 13\+:15\+:00 GMT
+\item Dependencies\+: \href{https://npmjs.com/package/hoist-non-react-statics}{\texttt{hoist-\/non-\/react-\/statics}}
+\item Peer dependencies\+: \href{https://npmjs.com/package/@types/react}{\texttt{@types/react}}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md9874}{}\doxysubsection{\texorpdfstring{Credits}{Credits}}\label{README.md_autotoc_md9874}
+These definitions were written by \href{https://github.com/JounQin}{\texttt{Joun\+Qin}}, and \href{https://github.com/jamesreggio}{\texttt{James Reggio}}. 

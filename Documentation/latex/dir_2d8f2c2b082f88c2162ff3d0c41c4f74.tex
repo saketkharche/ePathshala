@@ -1,0 +1,113 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/hoist-\/non-\/react-\/statics/node\+\_\+modules/react-\/is Directory Reference}
+\hypertarget{dir_2d8f2c2b082f88c2162ff3d0c41c4f74}{}\label{dir_2d8f2c2b082f88c2162ff3d0c41c4f74}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/hoist-\/non-\/react-\/statics/node\_modules/react-\/is Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/hoist-\/non-\/react-\/statics/node\_modules/react-\/is Directory Reference}}
+Directory dependency graph for react-\/is\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_2d8f2c2b082f88c2162ff3d0c41c4f74_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md11376}{}\doxysubsection{\texorpdfstring{\`{}react-\/is\`{}}{\`{}react-\/is\`{}}}\label{README.md_autotoc_md11376}
+This package allows you to test arbitrary values and see if they\textquotesingle{}re a particular React element type.\hypertarget{README.md_autotoc_md11377}{}\doxysubsection{\texorpdfstring{Installation}{Installation}}\label{README.md_autotoc_md11377}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\#\ Yarn}
+\DoxyCodeLine{yarn\ add\ react-\/is}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ NPM}
+\DoxyCodeLine{npm\ install\ react-\/is}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11378}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md11378}
+\hypertarget{README.md_autotoc_md11379}{}\doxysubsubsection{\texorpdfstring{Determining if a Component is Valid}{Determining if a Component is Valid}}\label{README.md_autotoc_md11379}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ React\ from\ "{}react"{};}
+\DoxyCodeLine{import\ *\ as\ ReactIs\ from\ "{}react-\/is"{};}
+\DoxyCodeLine{}
+\DoxyCodeLine{class\ ClassComponent\ extends\ React.Component\ \{}
+\DoxyCodeLine{\ \ render()\ \{}
+\DoxyCodeLine{\ \ \ \ return\ React.createElement("{}div"{});}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ FunctionComponent\ =\ ()\ =>\ React.createElement("{}div"{});}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ ForwardRefComponent\ =\ React.forwardRef((props,\ ref)\ =>}
+\DoxyCodeLine{\ \ React.createElement(Component,\ \{\ forwardedRef:\ ref,\ ...props\ \})}
+\DoxyCodeLine{);}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ Context\ =\ React.createContext(false);}
+\DoxyCodeLine{}
+\DoxyCodeLine{ReactIs.isValidElementType("{}div"{});\ //\ true}
+\DoxyCodeLine{ReactIs.isValidElementType(ClassComponent);\ //\ true}
+\DoxyCodeLine{ReactIs.isValidElementType(FunctionComponent);\ //\ true}
+\DoxyCodeLine{ReactIs.isValidElementType(ForwardRefComponent);\ //\ true}
+\DoxyCodeLine{ReactIs.isValidElementType(Context.Provider);\ //\ true}
+\DoxyCodeLine{ReactIs.isValidElementType(Context.Consumer);\ //\ true}
+\DoxyCodeLine{ReactIs.isValidElementType(React.createFactory("{}div"{}));\ //\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11380}{}\doxysubsubsection{\texorpdfstring{Determining an Element\textquotesingle{}s Type}{Determining an Element\textquotesingle{}s Type}}\label{README.md_autotoc_md11380}
+\hypertarget{README.md_autotoc_md11381}{}\doxysubsubsubsection{\texorpdfstring{Context}{Context}}\label{README.md_autotoc_md11381}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ React\ from\ "{}react"{};}
+\DoxyCodeLine{import\ *\ as\ ReactIs\ from\ 'react-\/is';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ ThemeContext\ =\ React.createContext("{}blue"{});}
+\DoxyCodeLine{}
+\DoxyCodeLine{ReactIs.isContextConsumer(<ThemeContext.Consumer\ />);\ //\ true}
+\DoxyCodeLine{ReactIs.isContextProvider(<ThemeContext.Provider\ />);\ //\ true}
+\DoxyCodeLine{ReactIs.typeOf(<ThemeContext.Provider\ />)\ ===\ ReactIs.ContextProvider;\ //\ true}
+\DoxyCodeLine{ReactIs.typeOf(<ThemeContext.Consumer\ />)\ ===\ ReactIs.ContextConsumer;\ //\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11382}{}\doxysubsubsubsection{\texorpdfstring{Element}{Element}}\label{README.md_autotoc_md11382}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ React\ from\ "{}react"{};}
+\DoxyCodeLine{import\ *\ as\ ReactIs\ from\ 'react-\/is';}
+\DoxyCodeLine{}
+\DoxyCodeLine{ReactIs.isElement(<div\ />);\ //\ true}
+\DoxyCodeLine{ReactIs.typeOf(<div\ />)\ ===\ ReactIs.Element;\ //\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11383}{}\doxysubsubsubsection{\texorpdfstring{Fragment}{Fragment}}\label{README.md_autotoc_md11383}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ React\ from\ "{}react"{};}
+\DoxyCodeLine{import\ *\ as\ ReactIs\ from\ 'react-\/is';}
+\DoxyCodeLine{}
+\DoxyCodeLine{ReactIs.isFragment(<></>);\ //\ true}
+\DoxyCodeLine{ReactIs.typeOf(<></>)\ ===\ ReactIs.Fragment;\ //\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11384}{}\doxysubsubsubsection{\texorpdfstring{Portal}{Portal}}\label{README.md_autotoc_md11384}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ React\ from\ "{}react"{};}
+\DoxyCodeLine{import\ ReactDOM\ from\ "{}react-\/dom"{};}
+\DoxyCodeLine{import\ *\ as\ ReactIs\ from\ 'react-\/is';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ div\ =\ document.createElement("{}div"{});}
+\DoxyCodeLine{const\ portal\ =\ ReactDOM.createPortal(<div\ />,\ div);}
+\DoxyCodeLine{}
+\DoxyCodeLine{ReactIs.isPortal(portal);\ //\ true}
+\DoxyCodeLine{ReactIs.typeOf(portal)\ ===\ ReactIs.Portal;\ //\ true}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md11385}{}\doxysubsubsubsection{\texorpdfstring{Strict\+Mode}{Strict\+Mode}}\label{README.md_autotoc_md11385}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ React\ from\ "{}react"{};}
+\DoxyCodeLine{import\ *\ as\ ReactIs\ from\ 'react-\/is';}
+\DoxyCodeLine{}
+\DoxyCodeLine{ReactIs.isStrictMode(<React.StrictMode\ />);\ //\ true}
+\DoxyCodeLine{ReactIs.typeOf(<React.StrictMode\ />)\ ===\ ReactIs.StrictMode;\ //\ true}
+
+\end{DoxyCode}
+ 

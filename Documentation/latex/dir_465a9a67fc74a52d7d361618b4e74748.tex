@@ -1,0 +1,127 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/@stomp/stompjs Directory Reference}
+\hypertarget{dir_465a9a67fc74a52d7d361618b4e74748}{}\label{dir_465a9a67fc74a52d7d361618b4e74748}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@stomp/stompjs Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/"@stomp/stompjs Directory Reference}}
+Directory dependency graph for stompjs\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=162pt]{dir_465a9a67fc74a52d7d361618b4e74748_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md9785}{}\doxysubsection{\texorpdfstring{STOMP.\+js}{STOMP.\+js}}\label{README.md_autotoc_md9785}
+\href{https://github.com/stomp-js/stompjs/actions/workflows/linux.yml}{\texttt{}} \href{https://github.com/stomp-js/stompjs/actions/workflows/osx.yml}{\texttt{}} \href{https://github.com/stomp-js/stompjs/actions/workflows/node-js.yml}{\texttt{}} \href{https://github.com/stomp-js/stompjs/actions/workflows/docs-refresh.yml}{\texttt{}}
+
+This library provides a STOMP over Web\+Socket client for Web browser and node.\+js applications.
+
+Please visit \href{https://stomp-js.github.io/}{\texttt{https\+://stomp-\/js.\+github.\+io/}} for guides, FAQs and API docs.\hypertarget{README.md_autotoc_md9786}{}\doxysubsection{\texorpdfstring{Introduction}{Introduction}}\label{README.md_autotoc_md9786}
+This library allows you to connect to a STOMP broker over Web\+Socket. This library supports complete STOMP specifications including all current protocol variants. Most popular messaging brokers support STOMP and STOMP over Web\+Sockets out-\/of-\/the-\/box or using plugins.\hypertarget{README.md_autotoc_md9787}{}\doxysubsubsection{\texorpdfstring{Features}{Features}}\label{README.md_autotoc_md9787}
+
+\begin{DoxyItemize}
+\item Simple API to interact with the Stomp protocol
+\item Support for v1.\+2, v1.\+1 and v1.\+0 of the Stomp protocol
+\item Support for fallback options in case of Web\+Socket unavailable
+\item Browser and Node.\+js support
+\item Option to use STOMP over TCP
+\item Binary payload support
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md9788}{}\doxysubsubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md9788}
+\hypertarget{README.md_autotoc_md9789}{}\doxysubsubsubsection{\texorpdfstring{Browser}{Browser}}\label{README.md_autotoc_md9789}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<!-\/-\/}
+\DoxyCodeLine{\ \ \ \ JSPM\ Generator\ Import\ Map}
+\DoxyCodeLine{\ \ \ \ Edit\ URL:\ https://generator.jspm.io/\#U2NgYGBkDM0rySzJSU1hcCguyc8t0AeTWcUO5noGega6SakliaYAYTzJAykA}
+\DoxyCodeLine{\ \ -\/-\/>}
+\DoxyCodeLine{<script\ type="{}importmap"{}>}
+\DoxyCodeLine{\ \ \{}
+\DoxyCodeLine{\ \ \ \ "{}imports"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}@stomp/stompjs"{}:\ "{}https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js"{}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{</script>}
+\DoxyCodeLine{}
+\DoxyCodeLine{<!-\/-\/\ ES\ Module\ Shims:\ Import\ maps\ polyfill\ for\ modules\ browsers\ without\ import\ maps\ support\ (all\ except\ Chrome\ 89+)\ -\/-\/>}
+\DoxyCodeLine{<script}
+\DoxyCodeLine{\ \ async}
+\DoxyCodeLine{\ \ src="{}https://ga.jspm.io/npm:es-\/module-\/shims@1.5.1/dist/es-\/module-\/shims.js"{}}
+\DoxyCodeLine{\ \ crossorigin="{}anonymous"{}}
+\DoxyCodeLine{></script>}
+\DoxyCodeLine{}
+\DoxyCodeLine{<script\ type="{}module"{}>}
+\DoxyCodeLine{\ \ import\ \{\ Client\ \}\ from\ '@stomp/stompjs';}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ const\ client\ =\ new\ Client(\{}
+\DoxyCodeLine{\ \ \ \ brokerURL:\ 'ws://localhost:15674/ws',}
+\DoxyCodeLine{\ \ \ \ onConnect:\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ client.subscribe('/topic/test01',\ message\ =>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ console.log(`Received:\ \$\{message.body\}`)}
+\DoxyCodeLine{\ \ \ \ \ \ );}
+\DoxyCodeLine{\ \ \ \ \ \ client.publish(\{\ destination:\ '/topic/test01',\ body:\ 'First\ Message'\ \});}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \});}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ client.activate();}
+\DoxyCodeLine{</script>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md9790}{}\doxysubsubsubsection{\texorpdfstring{Node\+JS}{Node\+JS}}\label{README.md_autotoc_md9790}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ npm\ install\ @stomp/stompjs\ ws}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ Client\ \}\ from\ '@stomp/stompjs';}
+\DoxyCodeLine{}
+\DoxyCodeLine{import\ \{\ WebSocket\ \}\ from\ 'ws';}
+\DoxyCodeLine{Object.assign(global,\ \{\ WebSocket\ \});}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ client\ =\ new\ Client(\{}
+\DoxyCodeLine{\ \ brokerURL:\ 'ws://localhost:15674/ws',}
+\DoxyCodeLine{\ \ onConnect:\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ client.subscribe('/topic/test01',\ message\ =>}
+\DoxyCodeLine{\ \ \ \ \ \ console.log(`Received:\ \$\{message.body\}`)}
+\DoxyCodeLine{\ \ \ \ );}
+\DoxyCodeLine{\ \ \ \ client.publish(\{\ destination:\ '/topic/test01',\ body:\ 'First\ Message'\ \});}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{client.activate();}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md9791}{}\doxysubsubsection{\texorpdfstring{Further information}{Further information}}\label{README.md_autotoc_md9791}
+The API documentation is hosted as Git\+Hub pages for the Stomp\+JS family of libraries. You may head straight to the \href{https://stomp-js.github.io/api-docs/latest/}{\texttt{https\+://stomp-\/js.\+github.\+io/api-\/docs/latest/}}
+
+This library comes with detailed usage instructions. Please find it at \href{https://stomp-js.github.io/guide/stompjs/using-stompjs-v5.html}{\texttt{Usage instructions}}. Check out other guides at \href{https://stomp-js.github.io/}{\texttt{https\+://stomp-\/js.\+github.\+io/}}.
+
+There is quite detailed API documentation, you should start at \href{https://stomp-js.github.io/api-docs/latest/classes/Client.html}{\texttt{https\+://stomp-\/js.\+github.\+io/api-\/docs/latest/classes/\+Client.\+html}}.\hypertarget{README.md_autotoc_md9792}{}\doxysubsubsection{\texorpdfstring{Upgrading}{Upgrading}}\label{README.md_autotoc_md9792}
+if you were using an older version of this library, you would need to make changes to your code. Head to \href{https://stomp-js.github.io/\#upgrading}{\texttt{Upgrading}}.\hypertarget{README.md_autotoc_md9793}{}\doxysubsubsection{\texorpdfstring{Usage with Rx\+JS}{Usage with Rx\+JS}}\label{README.md_autotoc_md9793}
+\href{https://github.com/stomp-js/rx-stomp}{\texttt{https\+://github.\+com/stomp-\/js/rx-\/stomp}} is based on this library and exposes the entire functionality offered by this library as Rx\+JS Observables.\hypertarget{README.md_autotoc_md9794}{}\doxysubsubsection{\texorpdfstring{Type\+Script definitions}{Type\+Script definitions}}\label{README.md_autotoc_md9794}
+The npm package includes Type\+Script definitions, so there is no need to install it separately.\hypertarget{README.md_autotoc_md9795}{}\doxysubsubsection{\texorpdfstring{Change-\/log}{Change-\/log}}\label{README.md_autotoc_md9795}
+Please visit Change Log.\hypertarget{README.md_autotoc_md9796}{}\doxysubsubsection{\texorpdfstring{Contributing}{Contributing}}\label{README.md_autotoc_md9796}
+If you want to understand the code, develop, or contribute. Please visit How to contribute.\hypertarget{README.md_autotoc_md9797}{}\doxysubsubsection{\texorpdfstring{Authors}{Authors}}\label{README.md_autotoc_md9797}
+
+\begin{DoxyItemize}
+\item \href{http://jmesnil.net/}{\texttt{Jeff Mesnil}}
+\item \href{http://github.com/progrium}{\texttt{Jeff Lindsay}}
+\item \href{http://github.com/fridgebuzz}{\texttt{Vanessa Williams}}
+\item \href{https://github.com/kum-deepak}{\texttt{Deepak Kumar}}
+\item \href{https://github.com/astha183}{\texttt{Astha Deep}}
+\item \href{https://github.com/dillon-sellars}{\texttt{Dillon Sellars}}
+\item \href{https://github.com/jimic}{\texttt{Jimi Charalampidis}}
+\item \href{https://github.com/rulonder}{\texttt{Raul}}
+\item \href{https://github.com/iMitaka}{\texttt{Dimitar Georgiev}}
+\item \href{https://github.com/genadis}{\texttt{Genadi}}
+\item \href{https://github.com/bobohuochai}{\texttt{Bobohuochai}}
+\item \href{https://github.com/sailai}{\texttt{Sailai}}
+\item \href{https://github.com/harsh183}{\texttt{Harsh Deep}}
+\item \href{https://github.com/Nikos410}{\texttt{Nikos Epping}}
+\item \href{https://github.com/tomamatics}{\texttt{Tom Pachtner}}
+\item \href{https://github.com/davidnussio}{\texttt{David Nussio}}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md9798}{}\doxysubsubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md9798}
+\mbox{[}License\mbox{]}(LICENSE) -\/ Apache-\/2.\+0 

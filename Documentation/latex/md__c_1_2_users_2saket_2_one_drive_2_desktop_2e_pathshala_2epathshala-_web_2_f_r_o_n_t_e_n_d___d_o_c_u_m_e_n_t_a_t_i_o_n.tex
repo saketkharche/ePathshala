@@ -1,0 +1,463 @@
+\chapter{e\+Pathshala Frontend Documentation }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n}\index{ePathshala Frontend Documentation@{ePathshala Frontend Documentation}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md92}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md92}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md93}{}\doxysection{\texorpdfstring{📁 Project Structure Overview}{📁 Project Structure Overview}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md93}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{epathshala-\/Web/}
+\DoxyCodeLine{├──\ public/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Static\ assets}
+\DoxyCodeLine{├──\ src/}
+\DoxyCodeLine{│\ \ \ ├──\ api/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ API\ service\ functions}
+\DoxyCodeLine{│\ \ \ ├──\ assets/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Static\ assets\ (images,\ icons)}
+\DoxyCodeLine{│\ \ \ ├──\ components/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Reusable\ React\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ admin/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Admin-\/specific\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ chat/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Chat\ and\ messaging\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ common/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Shared/common\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ exam/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Exam-\/related\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ forum/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Forum\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ layout/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Layout\ and\ navigation\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ notifications/\ \ \ \ \ \ \ \ \ \ \#\ Notification\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ parent/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Parent-\/specific\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ student/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Student-\/specific\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ teacher/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Teacher-\/specific\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ └──\ ui/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ UI\ utility\ components}
+\DoxyCodeLine{│\ \ \ ├──\ hooks/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Custom\ React\ hooks}
+\DoxyCodeLine{│\ \ \ ├──\ pages/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Page\ components}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ about/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ About\ page}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ auth/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Authentication\ pages}
+\DoxyCodeLine{│\ \ \ │\ \ \ ├──\ contact/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Contact\ page}
+\DoxyCodeLine{│\ \ \ │\ \ \ └──\ dashboard/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Dashboard\ pages}
+\DoxyCodeLine{│\ \ \ │\ \ \ \ \ \ \ ├──\ parent/\ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Parent\ dashboard\ pages}
+\DoxyCodeLine{│\ \ \ │\ \ \ \ \ \ \ ├──\ student/\ \ \ \ \ \ \ \ \ \ \ \ \#\ Student\ dashboard\ pages}
+\DoxyCodeLine{│\ \ \ │\ \ \ \ \ \ \ └──\ teacher/\ \ \ \ \ \ \ \ \ \ \ \ \#\ Teacher\ dashboard\ pages}
+\DoxyCodeLine{│\ \ \ ├──\ routes/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Routing\ configuration}
+\DoxyCodeLine{│\ \ \ ├──\ theme/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Material-\/UI\ theme\ configuration}
+\DoxyCodeLine{│\ \ \ └──\ utils/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Utility\ functions}
+\DoxyCodeLine{├──\ package.json\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Dependencies\ and\ scripts}
+\DoxyCodeLine{└──\ vite.config.js\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ Vite\ configuration}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md94}{}\doxysection{\texorpdfstring{🚀 Getting Started}{🚀 Getting Started}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md94}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md95}{}\doxysubsection{\texorpdfstring{Prerequisites}{Prerequisites}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md95}
+
+\begin{DoxyItemize}
+\item Node.\+js (v16 or higher)
+\item npm or yarn
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md96}{}\doxysubsection{\texorpdfstring{Installation}{Installation}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md96}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ epathshala-\/Web}
+\DoxyCodeLine{npm\ install}
+\DoxyCodeLine{npm\ run\ dev}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md97}{}\doxysubsection{\texorpdfstring{Available Scripts}{Available Scripts}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md97}
+
+\begin{DoxyItemize}
+\item {\ttfamily npm run dev} -\/ Start development server
+\item {\ttfamily npm run build} -\/ Build for production
+\item {\ttfamily npm run preview} -\/ Preview production build
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md98}{}\doxysection{\texorpdfstring{🏗️ Core Architecture}{🏗️ Core Architecture}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md98}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md99}{}\doxysubsection{\texorpdfstring{Technology Stack}{Technology Stack}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md99}
+
+\begin{DoxyItemize}
+\item {\bfseries{React 18}} -\/ UI library
+\item {\bfseries{Vite}} -\/ Build tool and dev server
+\item {\bfseries{Material-\/\+UI (MUI)}} -\/ Component library
+\item {\bfseries{React Router DOM}} -\/ Client-\/side routing
+\item {\bfseries{Axios}} -\/ HTTP client for API calls
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md100}{}\doxysubsection{\texorpdfstring{Key Design Patterns}{Key Design Patterns}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md100}
+
+\begin{DoxyItemize}
+\item {\bfseries{Component-\/\+Based Architecture}} -\/ Modular, reusable components
+\item {\bfseries{Context API}} -\/ State management (authentication, theme)
+\item {\bfseries{Custom Hooks}} -\/ Logic reusability
+\item {\bfseries{Responsive Design}} -\/ Mobile-\/first approach
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md101}{}\doxysection{\texorpdfstring{📱 Components Documentation}{📱 Components Documentation}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md101}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md102}{}\doxysubsection{\texorpdfstring{1. Layout Components ({\ttfamily src/components/layout/})}{1. Layout Components ({\ttfamily src/components/layout/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md102}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md103}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Navbar.\+jsx}}{{\ttfamily Navbar.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md103}
+{\bfseries{Location}}\+: {\ttfamily src/components/common/\+Navbar.\+jsx} {\bfseries{Purpose}}\+: Main navigation bar with user menu and chatbot {\bfseries{Key Features}}\+:
+\begin{DoxyItemize}
+\item Responsive design with mobile menu
+\item User authentication status display
+\item Chatbot integration
+\item Role-\/based navigation links
+\item Profile menu with logout functionality
+\end{DoxyItemize}
+
+{\bfseries{Key Props}}\+: {\ttfamily children} (for mobile menu button) {\bfseries{Responsive Breakpoints}}\+:
+\begin{DoxyItemize}
+\item Mobile\+: Hamburger menu, condensed layout
+\item Desktop\+: Full navigation links, expanded layout
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md104}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Sidebar.\+jsx} (Legacy)}{{\ttfamily Sidebar.\+jsx} (Legacy)}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md104}
+{\bfseries{Location}}\+: {\ttfamily src/components/layout/\+Sidebar.\+jsx} {\bfseries{Purpose}}\+: Generic sidebar component (replaced by role-\/specific sidebars)\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md105}{}\doxysubsubsection{\texorpdfstring{Role-\/\+Specific Sidebars}{Role-\/\+Specific Sidebars}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md105}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily Teacher\+Sidebar.\+jsx}}} -\/ Teacher dashboard navigation
+\item {\bfseries{{\ttfamily Student\+Sidebar.\+jsx}}} -\/ Student dashboard navigation ~\newline
+
+\item {\bfseries{{\ttfamily Parent\+Sidebar.\+jsx}}} -\/ Parent dashboard navigation
+\end{DoxyItemize}
+
+{\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Collapsible menu sections
+\item Active link highlighting
+\item Role-\/specific menu items
+\item Mobile-\/responsive with temporary drawer
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md106}{}\doxysubsubsection{\texorpdfstring{Dashboard Layouts}{Dashboard Layouts}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md106}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily Teacher\+Dashboard\+Layout.\+jsx}}} -\/ Teacher dashboard wrapper
+\item {\bfseries{{\ttfamily Student\+Dashboard\+Layout.\+jsx}}} -\/ Student dashboard wrapper
+\item {\bfseries{{\ttfamily Parent\+Dashboard\+Layout.\+jsx}}} -\/ Parent dashboard wrapper
+\end{DoxyItemize}
+
+{\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Sidebar integration
+\item Mobile drawer management
+\item Breadcrumb navigation
+\item Responsive container
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md107}{}\doxysubsection{\texorpdfstring{2. Authentication Components ({\ttfamily src/pages/auth/})}{2. Authentication Components ({\ttfamily src/pages/auth/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md107}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md108}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Login\+Page.\+jsx}}{{\ttfamily Login\+Page.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md108}
+{\bfseries{Location}}\+: {\ttfamily src/pages/auth/\+Login\+Page.\+jsx} {\bfseries{Purpose}}\+: User authentication interface {\bfseries{Key Features}}\+:
+\begin{DoxyItemize}
+\item Multi-\/role login (Admin, Student, Teacher, Parent)
+\item Password visibility toggle
+\item Form validation
+\item Loading states
+\item Error handling
+\item Responsive design with welcome section
+\end{DoxyItemize}
+
+{\bfseries{Form Fields}}\+:
+\begin{DoxyItemize}
+\item Email address (with email icon)
+\item Password (with visibility toggle)
+\item Role selection dropdown
+\item Forgot password link
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md109}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Forgot\+Password.\+jsx}}{{\ttfamily Forgot\+Password.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md109}
+{\bfseries{Location}}\+: {\ttfamily src/pages/auth/\+Forgot\+Password.\+jsx} {\bfseries{Purpose}}\+: Password reset functionality {\bfseries{Key Features}}\+:
+\begin{DoxyItemize}
+\item Two-\/step process (Request OTP → Reset Password)
+\item Stepper UI for progress indication
+\item OTP verification
+\item Password strength validation
+\item Responsive design
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md110}{}\doxysubsection{\texorpdfstring{3. Dashboard Components}{3. Dashboard Components}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md110}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md111}{}\doxysubsubsection{\texorpdfstring{Overview Components ({\ttfamily src/components/dashboard/})}{Overview Components ({\ttfamily src/components/dashboard/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md111}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily Teacher\+Overview.\+jsx}}} -\/ Teacher dashboard summary
+\item {\bfseries{{\ttfamily Student\+Overview.\+jsx}}} -\/ Student dashboard summary
+\item {\bfseries{{\ttfamily Parent\+Overview.\+jsx}}} -\/ Parent dashboard summary
+\end{DoxyItemize}
+
+{\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Statistics cards with icons
+\item Recent activities list
+\item Quick action buttons
+\item Responsive grid layout
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md112}{}\doxysubsubsection{\texorpdfstring{Dashboard Pages ({\ttfamily src/pages/dashboard/})}{Dashboard Pages ({\ttfamily src/pages/dashboard/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md112}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md113}{}\doxysubsubsubsection{\texorpdfstring{Teacher Dashboard Pages}{Teacher Dashboard Pages}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md113}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily Teacher\+Dashboard.\+jsx}}} -\/ Main teacher overview
+\item {\bfseries{{\ttfamily Teacher\+Attendance\+Page.\+jsx}}} -\/ Attendance management
+\item {\bfseries{{\ttfamily Teacher\+Grades\+Page.\+jsx}}} -\/ Grade management
+\item {\bfseries{{\ttfamily Teacher\+Assignments\+Page.\+jsx}}} -\/ Assignment management
+\item {\bfseries{{\ttfamily Teacher\+Leave\+Requests\+Page.\+jsx}}} -\/ Leave request handling
+\item {\bfseries{{\ttfamily Teacher\+Calendar\+Page.\+jsx}}} -\/ Academic calendar
+\item {\bfseries{{\ttfamily Teacher\+Online\+Classes\+Page.\+jsx}}} -\/ Online class management
+\item {\bfseries{{\ttfamily Teacher\+Exams\+Page.\+jsx}}} -\/ Exam management
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md114}{}\doxysubsubsubsection{\texorpdfstring{Student Dashboard Pages}{Student Dashboard Pages}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md114}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily Student\+Dashboard.\+jsx}}} -\/ Main student overview
+\item {\bfseries{{\ttfamily Student\+Assignments\+Page.\+jsx}}} -\/ Assignment viewing/submission
+\item {\bfseries{{\ttfamily Student\+Exams\+Page.\+jsx}}} -\/ Exam taking interface
+\item {\bfseries{{\ttfamily Student\+Grades\+Page.\+jsx}}} -\/ Grade viewing
+\item {\bfseries{{\ttfamily Student\+Attendance\+Page.\+jsx}}} -\/ Attendance tracking
+\item {\bfseries{{\ttfamily Student\+Leave\+Requests\+Page.\+jsx}}} -\/ Leave request submission
+\item {\bfseries{{\ttfamily Student\+Calendar\+Page.\+jsx}}} -\/ Academic calendar
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md115}{}\doxysubsubsubsection{\texorpdfstring{Parent Dashboard Pages}{Parent Dashboard Pages}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md115}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily Parent\+Dashboard.\+jsx}}} -\/ Main parent overview
+\item {\bfseries{{\ttfamily Parent\+Child\+Progress\+Page.\+jsx}}} -\/ Child academic progress
+\item {\bfseries{{\ttfamily Parent\+Leave\+Approvals\+Page.\+jsx}}} -\/ Leave request approvals
+\item {\bfseries{{\ttfamily Parent\+Calendar\+Page.\+jsx}}} -\/ Academic calendar
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md116}{}\doxysubsection{\texorpdfstring{4. Common Components ({\ttfamily src/components/common/})}{4. Common Components ({\ttfamily src/components/common/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md116}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md117}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Chatbot.\+jsx}}{{\ttfamily Chatbot.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md117}
+{\bfseries{Location}}\+: {\ttfamily src/components/common/\+Chatbot.\+jsx} {\bfseries{Purpose}}\+: AI-\/powered chatbot interface {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Real-\/time chat interface
+\item Predefined question selection
+\item Message history
+\item Responsive design
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md118}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Breadcrumb.\+jsx}}{{\ttfamily Breadcrumb.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md118}
+{\bfseries{Location}}\+: {\ttfamily src/components/common/\+Breadcrumb.\+jsx} {\bfseries{Purpose}}\+: Navigation breadcrumbs {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Dynamic breadcrumb generation
+\item Clickable navigation links
+\item Current page indication
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md119}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Notifications.\+jsx}}{{\ttfamily Notifications.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md119}
+{\bfseries{Location}}\+: {\ttfamily src/components/common/\+Notifications.\+jsx} {\bfseries{Purpose}}\+: Notification display component {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Real-\/time notifications
+\item Notification types (success, error, warning, info)
+\item Auto-\/dismiss functionality
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md120}{}\doxysubsection{\texorpdfstring{5. UI Components ({\ttfamily src/components/ui/})}{5. UI Components ({\ttfamily src/components/ui/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md120}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md121}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Loading\+Spinner.\+jsx}}{{\ttfamily Loading\+Spinner.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md121}
+{\bfseries{Location}}\+: {\ttfamily src/components/ui/\+Loading\+Spinner.\+jsx} {\bfseries{Purpose}}\+: Loading indicator component {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Customizable size
+\item Centered positioning
+\item Smooth animation
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md122}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Error\+Message.\+jsx}}{{\ttfamily Error\+Message.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md122}
+{\bfseries{Location}}\+: {\ttfamily src/components/ui/\+Error\+Message.\+jsx} {\bfseries{Purpose}}\+: Error display component {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Error message formatting
+\item Retry functionality
+\item User-\/friendly error descriptions
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md123}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Empty\+State.\+jsx}}{{\ttfamily Empty\+State.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md123}
+{\bfseries{Location}}\+: {\ttfamily src/components/ui/\+Empty\+State.\+jsx} {\bfseries{Purpose}}\+: Empty state display {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Customizable illustrations
+\item Action buttons
+\item Descriptive text
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md124}{}\doxysubsection{\texorpdfstring{6. Chat Components ({\ttfamily src/components/chat/})}{6. Chat Components ({\ttfamily src/components/chat/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md124}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md125}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Chat.\+jsx}}{{\ttfamily Chat.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md125}
+{\bfseries{Location}}\+: {\ttfamily src/components/chat/\+Chat.\+jsx} {\bfseries{Purpose}}\+: Main chat interface {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Real-\/time messaging
+\item Message threading
+\item File attachments
+\item User status indicators
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md126}{}\doxysubsubsection{\texorpdfstring{{\ttfamily Real\+Time\+Chat.\+jsx}}{{\ttfamily Real\+Time\+Chat.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md126}
+{\bfseries{Location}}\+: {\ttfamily src/components/chat/\+Real\+Time\+Chat.\+jsx} {\bfseries{Purpose}}\+: Web\+Socket-\/based real-\/time chat {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Web\+Socket connection
+\item Message broadcasting
+\item Online user list
+\item Typing indicators
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md127}{}\doxysection{\texorpdfstring{🔧 API Integration ({\ttfamily src/api/})}{🔧 API Integration ({\ttfamily src/api/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md127}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md128}{}\doxysubsection{\texorpdfstring{API Service Files}{API Service Files}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md128}
+
+\begin{DoxyItemize}
+\item {\bfseries{{\ttfamily auth.\+jsx}}} -\/ Authentication endpoints
+\item {\bfseries{{\ttfamily admin.\+jsx}}} -\/ Admin-\/specific API calls
+\item {\bfseries{{\ttfamily assignments.\+jsx}}} -\/ Assignment management
+\item {\bfseries{{\ttfamily attendance.\+jsx}}} -\/ Attendance tracking
+\item {\bfseries{{\ttfamily calendar.\+jsx}}} -\/ Academic calendar
+\item {\bfseries{{\ttfamily exams.\+jsx}}} -\/ Exam management
+\item {\bfseries{{\ttfamily grades.\+jsx}}} -\/ Grade management
+\item {\bfseries{{\ttfamily leave.\+jsx}}} -\/ Leave request handling
+\item {\bfseries{{\ttfamily session.\+jsx}}} -\/ Session management
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md129}{}\doxysubsection{\texorpdfstring{API Structure}{API Structure}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md129}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Example\ API\ call\ structure}
+\DoxyCodeLine{export\ const\ loginUser\ =\ async\ (credentials)\ =>\ \{}
+\DoxyCodeLine{\ \ try\ \{}
+\DoxyCodeLine{\ \ \ \ const\ response\ =\ await\ fetch('/api/auth/login',\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ method:\ 'POST',}
+\DoxyCodeLine{\ \ \ \ \ \ headers:\ \{\ 'Content-\/Type':\ 'application/json'\ \},}
+\DoxyCodeLine{\ \ \ \ \ \ body:\ JSON.stringify(credentials)}
+\DoxyCodeLine{\ \ \ \ \});}
+\DoxyCodeLine{\ \ \ \ return\ await\ response.json();}
+\DoxyCodeLine{\ \ \}\ catch\ (error)\ \{}
+\DoxyCodeLine{\ \ \ \ throw\ new\ Error('Network\ error');}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md130}{}\doxysection{\texorpdfstring{🎨 Theming \& Styling ({\ttfamily src/theme/})}{🎨 Theming \& Styling ({\ttfamily src/theme/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md130}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md131}{}\doxysubsection{\texorpdfstring{{\ttfamily theme.\+js}}{{\ttfamily theme.\+js}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md131}
+{\bfseries{Location}}\+: {\ttfamily src/theme/theme.\+js} {\bfseries{Purpose}}\+: Material-\/\+UI theme configuration {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Custom color palette
+\item Typography settings
+\item Component style overrides
+\item Responsive breakpoints
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md132}{}\doxysubsection{\texorpdfstring{Responsive Design}{Responsive Design}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md132}
+
+\begin{DoxyItemize}
+\item {\bfseries{Mobile-\/first approach}}
+\item {\bfseries{Breakpoints}}\+: xs (0px), sm (600px), md (900px), lg (1200px), xl (1536px)
+\item {\bfseries{Responsive props}}\+: `sx=\{\{ font\+Size\+: \{ xs\+: \textquotesingle{}0.\+8rem', sm\+: \textquotesingle{}1rem\textquotesingle{} \} \}\}\`{}
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md133}{}\doxysection{\texorpdfstring{🛣️ Routing ({\ttfamily src/routes/})}{🛣️ Routing ({\ttfamily src/routes/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md133}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md134}{}\doxysubsection{\texorpdfstring{{\ttfamily App\+Routes.\+jsx}}{{\ttfamily App\+Routes.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md134}
+{\bfseries{Location}}\+: {\ttfamily src/routes/\+App\+Routes.\+jsx} {\bfseries{Purpose}}\+: Application routing configuration {\bfseries{Route Structure}}\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Public\ routes}
+\DoxyCodeLine{<Route\ path="{}/"{}\ element=\{<HomePage\ />\}\ />}
+\DoxyCodeLine{<Route\ path="{}/login"{}\ element=\{<LoginPage\ />\}\ />}
+\DoxyCodeLine{<Route\ path="{}/forgot-\/password"{}\ element=\{<ForgotPassword\ />\}\ />}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ Protected\ routes\ (role-\/based)}
+\DoxyCodeLine{<Route\ path="{}/teacher/*"{}\ element=\{<TeacherDashboardLayout\ />\}\ />}
+\DoxyCodeLine{<Route\ path="{}/student/*"{}\ element=\{<StudentDashboardLayout\ />\}\ />}
+\DoxyCodeLine{<Route\ path="{}/parent/*"{}\ element=\{<ParentDashboardLayout\ />\}\ />}
+\DoxyCodeLine{<Route\ path="{}/admin/*"{}\ element=\{<AdminDashboardLayout\ />\}\ />}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md135}{}\doxysection{\texorpdfstring{🔐 Authentication ({\ttfamily src/utils/})}{🔐 Authentication ({\ttfamily src/utils/})}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md135}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md136}{}\doxysubsection{\texorpdfstring{{\ttfamily auth.\+jsx}}{{\ttfamily auth.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md136}
+{\bfseries{Location}}\+: {\ttfamily src/utils/auth.\+jsx} {\bfseries{Purpose}}\+: Authentication context and utilities {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item User authentication state management
+\item Token storage and validation
+\item Role-\/based access control
+\item Login/logout functionality
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md137}{}\doxysubsection{\texorpdfstring{{\ttfamily api.\+jsx}}{{\ttfamily api.\+jsx}}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md137}
+{\bfseries{Location}}\+: {\ttfamily src/utils/api.\+jsx} {\bfseries{Purpose}}\+: API utility functions {\bfseries{Features}}\+:
+\begin{DoxyItemize}
+\item Request/response interceptors
+\item Error handling
+\item Authentication headers
+\item Base URL configuration
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md138}{}\doxysection{\texorpdfstring{🎯 Key Features by Role}{🎯 Key Features by Role}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md138}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md139}{}\doxysubsection{\texorpdfstring{👨‍🏫 Teacher Features}{👨‍🏫 Teacher Features}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md139}
+
+\begin{DoxyItemize}
+\item {\bfseries{Attendance Management}}\+: Mark student attendance
+\item {\bfseries{Grade Management}}\+: Enter and update student grades
+\item {\bfseries{Assignment Management}}\+: Create and manage assignments
+\item {\bfseries{Leave Request Handling}}\+: Approve/reject student leave requests
+\item {\bfseries{Online Class Management}}\+: Schedule and conduct online classes
+\item {\bfseries{Exam Management}}\+: Create and manage exams
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md140}{}\doxysubsection{\texorpdfstring{👨‍🎓 Student Features}{👨‍🎓 Student Features}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md140}
+
+\begin{DoxyItemize}
+\item {\bfseries{Assignment Tracking}}\+: View and submit assignments
+\item {\bfseries{Exam Taking}}\+: Take online exams with timer
+\item {\bfseries{Grade Viewing}}\+: Check academic performance
+\item {\bfseries{Attendance Tracking}}\+: View attendance records
+\item {\bfseries{Leave Request Submission}}\+: Submit leave requests
+\item {\bfseries{Calendar Access}}\+: View academic calendar
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md141}{}\doxysubsection{\texorpdfstring{👨‍👩‍👧‍👦 Parent Features}{👨‍👩‍👧‍👦 Parent Features}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md141}
+
+\begin{DoxyItemize}
+\item {\bfseries{Child Progress Monitoring}}\+: View academic performance
+\item {\bfseries{Leave Request Approval}}\+: Approve child\textquotesingle{}s leave requests
+\item {\bfseries{Calendar Access}}\+: View academic events
+\item {\bfseries{Communication}}\+: Chat with teachers
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md142}{}\doxysubsection{\texorpdfstring{👨‍💼 Admin Features}{👨‍💼 Admin Features}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md142}
+
+\begin{DoxyItemize}
+\item {\bfseries{User Management}}\+: Manage all users (students, teachers, parents)
+\item {\bfseries{System Configuration}}\+: Configure academic settings
+\item {\bfseries{Reports}}\+: Generate system reports
+\item {\bfseries{Calendar Management}}\+: Manage academic calendar
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md143}{}\doxysection{\texorpdfstring{📱 Responsive Design Implementation}{📱 Responsive Design Implementation}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md143}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md144}{}\doxysubsection{\texorpdfstring{Mobile-\/\+First Approach}{Mobile-\/\+First Approach}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md144}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Example\ responsive\ styling}
+\DoxyCodeLine{sx=\{\{}
+\DoxyCodeLine{\ \ fontSize:\ \{\ xs:\ '0.8rem',\ sm:\ '0.9rem',\ md:\ '1rem'\ \},}
+\DoxyCodeLine{\ \ padding:\ \{\ xs:\ 2,\ sm:\ 3,\ md:\ 4\ \},}
+\DoxyCodeLine{\ \ display:\ \{\ xs:\ 'block',\ md:\ 'flex'\ \}}
+\DoxyCodeLine{\}\}}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md145}{}\doxysubsection{\texorpdfstring{Breakpoint Usage}{Breakpoint Usage}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md145}
+
+\begin{DoxyItemize}
+\item {\bfseries{xs (0-\/599px)}}\+: Mobile phones
+\item {\bfseries{sm (600-\/899px)}}\+: Tablets
+\item {\bfseries{md (900-\/1199px)}}\+: Small desktops
+\item {\bfseries{lg (1200-\/1535px)}}\+: Large desktops
+\item {\bfseries{xl (1536px+)}}\+: Extra large screens
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md146}{}\doxysection{\texorpdfstring{🚀 Performance Optimizations}{🚀 Performance Optimizations}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md146}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md147}{}\doxysubsection{\texorpdfstring{Code Splitting}{Code Splitting}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md147}
+
+\begin{DoxyItemize}
+\item Route-\/based code splitting
+\item Lazy loading of components
+\item Dynamic imports for heavy components
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md148}{}\doxysubsection{\texorpdfstring{Bundle Optimization}{Bundle Optimization}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md148}
+
+\begin{DoxyItemize}
+\item Tree shaking for unused code
+\item Image optimization
+\item CSS minification
+\item Gzip compression
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md149}{}\doxysection{\texorpdfstring{🧪 Testing Strategy}{🧪 Testing Strategy}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md149}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md150}{}\doxysubsection{\texorpdfstring{Component Testing}{Component Testing}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md150}
+
+\begin{DoxyItemize}
+\item Unit tests for utility functions
+\item Component testing with React Testing Library
+\item Integration tests for API calls
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md151}{}\doxysubsection{\texorpdfstring{E2E Testing}{E2E Testing}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md151}
+
+\begin{DoxyItemize}
+\item User flow testing
+\item Cross-\/browser compatibility
+\item Mobile responsiveness testing
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md152}{}\doxysection{\texorpdfstring{🔧 Development Guidelines}{🔧 Development Guidelines}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md152}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md153}{}\doxysubsection{\texorpdfstring{Code Style}{Code Style}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md153}
+
+\begin{DoxyItemize}
+\item {\bfseries{ESLint}} configuration for code quality
+\item {\bfseries{Prettier}} for code formatting
+\item {\bfseries{Component naming}}\+: Pascal\+Case
+\item {\bfseries{File naming}}\+: Pascal\+Case for components, camel\+Case for utilities
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md154}{}\doxysubsection{\texorpdfstring{Component Structure}{Component Structure}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md154}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ Standard\ component\ structure}
+\DoxyCodeLine{import\ React\ from\ 'react';}
+\DoxyCodeLine{import\ \{\ /*\ MUI\ components\ */\ \}\ from\ '@mui/material';}
+\DoxyCodeLine{}
+\DoxyCodeLine{function\ ComponentName(\{\ prop1,\ prop2\ \})\ \{}
+\DoxyCodeLine{\ \ //\ State\ and\ hooks}
+\DoxyCodeLine{\ \ const\ [state,\ setState]\ =\ useState();}
+\DoxyCodeLine{\ \ }
+\DoxyCodeLine{\ \ //\ Event\ handlers}
+\DoxyCodeLine{\ \ const\ handleEvent\ =\ ()\ =>\ \{}
+\DoxyCodeLine{\ \ \ \ //\ Logic}
+\DoxyCodeLine{\ \ \};}
+\DoxyCodeLine{\ \ }
+\DoxyCodeLine{\ \ //\ Render}
+\DoxyCodeLine{\ \ return\ (}
+\DoxyCodeLine{\ \ \ \ <Box>}
+\DoxyCodeLine{\ \ \ \ \ \ \{/*\ JSX\ */\}}
+\DoxyCodeLine{\ \ \ \ </Box>}
+\DoxyCodeLine{\ \ );}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{export\ default\ ComponentName;}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md155}{}\doxysubsection{\texorpdfstring{State Management}{State Management}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md155}
+
+\begin{DoxyItemize}
+\item {\bfseries{Local State}}\+: use\+State for component-\/specific state
+\item {\bfseries{Global State}}\+: Context API for authentication and theme
+\item {\bfseries{Server State}}\+: Custom hooks for API data
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md156}{}\doxysection{\texorpdfstring{📚 Additional Resources}{📚 Additional Resources}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md156}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md157}{}\doxysubsection{\texorpdfstring{Dependencies}{Dependencies}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md157}
+
+\begin{DoxyItemize}
+\item {\bfseries{React}}\+: 18.\+x
+\item {\bfseries{Material-\/\+UI}}\+: 5.\+x
+\item {\bfseries{React Router}}\+: 6.\+x
+\item {\bfseries{Vite}}\+: 4.\+x
+\end{DoxyItemize}\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md158}{}\doxysubsection{\texorpdfstring{Documentation Links}{Documentation Links}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2_f_r_o_n_t_e_n_d___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md158}
+
+\begin{DoxyItemize}
+\item \href{https://mui.com/}{\texttt{Material-\/\+UI Documentation}}
+\item \href{https://react.dev/}{\texttt{React Documentation}}
+\item \href{https://vitejs.dev/}{\texttt{Vite Documentation}}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+
+
+{\bfseries{Last Updated}}\+: August 2024 {\bfseries{Version}}\+: 1.\+0.\+0 {\bfseries{Maintainer}}\+: e\+Pathshala Development Team 

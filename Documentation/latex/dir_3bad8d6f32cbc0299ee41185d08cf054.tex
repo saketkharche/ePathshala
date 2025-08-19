@@ -1,0 +1,446 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/dompurify Directory Reference}
+\hypertarget{dir_3bad8d6f32cbc0299ee41185d08cf054}{}\label{dir_3bad8d6f32cbc0299ee41185d08cf054}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/dompurify Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/dompurify Directory Reference}}
+Directory dependency graph for dompurify\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{dir_3bad8d6f32cbc0299ee41185d08cf054_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md10724}{}\doxysubsection{\texorpdfstring{DOMPurify}{DOMPurify}}\label{README.md_autotoc_md10724}
+\href{http://badge.fury.io/js/dompurify}{\texttt{}}  \href{https://www.npmjs.com/package/dompurify}{\texttt{}}   \href{https://github.com/cure53/DOMPurify/network/dependents}{\texttt{}}
+
+DOMPurify is a DOM-\/only, super-\/fast, uber-\/tolerant XSS sanitizer for HTML, Math\+ML and SVG.
+
+It\textquotesingle{}s also very simple to use and get started with. DOMPurify was \href{https://github.com/cure53/DOMPurify/commit/a630922616927373485e0e787ab19e73e3691b2b}{\texttt{started in February 2014}} and, meanwhile, has reached version {\bfseries{v3.\+2.\+6}}.
+
+DOMPurify is written in Java\+Script and works in all modern browsers (Safari (10+), Opera (15+), Edge, Firefox and Chrome -\/ as well as almost anything else using Blink, Gecko or Web\+Kit). It doesn\textquotesingle{}t break on MSIE or other legacy browsers. It simply does nothing.
+
+{\bfseries{Note that \href{https://github.com/cure53/DOMPurify/releases/tag/2.5.8}{\texttt{DOMPurify v2.\+5.\+8}} is the latest version supporting MSIE. For important security updates compatible with MSIE, please use the \href{https://github.com/cure53/DOMPurify/tree/2.x}{\texttt{2.\+x branch}}.}}
+
+Our automated tests cover \href{https://github.com/cure53/DOMPurify/blob/main/test/karma.custom-launchers.config.js\#L5}{\texttt{28 different browsers}} right now, more to come. We also cover Node.\+js v18.\+x, v19.\+x, v20.\+x, v21.\+x, v22.\+x and v23.\+x, running DOMPurify on \href{https://github.com/jsdom/jsdom}{\texttt{jsdom}}. Older Node versions are known to work as well, but hey... no guarantees.
+
+DOMPurify is written by security people who have vast background in web attacks and XSS. Fear not. For more details please also read about our \href{https://github.com/cure53/DOMPurify/wiki/Security-Goals-&-Threat-Model}{\texttt{Security Goals \& Threat Model}}. Please, read it. Like, really.\hypertarget{README.md_autotoc_md10725}{}\doxysubsection{\texorpdfstring{What does it do?}{What does it do?}}\label{README.md_autotoc_md10725}
+DOMPurify sanitizes HTML and prevents XSS attacks. You can feed DOMPurify with string full of dirty HTML and it will return a string (unless configured otherwise) with clean HTML. DOMPurify will strip out everything that contains dangerous HTML and thereby prevent XSS attacks and other nastiness. It\textquotesingle{}s also damn bloody fast. We use the technologies the browser provides and turn them into an XSS filter. The faster your browser, the faster DOMPurify will be.\hypertarget{README.md_autotoc_md10726}{}\doxysubsection{\texorpdfstring{How do I use it?}{How do I use it?}}\label{README.md_autotoc_md10726}
+It\textquotesingle{}s easy. Just include DOMPurify on your website.\hypertarget{README.md_autotoc_md10727}{}\doxysubsubsection{\texorpdfstring{Using the unminified version (source-\/map available)}{Using the unminified version (source-\/map available)}}\label{README.md_autotoc_md10727}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ type="{}text/javascript"{}\ src="{}dist/purify.js"{}></script>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10728}{}\doxysubsubsection{\texorpdfstring{Using the minified and tested production version (source-\/map available)}{Using the minified and tested production version (source-\/map available)}}\label{README.md_autotoc_md10728}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<script\ type="{}text/javascript"{}\ src="{}dist/purify.min.js"{}></script>}
+
+\end{DoxyCode}
+
+
+Afterwards you can sanitize strings by executing the following code\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty);}
+
+\end{DoxyCode}
+
+
+Or maybe this, if you love working with Angular or alike\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ DOMPurify\ from\ 'dompurify';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize('<b>hello\ there</b>');}
+
+\end{DoxyCode}
+
+
+The resulting HTML can be written into a DOM element using {\ttfamily inner\+HTML} or the DOM using {\ttfamily document.\+write()}. That is fully up to you. Note that by default, we permit HTML, SVG {\bfseries{and}} Math\+ML. If you only need HTML, which might be a very common use-\/case, you can easily set that up as well\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{\ USE\_PROFILES:\ \{\ html:\ true\ \}\ \});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10729}{}\doxysubsubsection{\texorpdfstring{Is there any foot-\/gun potential?}{Is there any foot-\/gun potential?}}\label{README.md_autotoc_md10729}
+Well, please note, if you {\itshape first} sanitize HTML and then modify it {\itshape afterwards}, you might easily {\bfseries{void the effects of sanitization}}. If you feed the sanitized markup to another library {\itshape after} sanitization, please be certain that the library doesn\textquotesingle{}t mess around with the HTML on its own.\hypertarget{README.md_autotoc_md10730}{}\doxysubsubsection{\texorpdfstring{Okay, makes sense, let\textquotesingle{}s move on}{Okay, makes sense, let\textquotesingle{}s move on}}\label{README.md_autotoc_md10730}
+After sanitizing your markup, you can also have a look at the property {\ttfamily DOMPurify.\+removed} and find out, what elements and attributes were thrown out. Please {\bfseries{do not use}} this property for making any security critical decisions. This is just a little helper for curious minds.\hypertarget{README.md_autotoc_md10731}{}\doxysubsubsection{\texorpdfstring{Running DOMPurify on the server}{Running DOMPurify on the server}}\label{README.md_autotoc_md10731}
+DOMPurify technically also works server-\/side with Node.\+js. Our support strives to follow the \href{https://nodejs.org/en/about/releases/}{\texttt{Node.\+js release cycle}}.
+
+Running DOMPurify on the server requires a DOM to be present, which is probably no surprise. Usually, \href{https://github.com/jsdom/jsdom}{\texttt{jsdom}} is the tool of choice and we {\bfseries{strongly recommend}} to use the latest version of {\itshape jsdom}.
+
+Why? Because older versions of {\itshape jsdom} are known to be buggy in ways that result in XSS {\itshape even if} DOMPurify does everything 100\% correctly. There are {\bfseries{known attack vectors}} in, e.\+g. {\itshape jsdom v19.\+0.\+0} that are fixed in {\itshape jsdom v20.\+0.\+0} -\/ and we really recommend to keep {\itshape jsdom} up to date because of that.
+
+Please also be aware that tools like \href{https://github.com/capricorn86/happy-dom}{\texttt{happy-\/dom}} exist but {\bfseries{are not considered safe}} at this point. Combining DOMPurify with {\itshape happy-\/dom} is currently not recommended and will likely lead to XSS.
+
+Other than that, you are fine to use DOMPurify on the server. Probably. This really depends on {\itshape jsdom} or whatever DOM you utilize server-\/side. If you can live with that, this is how you get it to work\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ dompurify}
+\DoxyCodeLine{npm\ install\ jsdom}
+
+\end{DoxyCode}
+
+
+For {\itshape jsdom} (please use an up-\/to-\/date version), this should do the trick\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ createDOMPurify\ =\ require('dompurify');}
+\DoxyCodeLine{const\ \{\ JSDOM\ \}\ =\ require('jsdom');}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ window\ =\ new\ JSDOM('').window;}
+\DoxyCodeLine{const\ DOMPurify\ =\ createDOMPurify(window);}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize('<b>hello\ there</b>');}
+
+\end{DoxyCode}
+
+
+Or even this, if you prefer working with imports\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ \{\ JSDOM\ \}\ from\ 'jsdom';}
+\DoxyCodeLine{import\ DOMPurify\ from\ 'dompurify';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ window\ =\ new\ JSDOM('').window;}
+\DoxyCodeLine{const\ purify\ =\ DOMPurify(window);}
+\DoxyCodeLine{const\ clean\ =\ purify.sanitize('<b>hello\ there</b>');}
+
+\end{DoxyCode}
+
+
+If you have problems making it work in your specific setup, consider looking at the amazing \href{https://github.com/kkomelin/isomorphic-dompurify}{\texttt{isomorphic-\/dompurify}} project which solves lots of problems people might run into.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{npm\ install\ isomorphic-\/dompurify}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{import\ DOMPurify\ from\ 'isomorphic-\/dompurify';}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize('<s>hello</s>');}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10732}{}\doxysubsection{\texorpdfstring{Is there a demo?}{Is there a demo?}}\label{README.md_autotoc_md10732}
+Of course there is a demo! \href{https://cure53.de/purify}{\texttt{Play with DOMPurify}}\hypertarget{README.md_autotoc_md10733}{}\doxysubsection{\texorpdfstring{What if I find a {\itshape security} bug?}{What if I find a {\itshape security} bug?}}\label{README.md_autotoc_md10733}
+First of all, please immediately contact us via \href{mailto:mario@cure53.de}{\texttt{email}} so we can work on a fix. \href{https://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0xC26C858090F70ADA}{\texttt{PGP key}}
+
+Also, you probably qualify for a bug bounty! The fine folks over at \href{https://www.fastmail.com/}{\texttt{Fastmail}} use DOMPurify for their services and added our library to their bug bounty scope. So, if you find a way to bypass or weaken DOMPurify, please also have a look at their website and the \href{https://www.fastmail.com/about/bugbounty/}{\texttt{bug bounty info}}.\hypertarget{README.md_autotoc_md10734}{}\doxysubsection{\texorpdfstring{Some purification samples please?}{Some purification samples please?}}\label{README.md_autotoc_md10734}
+How does purified markup look like? Well, \href{https://cure53.de/purify}{\texttt{the demo}} shows it for a big bunch of nasty elements. But let\textquotesingle{}s also show some smaller examples!
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{DOMPurify.sanitize('<img\ src=x\ onerror=alert(1)//>');\ //\ becomes\ <img\ src="{}x"{}>}
+\DoxyCodeLine{DOMPurify.sanitize('<svg><g/onload=alert(2)//<p>');\ //\ becomes\ <svg><g></g></svg>}
+\DoxyCodeLine{DOMPurify.sanitize('<p>abc<iframe//src=jAva\&Tab;script:alert(3)>def</p>');\ //\ becomes\ <p>abc</p>}
+\DoxyCodeLine{DOMPurify.sanitize('<math><mi//xlink:href="{}data:x,<script>alert(4)</script>"{}>');\ //\ becomes\ <math><mi></mi></math>}
+\DoxyCodeLine{DOMPurify.sanitize('<TABLE><tr><td>HELLO</tr></TABL>');\ //\ becomes\ <table><tbody><tr><td>HELLO</td></tr></tbody></table>}
+\DoxyCodeLine{DOMPurify.sanitize('<UL><li><A\ HREF=//google.com>click</UL>');\ //\ becomes\ <ul><li><a\ href="{}//google.com"{}>click</a></li></ul>}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10735}{}\doxysubsection{\texorpdfstring{What is supported?}{What is supported?}}\label{README.md_autotoc_md10735}
+DOMPurify currently supports HTML5, SVG and Math\+ML. DOMPurify per default allows CSS, HTML custom data attributes. DOMPurify also supports the Shadow DOM -\/ and sanitizes DOM templates recursively. DOMPurify also allows you to sanitize HTML for being used with the j\+Query {\ttfamily \$()} and {\ttfamily elm.\+html()} API without any known problems.\hypertarget{README.md_autotoc_md10736}{}\doxysubsection{\texorpdfstring{What about legacy browsers like Internet Explorer?}{What about legacy browsers like Internet Explorer?}}\label{README.md_autotoc_md10736}
+DOMPurify does nothing at all. It simply returns exactly the string that you fed it. DOMPurify exposes a property called {\ttfamily is\+Supported}, which tells you whether it will be able to do its job, so you can come up with your own backup plan.\hypertarget{README.md_autotoc_md10737}{}\doxysubsection{\texorpdfstring{What about DOMPurify and Trusted Types?}{What about DOMPurify and Trusted Types?}}\label{README.md_autotoc_md10737}
+In version 1.\+0.\+9, support for \href{https://github.com/w3c/webappsec-trusted-types}{\texttt{Trusted Types API}} was added to DOMPurify. In version 2.\+0.\+0, a config flag was added to control DOMPurify\textquotesingle{}s behavior regarding this.
+
+When {\ttfamily DOMPurify.\+sanitize} is used in an environment where the Trusted Types API is available and {\ttfamily RETURN\+\_\+\+TRUSTED\+\_\+\+TYPE} is set to {\ttfamily true}, it tries to return a {\ttfamily Trusted\+HTML} value instead of a string (the behavior for {\ttfamily RETURN\+\_\+\+DOM} and {\ttfamily RETURN\+\_\+\+DOM\+\_\+\+FRAGMENT} config options does not change).
+
+Note that in order to create a policy in {\ttfamily trusted\+Types} using DOMPurify, {\ttfamily RETURN\+\_\+\+TRUSTED\+\_\+\+TYPE\+: false} is required, as {\ttfamily create\+HTML} expects a normal string, not {\ttfamily Trusted\+HTML}. The example below shows this.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{window.trustedTypes!.createPolicy('default',\ \{}
+\DoxyCodeLine{\ \ createHTML:\ (to\_escape)\ =>}
+\DoxyCodeLine{\ \ \ \ DOMPurify.sanitize(to\_escape,\ \{\ RETURN\_TRUSTED\_TYPE:\ false\ \}),}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10738}{}\doxysubsection{\texorpdfstring{Can I configure DOMPurify?}{Can I configure DOMPurify?}}\label{README.md_autotoc_md10738}
+Yes. The included default configuration values are pretty good already -\/ but you can of course override them. Check out the \href{https://github.com/cure53/DOMPurify/tree/main/demos}{\texttt{{\ttfamily /demos}}} folder to see a bunch of examples on how you can \href{https://github.com/cure53/DOMPurify/tree/main/demos\#what-is-this}{\texttt{customize DOMPurify}}.\hypertarget{README.md_autotoc_md10739}{}\doxysubsubsection{\texorpdfstring{General settings}{General settings}}\label{README.md_autotoc_md10739}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ strip\ \{\{\ ...\ \}\},\ \$\{\ ...\ \}\ and\ <\%\ ...\ \%>\ to\ make\ output\ safe\ for\ template\ systems}
+\DoxyCodeLine{//\ be\ careful\ please,\ this\ mode\ is\ not\ recommended\ for\ production\ usage.}
+\DoxyCodeLine{//\ allowing\ template\ parsing\ in\ user-\/controlled\ HTML\ is\ not\ advised\ at\ all.}
+\DoxyCodeLine{//\ only\ use\ this\ mode\ if\ there\ is\ really\ no\ alternative.}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{SAFE\_FOR\_TEMPLATES:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ change\ how\ e.g.\ comments\ containing\ risky\ HTML\ characters\ are\ treated.}
+\DoxyCodeLine{//\ be\ very\ careful,\ this\ setting\ should\ only\ be\ set\ to\ \`{}false`\ if\ you\ really\ only\ handle\ }
+\DoxyCodeLine{//\ HTML\ and\ nothing\ else,\ no\ SVG,\ MathML\ or\ the\ like.\ }
+\DoxyCodeLine{//\ Otherwise,\ changing\ from\ \`{}true`\ to\ \`{}false`\ will\ lead\ to\ XSS\ in\ this\ or\ some\ other\ way.}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{SAFE\_FOR\_XML:\ false\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10740}{}\doxysubsubsection{\texorpdfstring{Control our allow-\/lists and block-\/lists}{Control our allow-\/lists and block-\/lists}}\label{README.md_autotoc_md10740}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ allow\ only\ <b>\ elements,\ very\ strict}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ALLOWED\_TAGS:\ ['b']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ allow\ only\ <b>\ and\ <q>\ with\ style\ attributes}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ALLOWED\_TAGS:\ ['b',\ 'q'],\ ALLOWED\_ATTR:\ ['style']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ allow\ all\ safe\ HTML\ elements\ but\ neither\ SVG\ nor\ MathML}
+\DoxyCodeLine{//\ note\ that\ the\ USE\_PROFILES\ setting\ will\ override\ the\ ALLOWED\_TAGS\ setting}
+\DoxyCodeLine{//\ so\ don't\ use\ them\ together}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{USE\_PROFILES:\ \{html:\ true\}\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ allow\ all\ safe\ SVG\ elements\ and\ SVG\ Filters,\ no\ HTML\ or\ MathML}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{USE\_PROFILES:\ \{svg:\ true,\ svgFilters:\ true\}\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ allow\ all\ safe\ MathML\ elements\ and\ SVG,\ but\ no\ SVG\ Filters}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{USE\_PROFILES:\ \{mathMl:\ true,\ svg:\ true\}\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ change\ the\ default\ namespace\ from\ HTML\ to\ something\ different}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{NAMESPACE:\ 'http://www.w3.org/2000/svg'\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ leave\ all\ safe\ HTML\ as\ it\ is\ and\ add\ <style>\ elements\ to\ block-\/list}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{FORBID\_TAGS:\ ['style']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ leave\ all\ safe\ HTML\ as\ it\ is\ and\ add\ style\ attributes\ to\ block-\/list}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{FORBID\_ATTR:\ ['style']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ extend\ the\ existing\ array\ of\ allowed\ tags\ and\ add\ <my-\/tag>\ to\ allow-\/list}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ADD\_TAGS:\ ['my-\/tag']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ extend\ the\ existing\ array\ of\ allowed\ attributes\ and\ add\ my-\/attr\ to\ allow-\/list}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ADD\_ATTR:\ ['my-\/attr']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ prohibit\ ARIA\ attributes,\ leave\ other\ safe\ HTML\ as\ is\ (default\ is\ true)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ALLOW\_ARIA\_ATTR:\ false\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ prohibit\ HTML5\ data\ attributes,\ leave\ other\ safe\ HTML\ as\ is\ (default\ is\ true)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ALLOW\_DATA\_ATTR:\ false\});}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10741}{}\doxysubsubsection{\texorpdfstring{Control behavior relating to Custom Elements}{Control behavior relating to Custom Elements}}\label{README.md_autotoc_md10741}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ DOMPurify\ allows\ to\ define\ rules\ for\ Custom\ Elements.\ When\ using\ the\ CUSTOM\_ELEMENT\_HANDLING}
+\DoxyCodeLine{//\ literal,\ it\ is\ possible\ to\ define\ exactly\ what\ elements\ you\ wish\ to\ allow\ (by\ default,\ none\ are\ allowed).}
+\DoxyCodeLine{//}
+\DoxyCodeLine{//\ The\ same\ goes\ for\ their\ attributes.\ By\ default,\ the\ built-\/in\ or\ configured\ allow.list\ is\ used.}
+\DoxyCodeLine{//}
+\DoxyCodeLine{//\ You\ can\ use\ a\ RegExp\ literal\ to\ specify\ what\ is\ allowed\ or\ a\ predicate,\ examples\ for\ both\ can\ be\ seen\ below.}
+\DoxyCodeLine{//\ The\ default\ values\ are\ very\ restrictive\ to\ prevent\ accidental\ XSS\ bypasses.\ Handle\ with\ great\ care!}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(}
+\DoxyCodeLine{\ \ \ \ '<foo-\/bar\ baz="{}foobar"{}\ forbidden="{}true"{}></foo-\/bar><div\ is="{}foo-\/baz"{}></div>',}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CUSTOM\_ELEMENT\_HANDLING:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ tagNameCheck:\ null,\ //\ no\ custom\ elements\ are\ allowed}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ attributeNameCheck:\ null,\ //\ default\ /\ standard\ attribute\ allow-\/list\ is\ used}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ allowCustomizedBuiltInElements:\ false,\ //\ no\ customized\ built-\/ins\ allowed}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{);\ //\ <div\ is="{}"{}></div>}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(}
+\DoxyCodeLine{\ \ \ \ '<foo-\/bar\ baz="{}foobar"{}\ forbidden="{}true"{}></foo-\/bar><div\ is="{}foo-\/baz"{}></div>',}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CUSTOM\_ELEMENT\_HANDLING:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ tagNameCheck:\ /\string^foo-\//,\ //\ allow\ all\ tags\ starting\ with\ "{}foo-\/"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ attributeNameCheck:\ /baz/,\ //\ allow\ all\ attributes\ containing\ "{}baz"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ allowCustomizedBuiltInElements:\ true,\ //\ customized\ built-\/ins\ are\ allowed}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{);\ //\ <foo-\/bar\ baz="{}foobar"{}></foo-\/bar><div\ is="{}foo-\/baz"{}></div>}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(}
+\DoxyCodeLine{\ \ \ \ '<foo-\/bar\ baz="{}foobar"{}\ forbidden="{}true"{}></foo-\/bar><div\ is="{}foo-\/baz"{}></div>',}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CUSTOM\_ELEMENT\_HANDLING:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ tagNameCheck:\ (tagName)\ =>\ tagName.match(/\string^foo-\//),\ //\ allow\ all\ tags\ starting\ with\ "{}foo-\/"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ attributeNameCheck:\ (attr)\ =>\ attr.match(/baz/),\ //\ allow\ all\ containing\ "{}baz"{}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ allowCustomizedBuiltInElements:\ true,\ //\ allow\ customized\ built-\/ins}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{);\ //\ <foo-\/bar\ baz="{}foobar"{}></foo-\/bar><div\ is="{}foo-\/baz"{}></div>}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md10742}{}\doxysubsubsection{\texorpdfstring{Control behavior relating to URI values}{Control behavior relating to URI values}}\label{README.md_autotoc_md10742}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ extend\ the\ existing\ array\ of\ elements\ that\ can\ use\ Data\ URIs}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ADD\_DATA\_URI\_TAGS:\ ['a',\ 'area']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ extend\ the\ existing\ array\ of\ elements\ that\ are\ safe\ for\ URI-\/like\ values\ (be\ careful,\ XSS\ risk)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ADD\_URI\_SAFE\_ATTR:\ ['my-\/attr']\});}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md10743}{}\doxysubsubsection{\texorpdfstring{Control permitted attribute values}{Control permitted attribute values}}\label{README.md_autotoc_md10743}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ allow\ external\ protocol\ handlers\ in\ URL\ attributes\ (default\ is\ false,\ be\ careful,\ XSS\ risk)}
+\DoxyCodeLine{//\ by\ default\ only\ http,\ https,\ ftp,\ ftps,\ tel,\ mailto,\ callto,\ sms,\ cid\ and\ xmpp\ are\ allowed.}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ALLOW\_UNKNOWN\_PROTOCOLS:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ allow\ specific\ protocols\ handlers\ in\ URL\ attributes\ via\ regex\ (default\ is\ false,\ be\ careful,\ XSS\ risk)}
+\DoxyCodeLine{//\ by\ default\ only\ http,\ https,\ ftp,\ ftps,\ tel,\ mailto,\ callto,\ sms,\ cid\ and\ xmpp\ are\ allowed.}
+\DoxyCodeLine{//\ Default\ RegExp:\ /\string^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[\string^a-\/z]|[a-\/z+.\(\backslash\)-\/]+(?:[\string^a-\/z+.\(\backslash\)-\/:]|\$))/i;}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{ALLOWED\_URI\_REGEXP:\ /\string^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|xxx):|[\string^a-\/z]|[a-\/z+.\(\backslash\)-\/]+(?:[\string^a-\/z+.\(\backslash\)-\/:]|\$))/i\});}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md10744}{}\doxysubsubsection{\texorpdfstring{Influence the return-\/type}{Influence the return-\/type}}\label{README.md_autotoc_md10744}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ return\ a\ DOM\ HTMLBodyElement\ instead\ of\ an\ HTML\ string\ (default\ is\ false)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{RETURN\_DOM:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ return\ a\ DOM\ DocumentFragment\ instead\ of\ an\ HTML\ string\ (default\ is\ false)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{RETURN\_DOM\_FRAGMENT:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ use\ the\ RETURN\_TRUSTED\_TYPE\ flag\ to\ turn\ on\ Trusted\ Types\ support\ if\ available}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{RETURN\_TRUSTED\_TYPE:\ true\});\ //\ will\ return\ a\ TrustedHTML\ object\ instead\ of\ a\ string\ if\ possible}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ use\ a\ provided\ Trusted\ Types\ policy}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{}
+\DoxyCodeLine{\ \ \ \ //\ supplied\ policy\ must\ define\ createHTML\ and\ createScriptURL}
+\DoxyCodeLine{\ \ \ \ TRUSTED\_TYPES\_POLICY:\ trustedTypes.createPolicy(\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ createHTML(s)\ \{\ return\ s\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ createScriptURL(s)\ \{\ return\ s\},}
+\DoxyCodeLine{\ \ \ \ \})}
+\DoxyCodeLine{\});}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md10745}{}\doxysubsubsection{\texorpdfstring{Influence how we sanitize}{Influence how we sanitize}}\label{README.md_autotoc_md10745}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ return\ entire\ document\ including\ <html>\ tags\ (default\ is\ false)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{WHOLE\_DOCUMENT:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ disable\ DOM\ Clobbering\ protection\ on\ output\ (default\ is\ true,\ handle\ with\ care,\ minor\ XSS\ risks\ here)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{SANITIZE\_DOM:\ false\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ enforce\ strict\ DOM\ Clobbering\ protection\ via\ namespace\ isolation\ (default\ is\ false)}
+\DoxyCodeLine{//\ when\ enabled,\ isolates\ the\ namespace\ of\ named\ properties\ (i.e.,\ \`{}id`\ and\ \`{}name`\ attributes)}
+\DoxyCodeLine{//\ from\ JS\ variables\ by\ prefixing\ them\ with\ the\ string\ \`{}user-\/content-\/`}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{SANITIZE\_NAMED\_PROPS:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ keep\ an\ element's\ content\ when\ the\ element\ is\ removed\ (default\ is\ true)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{KEEP\_CONTENT:\ false\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ glue\ elements\ like\ style,\ script\ or\ others\ to\ document.body\ and\ prevent\ unintuitive\ browser\ behavior\ in\ several\ edge-\/cases\ (default\ is\ false)}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{FORCE\_BODY:\ true\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ remove\ all\ <a>\ elements\ under\ <p>\ elements\ that\ are\ removed}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{FORBID\_CONTENTS:\ ['a'],\ FORBID\_TAGS:\ ['p']\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ change\ the\ parser\ type\ so\ sanitized\ data\ is\ treated\ as\ XML\ and\ not\ as\ HTML,\ which\ is\ the\ default}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{PARSER\_MEDIA\_TYPE:\ 'application/xhtml+xml'\});}
+
+\end{DoxyCode}
+ \hypertarget{README.md_autotoc_md10746}{}\doxysubsubsection{\texorpdfstring{Influence where we sanitize}{Influence where we sanitize}}\label{README.md_autotoc_md10746}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{//\ use\ the\ IN\_PLACE\ mode\ to\ sanitize\ a\ node\ "{}in\ place"{},\ which\ is\ much\ faster\ depending\ on\ how\ you\ use\ DOMPurify}
+\DoxyCodeLine{const\ dirty\ =\ document.createElement('a');}
+\DoxyCodeLine{dirty.setAttribute('href',\ 'javascript:alert(1)');}
+\DoxyCodeLine{}
+\DoxyCodeLine{const\ clean\ =\ DOMPurify.sanitize(dirty,\ \{IN\_PLACE:\ true\});\ //\ see\ https://github.com/cure53/DOMPurify/issues/288\ for\ more\ info}
+
+\end{DoxyCode}
+
+
+There is even \href{https://github.com/cure53/DOMPurify/tree/main/demos\#what-is-this}{\texttt{more examples here}}, showing how you can run, customize and configure DOMPurify to fit your needs.\hypertarget{README.md_autotoc_md10747}{}\doxysubsection{\texorpdfstring{Persistent Configuration}{Persistent Configuration}}\label{README.md_autotoc_md10747}
+Instead of repeatedly passing the same configuration to {\ttfamily DOMPurify.\+sanitize}, you can use the {\ttfamily DOMPurify.\+set\+Config} method. Your configuration will persist until your next call to {\ttfamily DOMPurify.\+set\+Config}, or until you invoke {\ttfamily DOMPurify.\+clear\+Config} to reset it. Remember that there is only one active configuration, which means once it is set, all extra configuration parameters passed to {\ttfamily DOMPurify.\+sanitize} are ignored.\hypertarget{README.md_autotoc_md10748}{}\doxysubsection{\texorpdfstring{Hooks}{Hooks}}\label{README.md_autotoc_md10748}
+DOMPurify allows you to augment its functionality by attaching one or more functions with the {\ttfamily DOMPurify.\+add\+Hook} method to one of the following hooks\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily before\+Sanitize\+Elements}
+\item {\ttfamily upon\+Sanitize\+Element} (No \textquotesingle{}s\textquotesingle{} -\/ called for every element)
+\item {\ttfamily after\+Sanitize\+Elements}
+\item {\ttfamily before\+Sanitize\+Attributes}
+\item {\ttfamily upon\+Sanitize\+Attribute}
+\item {\ttfamily after\+Sanitize\+Attributes}
+\item {\ttfamily before\+Sanitize\+Shadow\+DOM}
+\item {\ttfamily upon\+Sanitize\+Shadow\+Node}
+\item {\ttfamily after\+Sanitize\+Shadow\+DOM}
+\end{DoxyItemize}
+
+It passes the currently processed DOM node, when needed a literal with verified node and attribute data and the DOMPurify configuration to the callback. Check out the \href{https://github.com/cure53/DOMPurify/blob/main/demos/hooks-mentaljs-demo.html}{\texttt{Mental\+JS hook demo}} to see how the API can be used nicely.
+
+{\itshape Example}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{DOMPurify.addHook(}
+\DoxyCodeLine{\ \ 'uponSanitizeAttribute',}
+\DoxyCodeLine{\ \ function\ (currentNode,\ hookEvent,\ config)\ \{}
+\DoxyCodeLine{\ \ \ \ //\ Do\ something\ with\ the\ current\ node}
+\DoxyCodeLine{\ \ \ \ //\ You\ can\ also\ mutate\ hookEvent\ for\ current\ node\ (i.e.\ set\ hookEvent.forceKeepAttr\ =\ true)}
+\DoxyCodeLine{\ \ \ \ //\ For\ other\ than\ 'uponSanitizeAttribute'\ hook\ types\ hookEvent\ equals\ to\ null}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{);}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md10749}{}\doxysubsection{\texorpdfstring{Removed Configuration}{Removed Configuration}}\label{README.md_autotoc_md10749}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Option  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Since  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Note  }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Option  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Since  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Note  }\\\cline{1-3}
+\endhead
+SAFE\+\_\+\+FOR\+\_\+\+JQUERY  &2.\+1.\+0  &No replacement required.  \\\cline{1-3}
+\end{longtabu}
+\hypertarget{README.md_autotoc_md10750}{}\doxysubsection{\texorpdfstring{Continuous Integration}{Continuous Integration}}\label{README.md_autotoc_md10750}
+We are currently using Github Actions in combination with Browser\+Stack. This gives us the possibility to confirm for each and every commit that all is going according to plan in all supported browsers. Check out the build logs here\+: \href{https://github.com/cure53/DOMPurify/actions}{\texttt{https\+://github.\+com/cure53/\+DOMPurify/actions}}
+
+You can further run local tests by executing {\ttfamily npm run test}.
+
+All relevant commits will be signed with the key {\ttfamily 0x24\+BB6\+BF4} for additional security (since 8th of April 2016).\hypertarget{README.md_autotoc_md10751}{}\doxysubsubsection{\texorpdfstring{Development and contributing}{Development and contributing}}\label{README.md_autotoc_md10751}
+\hypertarget{README.md_autotoc_md10752}{}\doxysubsubsubsection{\texorpdfstring{Installation ({\ttfamily npm i})}{Installation ({\ttfamily npm i})}}\label{README.md_autotoc_md10752}
+We support {\ttfamily npm} officially. Git\+Hub Actions workflow is configured to install dependencies using {\ttfamily npm}. When using deprecated version of {\ttfamily npm} we can not fully ensure the versions of installed dependencies which might lead to unanticipated problems.\hypertarget{README.md_autotoc_md10753}{}\doxysubsubsubsection{\texorpdfstring{Scripts}{Scripts}}\label{README.md_autotoc_md10753}
+We rely on npm run-\/scripts for integrating with our tooling infrastructure. We use ESLint as a pre-\/commit hook to ensure code consistency. Moreover, to ease formatting we use \href{https://github.com/prettier/prettier}{\texttt{prettier}} while building the {\ttfamily /dist} assets happens through {\ttfamily rollup}.
+
+These are our npm scripts\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily npm run dev} to start building while watching sources for changes
+\item {\ttfamily npm run test} to run our test suite via jsdom and karma
+\begin{DoxyItemize}
+\item {\ttfamily test\+:jsdom} to only run tests through jsdom
+\item {\ttfamily test\+:karma} to only run tests through karma
+\end{DoxyItemize}
+\item {\ttfamily npm run lint} to lint the sources using ESLint (via xo)
+\item {\ttfamily npm run format} to format our sources using prettier to ease to pass ESLint
+\item {\ttfamily npm run build} to build our distribution assets minified and unminified as a UMD module
+\begin{DoxyItemize}
+\item {\ttfamily npm run build\+:umd} to only build an unminified UMD module
+\item {\ttfamily npm run build\+:umd\+:min} to only build a minified UMD module
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+Note\+: all run scripts triggered via {\ttfamily npm run \texorpdfstring{$<$}{<}script\texorpdfstring{$>$}{>}}.
+
+There are more npm scripts but they are mainly to integrate with CI or are meant to be "{}private"{} for instance to amend build distribution files with every commit.\hypertarget{README.md_autotoc_md10754}{}\doxysubsection{\texorpdfstring{Security Mailing List}{Security Mailing List}}\label{README.md_autotoc_md10754}
+We maintain a mailing list that notifies whenever a security-\/critical release of DOMPurify was published. This means, if someone found a bypass and we fixed it with a release (which always happens when a bypass was found) a mail will go out to that list. This usually happens within minutes or few hours after learning about a bypass. The list can be subscribed to here\+:
+
+\href{https://lists.ruhr-uni-bochum.de/mailman/listinfo/dompurify-security}{\texttt{https\+://lists.\+ruhr-\/uni-\/bochum.\+de/mailman/listinfo/dompurify-\/security}}
+
+Feature releases will not be announced to this list.\hypertarget{README.md_autotoc_md10755}{}\doxysubsection{\texorpdfstring{Who contributed?}{Who contributed?}}\label{README.md_autotoc_md10755}
+Many people helped and help DOMPurify become what it is and need to be acknowledged here!
+
+\href{https://twitter.com/hash_kitten}{\texttt{hash\+\_\+kitten ❤️}}, \href{https://twitter.com/kevin_mizu}{\texttt{kevin\+\_\+mizu ❤️}}, \href{https://github.com/icesfont}{\texttt{icesfont ❤️}}, \href{https://github.com/reduckted}{\texttt{reduckted ❤️}}, \href{https://github.com/dcramer}{\texttt{dcramer 💸}}, \href{https://github.com/jgraph}{\texttt{JGraph 💸}}, \href{https://github.com/baekilda}{\texttt{baekilda 💸}}, \href{https://github.com/healthchecks}{\texttt{Healthchecks 💸}}, \href{https://github.com/getsentry}{\texttt{Sentry 💸}}, \href{https://github.com/jarrodldavis}{\texttt{jarrodldavis 💸}}, \href{https://github.com/CynegeticIO}{\texttt{Cynegetic\+IO}}, \href{https://github.com/ssi02014}{\texttt{ssi02014 ❤️}}, \href{https://github.com/GrantGryczan}{\texttt{Grant\+Gryczan}}, \href{https://twitter.com/lowdefy}{\texttt{Lowdefy}}, \href{https://twitter.com/MaximeVeit}{\texttt{granlem}}, \href{https://github.com/oreoshake}{\texttt{oreoshake}}, \href{https://github.com/tdeekens}{\texttt{tdeekens ❤️}}, \href{https://github.com/peernohell}{\texttt{peernohell ❤️}}, \href{https://github.com/is2ei}{\texttt{is2ei}}, \href{https://github.com/SoheilKhodayari}{\texttt{Soheil\+Khodayari}}, \href{https://github.com/franktopel}{\texttt{franktopel}}, \href{https://github.com/NateScarlet}{\texttt{Nate\+Scarlet}}, \href{https://github.com/neilj}{\texttt{neilj}}, \href{https://github.com/fhemberger}{\texttt{fhemberger}}, \href{https://github.com/Joris-van-der-Wel}{\texttt{Joris-\/van-\/der-\/\+Wel}}, \href{https://github.com/ydaniv}{\texttt{ydaniv}}, \href{https://twitter.com/terjanq}{\texttt{terjanq}}, \href{https://github.com/filedescriptor}{\texttt{filedescriptor}}, \href{https://github.com/ConradIrwin}{\texttt{Conrad\+Irwin}}, \href{https://github.com/gibson042}{\texttt{gibson042}}, \href{https://github.com/choumx}{\texttt{choumx}}, \href{https://github.com/0xSobky}{\texttt{0x\+Sobky}}, \href{https://github.com/styfle}{\texttt{styfle}}, \href{https://github.com/koto}{\texttt{koto}}, \href{https://github.com/tlau88}{\texttt{tlau88}}, \href{https://github.com/strugee}{\texttt{strugee}}, \href{https://github.com/oparoz}{\texttt{oparoz}}, \href{https://github.com/mathiasbynens}{\texttt{mathiasbynens}}, \href{https://github.com/edg2s}{\texttt{edg2s}}, \href{https://github.com/dnkolegov}{\texttt{dnkolegov}}, \href{https://github.com/dhardtke}{\texttt{dhardtke}}, \href{https://github.com/wirehead}{\texttt{wirehead}}, \href{https://github.com/thorn0}{\texttt{thorn0}}, \href{https://github.com/styu}{\texttt{styu}}, \href{https://github.com/mozfreddyb}{\texttt{mozfreddyb}}, \href{https://github.com/mikesamuel}{\texttt{mikesamuel}}, \href{https://github.com/jorangreef}{\texttt{jorangreef}}, \href{https://github.com/jimmyhchan}{\texttt{jimmyhchan}}, \href{https://github.com/jameydeorio}{\texttt{jameydeorio}}, \href{https://github.com/jameskraus}{\texttt{jameskraus}}, \href{https://github.com/hyderali}{\texttt{hyderali}}, \href{https://github.com/hansottowirtz}{\texttt{hansottowirtz}}, \href{https://github.com/hackvertor}{\texttt{hackvertor}}, \href{https://github.com/freddyb}{\texttt{freddyb}}, \href{https://github.com/flavorjones}{\texttt{flavorjones}}, \href{https://github.com/djfarrelly}{\texttt{djfarrelly}}, \href{https://github.com/devd}{\texttt{devd}}, \href{https://github.com/camerondunford}{\texttt{camerondunford}}, \href{https://github.com/buu700}{\texttt{buu700}}, \href{https://github.com/buildog}{\texttt{buildog}}, \href{https://github.com/alabiaga}{\texttt{alabiaga}}, \href{https://github.com/Vector919}{\texttt{Vector919}}, \href{https://github.com/Robbert}{\texttt{Robbert}}, \href{https://github.com/GreLI}{\texttt{Gre\+LI}}, \href{https://github.com/FuzzySockets}{\texttt{Fuzzy\+Sockets}}, \href{https://github.com/ArtemBernatskyy}{\texttt{Artem\+Bernatskyy}}, \href{https://twitter.com/garethheyes}{\texttt{@garethheyes}}, \href{https://twitter.com/shafigullin}{\texttt{@shafigullin}}, \href{https://twitter.com/mmrupp}{\texttt{@mmrupp}}, \href{https://twitter.com/irsdl}{\texttt{@irsdl}},\href{https://github.com/ShikariSenpai}{\texttt{Shikari\+Senpai}}, \href{https://github.com/ansjdnakjdnajkd}{\texttt{ansjdnakjdnajkd}}, \href{https://twitter.com/asutherland}{\texttt{@asutherland}}, \href{https://twitter.com/mathias}{\texttt{@mathias}}, \href{https://twitter.com/cgvwzq}{\texttt{@cgvwzq}}, \href{https://twitter.com/robbertatwork}{\texttt{@robbertatwork}}, \href{https://twitter.com/giutro}{\texttt{@giutro}}, \href{https://twitter.com/CmdEngineer_}{\texttt{@\+Cmd\+Engineer\+\_\+}}, \href{https://twitter.com/avr4mit}{\texttt{@avr4mit}}, \href{https://github.com/davecardwell}{\texttt{davecardwell}} and especially \href{https://twitter.com/securitymb}{\texttt{@securitymb ❤️}} \& \href{https://twitter.com/masatokinugawa}{\texttt{@masatokinugawa ❤️}}\hypertarget{README.md_autotoc_md10756}{}\doxysubsection{\texorpdfstring{Testing powered by}{Testing powered by}}\label{README.md_autotoc_md10756}
+\href{https://www.browserstack.com/}{\texttt{}}~\newline
+
+
+And last but not least, thanks to \href{https://www.browserstack.com/open-source}{\texttt{Browser\+Stack Open-\/\+Source Program}} for supporting this project with their services for free and delivering excellent, dedicated and very professional support on top of that. 

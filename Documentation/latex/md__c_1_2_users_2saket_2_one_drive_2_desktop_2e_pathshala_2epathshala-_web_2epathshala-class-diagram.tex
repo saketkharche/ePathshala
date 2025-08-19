@@ -1,0 +1,916 @@
+\chapter{e\+Pathshala Class Diagram }
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram}{}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram}\index{ePathshala Class Diagram@{ePathshala Class Diagram}}
+\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md34}%
+\Hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md34}%
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md35}{}\doxysection{\texorpdfstring{Complete System Class Diagram}{Complete System Class Diagram}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md35}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ User\ Management\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ User\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ password}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ name}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Role\ role}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ phone}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ updatedAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isActive}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +authenticate(password)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateProfile(profileData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +changePassword(oldPassword,\ newPassword)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Student\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ userId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ rollNumber}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ section}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ dateOfBirth}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ address}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ parentPhone}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment(assignmentId,\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +requestLeave(leaveRequest)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Teacher\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ userId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ employeeId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ qualification}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ experience}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ department}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(attendanceData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade(gradeData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment(assignmentData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId,\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createExam(examData)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Parent\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ userId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ occupation}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ address}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~Student\string~\ children}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildProgress(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildAttendance(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage(teacherId,\ message)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Admin\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ userId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ designation}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ department}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createUser(userData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateUser(userId,\ userData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteUser(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +manageAcademicCalendar()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +generateReports()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Academic\ Management\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ Attendance\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ date}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ markedAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAttendanceReport()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Grade\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ grade}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ examDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateGrade()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +calculateGrade()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Assignment\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ dueDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ fileUrl}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AssignmentStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getSubmissions()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentSubmission\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ assignmentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ fileUrl}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ submittedAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +SubmissionStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateSubmission()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +gradeSubmission(marks,\ feedback)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ LeaveRequest\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ parentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ fromDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ toDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ reason}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LeaveStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitRequest()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveRequest()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +rejectRequest()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateStatus()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AcademicCalendar\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDate\ date}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +EventType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ location}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isHoliday}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createEvent()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateEvent()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteEvent()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getEventsByDateRange()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Communication\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ ChatMessage\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ senderId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ receiverId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +MessageType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ fileUrl}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isRead}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ sentAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAsRead()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteMessage()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatRoom\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ name}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ChatRoomType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~User\string~\ participants}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createRoom()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addParticipant(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +removeParticipant(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getMessages()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Notification\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ userId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +NotificationType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isRead}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ targetUrl}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendNotification()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAsRead()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteNotification()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Exam\ Management\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ Exam\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ teacherId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ className}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ startTime}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ endTime}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Integer\ duration}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Integer\ totalMarks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +ExamStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ createdAt}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +publishExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getQuestions()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getResults()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamQuestion\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ examId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ question}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +QuestionType\ type}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +List\string~String\string~\ options}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ correctAnswer}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Integer\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Integer\ order}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addQuestion()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateQuestion()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteQuestion()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamAttempt\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ examId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ startTime}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ endTime}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Integer\ score}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttemptStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +startExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +calculateScore()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamAnswer\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ id}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ attemptId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ questionId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ answer}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +boolean\ isCorrect}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Integer\ marksObtained}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +saveAnswer()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +gradeAnswer()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ DTO\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ LoginRequest\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ email}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ password}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Role\ role}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ LoginResponse\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ token}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +User\ user}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ message}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ title}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ description}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +LocalDateTime\ dueDate}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +MultipartFile\ file}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ GradeDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ subject}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Double\ marks}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AttendanceDTO\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +Long\ studentId}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +AttendanceStatus\ status}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +String\ remarks}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Service\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ AuthService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +authenticateUser(credentials)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +generateToken(user)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +validateToken(token)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +forgotPassword(email)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +resetPassword(token,\ newPassword)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(attendanceData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade(gradeData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment(assignmentData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId,\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createExam(examData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboardData()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getMyAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment(assignmentId,\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getMyGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +requestLeave(leaveRequest)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +takeExam(examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboardData()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildProgress(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildAttendance(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage(teacherId,\ message)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboardData()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AdminService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createUser(userData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateUser(userId,\ userData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteUser(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAllUsers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +manageAcademicCalendar()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +generateReports()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage(messageData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getMessages(userId1,\ userId2)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createChatRoom(roomData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChatRooms(userId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createExam(examData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addQuestions(examId,\ questions)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +startExam(examId,\ studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitExam(attemptId,\ answers)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +gradeExam(attemptId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getResults(examId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ NotificationService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendNotification(notificationData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getUserNotifications(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAsRead(notificationId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteNotification(notificationId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Repository\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ UserRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByEmail(email)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByRole(role)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByEmailAndRole(email,\ role)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findActiveUsers()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByUserId(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByClassName(className)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByRollNumber(rollNumber)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByParentId(parentId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByUserId(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findBySubject(subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByDepartment(department)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findActiveTeachers()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AttendanceRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByStudentId(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByStudentIdAndDate(studentId,\ date)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByTeacherId(teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAttendanceReport(studentId,\ startDate,\ endDate)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ GradeRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByStudentId(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByStudentIdAndSubject(studentId,\ subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAverageGradeByStudent(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByTeacherId(teacherId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByTeacherId(teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByClassName(className)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findBySubject(subject)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findActiveAssignments()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamRepository\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByTeacherId(teacherId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByClassName(className)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findActiveExams()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +findByStudentId(studentId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Controller\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ AuthController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +login(loginRequest)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +forgotPassword(request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +resetPassword(request)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +verifyOtp(request)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(attendanceDTO)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade(gradeDTO)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment(assignmentDTO)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId,\ status)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getLeaveRequests()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment(assignmentId,\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +requestLeave(leaveRequest)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAttendance()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildProgress(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildAttendance(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(requestId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage(messageData)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AdminController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createUser(userData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAllUsers()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateUser(userId,\ userData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteUser(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getSystemStats()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage(messageData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getMessages(userId1,\ userId2)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChatRooms(userId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createChatRoom(roomData)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamController\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createExam(examData)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addQuestions(examId,\ questions)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAvailableExams()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +startExam(examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitExam(attemptId,\ answers)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getResults(examId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Frontend\ Component\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ LoginPage\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{email,\ password,\ role,\ loading\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleSubmit()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleInputChange()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleForgotPassword()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherDashboard\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{stats,\ recentActivities\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +componentDidMount()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchDashboardData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleNavigation()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentDashboard\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{assignments,\ grades,\ attendance\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +componentDidMount()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchDashboardData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleAssignmentSubmit()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentManager\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{assignments,\ loading,\ selectedAssignment\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +deleteAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleFileUpload()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamInterface\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{exam,\ questions,\ answers,\ timeLeft\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +startExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAnswer()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleTimeUp()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatComponent\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{messages,\ users,\ selectedUser\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +receiveMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +connectWebSocket()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Relationships}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Student\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Teacher\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Parent\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Admin\ :\ "{}has"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ Attendance\ :\ "{}tracks"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ Grade\ :\ "{}receives"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ AssignmentSubmission\ :\ "{}submits"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ LeaveRequest\ :\ "{}requests"{}}
+\DoxyCodeLine{\ \ \ \ Student\ ||-\/-\/o\{\ ExamAttempt\ :\ "{}takes"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Attendance\ :\ "{}marks"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Grade\ :\ "{}assigns"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Assignment\ :\ "{}creates"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ LeaveRequest\ :\ "{}approves"{}}
+\DoxyCodeLine{\ \ \ \ Teacher\ ||-\/-\/o\{\ Exam\ :\ "{}creates"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ Parent\ ||-\/-\/o\{\ Student\ :\ "{}monitors"{}}
+\DoxyCodeLine{\ \ \ \ Parent\ ||-\/-\/o\{\ LeaveRequest\ :\ "{}approves"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ Assignment\ ||-\/-\/o\{\ AssignmentSubmission\ :\ "{}receives"{}}
+\DoxyCodeLine{\ \ \ \ Exam\ ||-\/-\/o\{\ ExamQuestion\ :\ "{}contains"{}}
+\DoxyCodeLine{\ \ \ \ Exam\ ||-\/-\/o\{\ ExamAttempt\ :\ "{}has"{}}
+\DoxyCodeLine{\ \ \ \ ExamAttempt\ ||-\/-\/o\{\ ExamAnswer\ :\ "{}contains"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ ChatRoom\ ||-\/-\/o\{\ ChatMessage\ :\ "{}contains"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ ChatMessage\ :\ "{}sends"{}}
+\DoxyCodeLine{\ \ \ \ User\ ||-\/-\/o\{\ Notification\ :\ "{}receives"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Service\ Dependencies}
+\DoxyCodeLine{\ \ \ \ AuthController\ -\/-\/>\ AuthService}
+\DoxyCodeLine{\ \ \ \ TeacherController\ -\/-\/>\ TeacherService}
+\DoxyCodeLine{\ \ \ \ StudentController\ -\/-\/>\ StudentService}
+\DoxyCodeLine{\ \ \ \ ParentController\ -\/-\/>\ ParentService}
+\DoxyCodeLine{\ \ \ \ AdminController\ -\/-\/>\ AdminService}
+\DoxyCodeLine{\ \ \ \ ChatController\ -\/-\/>\ ChatService}
+\DoxyCodeLine{\ \ \ \ ExamController\ -\/-\/>\ ExamService}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Repository\ Dependencies}
+\DoxyCodeLine{\ \ \ \ AuthService\ -\/-\/>\ UserRepository}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ TeacherRepository}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ AttendanceRepository}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ GradeRepository}
+\DoxyCodeLine{\ \ \ \ TeacherService\ -\/-\/>\ AssignmentRepository}
+\DoxyCodeLine{\ \ \ \ StudentService\ -\/-\/>\ StudentRepository}
+\DoxyCodeLine{\ \ \ \ StudentService\ -\/-\/>\ AssignmentRepository}
+\DoxyCodeLine{\ \ \ \ StudentService\ -\/-\/>\ GradeRepository}
+\DoxyCodeLine{\ \ \ \ ParentService\ -\/-\/>\ ParentRepository}
+\DoxyCodeLine{\ \ \ \ AdminService\ -\/-\/>\ UserRepository}
+\DoxyCodeLine{\ \ \ \ ChatService\ -\/-\/>\ ChatRepository}
+\DoxyCodeLine{\ \ \ \ ExamService\ -\/-\/>\ ExamRepository}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Frontend\ Dependencies}
+\DoxyCodeLine{\ \ \ \ LoginPage\ -\/-\/>\ AuthService}
+\DoxyCodeLine{\ \ \ \ TeacherDashboard\ -\/-\/>\ TeacherService}
+\DoxyCodeLine{\ \ \ \ StudentDashboard\ -\/-\/>\ StudentService}
+\DoxyCodeLine{\ \ \ \ AssignmentManager\ -\/-\/>\ AssignmentService}
+\DoxyCodeLine{\ \ \ \ ExamInterface\ -\/-\/>\ ExamService}
+\DoxyCodeLine{\ \ \ \ ChatComponent\ -\/-\/>\ ChatService}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md36}{}\doxysection{\texorpdfstring{Frontend Component Hierarchy}{Frontend Component Hierarchy}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md36}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ Layout\ Components}
+\DoxyCodeLine{\ \ \ \ class\ App\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{user,\ theme\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleLogin()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleLogout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ProtectedRoute\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props:\ \{component,\ role\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +checkAuth()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +checkRole()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ DashboardLayout\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{sidebarOpen,\ user\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +toggleSidebar()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleLogout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Sidebar\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props:\ \{role,\ menuItems\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleNavigation()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ Navbar\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{user,\ notifications\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleLogout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +toggleNotifications()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Dashboard\ Components}
+\DoxyCodeLine{\ \ \ \ class\ TeacherDashboardLayout\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{sidebarOpen,\ user\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentDashboardLayout\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{sidebarOpen,\ user\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentDashboardLayout\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{sidebarOpen,\ user\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AdminDashboardLayout\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{sidebarOpen,\ user\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Page\ Components}
+\DoxyCodeLine{\ \ \ \ class\ TeacherOverview\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{stats,\ activities\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentOverview\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{assignments,\ grades,\ attendance\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentOverview\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{children,\ progress\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchData()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Feature\ Components}
+\DoxyCodeLine{\ \ \ \ class\ AssignmentTracker\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{assignments,\ loading\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ GradeViewer\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{grades,\ subjects\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +calculateAverage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AttendanceTracker\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{attendance,\ dates\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +fetchAttendance()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +calculatePercentage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatInterface\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{messages,\ users,\ selectedUser\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +receiveMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamInterface\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{exam,\ questions,\ answers,\ timer\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +startExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAnswer()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitExam()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ UI\ Components}
+\DoxyCodeLine{\ \ \ \ class\ LoadingSpinner\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props:\ \{size,\ color\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ErrorMessage\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props:\ \{message,\ onRetry\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleRetry()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ EmptyState\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props:\ \{title,\ description,\ action\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleAction()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ NotificationBadge\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +props:\ \{count,\ onClick\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +handleClick()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +render()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Relationships}
+\DoxyCodeLine{\ \ \ \ App\ -\/-\/>\ ProtectedRoute}
+\DoxyCodeLine{\ \ \ \ App\ -\/-\/>\ DashboardLayout}
+\DoxyCodeLine{\ \ \ \ App\ -\/-\/>\ LoginPage}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ ProtectedRoute\ -\/-\/>\ TeacherDashboardLayout}
+\DoxyCodeLine{\ \ \ \ ProtectedRoute\ -\/-\/>\ StudentDashboardLayout}
+\DoxyCodeLine{\ \ \ \ ProtectedRoute\ -\/-\/>\ ParentDashboardLayout}
+\DoxyCodeLine{\ \ \ \ ProtectedRoute\ -\/-\/>\ AdminDashboardLayout}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ DashboardLayout\ -\/-\/>\ Sidebar}
+\DoxyCodeLine{\ \ \ \ DashboardLayout\ -\/-\/>\ Navbar}
+\DoxyCodeLine{\ \ \ \ DashboardLayout\ -\/-\/>\ TeacherOverview}
+\DoxyCodeLine{\ \ \ \ DashboardLayout\ -\/-\/>\ StudentOverview}
+\DoxyCodeLine{\ \ \ \ DashboardLayout\ -\/-\/>\ ParentOverview}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ TeacherDashboardLayout\ -\/-\/>\ AssignmentTracker}
+\DoxyCodeLine{\ \ \ \ TeacherDashboardLayout\ -\/-\/>\ GradeViewer}
+\DoxyCodeLine{\ \ \ \ TeacherDashboardLayout\ -\/-\/>\ AttendanceTracker}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ StudentDashboardLayout\ -\/-\/>\ AssignmentTracker}
+\DoxyCodeLine{\ \ \ \ StudentDashboardLayout\ -\/-\/>\ GradeViewer}
+\DoxyCodeLine{\ \ \ \ StudentDashboardLayout\ -\/-\/>\ AttendanceTracker}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ ParentDashboardLayout\ -\/-\/>\ GradeViewer}
+\DoxyCodeLine{\ \ \ \ ParentDashboardLayout\ -\/-\/>\ AttendanceTracker}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ Navbar\ -\/-\/>\ NotificationBadge}
+\DoxyCodeLine{\ \ \ \ Navbar\ -\/-\/>\ ChatInterface}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ AssignmentTracker\ -\/-\/>\ LoadingSpinner}
+\DoxyCodeLine{\ \ \ \ AssignmentTracker\ -\/-\/>\ ErrorMessage}
+\DoxyCodeLine{\ \ \ \ AssignmentTracker\ -\/-\/>\ EmptyState}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ ExamInterface\ -\/-\/>\ LoadingSpinner}
+\DoxyCodeLine{\ \ \ \ ExamInterface\ -\/-\/>\ ErrorMessage}
+
+\end{DoxyCode}
+\hypertarget{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md37}{}\doxysection{\texorpdfstring{Data Flow Architecture}{Data Flow Architecture}}\label{md__c_1_2_users_2saket_2_one_drive_2_desktop_2e_pathshala_2epathshala-_web_2epathshala-class-diagram_autotoc_md37}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{classDiagram}
+\DoxyCodeLine{\ \ \ \ \%\%\ API\ Layer}
+\DoxyCodeLine{\ \ \ \ class\ ApiService\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +baseURL:\ String}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +headers:\ Object}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +get(endpoint)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +post(endpoint,\ data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +put(endpoint,\ data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +delete(endpoint)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +setAuthToken(token)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ AuthAPI\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +login(credentials)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +logout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +forgotPassword(email)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +resetPassword(token,\ password)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ TeacherAPI\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAttendance(data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addGrade(data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +createAssignment(data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getLeaveRequests()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ StudentAPI\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAssignments()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitAssignment(id,\ file)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getGrades()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +requestLeave(data)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ParentAPI\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getDashboard()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildProgress(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChildAttendance(studentId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +approveLeaveRequest(id)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ChatAPI\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage(data)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getMessages(userId1,\ userId2)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getChatRooms()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ExamAPI\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getAvailableExams()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +startExam(examId)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +submitExam(attemptId,\ answers)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +getResults(examId)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ State\ Management}
+\DoxyCodeLine{\ \ \ \ class\ AuthContext\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{user,\ token,\ isAuthenticated\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +login(credentials)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +logout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +updateUser(userData)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ ThemeContext\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{theme,\ mode\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +toggleTheme()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +setMode(mode)}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ NotificationContext\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +state:\ \{notifications,\ unreadCount\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +addNotification(notification)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +markAsRead(id)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +clearNotifications()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Hook\ Classes}
+\DoxyCodeLine{\ \ \ \ class\ useApi\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +data:\ any}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +loading:\ boolean}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +error:\ string}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +execute()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +reset()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ useAuth\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +user:\ User}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +isAuthenticated:\ boolean}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +login()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +logout()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +checkAuth()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ class\ useWebSocket\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +connection:\ WebSocket}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +isConnected:\ boolean}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +sendMessage()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +connect()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ +disconnect()}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \%\%\ Relationships}
+\DoxyCodeLine{\ \ \ \ ApiService\ -\/-\/>\ AuthAPI}
+\DoxyCodeLine{\ \ \ \ ApiService\ -\/-\/>\ TeacherAPI}
+\DoxyCodeLine{\ \ \ \ ApiService\ -\/-\/>\ StudentAPI}
+\DoxyCodeLine{\ \ \ \ ApiService\ -\/-\/>\ ParentAPI}
+\DoxyCodeLine{\ \ \ \ ApiService\ -\/-\/>\ ChatAPI}
+\DoxyCodeLine{\ \ \ \ ApiService\ -\/-\/>\ ExamAPI}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ AuthAPI\ -\/-\/>\ AuthContext}
+\DoxyCodeLine{\ \ \ \ TeacherAPI\ -\/-\/>\ useApi}
+\DoxyCodeLine{\ \ \ \ StudentAPI\ -\/-\/>\ useApi}
+\DoxyCodeLine{\ \ \ \ ParentAPI\ -\/-\/>\ useApi}
+\DoxyCodeLine{\ \ \ \ ChatAPI\ -\/-\/>\ useWebSocket}
+\DoxyCodeLine{\ \ \ \ ExamAPI\ -\/-\/>\ useApi}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ AuthContext\ -\/-\/>\ useAuth}
+\DoxyCodeLine{\ \ \ \ ThemeContext\ -\/-\/>\ App}
+\DoxyCodeLine{\ \ \ \ NotificationContext\ -\/-\/>\ App}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ useApi\ -\/-\/>\ ApiService}
+\DoxyCodeLine{\ \ \ \ useAuth\ -\/-\/>\ AuthAPI}
+\DoxyCodeLine{\ \ \ \ useWebSocket\ -\/-\/>\ ChatAPI}
+
+\end{DoxyCode}
+
+
+This comprehensive class diagram shows the complete structure of the e\+Pathshala system, including\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Entity Classes}} -\/ All database entities with their attributes and methods
+\item {\bfseries{Service Classes}} -\/ Business logic layer with service methods
+\item {\bfseries{Repository Classes}} -\/ Data access layer with query methods
+\item {\bfseries{Controller Classes}} -\/ API endpoints and request handling
+\item {\bfseries{DTO Classes}} -\/ Data transfer objects for API communication
+\item {\bfseries{Frontend Components}} -\/ React components with their state and methods
+\item {\bfseries{API Services}} -\/ Frontend API integration layer
+\item {\bfseries{Context Classes}} -\/ React context for state management
+\item {\bfseries{Custom Hooks}} -\/ Reusable logic hooks
+\end{DoxyEnumerate}
+
+The diagram also shows all the relationships between classes, including inheritance, composition, and dependencies, providing a complete view of the system architecture. 

@@ -1,0 +1,103 @@
+\doxysection{C\+:/\+Users/saket/\+One\+Drive/\+Desktop/e\+Pathshala/epathshala-\/\+Web/node\+\_\+modules/react-\/fast-\/compare Directory Reference}
+\hypertarget{dir_b2509edded91becc12e9dd9279e018e0}{}\label{dir_b2509edded91becc12e9dd9279e018e0}\index{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/react-\/fast-\/compare Directory Reference@{C:/Users/saket/OneDrive/Desktop/ePathshala/epathshala-\/Web/node\_modules/react-\/fast-\/compare Directory Reference}}
+Directory dependency graph for react-\/fast-\/compare\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{dir_b2509edded91becc12e9dd9279e018e0_dep}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{README.md_autotoc_md12368}{}\doxysubsection{\texorpdfstring{react-\/fast-\/compare}{react-\/fast-\/compare}}\label{README.md_autotoc_md12368}
+The fastest deep equal comparison for React. Really fast general-\/purpose deep comparison. Great for{\ttfamily should\+Component\+Update}. This is a fork of the brilliant \href{https://github.com/epoberezkin/fast-deep-equal}{\texttt{fast-\/deep-\/equal}} with some extra handling for React.
+
+\href{https://travis-ci.org/FormidableLabs/react-fast-compare}{\texttt{}} \href{https://ci.appveyor.com/project/FormidableLabs/react-fast-compare}{\texttt{}} \href{http://badge.fury.io/js/react-fast-compare}{\texttt{}} \href{https://bundlephobia.com/result?p=react-fast-compare}{\texttt{}} \href{https://bundlephobia.com/result?p=react-fast-compare}{\texttt{}}
+
+
+
+(Check out the benchmarking details.)\hypertarget{README.md_autotoc_md12369}{}\doxysubsection{\texorpdfstring{Install}{Install}}\label{README.md_autotoc_md12369}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ yarn\ add\ react-\/fast-\/compare}
+\DoxyCodeLine{\#\ or}
+\DoxyCodeLine{\$\ npm\ install\ react-\/fast-\/compare}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12370}{}\doxysubsection{\texorpdfstring{Highlights}{Highlights}}\label{README.md_autotoc_md12370}
+
+\begin{DoxyItemize}
+\item ES5 compatible; works in node.\+js (0.\+10+) and browsers (IE9+)
+\item deeply compares any value (besides objects with circular references)
+\item handles React-\/specific circular references, like elements
+\item checks equality Date and Reg\+Exp objects
+\item should be just as fast as \href{https://github.com/epoberezkin/fast-deep-equal}{\texttt{fast-\/deep-\/equal}} for general use, and faster for React use
+\item small\+: under 600 bytes minified+gzipped
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md12371}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{README.md_autotoc_md12371}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{const\ isEqual\ =\ require("{}react-\/fast-\/compare"{});}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ general\ usage}
+\DoxyCodeLine{console.log(isEqual(\{\ foo:\ "{}bar"{}\ \},\ \{\ foo:\ "{}bar"{}\ \}));\ //\ true}
+\DoxyCodeLine{}
+\DoxyCodeLine{//\ react\ usage}
+\DoxyCodeLine{class\ ExpensiveRenderer\ extends\ React.Component\ \{}
+\DoxyCodeLine{\ \ shouldComponentUpdate(nextProps)\ \{}
+\DoxyCodeLine{\ \ \ \ return\ !isEqual(this.props,\ nextProps);}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\ \ render()\ \{}
+\DoxyCodeLine{\ \ \ \ //\ ...}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12372}{}\doxysubsection{\texorpdfstring{Do I Need {\ttfamily should\+Component\+Update}?}{Do I Need {\ttfamily should\+Component\+Update}?}}\label{README.md_autotoc_md12372}
+\begin{quote}
+What\textquotesingle{}s faster than a really fast deep comparison? No deep comparison at all. \end{quote}
+
+
+—\+This Readme
+
+Deep checks in React\textquotesingle{}s {\ttfamily should\+Component\+Update} should not be used blindly. First, see if a \href{https://reactjs.org/docs/react-api.html\#reactpurecomponent}{\texttt{Pure\+Component}} would work for you. If it won\textquotesingle{}t (if you need deep checks), it\textquotesingle{}s wise to make sure you\textquotesingle{}ve correctly indentified the bottleneck in your application by \href{https://reactjs.org/docs/optimizing-performance.html\#profiling-components-with-the-chrome-performance-tab}{\texttt{profiling the performance}}. After you\textquotesingle{}ve determined that you {\itshape do} need deep equality checks and you\textquotesingle{}ve identified the minimum number of places to apply them, then this library may be for you! For more information about making your app faster, check out the \href{https://reactjs.org/docs/optimizing-performance.html}{\texttt{Optimizing Performance}} section of the React docs.\hypertarget{README.md_autotoc_md12373}{}\doxysubsection{\texorpdfstring{Benchmarking this Library}{Benchmarking this Library}}\label{README.md_autotoc_md12373}
+All tests carried out locally on a Mac\+Book. The absolute values are much less important than the relative differences between packages.
+
+Benchmarking source can be found \href{https://github.com/FormidableLabs/react-fast-compare/blob/master/node/tests.js}{\texttt{here}}. Each "{}operation"{} consists of running all relevant tests. The React benchmark uses both the generic tests and the react tests; these runs will be slower simply because there are more tests in each operation.\hypertarget{README.md_autotoc_md12374}{}\doxysubsubsection{\texorpdfstring{Generic Data}{Generic Data}}\label{README.md_autotoc_md12374}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{react-\/fast-\/compare\ x\ 207,503\ ops/sec\ ±0.54\%\ (92\ runs\ sampled)}
+\DoxyCodeLine{fast-\/deep-\/equal\ x\ 195,006\ ops/sec\ ±0.70\%\ (91\ runs\ sampled)}
+\DoxyCodeLine{lodash.isEqual\ x\ 43,778\ ops/sec\ ±0.55\%\ (91\ runs\ sampled)}
+\DoxyCodeLine{nano-\/equal\ x\ 198,036\ ops/sec\ ±0.37\%\ (95\ runs\ sampled)}
+\DoxyCodeLine{shallow-\/equal-\/fuzzy\ x\ 173,023\ ops/sec\ ±0.59\%\ (95\ runs\ sampled)}
+\DoxyCodeLine{\ \ fastest:\ react-\/fast-\/compare}
+
+\end{DoxyCode}
+
+
+{\ttfamily react-\/fast-\/compare} and {\ttfamily fast-\/deep-\/equal} should be the same speed for these tests; any difference is just noise. {\ttfamily react-\/fast-\/compare} won\textquotesingle{}t be faster than {\ttfamily fast-\/deep-\/equal}, because it\textquotesingle{}s based on it.\hypertarget{README.md_autotoc_md12375}{}\doxysubsubsection{\texorpdfstring{React and Generic Data}{React and Generic Data}}\label{README.md_autotoc_md12375}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{react-\/fast-\/compare\ x\ 187,628\ ops/sec\ ±0.58\%\ (93\ runs\ sampled)}
+\DoxyCodeLine{fast-\/deep-\/equal\ x\ 477\ ops/sec\ ±0.55\%\ (91\ runs\ sampled)}
+\DoxyCodeLine{lodash.isEqual\ x\ 35,100\ ops/sec\ ±0.16\%\ (95\ runs\ sampled)}
+\DoxyCodeLine{nano-\/equal\ x\ 468\ ops/sec\ ±0.53\%\ (94\ runs\ sampled)}
+\DoxyCodeLine{shallow-\/equal-\/fuzzy\ x\ 684\ ops/sec\ ±0.43\%\ (92\ runs\ sampled)}
+\DoxyCodeLine{\ \ fastest:\ react-\/fast-\/compare}
+
+\end{DoxyCode}
+
+
+Three of these packages cannot handle comparing React elements (which are circular)\+: {\ttfamily fast-\/deep-\/equal}, {\ttfamily nano-\/equal}, and {\ttfamily shallow-\/equal-\/fuzzy}.\hypertarget{README.md_autotoc_md12376}{}\doxysubsubsection{\texorpdfstring{Running Benchmarks}{Running Benchmarks}}\label{README.md_autotoc_md12376}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ yarn\ install}
+\DoxyCodeLine{\$\ yarn\ run\ benchmark}
+
+\end{DoxyCode}
+\hypertarget{README.md_autotoc_md12377}{}\doxysubsection{\texorpdfstring{fast-\/deep-\/equal Versioning}{fast-\/deep-\/equal Versioning}}\label{README.md_autotoc_md12377}
+react-\/fast-\/compare@2.\+0.\+0 tracks fast-\/deep-\/equal@2.\+0.\+1\hypertarget{README.md_autotoc_md12378}{}\doxysubsection{\texorpdfstring{License}{License}}\label{README.md_autotoc_md12378}
+\href{https://github.com/FormidableLabs/react-fast-compare/blob/readme/LICENSE}{\texttt{MIT}}\hypertarget{README.md_autotoc_md12379}{}\doxysubsection{\texorpdfstring{Contributing}{Contributing}}\label{README.md_autotoc_md12379}
+Please see our \doxylink{recharts_2_c_o_n_t_r_i_b_u_t_i_n_g_8md}{contributions guide}. 

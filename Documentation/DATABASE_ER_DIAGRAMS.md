@@ -733,11 +733,11 @@ graph TB
     end
     
     subgraph "Check Constraints"
-        T[USER.role IN ('ADMIN', 'STUDENT', 'TEACHER', 'PARENT')]
+        T[USER.role must be ADMIN, STUDENT, TEACHER, PARENT]
         U[EXAM.duration > 0]
         V[EXAM.totalMarks > 0]
         W[ASSIGNMENT.totalMarks > 0]
-        X[ATTENDANCE.isPresent IN (true, false)]
+        X[ATTENDANCE.isPresent is true or false]
     end
     
     subgraph "Not Null Constraints"
@@ -750,6 +750,7 @@ graph TB
         EE[TEACHER.firstName - Not Null]
         FF[TEACHER.lastName - Not Null]
     end
+
 ```
 
 ## 8. Database Triggers (Mermaid)

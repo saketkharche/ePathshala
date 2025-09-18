@@ -764,59 +764,60 @@ graph TB
 ```mermaid
 graph TB
     subgraph "Authentication APIs"
-        A[POST /api/auth/login]
-        B[POST /api/auth/forgot-password]
-        C[POST /api/auth/reset-password]
-        D[POST /api/auth/verify-otp]
+        A["POST /api/auth/login"]
+        B["POST /api/auth/forgot-password"]
+        C["POST /api/auth/reset-password"]
+        D["POST /api/auth/verify-otp"]
     end
     
     subgraph "Admin APIs"
-        E[GET /api/admin/dashboard]
-        F[POST /api/admin/students]
-        G[POST /api/admin/teachers]
-        H[POST /api/admin/parents]
-        I[GET /api/admin/users]
-        J[PUT /api/admin/users/{id}]
-        K[DELETE /api/admin/users/{id}]
+        E["GET /api/admin/dashboard"]
+        F["POST /api/admin/students"]
+        G["POST /api/admin/teachers"]
+        H["POST /api/admin/parents"]
+        I["GET /api/admin/users"]
+        J["PUT /api/admin/users/{id}"]
+        K["DELETE /api/admin/users/{id}"]
     end
     
     subgraph "Student APIs"
-        L[GET /api/student/dashboard]
-        M[GET /api/student/exams]
-        N[POST /api/student/exams/{id}/attempt]
-        O[GET /api/student/assignments]
-        P[POST /api/student/assignments/{id}/submit]
-        Q[GET /api/student/grades]
-        R[GET /api/student/attendance]
+        L["GET /api/student/dashboard"]
+        M["GET /api/student/exams"]
+        N["POST /api/student/exams/{id}/attempt"]
+        O["GET /api/student/assignments"]
+        P["POST /api/student/assignments/{id}/submit"]
+        Q["GET /api/student/grades"]
+        R["GET /api/student/attendance"]
     end
     
     subgraph "Teacher APIs"
-        S[GET /api/teacher/dashboard]
-        T[POST /api/teacher/exams]
-        U[GET /api/teacher/exams]
-        V[POST /api/teacher/assignments]
-        W[GET /api/teacher/assignments]
-        X[POST /api/teacher/attendance]
-        Y[GET /api/teacher/attendance]
-        Z[POST /api/teacher/grades]
+        S["GET /api/teacher/dashboard"]
+        T["POST /api/teacher/exams"]
+        U["GET /api/teacher/exams"]
+        V["POST /api/teacher/assignments"]
+        W["GET /api/teacher/assignments"]
+        X["POST /api/teacher/attendance"]
+        Y["GET /api/teacher/attendance"]
+        Z["POST /api/teacher/grades"]
     end
     
     subgraph "Parent APIs"
-        AA[GET /api/parent/dashboard]
-        BB[GET /api/parent/child-progress]
-        CC[GET /api/parent/child-attendance]
-        DD[GET /api/parent/child-grades]
-        EE[POST /api/parent/leave-approval]
+        AA["GET /api/parent/dashboard"]
+        BB["GET /api/parent/child-progress"]
+        CC["GET /api/parent/child-attendance"]
+        DD["GET /api/parent/child-grades"]
+        EE["POST /api/parent/leave-approval"]
     end
     
     subgraph "Communication APIs"
-        FF[GET /api/chat/messages]
-        GG[POST /api/chat/send]
-        HH[GET /api/notifications]
-        II[PUT /api/notifications/{id}/read]
-        JJ[GET /api/online-classes]
-        KK[POST /api/online-classes]
+        FF["GET /api/chat/messages"]
+        GG["POST /api/chat/send"]
+        HH["GET /api/notifications"]
+        II["PUT /api/notifications/{id}/read"]
+        JJ["GET /api/online-classes"]
+        KK["POST /api/online-classes"]
     end
+
 ```
 
 ### API Flow Diagram
